@@ -47,11 +47,14 @@ Required variables:
 ```env
 DB_PASSWORD=change_me
 JWT_SECRET=change_me_to_a_long_random_secret_at_least_32_chars
-INTERNAL_SERVICE_TOKEN=change_me_internal_service_token
 CORS_ORIGIN=http://localhost:3000
 RABBITMQ_DEFAULT_USER=user
 RABBITMQ_DEFAULT_PASS=password
 NIFI_SENSITIVE_PROPS_KEY=change_me_for_demo
+INTERNAL_SERVICE_TOKEN=change_me_internal_service_token
+CORS_ORIGIN=http://localhost:3000
+MYSQL_ROOT_PASSWORD=root
+MYSQL_DATABASE=mutrapro
 ```
 
 Do not commit the real `.env` file.
