@@ -5,7 +5,7 @@ const cors = require('cors');
 const axios = require('axios');
 require('dotenv').config({ path: '../.env', quiet: true });
 
-// ======================= Sá»¬A Lá»–I PATH á» ÄĂ‚Y =======================
+// ======================= SỬA LỖI PATH Ở ĐÂY =======================
 const { logger } = require('./shared/logger');
 const { asyncHandler, notFound, errorHandler, AppError } = require('./shared/middleware/errorHandler');
 const { responseHandler } = require('./shared/middleware/responseHandler');
@@ -18,7 +18,7 @@ app.use(cors({ origin: process.env.CORS_ORIGIN || '*', credentials: true }));
 app.use(express.json());
 app.use(responseHandler);
 
-//  đŸ”¹  Health check route
+// Health check route
 app.get('/health', (req, res) => {
     res.status(200).json({
         service: 'studio-service',
@@ -48,27 +48,48 @@ const notify = async (userId, eventName, data) => {
 };
 
 // --- API Endpoints ---
-// API: Láº¥y danh sĂ¡ch táº¥t cáº£ phĂ²ng thu (cĂ´ng khai)
+// API: Lấy danh sách tất cả phòng thu (công khai)
 app.get('/studios', asyncHandler(async (req, res) => {
     const [rows] = await pool.execute('SELECT * FROM studios ORDER BY name ASC');
     res.json(rows);
 }));
 
-// API: Äáº·t lá»‹ch phĂ²ng thu (yĂªu cáº§u vai trĂ² 'artist')
-app.post('/bookings', authMiddleware, checkRole('artist'), asyncHandler(async (req, res) => {
-    const { studio_id, order_id, start_time, end_time, studioAdminId } = req.body;
+// API: Đặt lịch phòng thu (BẢN FIX ĐẦY ĐỦ CAMELCASE + ĐÓNG CHẶN GIỜ QUÁ KHỨ)
+app.post('/bookings', authMiddleware, checkRole('artist', 'studio_admin', 'admin'), asyncHandler(async (req, res) => {
+    // Fix bẫy đặt tên bằng cách map song song cả snake_case lẫn camelCase từ frontend gửi lên
+    const studio_id = req.body.studio_id || req.body.studioId;
+    const order_id = req.body.order_id || req.body.orderId;
+    const start_time = req.body.start_time || req.body.startTime;
+    const end_time = req.body.end_time || req.body.endTime;
+    const studioAdminId = req.body.studioAdminId || req.body.studio_admin_id;
     const artist_id = req.user.id;
+
+    if (!studio_id || !order_id || !start_time || !end_time) {
+        throw new AppError('Thiếu thông tin bắt buộc để đặt phòng thu (studio_id, order_id, start_time, end_time).', 400);
+    }
+
     const startDate = new Date(start_time);
     const endDate = new Date(end_time);
+
     if (Number.isNaN(startDate.getTime()) || Number.isNaN(endDate.getTime())) {
-        throw new AppError('ThĂ¡Â»Âi gian Ă„â€˜Ă¡ÂºÂ·t lĂ¡Â»â€¹ch khÄ‚Â´ng hĂ¡Â»Â£p lĂ¡Â»â€¡.', 400);
+        logger.error(`[Booking Error] Sai định dạng ngày. Start: ${start_time}, End: ${end_time}`);
+        throw new AppError('Thời gian đặt lịch không hợp lệ (Sai định dạng ngày tháng).', 400);
     }
-    if (startDate <= new Date()) {
-        throw new AppError('KhÄ‚Â´ng thĂ¡Â»Æ’ Ă„â€˜Ă¡ÂºÂ·t lĂ¡Â»â€¹ch trong quÄ‚Â¡ khĂ¡Â»Â©.', 400);
-    }
+    
     if (startDate >= endDate) {
-        throw new AppError('ThĂ¡Â»Âi gian kĂ¡ÂºÂ¿t thÄ‚Âºc phĂ¡ÂºÂ£i sau thĂ¡Â»Âi gian bĂ¡ÂºÂ¯t Ă„â€˜Ă¡ÂºÂ§u.', 400);
+        throw new AppError('Thời gian kết thúc phải sau thời gian bắt đầu.', 400);
     }
+
+    // Kiểm tra xem phòng thu có tồn tại và đang ở trạng thái 'available' không
+    const [studioRows] = await pool.execute('SELECT status FROM studios WHERE id = ?', [studio_id]);
+    if (studioRows.length === 0) {
+        throw new AppError('Không tìm thấy phòng thu này trong hệ thống.', 404);
+    }
+    if (studioRows[0].status !== 'available') {
+        throw new AppError(`Phòng thu hiện tại không sẵn sàng (Trạng thái: ${studioRows[0].status}).`, 400);
+    }
+
+    // Kiểm tra trùng lịch đặt trùng lặp -> FIX: Dùng đối tượng Date (endDate, startDate) thay vì chuỗi raw chuỗi ISO tránh lệch múi giờ
     const [conflicts] = await pool.execute(
         `SELECT id FROM booking
          WHERE studio_id = ?
@@ -76,27 +97,32 @@ app.post('/bookings', authMiddleware, checkRole('artist'), asyncHandler(async (r
            AND start_time < ?
            AND end_time > ?
          LIMIT 1`,
-        [studio_id, end_time, start_time]
+        [studio_id, endDate, startDate]
     );
+
     if (conflicts.length > 0) {
-        throw new AppError('Khung giĂ¡Â»Â nÄ‚Â y Ă„â€˜Ä‚Â£ cÄ‚Â³ lĂ¡Â»â€¹ch Ă„â€˜Ă¡ÂºÂ·t.', 409);
+        throw new AppError('Khung giờ này đã có lịch đặt trước đó.', 409);
     }
+
+    // FIX: Truyền startDate và endDate vào mảng tham số thực thi để lưu đúng định dạng DATETIME của MySQL
     const [result] = await pool.execute(
         `INSERT INTO booking (studio_id, artist_id, order_id, start_time, end_time, status) VALUES (?, ?, ?, ?, ?, 'scheduled')`,
-        [studio_id, artist_id, order_id, start_time, end_time]
+        [studio_id, artist_id, order_id, startDate, endDate]
     );
+
     if (studioAdminId) {
         notify(studioAdminId, 'new_booking', {
             studioId: studio_id,
             orderId: order_id,
-            message: `CĂ³ má»™t lá»‹ch Ä‘áº·t má»›i táº¡i phĂ²ng thu cá»§a báº¡n cho Ä‘Æ¡n hĂ ng #${order_id}.`
+            message: `Có một lịch đặt mới tại phòng thu của bạn cho đơn hàng #${order_id}.`
         });
     }
+
     logger.info(`New booking created for studio #${studio_id} by artist #${artist_id}`);
     res.status(201).json({ id: result.insertId, message: 'Booking created' });
 }));
 
-// API: Láº¥y thĂ´ng tin booking theo order ID (dĂ¹ng cho service khĂ¡c)
+// API: Lấy thông tin booking theo order ID (dùng cho service khác)
 app.get('/bookings/order/:orderId', asyncHandler(async (req, res) => {
     const { orderId } = req.params;
     const [rows] = await pool.execute(`
@@ -106,13 +132,13 @@ app.get('/bookings/order/:orderId', asyncHandler(async (req, res) => {
         [orderId]
     );
     if (rows.length === 0) {
-        throw new AppError('KhĂ´ng tĂ¬m tháº¥y lá»‹ch Ä‘áº·t cho Ä‘Æ¡n hĂ ng nĂ y.', 404);
+        throw new AppError('Không tìm thấy lịch đặt cho đơn hàng này.', 404);
     }
     res.json(rows[0]);
 }));
 
-// --- API DĂ€NH RIĂNG CHO ADMIN PHĂ’NG THU ---
-// API: Láº¥y toĂ n bá»™ lá»‹ch Ä‘áº·t (yĂªu cáº§u 'studio_admin')
+// --- API DÀNH RIÊNG CHO ADMIN PHÒNG THU ---
+// API: Lấy toàn bộ lịch đặt (yêu cầu 'studio_admin')
 app.get('/bookings/all', authMiddleware, checkRole('studio_admin'), asyncHandler(async (req, res) => {
     const [rows] = await pool.execute(`
         SELECT b.id, b.order_id, b.start_time, b.end_time, s.name as studio_name
@@ -124,9 +150,10 @@ app.get('/bookings/all', authMiddleware, checkRole('studio_admin'), asyncHandler
 app.post('/bookings/:id/confirm', authMiddleware, checkRole('studio_admin', 'admin'), asyncHandler(async (req, res) => {
     const [rows] = await pool.execute('SELECT * FROM booking WHERE id = ?', [req.params.id]);
     if (rows.length === 0) {
-        throw new AppError('KhĂ´ng tĂ¬m tháº¥y lá»‹ch Ä‘áº·t.', 404);
+        throw new AppError('Không tìm thấy lịch đặt.', 404);
     }
     const booking = rows[0];
+    
     const [conflicts] = await pool.execute(
         `SELECT id FROM booking
          WHERE studio_id = ?
@@ -138,8 +165,9 @@ app.post('/bookings/:id/confirm', authMiddleware, checkRole('studio_admin', 'adm
         [booking.studio_id, booking.id, booking.end_time, booking.start_time]
     );
     if (conflicts.length > 0) {
-        throw new AppError('Khung giá» nĂ y Ä‘Ă£ cĂ³ lá»‹ch Ä‘áº·t.', 409);
+        throw new AppError('Khung giờ này đã có lịch đặt.', 409);
     }
+    
     await pool.execute("UPDATE booking SET status = 'scheduled' WHERE id = ?", [booking.id]);
     res.json({ success: true, message: 'Booking confirmed.', data: { id: booking.id } });
 }));
@@ -147,7 +175,7 @@ app.post('/bookings/:id/confirm', authMiddleware, checkRole('studio_admin', 'adm
 app.post('/bookings/:id/reject', authMiddleware, checkRole('studio_admin', 'admin'), asyncHandler(async (req, res) => {
     const [result] = await pool.execute("UPDATE booking SET status = 'cancelled' WHERE id = ?", [req.params.id]);
     if (result.affectedRows === 0) {
-        throw new AppError('KhĂ´ng tĂ¬m tháº¥y lá»‹ch Ä‘áº·t.', 404);
+        throw new AppError('Không tìm thấy lịch đặt.', 404);
     }
     res.json({ success: true, message: 'Booking rejected.', data: { id: req.params.id } });
 }));
@@ -155,42 +183,47 @@ app.post('/bookings/:id/reject', authMiddleware, checkRole('studio_admin', 'admi
 app.post('/bookings/:id/cancel', authMiddleware, asyncHandler(async (req, res) => {
     const [rows] = await pool.execute('SELECT * FROM booking WHERE id = ?', [req.params.id]);
     if (rows.length === 0) {
-        throw new AppError('KhĂ´ng tĂ¬m tháº¥y lá»‹ch Ä‘áº·t.', 404);
+        throw new AppError('Không tìm thấy lịch đặt.', 404);
     }
+    
     const booking = rows[0];
     if (!['admin', 'studio_admin'].includes(req.user.role) && Number(booking.artist_id) !== Number(req.user.id)) {
-        throw new AppError('Báº¡n khĂ´ng cĂ³ quyá»n há»§y lá»‹ch nĂ y.', 403);
+        throw new AppError('Bạn không có quyền hủy lịch này.', 403);
     }
+    
     await pool.execute("UPDATE booking SET status = 'cancelled' WHERE id = ?", [booking.id]);
     res.json({ success: true, message: 'Booking cancelled.', data: { id: booking.id } });
 }));
 
-// API: Cáº­p nháº­t tráº¡ng thĂ¡i phĂ²ng thu (yĂªu cáº§u 'studio_admin')
+// API: Cập nhật trạng thái phòng thu (yêu cầu 'studio_admin')
 app.put('/studios/:id/status', authMiddleware, checkRole('studio_admin'), idParamValidation, asyncHandler(async (req, res) => {
     const { id } = req.params;
     const { status } = req.body;
     const validStatuses = ['available', 'booked', 'maintenance'];
+    
     if (!validStatuses.includes(status)) {
-        throw new AppError('Tráº¡ng thĂ¡i khĂ´ng há»£p lá»‡.', 400);
+        throw new AppError('Trạng thái không hợp lệ.', 400);
     }
+    
     const [result] = await pool.execute('UPDATE studios SET status = ? WHERE id = ?', [status, id]);
     if (result.affectedRows === 0) {
-        throw new AppError('KhĂ´ng tĂ¬m tháº¥y phĂ²ng thu.', 404);
+        throw new AppError('Không tìm thấy phòng thu.', 404);
     }
+    
     notify('broadcast', 'studio_status_updated', {
         studioId: id,
         newStatus: status
     });
+    
     logger.info(`Studio #${id} status updated to ${status}`);
-    res.json({ message: 'Cáº­p nháº­t tráº¡ng thĂ¡i phĂ²ng thu thĂ nh cĂ´ng.' });
+    res.json({ message: 'Cập nhật trạng thái phòng thu thành công.' });
 }));
 
-// --- Middleware xá»­ lĂ½ cuá»‘i cĂ¹ng ---
+// --- Middleware xử lý cuối cùng ---
 app.use(notFound);
 app.use(errorHandler);
+
 const PORT = process.env.PORT || 3005;
 app.listen(PORT, () => {
     logger.info(`Studio Service is running on port ${PORT}`);
 });
-
-

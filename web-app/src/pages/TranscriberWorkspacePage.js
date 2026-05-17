@@ -1,16 +1,16 @@
-// File: web-app/src/pages/TranscriberWorkspacePage.js (ĐÃ SỬA)
+// File: web-app/src/pages/TranscriberWorkspacePage.js
 import React, { useState, useEffect, useCallback } from 'react';
 import { useAuth } from '../context/AuthContext';
 import { toast } from 'react-toastify';
 import taskApi from '../api/taskApi';
 import fileApi from '../api/fileApi';
 import orderApi from '../api/orderApi';
-import './Workspace.css'; // Dùng file CSS chung
+import './Workspace.css';
 
-// (Component DownloadFileButton không đổi)
 const DownloadFileButton = ({ orderId }) => {
     const [fileInfo, setFileInfo] = useState(null);
     const [downloading, setDownloading] = useState(false);
+    
     useEffect(() => {
         const fetchFile = async () => {
             try {
@@ -25,17 +25,21 @@ const DownloadFileButton = ({ orderId }) => {
     }, [orderId]);
 
     return fileInfo ? (
-        <button onClick={async () => {
-            setDownloading(true);
-            try {
-                await fileApi.downloadFile(fileInfo.id, fileInfo.file_name);
-            } catch (error) {
-                toast.error(error.message || 'Không thể tải file.');
-            } finally {
-                setDownloading(false);
-            }
-        }} className="form-button secondary" disabled={downloading}
-           style={{ textDecoration: 'none', display: 'inline-block', color: 'white', marginTop: '1rem' }}>
+        <button 
+            onClick={async () => {
+                setDownloading(true);
+                try {
+                    await fileApi.downloadFile(fileInfo.id, fileInfo.file_name);
+                } catch (error) {
+                    toast.error(error.message || 'Không thể tải file.');
+                } finally {
+                    setDownloading(false);
+                }
+            }} 
+            className="form-button secondary" 
+            disabled={downloading}
+            style={{ textDecoration: 'none', display: 'inline-block', color: 'white', marginTop: '1rem' }}
+        >
             Tải file âm thanh (MP3)
         </button>
     ) : <p>Không tìm thấy file âm thanh gốc.</p>;
@@ -47,7 +51,6 @@ const TranscriberWorkspacePage = () => {
     const [selectedTask, setSelectedTask] = useState(null);
     const [loading, setLoading] = useState(true);
 
-    // State cho khu vực làm việc
     const [notes, setNotes] = useState('');
     const [uploadFile, setUploadFile] = useState(null);
 
@@ -58,7 +61,6 @@ const TranscriberWorkspacePage = () => {
             const data = await taskApi.getTasksBySpecialist(user.id);
             setTasks(data);
             
-            // FIX: Khi fetchTasks được gọi lại, nó cũng phải cập nhật selectedTask
             if (selectedTask) {
                 const updatedSelectedTask = data.find(t => t.id === selectedTask.id);
                 setSelectedTask(updatedSelectedTask || (data.length > 0 ? data[0] : null));
@@ -67,38 +69,34 @@ const TranscriberWorkspacePage = () => {
             } else {
                 setSelectedTask(null);
             }
-            
         } catch (error) {
             toast.error("Không thể tải danh sách công việc.");
         } finally {
             setLoading(false);
         }
-    }, [user, selectedTask?.id]); // Thêm selectedTask.id vào dependencies
+    }, [user, selectedTask?.id]);
 
     useEffect(() => {
         if (user) {
             fetchTasks();
         }
-    }, [user]); // Chỉ fetch khi user load lần đầu
+    }, [user, fetchTasks]);
 
     const handleSelectTask = (task) => {
         setSelectedTask(task);
-        setNotes(''); // Reset ghi chú khi đổi task
-        setUploadFile(null); // Reset file khi đổi task
+        setNotes('');
+        setUploadFile(null);
     };
 
-    // === START: SỬA LỖI LOGIC NẰM Ở ĐÂY ===
     const handleStartTask = async () => {
         if (!selectedTask) return;
         try {
             await taskApi.updateTaskStatus(selectedTask.id, 'in_progress');
             toast.success('Đã bắt đầu công việc!');
             
-            // Tải lại dữ liệu
             const updatedTasks = await taskApi.getTasksBySpecialist(user.id);
             setTasks(updatedTasks);
 
-            // (FIX) Tìm và set lại selectedTask từ dữ liệu mới
             const newlyUpdatedTask = updatedTasks.find(t => t.id === selectedTask.id);
             if (newlyUpdatedTask) {
                 setSelectedTask(newlyUpdatedTask);
@@ -107,38 +105,57 @@ const TranscriberWorkspacePage = () => {
             toast.error('Có lỗi xảy ra!');
         }
     };
-    // === END: SỬA LỖI LOGIC ===
+
+    // === START: SỬA LỖI LOGIC UPLOAD VÀ UPDATE STATUS ===
+    const ALLOWED_NOTATION_EXTS = ['.pdf', '.xml', '.mxl', '.musicxml'];
 
     const handleCompleteTask = async () => {
         if (!uploadFile) {
             toast.warn('Vui lòng chọn file bản ký âm (PDF, XML...) để nộp!');
             return;
         }
+
+        // BƯỚC 1: Validate đuôi file ngay tại frontend
+        const fileName = uploadFile.name.toLowerCase();
+        const isValidFormat = ALLOWED_NOTATION_EXTS.some(ext => fileName.endsWith(ext));
+        
+        if (!isValidFormat) {
+            toast.error(`Sai định dạng! Chỉ chấp nhận: ${ALLOWED_NOTATION_EXTS.join(', ')}`);
+            return; // Dừng lập tức, không gọi API
+        }
+
         setLoading(true);
         try {
-            // Bước 1: Upload file
+            // BƯỚC 2: Upload file (Truyền đúng type 'notation')
             await fileApi.uploadFile(uploadFile, selectedTask.order_id, 'notation');
-            // Bước 2: Cập nhật trạng thái task
+
+            // BƯỚC 3: Upload thành công 100% thì mới cập nhật trạng thái Task và Order
             await taskApi.updateTaskStatus(selectedTask.id, 'done');
-            // Bước 3: Cập nhật trạng thái order
+            
             const newOrderStatus = selectedTask.status === 'revision_requested' ? 'fixed' : 'completed';
             await orderApi.updateOrderStatus(selectedTask.order_id, newOrderStatus);
             
             toast.success('Nộp sản phẩm thành công!');
-            // Tải lại danh sách và reset
+            
+            // Tải lại danh sách và dọn dẹp
             const updatedTasks = await taskApi.getTasksBySpecialist(user.id);
             setTasks(updatedTasks);
             setSelectedTask(updatedTasks.length > 0 ? updatedTasks[0] : null);
+            setUploadFile(null); // Reset file input
+            setNotes('');
+            
         } catch (error) {
-            toast.error(error.message || 'Nộp sản phẩm thất bại!');
+            // Nếu upload lỗi, trạng thái vẫn giữ nguyên in_progress, F5 không bị lỗi
+            toast.error(error.response?.data?.message || error.message || 'Nộp sản phẩm thất bại!');
+            console.error("Lỗi khi nộp task:", error);
         } finally {
             setLoading(false);
         }
     };
+    // === END: SỬA LỖI ===
 
     return (
         <div className="page-container workspace-layout">
-            {/* Sidebar danh sách Task */}
             <aside className="task-sidebar">
                 <h2>Việc Ký Âm Của Bạn</h2>
                 {loading && <p>Đang tải...</p>}
@@ -157,7 +174,6 @@ const TranscriberWorkspacePage = () => {
                 </div>
             </aside>
 
-            {/* Khu vực làm việc chính */}
             <main className="workspace-main">
                 {!selectedTask ? (
                     <div className="dashboard-features"><h3>Vui lòng chọn một công việc từ danh sách bên trái.</h3></div>
@@ -173,12 +189,10 @@ const TranscriberWorkspacePage = () => {
                         )}
                         <DownloadFileButton orderId={selectedTask.order_id} />
 
-                        {/* Nút bắt đầu (Nếu task mới) */}
                         {selectedTask.status === 'assigned' && (
                             <button onClick={handleStartTask} className="form-button" style={{ marginTop: '20px' }}>Bắt đầu ký âm</button>
                         )}
 
-                        {/* Khu vực "Cooking" (Nếu đang làm) */}
                         {(selectedTask.status === 'in_progress' || selectedTask.status === 'revision_requested') && (
                             <div className="cooking-area">
                                 <h3>Không gian làm việc</h3>

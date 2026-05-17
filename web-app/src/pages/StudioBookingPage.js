@@ -1,7 +1,7 @@
 // web-app/src/pages/StudioBookingPage.js
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { toast } from 'react-toastify'; // Dùng toast cho đẹp
+import { toast } from 'react-toastify';
 import studioApi from '../api/studioApi';
 import { useAuth } from '../context/AuthContext';
 import { io } from "socket.io-client";
@@ -41,12 +41,12 @@ const StudioBookingPage = () => {
                 )
             );
         });
+        
         return () => {
             socket.disconnect();
         };
     }, []);
 
-    // ======================= SỬA LỖI Ở HÀM NÀY =======================
     const handleSubmit = async (e) => {
         e.preventDefault();
         if (!user || !selectedStudio || !startTime || !orderId) {
@@ -54,33 +54,32 @@ const StudioBookingPage = () => {
             return;
         }
         
-        // 1. SỬ DỤNG `setLoading`
         setLoading(true);
 
         try {
-            // Giả sử một buổi thu kéo dài 2 tiếng
-            const endTime = new Date(new Date(startTime).getTime() + 2 * 60 * 60 * 1000);
+            // SỬA LỖI Ở ĐÂY: Dùng Date object và đẩy cả 2 về chuẩn ISO có múi giờ Z
+            const startDateObj = new Date(startTime);
+            const endDateObj = new Date(startDateObj.getTime() + 2 * 60 * 60 * 1000);
 
             await studioApi.createBooking({
                 studio_id: selectedStudio,
-                artist_id: user.id, // 2. SỬ DỤNG `user`
+                artist_id: user.id,
                 order_id: orderId,
-                start_time: startTime,
-                end_time: endTime.toISOString().slice(0, 19).replace('T', ' ')
+                start_time: startDateObj.toISOString(),
+                end_time: endDateObj.toISOString()
             });
-            toast.success("Đặt phòng thành công!");
             
-            // 3. SỬ DỤNG `Maps`
+            toast.success("Đặt phòng thành công!");
             navigate('/dashboard'); 
         } catch (error) {
-            toast.error("Đặt phòng thất bại! Vui lòng kiểm tra lại thông tin.");
+            // Hiển thị trực tiếp lỗi từ backend trả về để dễ debug nếu có lỗi khác (vd: trùng giờ)
+            const errorMsg = error.response?.data?.message || "Đặt phòng thất bại! Vui lòng kiểm tra lại thông tin.";
+            toast.error(errorMsg);
             console.error("Failed to create booking", error);
         } finally {
-            // 1. SỬ DỤNG `setLoading`
             setLoading(false);
         }
     };
-    // ================================================================
 
     return (
         <div className="form-container">

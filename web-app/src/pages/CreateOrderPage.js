@@ -14,47 +14,62 @@ const CreateOrderPage = () => {
     const [file, setFile] = useState(null);
     const [loading, setLoading] = useState(false);
 
+    // Đồng bộ danh sách đuôi file hợp lệ với config audio bên file-service
+    const ALLOWED_EXTENSIONS = ['.mp3', '.mp4', '.m4a', '.wav'];
+
     const handleFileChange = (e) => {
         setFile(e.target.files[0]);
     };
 
     const handleSubmit = async (e) => {
         e.preventDefault();
+        
         if (!user) {
             toast.error('Không tìm thấy thông tin người dùng. Vui lòng đăng nhập lại.');
             return;
         }
+
+        // ======================= PHẦN FIX LỖI =======================
+        // Kiểm tra định dạng file ngay tại client TRƯỚC KHI tạo đơn hàng
+        if (file) {
+            const fileName = file.name.toLowerCase();
+            const isValidFormat = ALLOWED_EXTENSIONS.some(ext => fileName.endsWith(ext));
+            
+            if (!isValidFormat) {
+                toast.error(`Vui lòng chọn định dạng file hợp lệ (${ALLOWED_EXTENSIONS.join(', ')}).`);
+                return; // Dừng thực thi, không gọi API orderApi.createOrder
+            }
+        }
+        // ============================================================
+
         setLoading(true);
 
-        // ======================= PHẦN SỬA LỖI =======================
-        // 1. Tự động tính giá dựa trên loại dịch vụ
         let price = 0;
         switch (serviceType) {
             case 'transcription':
-                price = 300000; // Giá cơ bản cho ký âm
+                price = 300000;
                 break;
             case 'arrangement':
-                price = 800000; // Giá cơ bản cho phối khí
+                price = 800000;
                 break;
             case 'recording':
-                price = 500000; // Giá cơ bản cho thu âm
+                price = 500000;
                 break;
             default:
                 price = 0;
         }
-        // ==========================================================
 
         try {
-            // Bước 1: Tạo đơn hàng trước với giá đã được tính
+            // Bước 1: Tạo đơn hàng
             const orderData = {
                 customer_id: user.id,
                 service_type: serviceType,
                 description: description,
-                price: price // 2. Sử dụng giá đã tính thay vì số 0
+                price: price 
             };
             const newOrder = await orderApi.createOrder(orderData);
 
-            // Bước 2: Nếu có file, upload file với ID của đơn hàng vừa tạo
+            // Bước 2: Upload file (lúc này chắc chắn file đã đúng định dạng)
             if (file) {
                 await fileApi.uploadFile(file, newOrder.id, 'audio');
             }
