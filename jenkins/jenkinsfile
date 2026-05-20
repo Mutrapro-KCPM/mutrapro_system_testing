@@ -1,0 +1,27 @@
+pipeline {
+    agent any
+
+    stages {
+
+        stage('Checkout') {
+            steps {
+                git 'https://github.com/YOUR_REPO.git'
+            }
+        }
+
+        stage('Run API Test') {
+            steps {
+                sh 'newman run postman_collection.json'
+            }
+        }
+
+        stage('Update Jira SUCCESS') {
+            when {
+                expression { currentBuild.currentResult == 'SUCCESS' }
+            }
+            steps {
+                echo "Update Jira PASS"
+            }
+        }
+    }
+}
