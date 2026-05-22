@@ -1,108 +1,143 @@
-# MuTraPro
+# MuTraPro System
 
-MuTraPro is a web-based music service platform for transcription, arrangement, recording, studio booking, mock payment, feedback, notification, and admin reporting.
+MuTraPro System is a web-based music service platform for transcription, arrangement, recording, studio booking, mock payment, feedback, notification, and analytics reporting.
 
-This project uses a Node.js/Express microservice backend with React web frontend and MySQL.
+The system uses a Node.js/Express microservice backend, a React web frontend served by Nginx, MySQL, Redis, RabbitMQ, and Apache NiFi.
 
-## Backend Stack
+## Technology Stack
 
 - Node.js 18
-- Express
+- Express.js
+- React
+- Nginx
 - MySQL 8
+- Redis
+- RabbitMQ
+- Apache NiFi
 - Docker Compose
 - JWT authentication
 - bcrypt password hashing
 - Multer file upload
-- Redis cache
-- RabbitMQ for lightweight event messaging
-- Nginx for serving the built React web app
 
-## Services
+## Service Port Policy
 
-| Service | Port | Purpose |
-|---|---:|---|
-| api-gateway | 3007 | Single API entrypoint for the web frontend |
-| auth-service | 3001 | Register, login, JWT, profile, admin user management |
-| order-service | 3002 | Service requests, order workflow, mock payment, feedback, revision |
-| task-service | 3003 | Task assignment and specialist work tracking |
-| file-service | 3004 | Secure upload/download and file metadata |
-| studio-service | 3005 | Studio rooms and booking |
-| notification-service | 3006 | Notifications and device token registration |
-| analytics-service | 3008 | Dashboard/report data |
-| web-app | 3000 | React web frontend |
-| MySQL | 3307 | Local host mapping to MySQL container port 3306 |
-| RabbitMQ UI | 15672 | RabbitMQ management |
-| NiFi | 9090 | Optional analytics flow tool |
+For security, backend service ports are not exposed directly to the host machine. All external client traffic must go through either:
+
+- API Gateway: `http://localhost:3007`
+- Web App via Nginx: `http://localhost:3000`
+
+Internal services communicate only through the Docker network `mutrapro-network`.
+
+| Component | Host Port | Container Port | Exposure | Notes |
+|---|---:|---:|---|---|
+| web-app | 3000 | 80 | Public | React app served by Nginx |
+| api-gateway | 3007 | 3007 | Public | Single backend API entrypoint |
+| mysql_db | 3307 | 3306 | Public for local DB access | Limited to `mem_limit: 1G` |
+| nifi | 9090 | 8080 | Public | Limited to `mem_limit: 1G` |
+| auth-service | Closed | 3001 | Internal only | Access through API Gateway |
+| order-service | Closed | 3002 | Internal only | Access through API Gateway |
+| task-service | Closed | 3003 | Internal only | Access through API Gateway |
+| file-service | Closed | 3004 | Internal only | Access through API Gateway |
+| studio-service | Closed | 3005 | Internal only | Access through API Gateway |
+| notification-service | Closed | 3006 | Internal only | Access through API Gateway and internal events |
+| analytics-service | Closed | 3008 | Internal only | Access through API Gateway |
+| redis_cache | Closed | 6379 | Internal only | No host exposure |
+| rabbitmq | Closed | 5672 / 15672 | Internal only | No host exposure |
+
+Important: ports `3001-3006` and `3008` are intentionally closed on the host. Do not call these services directly from the browser or external clients.
 
 ## Environment Setup
 
-Create `.env` from the sample:
+Create a local `.env` file from the example:
 
 ```powershell
 copy .env.example .env
 ```
 
-Required variables:
+Before starting Docker, review and replace all secret placeholders in `.env`, especially:
 
 ```env
-DB_PASSWORD=change_me
-JWT_SECRET=change_me_to_a_long_random_secret_at_least_32_chars
-CORS_ORIGIN=http://localhost:3000
-RABBITMQ_DEFAULT_USER=user
-RABBITMQ_DEFAULT_PASS=password
-NIFI_SENSITIVE_PROPS_KEY=change_me_for_demo
-INTERNAL_SERVICE_TOKEN=change_me_internal_service_token
-CORS_ORIGIN=http://localhost:3000
-MYSQL_ROOT_PASSWORD=root
-MYSQL_DATABASE=mutrapro
+DB_PASSWORD=your_secret_here
+RABBITMQ_DEFAULT_PASS=your_secret_here
+NIFI_SENSITIVE_PROPS_KEY=your_secret_here
+JWT_SECRET=your_secret_here
+INTERNAL_SERVICE_TOKEN=your_secret_here
 ```
 
-Do not commit the real `.env` file.
+Recommended local values for non-secret runtime configuration:
+
+```env
+DB_HOST=mysql_db
+DB_USER=root
+CORS_ORIGIN=http://localhost:3000
+REACT_APP_API_GATEWAY_URL=http://localhost:3007
+```
+
+Never commit a real `.env` file.
 
 ## Run With Docker
 
+Build and start the full system:
+
 ```powershell
 docker compose up --build -d
+```
+
+Check container status:
+
+```powershell
 docker compose ps
 ```
 
-Health checks:
+Follow logs when needed:
 
 ```powershell
-curl http://localhost:3007/api/health
-curl http://localhost:3007/api/health/all
+docker compose logs -f
 ```
 
-Open the web app:
+Run only after configuration changes:
 
-```text
-http://localhost:3000
+```powershell
+docker compose up -d
 ```
 
-## Demo Accounts
+Rebuild a specific service:
 
-Default demo password:
-
-```text
-Admin@123
+```powershell
+docker compose up --build -d api-gateway
 ```
 
-| Role | Email |
+Stop the system:
+
+```powershell
+docker compose down
+```
+
+Stop the system and remove named volumes only when you intentionally want to reset persisted data:
+
+```powershell
+docker compose down -v
+```
+
+## Access URLs
+
+| Target | URL |
 |---|---|
-| Admin | admin@mutrapro.com |
-| Service Coordinator | dpv@mutrapro.com |
-| Transcription Specialist | cvka@mutrapro.com |
-| Arrangement Specialist | cvpk@mutrapro.com |
-| Recording Artist | artist@mutrapro.com |
-| Studio Admin | studio@mutrapro.com |
+| Web App | `http://localhost:3000` |
+| API Gateway Health | `http://localhost:3007/api/health` |
+| API Gateway Full Health | `http://localhost:3007/api/health/all` |
+| NiFi | `http://localhost:9090` |
+| MySQL from host | `localhost:3307` |
 
-## Main API Groups
+## API Entry Point
 
-Base URL:
+External API calls should use:
 
 ```text
 http://localhost:3007/api
 ```
+
+Common API groups:
 
 - `POST /auth/register`
 - `POST /auth/login`
@@ -125,7 +160,33 @@ http://localhost:3007/api
 - `POST /studio/bookings`
 - `GET /studio/bookings/all`
 
-Detailed API documentation is in [docs/API_DOCUMENTATION.md](docs/API_DOCUMENTATION.md).
+Detailed API documentation is available in [docs/API_DOCUMENTATION.md](docs/API_DOCUMENTATION.md).
+
+## Demo Accounts
+
+Default demo password:
+
+```text
+Admin@123
+```
+
+| Role | Email |
+|---|---|
+| Admin | `admin@mutrapro.com` |
+| Service Coordinator | `dpv@mutrapro.com` |
+| Transcription Specialist | `cvka@mutrapro.com` |
+| Arrangement Specialist | `cvpk@mutrapro.com` |
+| Recording Artist | `artist@mutrapro.com` |
+| Studio Admin | `studio@mutrapro.com` |
+
+Change demo credentials before using the system outside local development.
+
+## Operational Notes
+
+- `mysql_db` and `nifi` are capped with `mem_limit: 1G` to reduce local machine crashes.
+- Backend services are private by default. If a feature requires browser access, route it through `api-gateway`.
+- Redis and RabbitMQ are intentionally internal-only and should not be exposed to the host.
+- File uploads are persisted through project-mounted upload directories and Docker volumes.
 
 ## Common Issues
 
@@ -135,6 +196,8 @@ If Docker cannot connect:
 permission denied while trying to connect to the docker API
 ```
 
-Open Docker Desktop, wait until the engine is running, then retry from a PowerShell session with proper permission.
+Open Docker Desktop, wait until the engine is running, then retry from a PowerShell session with proper permissions.
 
-If MySQL port 3306 is already used locally, this project maps MySQL to host port `3307`.
+If MySQL port `3306` is already used locally, this project maps MySQL to host port `3307`.
+
+If a backend service appears unreachable from the host, that is expected for internal services. Use `http://localhost:3007/api` through the API Gateway.

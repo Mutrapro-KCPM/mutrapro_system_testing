@@ -10,7 +10,7 @@ require('dotenv').config({ path: '../../.env', quiet: true });
 const { logger } = require('./shared/logger');
 const { asyncHandler, notFound, errorHandler, AppError } = require('./shared/middleware/errorHandler');
 const { responseHandler } = require('./shared/middleware/responseHandler');
-const { createOrderValidation, idParamValidation, feedbackValidation } = require('./shared/middleware/validation');
+const { idParamValidation, feedbackValidation } = require('./shared/middleware/validation');
 const { authMiddleware, checkRole, assertOwnerOrRole } = require('./shared/middleware/auth');
 
 // === KẾT NỐI REDIS ===
@@ -53,6 +53,12 @@ const dbConfig = {
 };
 const pool = mysql.createPool(dbConfig);
 
+const PRICING_CONFIG = Object.freeze(Object.assign(Object.create(null), {
+    transcription: 300000,
+    arrangement: 800000,
+    recording: 500000
+}));
+
 // Hàm helper để gửi thông báo
 const notify = async (userId, eventName, data) => {
     try {
@@ -87,12 +93,22 @@ const publishMessage = async (routingKey, message) => {
 
 // --- API Endpoints ---
 // API: Tạo đơn hàng mới (yêu cầu vai trò 'customer')
-app.post('/', authMiddleware, checkRole('customer'), createOrderValidation, asyncHandler(async (req, res) => {
-    const { service_type, description, price } = req.body;
+app.post('/', authMiddleware, checkRole('customer'), asyncHandler(async (req, res) => {
+    const { service_type, description } = req.body;
     const customer_id = req.user.id;
+    const price = PRICING_CONFIG[service_type];
+
+    if (price === undefined) {
+        throw new AppError('Loại dịch vụ không hợp lệ.', 400);
+    }
+
+    if (typeof description !== 'string' || !description.trim()) {
+        throw new AppError('Mô tả không được để trống.', 400);
+    }
+
     const [result] = await pool.execute(
         `INSERT INTO orders (customer_id, service_type, description, price, status) VALUES (?, ?, ?, ?, 'pending')`,
-        [customer_id, service_type, description, price]
+        [customer_id, service_type, description.trim(), price]
     );
 
     // === SỬA LỖI PUSH NOTIFICATION ===
@@ -127,40 +143,105 @@ app.get('/', authMiddleware, checkRole('coordinator', 'admin'), asyncHandler(asy
         feedbackMap.set(fb.order_id, { rating: fb.rating, comment: fb.comment });
     });
 
-    const enrichedOrders = await Promise.all(
-        orders.map(async (order) => {
-            let assignedSpecialistName = null;
+    const mapWithConcurrency = async (items, limit, mapper) => {
+        const results = new Array(items.length);
+        let nextIndex = 0;
+        const workers = Array.from({ length: Math.min(limit, items.length) }, async () => {
+            while (nextIndex < items.length) {
+                const currentIndex = nextIndex++;
+                results[currentIndex] = await mapper(items[currentIndex], currentIndex);
+            }
+        });
+        await Promise.all(workers);
+        return results;
+    };
 
-            try {
-                const taskResponse = await axios.get(`http://task-service:3003/order/${order.id}`);
-                const specialistId = taskResponse.data.assigned_to;
+    const orderIds = orders.map(order => order.id);
+    const taskResults = await mapWithConcurrency(orderIds, 10, async (orderId) => {
+        try {
+            const taskResponse = await axios.get(`http://task-service:3003/order/${orderId}`);
+            return { orderId, task: taskResponse.data };
+        } catch (error) {
+            if (error.response?.status !== 404) {
+                logger.warn(`[Order Service] Failed to fetch task for order ${orderId}.`, { message: error.message });
+            }
+            return { orderId, task: null };
+        }
+    });
 
-                const specialistCacheKey = `user:${specialistId}:name`;
-                const cachedName = await redis.get(specialistCacheKey);
+    const taskByOrderId = new Map();
+    const specialistIds = new Set();
+    taskResults.forEach(({ orderId, task }) => {
+        if (!task) {
+            return;
+        }
+        taskByOrderId.set(orderId, task);
+        if (task.assigned_to) {
+            specialistIds.add(task.assigned_to);
+        }
+    });
 
-                if (cachedName) {
-                    assignedSpecialistName = cachedName;
-                    logger.info(`[Cache] HIT for specialist ${specialistId}`);
-                } else {
-                    logger.info(`[Cache] MISS for specialist ${specialistId}. Fetching...`);
-                    const authResponse = await axios.get(`http://auth-service:3001/users/${specialistId}`);
-                    assignedSpecialistName = authResponse.data.name;
-                    await redis.set(specialistCacheKey, assignedSpecialistName, 'EX', 3600);
-                }
-            } catch (error) {
-                if (error.response?.status !== 404) {
-                    logger.warn(`[Order Service] Failed to fetch task/user for order ${order.id}.`, { message: error.message });
-                }
+    const specialistNameById = new Map();
+    const specialistIdList = Array.from(specialistIds);
+    if (specialistIdList.length > 0) {
+        const cacheKeys = specialistIdList.map(id => `user:${id}:name`);
+        const cachedResults = await redis.pipeline(cacheKeys.map(key => ['get', key])).exec();
+        const missedSpecialistIds = [];
+
+        cachedResults.forEach(([error, cachedName], index) => {
+            const specialistId = specialistIdList[index];
+            if (error) {
+                logger.warn(`[Cache] Failed to read specialist ${specialistId} from Redis.`, { message: error.message });
+                missedSpecialistIds.push(specialistId);
+                return;
             }
 
-            const feedback = feedbackMap.get(order.id) || null;
-            return {
-                ...order,
-                assignedSpecialist: assignedSpecialistName,
-                feedback: feedback
-            };
-        })
-    );
+            if (cachedName) {
+                specialistNameById.set(specialistId, cachedName);
+                logger.info(`[Cache] HIT for specialist ${specialistId}`);
+            } else {
+                missedSpecialistIds.push(specialistId);
+                logger.info(`[Cache] MISS for specialist ${specialistId}. Fetching...`);
+            }
+        });
+
+        const fetchedSpecialists = await mapWithConcurrency(missedSpecialistIds, 5, async (specialistId) => {
+            try {
+                const authResponse = await axios.get(`http://auth-service:3001/users/${specialistId}`);
+                return { specialistId, name: authResponse.data.name };
+            } catch (error) {
+                if (error.response?.status !== 404) {
+                    logger.warn(`[Order Service] Failed to fetch specialist ${specialistId}.`, { message: error.message });
+                }
+                return { specialistId, name: null };
+            }
+        });
+
+        const cachePipeline = redis.pipeline();
+        let cacheWriteCount = 0;
+        fetchedSpecialists.forEach(({ specialistId, name }) => {
+            if (!name) {
+                return;
+            }
+            specialistNameById.set(specialistId, name);
+            cachePipeline.set(`user:${specialistId}:name`, name, 'EX', 3600);
+            cacheWriteCount++;
+        });
+        if (cacheWriteCount > 0) {
+            await cachePipeline.exec();
+        }
+    }
+
+    const enrichedOrders = orders.map((order) => {
+        const task = taskByOrderId.get(order.id);
+        const assignedSpecialistName = task?.assigned_to ? specialistNameById.get(task.assigned_to) || null : null;
+
+        return {
+            ...order,
+            assignedSpecialist: assignedSpecialistName,
+            feedback: feedbackMap.get(order.id) || null
+        };
+    });
     res.json(enrichedOrders);
 }));
 

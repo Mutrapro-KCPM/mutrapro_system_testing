@@ -9,12 +9,18 @@ import FeedbackForm from '../components/FeedbackForm';
 import PaymentConfirmModal from '../components/PaymentConfirmModal';
 
 // === START: THÊM HÀM FORMAT TRẠNG THÁI ===
-const formatStatusText = (status) => {
-    if (status === 'in_progress') return 'in progress';
-    if (status === 'revision_requested') return 'revision requested';
-    if (status === 'fixed') return 'fixed';
-    return status;
+const STATUS_LABELS = {
+    pending: 'Chờ xử lý',
+    assigned: 'Đã phân công',
+    in_progress: 'Đang thực hiện',
+    completed: 'Hoàn thành',
+    revision_requested: 'Yêu cầu chỉnh sửa',
+    fixed: 'Đã chỉnh sửa',
+    paid: 'Đã thanh toán',
+    cancelled: 'Đã hủy'
 };
+
+const formatStatusText = (status) => STATUS_LABELS[status] || status;
 // === END: THÊM HÀM FORMAT TRẠNG THÁI ===
 
 // Component Revision Modal (Giữ nguyên)
@@ -134,7 +140,7 @@ const OrderDetailsPage = () => {
     // Cập nhật logic:
     // 1. Dùng order.rating để kiểm tra feedback
     // 2. hasFeedback = (order.rating !== null)
-    const hasFeedback = order.rating !== null;
+    const hasFeedback = order.rating != null;
     const canShowFeedbackForm = user && user.role === 'customer' && order.status === 'paid' && !hasFeedback;
     const canRequestRevision = user && user.role === 'customer' && (order.status === 'completed' || order.status === 'fixed');
     return (
@@ -158,7 +164,7 @@ const OrderDetailsPage = () => {
                     <p><strong>Ngày tạo:</strong> {new Date(order.created_at).toLocaleString()}</p>
                     
                     {/* === START: HIỂN THỊ COMMENT (FIX 1.1) === */}
-                    {order.rating && (
+                    {order.rating != null && (
                         <p><strong>Đánh giá:</strong> {' ⭐ '.repeat(order.rating)}</p>
                     )}
                     {order.comment && (

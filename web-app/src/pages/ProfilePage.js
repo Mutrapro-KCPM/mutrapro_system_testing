@@ -1,6 +1,6 @@
 // web-app/src/pages/ProfilePage.js
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { toast } from 'react-toastify';
 import { useAuth } from '../context/AuthContext';
 import authApi from '../api/authApi';
@@ -57,17 +57,45 @@ const ProfilePage = () => {
     const [isEditing, setIsEditing] = useState(false);
     const [loading, setLoading] = useState(false);
     const [showPasswordModal, setShowPasswordModal] = useState(false);
+    const nameInputRef = useRef(null);
 
     useEffect(() => {
         if (user) setName(user.name);
     }, [user]);
 
+    useEffect(() => {
+        if (isEditing) {
+            nameInputRef.current?.focus();
+        }
+    }, [isEditing]);
+
     // Đổi tên hàm cho rõ ràng hơn, hàm này giờ chỉ để cập nhật TÊN
-    const handleUpdateName = async () => {
+    const handleStartEditing = () => {
+        setName(user.name || '');
+        setIsEditing(true);
+    };
+
+    const handleCancelEditing = () => {
+        setName(user.name || '');
+        setIsEditing(false);
+    };
+
+    const handleUpdateName = async (e) => {
+        e.preventDefault();
+        const trimmedName = name.trim();
+        if (!trimmedName) {
+            toast.warn("Ten hien thi khong duoc de trong.");
+            return;
+        }
+        if (trimmedName === user.name) {
+            setIsEditing(false);
+            return;
+        }
+
         setLoading(true);
         try {
-            await authApi.updateProfile(user.id, { name });
-            const updatedUser = { ...user, name: name };
+            await authApi.updateProfile(user.id, { name: trimmedName });
+            const updatedUser = { ...user, name: trimmedName };
             login(updatedUser);
             toast.success("Cập nhật tên thành công!");
             setIsEditing(false); // Tắt chế độ sửa sau khi thành công
@@ -79,16 +107,24 @@ const ProfilePage = () => {
     };
 
     if (!user) return <div className="page-container"><h1>Đang tải...</h1></div>;
+    const canSaveName = name.trim().length > 0 && name.trim() !== user.name && !loading;
 
     return (
         <>
             <div className="form-container">
-                {/* BƯỚC 1: BỎ onSubmit, biến <form> thành <div> để tránh lỗi */}
-                <div className="form-card">
+                {/* Form submit giúp phím Enter lưu tên khi đang chỉnh sửa */}
+                <form onSubmit={handleUpdateName} className="form-card">
                     <h2>Hồ Sơ Của Bạn</h2>
                     <div className="form-group">
                         <label>Tên hiển thị</label>
-                        <input type="text" value={name} onChange={(e) => setName(e.target.value)} readOnly={!isEditing} />
+                        <input
+                            ref={nameInputRef}
+                            type="text"
+                            value={name}
+                            onChange={(e) => setName(e.target.value)}
+                            readOnly={!isEditing}
+                            disabled={loading}
+                        />
                     </div>
                     <div className="form-group">
                         <label>Email (không thể thay đổi)</label>
@@ -98,9 +134,8 @@ const ProfilePage = () => {
                     {isEditing ? (
                         // Khi đang ở chế độ Sửa Tên
                         <div className="profile-actions">
-                            <button type="button" onClick={() => setIsEditing(false)} className="form-button secondary">Hủy</button>
-                            {/* BƯỚC 2: Gắn trực tiếp hàm handleUpdateName vào nút "Lưu" */}
-                            <button type="button" onClick={handleUpdateName} className="form-button" disabled={loading}>
+                            <button type="button" onClick={handleCancelEditing} className="form-button secondary" disabled={loading}>Hủy</button>
+                            <button type="submit" className="form-button" disabled={!canSaveName}>
                                 {loading ? 'Đang lưu...' : 'Lưu'}
                             </button>
                         </div>
@@ -108,10 +143,10 @@ const ProfilePage = () => {
                         // Khi đang ở chế độ xem
                          <div className="profile-actions">
                              <button type="button" onClick={() => setShowPasswordModal(true)} className="form-button secondary">Đổi Mật Khẩu</button>
-                            <button type="button" onClick={() => setIsEditing(true)} className="form-button">Sửa Tên</button>
+                            <button type="button" onClick={handleStartEditing} className="form-button">Sửa Tên</button>
                         </div>
                     )}
-                </div>
+                </form>
             </div>
             {/* Modal đổi mật khẩu không thay đổi */}
             {showPasswordModal && <ChangePasswordModal user={user} onClose={() => setShowPasswordModal(false)} />}

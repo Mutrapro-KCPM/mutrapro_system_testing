@@ -1,4 +1,4 @@
-﻿// services/studio-service/index.js
+﻿﻿// services/studio-service/index.js
 const express = require('express');
 const mysql = require('mysql2/promise');
 const cors = require('cors');
@@ -78,6 +78,10 @@ app.post('/bookings', authMiddleware, checkRole('artist', 'studio_admin', 'admin
     
     if (startDate >= endDate) {
         throw new AppError('Thời gian kết thúc phải sau thời gian bắt đầu.', 400);
+    }
+
+    if (startDate < new Date()) {
+        throw new AppError('Không thể đặt lịch trong quá khứ.', 400);
     }
 
     // Kiểm tra xem phòng thu có tồn tại và đang ở trạng thái 'available' không
@@ -224,6 +228,9 @@ app.use(notFound);
 app.use(errorHandler);
 
 const PORT = process.env.PORT || 3005;
-app.listen(PORT, () => {
-    logger.info(`Studio Service is running on port ${PORT}`);
-});
+if (require.main === module) {
+    app.listen(PORT, () => {
+        logger.info(`Studio Service is running on port ${PORT}`);
+    });
+}
+module.exports = app;

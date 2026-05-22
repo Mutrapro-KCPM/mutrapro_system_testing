@@ -1,4 +1,4 @@
-﻿// services/task-service/index.js
+﻿﻿// services/task-service/index.js
 const express = require('express');
 const mysql = require('mysql2/promise');
 const cors = require('cors');
@@ -62,18 +62,18 @@ const handleReOpenTask = async (orderId, comment) => {
     }
     const task = taskRows[0];
     const [updateResult] = await pool.execute(
-        "UPDATE task SET status = 'revision_requested', revision_comment = ? WHERE id = ? AND (status = 'done' OR status = 'assigned')", // Cho phĂ©p re-open cáº£ task "done" hoáº·c "assigned" (náº¿u khĂ¡ch hĂ ng sá»­a ngay)
+        "UPDATE task SET status = 'revision_requested', revision_comment = ? WHERE id = ? AND (status = 'done' OR status = 'assigned')", // Cho phép re-open cả task "done" hoặc "assigned" (nếu khách hàng sửa ngay)
         [comment, task.id]
     );
     if (updateResult.affectedRows === 0) {
         logger.warn(`[RabbitMQ] Task ${task.id} is not in a valid state to reopen.`);
-        throw new Error(`Task ${task.id} khĂ´ng á»Ÿ tráº¡ng thĂ¡i há»£p lá»‡`);
+        throw new Error(`Task ${task.id} không ở trạng thái hợp lệ`);
     }
-    // Gá»­i thĂ´ng bĂ¡o cho chuyĂªn viĂªn
+    // Gửi thông báo cho chuyên viên
     notify(task.assigned_to, 'task_revision_needed', {
         orderId: orderId,
         taskId: task.id,
-        message: `ÄÆ¡n hĂ ng #${orderId} cáº§n báº¡n chá»‰nh sá»­a láº¡i sáº£n pháº©m.`
+        message: `Đơn hàng #${orderId} cần bạn chỉnh sửa lại sản phẩm.`
     });
     logger.info(`Task #${task.id} for order #${orderId} has been re-opened for revision.`);
     return true;
@@ -89,16 +89,16 @@ app.post('/', authMiddleware, checkRole('coordinator'), createTaskValidation, as
         [order_id]
     );
     if (existingTasks.length > 0) {
-        throw new AppError('Ă„ÂĂ†Â¡n hÄ‚Â ng nÄ‚Â y Ă„â€˜Ä‚Â£ cÄ‚Â³ task Ă„â€˜ang xĂ¡Â»Â­ lÄ‚Â½.', 409);
+        throw new AppError('Đơn hàng này đã có task đang xử lý.', 409);
     }
     const [result] = await pool.execute(
         `INSERT INTO task (order_id, assigned_to, specialist_role, status, deadline) VALUES (?, ?, ?, 'assigned', ?)`,
         [order_id, assigned_to, specialist_role, deadline]
     );
-    // Gá»­i thĂ´ng bĂ¡o cho chuyĂªn viĂªn Ä‘Æ°á»£c giao viá»‡c
+    // Gửi thông báo cho chuyên viên được giao việc
     notify(assigned_to, 'new_task', {
         orderId: order_id,
-        message: `Báº¡n vá»«a Ä‘Æ°á»£c giao má»™t cĂ´ng viá»‡c má»›i cho Ä‘Æ¡n hĂ ng #${order_id}.`
+        message: `Bạn vừa được giao một công việc mới cho đơn hàng #${order_id}.`
     });
     logger.info(`New task created for order #${order_id}, assigned to user #${assigned_to}`);
     res.status(201).json({ id: result.insertId, message: 'Task created' });
@@ -110,11 +110,11 @@ app.put('/:id/status', authMiddleware, idParamValidation, asyncHandler(async (re
     const { status, coordinatorId } = req.body;
     const validStatuses = ['assigned', 'in_progress', 'revision_requested', 'done'];
     if (!validStatuses.includes(status)) {
-        throw new AppError('TrĂ¡ÂºÂ¡ng thÄ‚Â¡i task khÄ‚Â´ng hĂ¡Â»Â£p lĂ¡Â»â€¡.', 400);
+        throw new AppError('Trạng thái task không hợp lệ.', 400);
     }
     const [currentTaskRows] = await pool.execute('SELECT assigned_to FROM task WHERE id = ?', [id]);
     if (currentTaskRows.length === 0) {
-        throw new AppError('KhÄ‚Â´ng tÄ‚Â¬m thĂ¡ÂºÂ¥y task.', 404);
+        throw new AppError('Không tìm thấy task.', 404);
     }
     assertOwnerOrRole(req, currentTaskRows[0].assigned_to, ['admin', 'coordinator']);
     // 1. Cáº­p nháº­t tráº¡ng thĂ¡i task
@@ -145,7 +145,7 @@ app.put('/:id/status', authMiddleware, idParamValidation, asyncHandler(async (re
         notify(coordinatorId, 'task_completed', {
             taskId: id,
             orderId: orderId,
-            message: `CĂ´ng viá»‡c cho Ä‘Æ¡n hĂ ng #${orderId} Ä‘Ă£ Ä‘Æ°á»£c chuyĂªn viĂªn hoĂ n thĂ nh.`
+            message: `Công việc cho đơn hàng #${orderId} đã được chuyên viên hoàn thành.`
         });
     }
     logger.info(`Task #${id} status updated to ${status}`);
@@ -160,7 +160,7 @@ app.get('/order/:orderId', asyncHandler(async (req, res) => {
         [orderId]
     );
     if (rows.length === 0) {
-        throw new AppError('KhĂ´ng tĂ¬m tháº¥y task cho Ä‘Æ¡n hĂ ng nĂ y.', 404);
+        throw new AppError('Không tìm thấy task cho đơn hàng này.', 404);
     }
     res.json(rows[0]);
 }));
@@ -192,7 +192,7 @@ app.get('/specialist/:specialistId', authMiddleware, asyncHandler(async (req, re
                 return { ...task, description: orderResponse.data.description };
             } catch (error) {
                 logger.error(`Failed to fetch order details for order ID ${task.order_id}.`, { message: error.message });
-                return { ...task, description: 'KhĂ´ng thá»ƒ táº£i mĂ´ táº£ Ä‘Æ¡n hĂ ng.' };
+            return { ...task, description: 'Không thể tải mô tả đơn hàng.' };
             }
         })
     );
@@ -255,5 +255,3 @@ app.listen(PORT, () => {
     logger.info(`Task Service is running on port ${PORT}`);
     startMessageListener(); // <-- (MQ) BÆ¯á»C 4: KHá»I Äá»˜NG LISTENER
 });
-
-

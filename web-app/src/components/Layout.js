@@ -63,6 +63,8 @@ const Layout = () => {
             socket.on("order_status_updated", (data) => {
                 console.log("[Socket.IO] Received 'order_status_updated':", data);
                 toast.success(data.message || `Đơn hàng #${data.orderId} đã cập nhật.`);
+                // Bắn sự kiện toàn cục để các trang tự động lấy lại dữ liệu
+                window.dispatchEvent(new CustomEvent('refreshOrders'));
             });
             socket.on("studio_status_updated", (data) => {
                  console.log("[Socket.IO] Received 'studio_status_updated':", data);
@@ -77,6 +79,8 @@ const Layout = () => {
              socket.on("new_order_pending", (data) => {
                 console.log("[Socket.IO] Received 'new_order_pending':", data);
                 toast.info(data.message || `Bạn có đơn hàng mới #${data.orderId} chờ xử lý!`);
+                // Bắn sự kiện toàn cục để trang quản lý đơn hàng tự reload danh sách
+                window.dispatchEvent(new CustomEvent('refreshOrders'));
             });
 
             // Cleanup function khi component unmount hoặc user thay đổi

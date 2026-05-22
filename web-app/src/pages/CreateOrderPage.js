@@ -44,28 +44,12 @@ const CreateOrderPage = () => {
 
         setLoading(true);
 
-        let price = 0;
-        switch (serviceType) {
-            case 'transcription':
-                price = 300000;
-                break;
-            case 'arrangement':
-                price = 800000;
-                break;
-            case 'recording':
-                price = 500000;
-                break;
-            default:
-                price = 0;
-        }
-
         try {
             // Bước 1: Tạo đơn hàng
             const orderData = {
                 customer_id: user.id,
                 service_type: serviceType,
-                description: description,
-                price: price 
+                description: description
             };
             const newOrder = await orderApi.createOrder(orderData);
 
