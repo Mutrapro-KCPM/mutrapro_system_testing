@@ -10,7 +10,7 @@ Response thanh cong moi nen theo dang:
 Response loi:
 ```json
 { "success": false, "message": "Error message", "errors": [] }
-```
+```;
 
 ## Auth
 | Method | Endpoint | Role | Mo ta |
