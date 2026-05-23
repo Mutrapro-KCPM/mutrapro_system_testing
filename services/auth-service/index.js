@@ -74,6 +74,21 @@ const dbConfig = {
 };
 const pool = mysql.createPool(dbConfig);
 
+const ensureSoftDeleteColumn = async () => {
+    const [columns] = await pool.execute(
+        `SELECT COUNT(*) AS count
+         FROM INFORMATION_SCHEMA.COLUMNS
+         WHERE TABLE_SCHEMA = DATABASE()
+           AND TABLE_NAME = 'users'
+           AND COLUMN_NAME = 'is_deleted'`
+    );
+
+    if (Number(columns[0].count) === 0) {
+        await pool.execute('ALTER TABLE users ADD COLUMN is_deleted TINYINT(1) NOT NULL DEFAULT 0');
+        logger.info('Added users.is_deleted column for soft-delete support.');
+    }
+};
+
 // --- API Endpoints ---
 // 1. API: ÄÄƒng kĂ½ ngÆ°á»i dĂ¹ng
 app.post('/register', registerValidation, asyncHandler(async (req, res) => {
