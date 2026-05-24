@@ -54,7 +54,7 @@ NIFI_SENSITIVE_PROPS_KEY=change_me_for_demo
 INTERNAL_SERVICE_TOKEN=change_me_internal_service_token
 CORS_ORIGIN=http://localhost:3000
 MYSQL_ROOT_PASSWORD=root
-MYSQL_DATABASE=mutrapro
+MYSQL_DATABASE=mutrapr
 ```
 
 Do not commit the real `.env` file.
