@@ -3,6 +3,7 @@ services:
   mysql_db:
     image: mysql:8.0
     restart: always
+    mem_limit: 1G
     environment:
       MYSQL_ROOT_PASSWORD: ${DB_PASSWORD}
     ports:
@@ -25,8 +26,6 @@ services:
   redis_cache:
     image: redis:6-alpine
     restart: always
-    ports:
-      - "6379:6379"
     networks:
       - mutrapro-network
   # === KẾT THÚC KHỐI THÊM MỚI ===
@@ -35,11 +34,6 @@ services:
   rabbitmq:
     image: rabbitmq:3-management-alpine
     restart: always
-    ports:
-      # Port 5672: Cho các service (Node.js) kết nối
-      - "5672:5672"
-      # Port 15672: Cho bạn xem giao diện web quản lý
-      - "15672:15672"
     environment:
       RABBITMQ_DEFAULT_USER: ${RABBITMQ_DEFAULT_USER}
       RABBITMQ_DEFAULT_PASS: ${RABBITMQ_DEFAULT_PASS}
@@ -51,6 +45,7 @@ services:
   nifi:
     image: apache/nifi:1.23.2
     restart: always
+    mem_limit: 1G
     ports:
       # Ní sẽ truy cập giao diện NiFi qua cổng 9090
       - "9090:8080"
@@ -77,8 +72,6 @@ services:
       context: .
       dockerfile: ./services/auth-service/Dockerfile
     restart: always
-    ports:
-      - "3001:3001"
     environment:
       - DB_HOST=mysql_db
       - DB_USER=root
@@ -106,8 +99,6 @@ services:
       context: .
       dockerfile: ./services/order-service/Dockerfile
     restart: always
-    ports:
-      - "3002:3002"
     environment:
       - DB_HOST=mysql_db
       - DB_USER=root
@@ -135,8 +126,6 @@ services:
       context: .
       dockerfile: ./services/task-service/Dockerfile
     restart: always
-    ports:
-      - "3003:3003"
     environment:
       - DB_HOST=mysql_db
       - DB_USER=root
@@ -164,8 +153,6 @@ services:
       context: .
       dockerfile: ./services/file-service/Dockerfile
     restart: always
-    ports:
-      - "3004:3004"
     environment:
       - DB_HOST=mysql_db
       - DB_USER=root
@@ -194,8 +181,6 @@ services:
       context: .
       dockerfile: ./services/studio-service/Dockerfile
     restart: always
-    ports:
-      - "3005:3005"
     environment:
       - DB_HOST=mysql_db
       - DB_USER=root
@@ -222,9 +207,9 @@ services:
     build:
       context: .
       dockerfile: ./services/notification-service/Dockerfile
-    restart: always
     ports:
       - "3006:3006"
+    restart: always
     environment:
       - DB_HOST=mysql_db
       - DB_USER=root
@@ -253,8 +238,6 @@ services:
       context: .
       dockerfile: ./services/analytics-service/Dockerfile
     restart: always
-    ports:
-      - "3008:3008" # Chạy trên cổng 3008
     environment:
       - DB_HOST=mysql_db
       - DB_USER=root
@@ -289,13 +272,20 @@ services:
     environment:
       - CORS_ORIGIN=${CORS_ORIGIN}
     depends_on:
-      - auth-service
-      - order-service
-      - task-service
-      - file-service
-      - studio-service
-      - notification-service
-      - analytics-service
+      auth-service:
+        condition: service_healthy
+      order-service:
+        condition: service_healthy
+      task-service:
+        condition: service_healthy
+      file-service:
+        condition: service_healthy
+      studio-service:
+        condition: service_healthy
+      notification-service:
+        condition: service_healthy
+      analytics-service:
+        condition: service_healthy
     networks:
       - mutrapro-network
     healthcheck:

@@ -1,4 +1,4 @@
-﻿// services/notification-service/index.js
+﻿﻿// services/notification-service/index.js
 const express = require('express');
 const mysql = require('mysql2/promise');
 const cors = require('cors');
@@ -97,8 +97,8 @@ const sendPushNotification = async (userId, eventName, data) => {
     // 2ï¸âƒ£ Chuáº©n bá»‹ ná»™i dung thĂ´ng bĂ¡o
     const message = {
       notification: {
-        title: "ThĂ´ng bĂ¡o má»›i tá»« MuTraPro",
-        body: data?.message || `Báº¡n cĂ³ cáº­p nháº­t tá»« sá»± kiá»‡n: ${eventName}`
+        title: "Thông báo mới từ MuTraPro",
+        body: data?.message || `Bạn có cập nhật từ sự kiện: ${eventName}`
       },
       webpush: {
         fcmOptions: { link: 'http://localhost:3000/dashboard' }
@@ -185,7 +185,7 @@ app.post('/register-device', async (req, res) => {
   try {
     const { userId, fcmToken } = req.body;
     if (!userId || !fcmToken) {
-      return res.status(400).json({ error: 'Thiáº¿u thĂ´ng tin userId hoáº·c fcmToken' });
+      return res.status(400).json({ error: 'Thiếu thông tin userId hoặc fcmToken' });
     }
 
     await pool.execute(
@@ -194,10 +194,10 @@ app.post('/register-device', async (req, res) => {
     );
 
     logger.info(`FCM token registered for user ${userId}.`);
-    res.status(200).json({ message: 'Thiáº¿t bá»‹ Ä‘Ă£ Ä‘Æ°á»£c Ä‘Äƒng kĂ½ thĂ nh cĂ´ng' });
+    res.status(200).json({ message: 'Thiết bị đã được đăng ký thành công' });
   } catch (err) {
     logger.error(err);
-    res.status(500).json({ error: 'Lá»—i Ä‘Äƒng kĂ½ thiáº¿t bá»‹' });
+    res.status(500).json({ error: 'Lỗi đăng ký thiết bị' });
   }
 });
 
@@ -209,18 +209,18 @@ app.post('/notify', async (req, res) => {
   if (userId === 'broadcast') {
     io.emit(eventName, data);
     logger.info(`Broadcast event '${eventName}' to all clients.`);
-    return res.status(200).json({ message: 'ÄĂ£ broadcast.' });
+    return res.status(200).json({ message: 'Đã broadcast.' });
   }
 
   const receiverSocketId = onlineUsers[userId];
   if (receiverSocketId) {
     io.to(receiverSocketId).emit(eventName, data);
     logger.info(`Realtime event '${eventName}' sent to user ${userId} (${receiverSocketId}).`);
-    return res.status(200).json({ message: 'ÄĂ£ gá»­i realtime notification.' });
+    return res.status(200).json({ message: 'Đã gửi realtime notification.' });
   } else {
     logger.warn(`User ${userId} is offline. Attempting FCM notification.`);
     sendPushNotification(userId, eventName, data); // cháº¡y ngáº§m
-    return res.status(200).json({ message: 'User offline, Ä‘Ă£ gá»­i push notification.' });
+    return res.status(200).json({ message: 'User offline, đã gửi push notification.' });
   }
 });
 
@@ -229,5 +229,3 @@ const PORT = process.env.PORT || 3006;
 server.listen(PORT, () => {
   logger.info(`Notification Service (HTTP + WS) is running on port ${PORT}`);
 });
-
-
