@@ -1,4 +1,4 @@
-﻿﻿// services/notification-service/index.js
+﻿// services/notification-service/index.js
 const express = require('express');
 const mysql = require('mysql2/promise');
 const cors = require('cors');
@@ -142,7 +142,7 @@ app.get('/', authMiddleware, async (req, res) => {
     const [countRows] = await pool.execute('SELECT COUNT(*) as total FROM notifications WHERE user_id = ?', [req.user.id]);
     const [items] = await pool.execute(
       'SELECT * FROM notifications WHERE user_id = ? ORDER BY created_at DESC LIMIT ? OFFSET ?',
-      [req.user.id, limit, offset]
+      [String(req.user.id), String(limit), String(offset)]
     );
 
     res.json({
