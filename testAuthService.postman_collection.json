@@ -1,9 +1,9 @@
 {
   "info": {
     "_postman_id": "67ad97c3-c500-4e12-94af-f533ac940d87",
-    "name": "Presentation",
-    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
-    "_exporter_id": "48989832"
+      "name": "Presentation",
+        "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+          "_exporter_id": "48989832"
   },
   "item": [
     {
@@ -1140,15 +1140,15 @@
       ]
     }
   ],
-  "auth": {
+    "auth": {
     "type": "bearer",
-    "bearer": [
-      {
-        "key": "token",
-        "value": "{{bearerToken}}",
-        "type": "string"
-      }
-    ]
+      "bearer": [
+        {
+          "key": "token",
+          "value": "{{bearerToken}}",
+          "type": "string"
+        }
+      ]
   },
   "event": [
     {
@@ -1174,14 +1174,14 @@
       }
     }
   ],
-  "variable": [
-    {
-      "key": "baseUrl",
-      "value": "/"
-    },
-    {
-      "key": "bearToken",
-      "value": ""
-    }
-  ]
+    "variable": [
+      {
+        "key": "baseUrl",
+        "value": "/"
+      },
+      {
+        "key": "bearToken",
+        "value": ""
+      }
+    ]
 }
