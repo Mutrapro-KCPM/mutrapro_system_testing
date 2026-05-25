@@ -57,11 +57,16 @@ copy .env.example .env
 Before starting Docker, review and replace all secret placeholders in `.env`, especially:
 
 ```env
-DB_PASSWORD=your_secret_here
-RABBITMQ_DEFAULT_PASS=your_secret_here
-NIFI_SENSITIVE_PROPS_KEY=your_secret_here
-JWT_SECRET=your_secret_here
-INTERNAL_SERVICE_TOKEN=your_secret_here
+DB_PASSWORD=change_me
+JWT_SECRET=change_me_to_a_long_random_secret_at_least_32_chars
+CORS_ORIGIN=http://localhost:3000
+RABBITMQ_DEFAULT_USER=user
+RABBITMQ_DEFAULT_PASS=password
+NIFI_SENSITIVE_PROPS_KEY=change_me_for_demo
+INTERNAL_SERVICE_TOKEN=change_me_internal_service_token
+CORS_ORIGIN=http://localhost:3000
+MYSQL_ROOT_PASSWORD=root
+MYSQL_DATABASE=mutrapr
 ```
 
 Recommended local values for non-secret runtime configuration:
