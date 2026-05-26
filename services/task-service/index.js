@@ -222,7 +222,7 @@ app.get('/specialist/:specialistId', authMiddleware, asyncHandler(async (req, re
         return { ...task, description: order.description || 'Không có mô tả đơn hàng.' };
       } catch (error) {
         logger.error(`Không thể lấy chi tiết cho order ID ${task.order_id}`, { message: error.message });
-        return { ...task, description: 'Không thể tải mô tả đơn hàng.' };
+        return { ...task, description: 'Order description unavailable.' };
       }
     })
   );
