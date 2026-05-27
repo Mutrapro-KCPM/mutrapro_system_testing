@@ -18,7 +18,7 @@ pipeline {
         stage('Dừng hệ thống cũ') {
             steps {
                 // Dừng và xóa các container cũ nếu có để dọn đường build mới
-                sh 'docker compose down || true'
+                sh 'docker-compose down || true'
             }
         }
 
@@ -26,7 +26,7 @@ pipeline {
             steps {
                 echo "Bắt đầu build các Docker Image cho toàn bộ Microservices..."
                 // Build lại toàn bộ image, không dùng cache để đảm bảo code mới nhất
-                sh 'docker compose build --no-cache'
+                sh 'docker-compose build --no-cache'
             }
         }
 
@@ -34,7 +34,7 @@ pipeline {
             steps {
                 echo "Đang khởi động hệ thống Mutrapro..."
                 // Chạy ngầm toàn bộ các dịch vụ
-                sh 'docker compose up --build -d'
+                sh 'docker-compose up --build -d'
             }
         }
 
@@ -45,7 +45,7 @@ pipeline {
                 sleep time: 30, unit: 'SECONDS'
 
                 // Kiểm tra trạng thái của các container
-                sh 'docker compose ps'
+                sh 'docker-compose ps'
             }
         }
 
