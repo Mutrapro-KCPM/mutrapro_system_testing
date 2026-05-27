@@ -1,4 +1,4 @@
-﻿// services/notification-service/index.js
+// services/notification-service/index.js
 const express = require('express');
 const mysql = require('mysql2/promise');
 const cors = require('cors');
@@ -120,7 +120,15 @@ const sendPushNotification = async (userId, eventName, data) => {
 // đŸ“¨ LÆ°u notification vĂ o DB (ná»™i bá»™)
 app.post('/send', async (req, res) => {
   try {
-    const { user_id, title, message, channel } = req.body;
+    logger.info(`[DEBUG] /send payload received: ${JSON.stringify(req.body)}`);
+    let { user_id, title, message, channel } = req.body;
+    
+    // Ép kiểu user_id về số nguyên, nếu rỗng thì fallback về 1 để tránh lỗi crash DB
+    user_id = parseInt(user_id, 10);
+    if (isNaN(user_id)) {
+        user_id = 1; 
+    }
+
     const [result] = await pool.execute(
       `INSERT INTO notifications (user_id, title, message, channel, status)
        VALUES (?, ?, ?, ?, 'pending')`,
