@@ -2,7 +2,7 @@ pipeline {
     agent any
 
     environment {
-        // Tên project dùng cho docker-compose
+        // Tên project dùng cho docker compose
         COMPOSE_PROJECT_NAME = 'mutrapro_system'
     }
 
@@ -18,7 +18,7 @@ pipeline {
         stage('Dừng hệ thống cũ') {
             steps {
                 // Dừng và xóa các container cũ nếu có để dọn đường build mới
-                sh 'docker-compose down || true'
+                sh 'docker compose down || true'
             }
         }
 
@@ -26,7 +26,7 @@ pipeline {
             steps {
                 echo "Bắt đầu build các Docker Image cho toàn bộ Microservices..."
                 // Build lại toàn bộ image, không dùng cache để đảm bảo code mới nhất
-                sh 'docker-compose build --no-cache'
+                sh 'docker compose build --no-cache'
             }
         }
 
@@ -34,7 +34,7 @@ pipeline {
             steps {
                 echo "Đang khởi động hệ thống Mutrapro..."
                 // Chạy ngầm toàn bộ các dịch vụ
-                sh 'docker-compose up -d'
+                sh 'docker compose up -d'
             }
         }
 
@@ -43,9 +43,9 @@ pipeline {
                 echo "Chờ các dịch vụ khởi động hoàn tất..."
                 // Sleep một chút để đợi DB và các service sẵn sàng
                 sleep time: 30, unit: 'SECONDS'
-                
+
                 // Kiểm tra trạng thái của các container
-                sh 'docker-compose ps'
+                sh 'docker compose ps'
             }
         }
 
@@ -54,8 +54,6 @@ pipeline {
         stage('Automated API Testing') {
             steps {
                 echo "Chạy Postman Collection để test API..."
-                // Yêu cầu máy chủ Jenkins đã cài newman (npm install -g newman)
-                // Hoặc chạy newman qua docker container
                 sh 'docker run --network mutrapro-network -v ${PWD}/postman:/etc/newman -t postman/newman run /etc/newman/Presentation.postman_collection.json'
             }
         }
@@ -65,12 +63,9 @@ pipeline {
     post {
         success {
             echo "🎉 Hệ thống đã được Build và Deploy THÀNH CÔNG!"
-            // Ở đây bạn có thể thêm lệnh gửi Email hoặc Slack thông báo
         }
         failure {
             echo "❌ Quá trình Build/Deploy THẤT BẠI. Vui lòng kiểm tra lại log."
-            // Tự động tắt hệ thống nếu deploy lỗi để tránh lỗi lan truyền
-            // sh 'docker-compose down'
         }
     }
 }
