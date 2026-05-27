@@ -34,7 +34,7 @@ pipeline {
             steps {
                 echo "Đang khởi động hệ thống Mutrapro..."
                 // Chạy ngầm toàn bộ các dịch vụ
-                sh 'docker compose up -d'
+                sh 'docker compose up --build -d'
             }
         }
 
