@@ -31,7 +31,7 @@ pipeline {
             steps {
                 echo 'Bắt đầu build project...'
                 // Sử dụng docker-compose vì thấy có file docker-compose.yml trong project
-                sh "${DOCKER_COMPOSE_CMD}up --build -d"
+                sh "${DOCKER_COMPOSE_CMD} up --build -d"
             }
         }
 
