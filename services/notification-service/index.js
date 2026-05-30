@@ -122,11 +122,11 @@ app.post('/send', async (req, res) => {
   try {
     logger.info(`[DEBUG] /send payload received: ${JSON.stringify(req.body)}`);
     let { user_id, title, message, channel } = req.body;
-    
+
     // Ép kiểu user_id về số nguyên, nếu rỗng thì fallback về 1 để tránh lỗi crash DB
     user_id = parseInt(user_id, 10);
     if (isNaN(user_id)) {
-        user_id = 1; 
+      return res.status(400).json({ error: "Du lieu khong hop le: user_id bat buoc phai la so." });
     }
 
     const [result] = await pool.execute(
