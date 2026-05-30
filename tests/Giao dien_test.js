@@ -1,18 +1,36 @@
-Feature('Kiểm tra giao diện MuTraPro');
+Feature('Kiểm tra toàn diện giao diện MuTraPro');
 
-Scenario('Xem trang chủ và bấm thử nút Đăng Nhập', ({ I }) => {
-  // Đi tới trang chủ (nó tự hiểu là http://localhost:3000/)
+Scenario('1. Xem trang chủ và kiểm tra slogan', ({ I }) => {
   I.amOnPage('/'); 
-
-  // Kiểm tra xem trên màn hình có chữ "MuTraPro" không
   I.see('MuTraPro'); 
-
-  // Kiểm tra câu slogan xem hiển thị đúng không
   I.see('Designed For Music, Engineered to Last');
+});
 
-  // Click vào cái nút "Đăng Nhập" màu xanh dương trên thanh điều hướng
-  I.click('Đăng Nhập');
+Scenario('2. Tự động điền form Đăng Ký thành viên mới', ({ I }) => {
+  I.amOnPage('/');
+  I.click('Đăng Ký'); 
+  I.wait(2); // Chờ form hiện lên hẳn
 
-  // Bắt trình duyệt đợi 2 giây để ní kịp nhìn thấy nó chuyển trang
+  // Định vị chính xác theo type của input nằm trong form-card
+  I.fillField('.form-card input[type="text"]', 'Bét Yasuo');
+  I.fillField('.form-card input[type="email"]', 'yasuo2027@gmail.com');
+  I.fillField('.form-card input[type="password"]', '12345678');
+
+  // Click đúng vào nút button có class form-button chứa chữ Đăng Ký
+  I.click('.form-button'); 
+  I.wait(4); // Đợi kết quả phản hồi từ auth-service
+});
+
+Scenario('3. Tự động điền form Đăng Nhập hệ thống', ({ I }) => {
+  I.amOnPage('/');
+  I.click('Đăng Nhập'); 
   I.wait(2); 
+
+  // Dùng tài khoản có sẵn trong database của ní để test đăng nhập
+  I.fillField('.form-card input[type="email"]', 'yasuo2027@gmail.com');
+  I.fillField('.form-card input[type="password"]', '12345678');
+
+  // Bấm nút đăng nhập (nó cũng xài chung class .form-button)
+  I.click('.form-button'); 
+  I.wait(4);
 });
