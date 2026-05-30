@@ -6,24 +6,13 @@ pipeline {
         DOCKER_COMPOSE_CMD = 'docker compose' 
     }
 
-    stages {
-        stage('Debug') {
-            steps {
-                sh '''
-                    whoami
-                    docker --version
-                    docker compose version
-                    pwd
-                    ls -la
-                '''
-            }
         }
         stage('Checkout') {
             steps {
                 echo 'Đang lấy code từ nhánh dev...'
                 // LƯU Ý: Thay <URL_GITHUB_CUA_BAN> bằng link thực tế của repo (ví dụ: 'https://github.com/user/mutrapro_system_testing.git')
                 // Nếu repo là private, thêm tham số credentialsId: 'your-credential-id'
-                git branch: 'giabao', url: '<URL_GITHUB_CUA_BAN>'
+                git branch: 'giabao', url: '<https://github.com/Mutrapro-KCPM/mutrapro_system_testing.git>'
             }
         }
 
@@ -53,10 +42,10 @@ pipeline {
 
     post {
         success {
-            echo '🎉 Build và Deploy thành công!'
+            echo 'Build và Deploy thành công!'
         }
         failure {
-            echo '❌ Pipeline thất bại. Hãy kiểm tra lại log.'
+            echo 'Pipeline thất bại. Hãy kiểm tra lại log.'
         }
     }
 }
