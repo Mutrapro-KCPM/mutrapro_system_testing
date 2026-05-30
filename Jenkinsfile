@@ -37,6 +37,18 @@ pipeline {
                 // sh "${DOCKER_COMPOSE_CMD} up -d"
             }
         }
+
+        stage('Debug') {
+            steps {
+                sh '''
+                    whoami
+                    docker --version
+                    docker compose version
+                    pwd
+                    ls -la
+                '''
+            }
+        }
     }
 
     post {
