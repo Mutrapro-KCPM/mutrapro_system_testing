@@ -6,7 +6,8 @@ pipeline {
         DOCKER_COMPOSE_CMD = 'docker compose' 
     }
 
-    stage('Debug') {
+    stages {
+        stage('Debug') {
             steps {
                 sh '''
                     whoami
@@ -17,8 +18,6 @@ pipeline {
                 '''
             }
         }
-
-    stages {
         stage('Checkout') {
             steps {
                 echo 'Đang lấy code từ nhánh dev...'
