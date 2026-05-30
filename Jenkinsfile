@@ -4,6 +4,13 @@ pipeline {
     environment {
         // Tên project dùng cho docker-compose
         COMPOSE_PROJECT_NAME = 'mutrapro_system'
+        DB_PASSWORD = 'change_me'
+        JWT_SECRET = 'change_me_to_a_long_random_secret_at_least_32_chars'
+        CORS_ORIGIN = 'http://localhost:3000'
+        RABBITMQ_DEFAULT_USER = 'user'
+        RABBITMQ_DEFAULT_PASS = 'password'
+        NIFI_SENSITIVE_PROPS_KEY = 'change_me_for_demo'
+        INTERNAL_SERVICE_TOKEN = 'change_me_internal_service_token'
     }
 
     stages {
