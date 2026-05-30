@@ -24,9 +24,9 @@
 </hudson.plugins.git.UserRemoteConfig>
 </userRemoteConfigs>
 <branches>
-<hudson.plugins.git.BranchSpec>
-<name>*/main</name>
-</hudson.plugins.git.BranchSpec>
+        <hudson.plugins.git.BranchSpec>
+          <name>*/dev</name>
+        </hudson.plugins.git.BranchSpec>
 </branches>
 <doGenerateSubmoduleConfigurations>false</doGenerateSubmoduleConfigurations>
 <submoduleCfg class="empty-list"/>
