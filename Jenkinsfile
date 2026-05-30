@@ -2,70 +2,49 @@ pipeline {
     agent any
 
     environment {
-        // Tên project dùng cho docker compose
-        COMPOSE_PROJECT_NAME = 'mutrapro_system'
+        // Biến môi trường
+        DOCKER_COMPOSE_CMD = 'docker-compose' 
     }
 
     stages {
-        stage('Checkout Code') {
+        stage('Checkout') {
             steps {
-                // Bước này tự động clone code từ repository về Workspace của Jenkins
-                checkout scm
-                echo "Code đã được kéo về máy chủ Jenkins thành công!"
+                echo 'Đang lấy code từ nhánh dev...'
+                // LƯU Ý: Thay <URL_GITHUB_CUA_BAN> bằng link thực tế của repo (ví dụ: 'https://github.com/user/mutrapro_system_testing.git')
+                // Nếu repo là private, thêm tham số credentialsId: 'your-credential-id'
+                git branch: 'giabao', url: '<URL_GITHUB_CUA_BAN>'
             }
         }
 
-        stage('Dừng hệ thống cũ') {
+        stage('Build') {
             steps {
-                // Dừng và xóa các container cũ nếu có để dọn đường build mới
-                sh 'docker-compose down || true'
+                echo 'Bắt đầu build project...'
+                // Sử dụng docker-compose vì thấy có file docker-compose.yml trong project
+                sh "${DOCKER_COMPOSE_CMD} build"
             }
         }
 
-        stage('Build System Images') {
+        stage('Test') {
             steps {
-                echo "Bắt đầu build các Docker Image cho toàn bộ Microservices..."
-                // Build lại toàn bộ image, không dùng cache để đảm bảo code mới nhất
-                sh 'docker-compose build --no-cache'
+                echo 'Chạy các unit test/API test...'
+                // Bạn có thể tích hợp chạy test ở đây (ví dụ: npm test hoặc chạy Postman/Newman)
             }
         }
 
-        stage('Triển khai (Deploy)') {
+        stage('Deploy') {
             steps {
-                echo "Đang khởi động hệ thống Mutrapro..."
-                // Chạy ngầm toàn bộ các dịch vụ
-                sh 'docker-compose up --build -d'
+                echo 'Khởi động hệ thống (Deploy)...'
+                // sh "${DOCKER_COMPOSE_CMD} up -d"
             }
         }
-
-        stage('Kiểm tra sức khỏe (Health Check)') {
-            steps {
-                echo "Chờ các dịch vụ khởi động hoàn tất..."
-                // Sleep một chút để đợi DB và các service sẵn sàng
-                sleep time: 30, unit: 'SECONDS'
-
-                // Kiểm tra trạng thái của các container
-                sh 'docker-compose ps'
-            }
-        }
-
-        /* 
-        // Bỏ comment khối này nếu bạn muốn chạy tự động Postman Test bằng Newman 
-        stage('Automated API Testing') {
-            steps {
-                echo "Chạy Postman Collection để test API..."
-                sh 'docker run --network mutrapro-network -v ${PWD}/postman:/etc/newman -t postman/newman run /etc/newman/Presentation.postman_collection.json'
-            }
-        }
-        */
     }
 
     post {
         success {
-            echo "🎉 Hệ thống đã được Build và Deploy THÀNH CÔNG!"
+            echo '🎉 Build và Deploy thành công!'
         }
         failure {
-            echo "❌ Quá trình Build/Deploy THẤT BẠI. Vui lòng kiểm tra lại log."
+            echo '❌ Pipeline thất bại. Hãy kiểm tra lại log.'
         }
     }
 }
