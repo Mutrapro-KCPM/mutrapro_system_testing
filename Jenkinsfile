@@ -3,7 +3,7 @@ pipeline {
 
     environment {
         // Biến môi trường
-        DOCKER_COMPOSE_CMD = 'docker-compose up' 
+        DOCKER_COMPOSE_CMD = 'docker-compose' 
     }
 
     stages {
@@ -34,7 +34,7 @@ pipeline {
         stage('Deploy') {
             steps {
                 echo 'Khởi động hệ thống (Deploy)...'
-                // sh "${DOCKER_COMPOSE_CMD} -d"
+                // sh "${DOCKER_COMPOSE_CMD} up -d"
             }
         }
     }
