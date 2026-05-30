@@ -3,7 +3,7 @@ pipeline {
 
     environment {
         // Biến môi trường
-        DOCKER_COMPOSE_CMD = 'docker-compose' 
+        DOCKER_COMPOSE_CMD = 'docker compose' 
     }
 
     stages {
@@ -20,7 +20,7 @@ pipeline {
             steps {
                 echo 'Bắt đầu build project...'
                 // Sử dụng docker-compose vì thấy có file docker-compose.yml trong project
-                sh "${DOCKER_COMPOSE_CMD} --build"
+                sh "${DOCKER_COMPOSE_CMD}up --build -d"
             }
         }
 
