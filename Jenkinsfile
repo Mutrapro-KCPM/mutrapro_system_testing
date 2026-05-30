@@ -6,6 +6,18 @@ pipeline {
         DOCKER_COMPOSE_CMD = 'docker compose' 
     }
 
+    stage('Debug') {
+            steps {
+                sh '''
+                    whoami
+                    docker --version
+                    docker compose version
+                    pwd
+                    ls -la
+                '''
+            }
+        }
+
     stages {
         stage('Checkout') {
             steps {
@@ -38,17 +50,6 @@ pipeline {
             }
         }
 
-        stage('Debug') {
-            steps {
-                sh '''
-                    whoami
-                    docker --version
-                    docker compose version
-                    pwd
-                    ls -la
-                '''
-            }
-        }
     }
 
     post {
