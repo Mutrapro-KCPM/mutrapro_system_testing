@@ -2,9 +2,11 @@ version: '3.8'
 
 services:
   jenkins:
-    image: jenkins/jenkins:lts
+    build: .
+    image: mutrapro-jenkins:lts
     network_mode: bridge
     container_name: jenkins
+    user: root
     restart: unless-stopped
 
     ports:
