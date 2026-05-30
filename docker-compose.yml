@@ -294,6 +294,21 @@ services:
       timeout: 10s
       retries: 3
 
+  # ================== START: THÊM MỚI SONARQUBE ==================
+  sonarqube:
+    image: sonarqube:lts-community
+    container_name: mutrapro_system_testing-sonarqube-1
+    restart: always
+    ports:
+      - "9000:9000"
+    networks:
+      - mutrapro-network
+    volumes:
+      - sonarqube_data:/opt/sonarqube/data
+      - sonarqube_extensions:/opt/sonarqube/extensions
+      - sonarqube_logs:/opt/sonarqube/logs
+  # ================== END: THÊM MỚI SONARQUBE ====================
+  
   # Ứng dụng web cho người dùng (giữ nguyên)
   web-app:
     build: ./web-app
@@ -319,4 +334,10 @@ volumes:
   nifi_data:
     driver: local
   nifi_conf:
+    driver: local
+  sonarqube_data:
+    driver: local
+  sonarqube_extensions:
+    driver: local
+  sonarqube_logs:
     driver: local

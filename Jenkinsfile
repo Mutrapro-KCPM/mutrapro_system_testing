@@ -2,8 +2,8 @@ pipeline {
     agent any
 
     environment {
-        // Biến môi trường
-        DOCKER_COMPOSE_CMD = 'docker compose' 
+        // Tên project dùng cho docker-compose
+        COMPOSE_PROJECT_NAME = 'mutrapro_system'
     }
 
     stages {
@@ -21,26 +21,49 @@ pipeline {
 
         stage('Build') {
             steps {
-                echo 'Bắt đầu build project...'
-                // Sử dụng docker-compose vì thấy có file docker-compose.yml trong project
-                sh "${DOCKER_COMPOSE_CMD} up --build -d"
+                // Dừng và xóa các container cũ nếu có để dọn đường build mới
+                sh 'docker-compose down || true'
             }
         }
 
         stage('Test') {
             steps {
-                echo 'Chạy các unit test/API test...'
-                // Bạn có thể tích hợp chạy test ở đây (ví dụ: npm test hoặc chạy Postman/Newman)
+                echo "Bắt đầu build các Docker Image cho toàn bộ Microservices..."
+                // Build lại toàn bộ image, không dùng cache để đảm bảo code mới nhất
+                sh 'docker-compose build --no-cache'
             }
         }
 
         stage('Deploy') {
             steps {
-                echo 'Khởi động hệ thống (Deploy)...'
-                // sh "${DOCKER_COMPOSE_CMD} up -d"
+                echo "Đang khởi động hệ thống Mutrapro..."
+                // Chạy ngầm toàn bộ các dịch vụ
+                sh 'docker-compose up -d'
             }
         }
 
+        stage('Kiểm tra sức khỏe (Health Check)') {
+            steps {
+                echo "Chờ các dịch vụ khởi động hoàn tất..."
+                // Sleep một chút để đợi DB và các service sẵn sàng
+                sleep time: 30, unit: 'SECONDS'
+                
+                // Kiểm tra trạng thái của các container
+                sh 'docker-compose ps'
+            }
+        }
+
+        /* 
+        // Bỏ comment khối này nếu bạn muốn chạy tự động Postman Test bằng Newman 
+        stage('Automated API Testing') {
+            steps {
+                echo "Chạy Postman Collection để test API..."
+                // Yêu cầu máy chủ Jenkins đã cài newman (npm install -g newman)
+                // Hoặc chạy newman qua docker container
+                sh 'docker run --network mutrapro-network -v ${PWD}/postman:/etc/newman -t postman/newman run /etc/newman/Presentation.postman_collection.json'
+            }
+        }
+        */
     }
 
     post {

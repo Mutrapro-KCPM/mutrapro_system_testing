@@ -206,3 +206,6 @@ Open Docker Desktop, wait until the engine is running, then retry from a PowerSh
 If MySQL port `3306` is already used locally, this project maps MySQL to host port `3307`.
 
 If a backend service appears unreachable from the host, that is expected for internal services. Use `http://localhost:3007/api` through the API Gateway.
+
+<!-- CI/CD Webhook Test - Round 2 -->
+smee --url https://smee.io/6FiZDsf2Zv9uvyby --path /github-webhook/ --port 8080 
