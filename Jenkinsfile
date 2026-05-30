@@ -3,7 +3,7 @@ pipeline {
 
     environment {
         // Biến môi trường
-        DOCKER_COMPOSE_CMD = 'docker compose' 
+        DOCKER_COMPOSE_CMD = 'docker-compose' 
     }
 
     stages {
