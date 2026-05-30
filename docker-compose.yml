@@ -1,7 +1,10 @@
 services:
   # Dịch vụ Cơ sở dữ liệu MySQL
   mysql_db:
-    image: mysql:8.0
+    build:
+      context: ./init-scripts
+      dockerfile: Dockerfile
+    image: mutrapro-mysql:8.0
     restart: always
     mem_limit: 1G
     environment:
@@ -9,7 +12,6 @@ services:
     ports:
       - "3307:3306"
     volumes:
-      - ./init-scripts:/docker-entrypoint-initdb.d
       - mysql_data:/var/lib/mysql
     command:
       - --default-authentication-plugin=mysql_native_password
@@ -43,7 +45,10 @@ services:
 
   # ================== START: THÊM MỚI NIFI ==================
   nifi:
-    image: apache/nifi:1.23.2
+    build:
+      context: .
+      dockerfile: Dockerfile.nifi
+    image: mutrapro-nifi:1.23.2
     restart: always
     mem_limit: 1G
     ports:
@@ -54,9 +59,6 @@ services:
       # Một key bí mật, ní có thể đổi thành gì cũng được
       - NIFI_SENSITIVE_PROPS_KEY=${NIFI_SENSITIVE_PROPS_KEY}
     volumes:
-      # Mount file .jar của MySQL vào thư viện của NiFi
-      # Đảm bảo file này tồn tại ở thư mục gốc của project!
-      - ./mysql-connector-j-8.0.33.jar:/opt/nifi/nifi-current/lib/mysql-connector-j-8.0.33.jar
       # Volumes để NiFi lưu trữ flow
       - nifi_data:/opt/nifi/nifi-current/database_repository
       - nifi_conf:/opt/nifi/nifi-current/conf
