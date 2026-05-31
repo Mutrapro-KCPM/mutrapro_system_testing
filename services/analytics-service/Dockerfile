@@ -1,6 +1,6 @@
 # File: services/analytics-service/Dockerfile (ĐÃ SỬA LỖI)
 
-FROM node:18-alpine
+FROM node:20-alpine
 WORKDIR /app
 
 # 1. Copy CHỈ file package.json của service này vào
