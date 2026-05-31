@@ -56,9 +56,9 @@ pipeline {
             steps {
                 sh '''
                     echo "Waiting for services to become healthy..."
-                    sleep 20
+                    sleep 30
                     docker compose ps
-                    curl -f http://localhost:3007/api/health
+                    docker compose exec -T api-gateway node -e "fetch('http://localhost:3007/api/health').then(r=>process.exit(r.ok?0:1)).catch(()=>process.exit(1))"
                 '''
             }
         }
