@@ -16,68 +16,65 @@ pipeline {
     stages {
         stage('Checkout Code') {
             steps {
-                // Bước này tự động clone code từ repository về Workspace của Jenkins
                 checkout scm
-                echo "Code đã được kéo về máy chủ Jenkins thành công!"
+                echo 'Code đã được kéo về máy chủ Jenkins thành công!'
             }
         }
 
-        stage('Dừng hệ thống cũ') {
+        stage('Validate Docker Compose') {
             steps {
-                // Dừng và xóa các container cũ nếu có để dọn đường build mới
-                sh 'docker compose down || true'
+                sh 'docker compose config'
             }
         }
 
-        stage('Build System Images') {
+        stage('Stop Old System') {
             steps {
-                echo "Bắt đầu build các Docker Image cho toàn bộ Microservices..."
-                // Build lại toàn bộ image, không dùng cache để đảm bảo code mới nhất
+                sh 'docker compose down --remove-orphans'
+            }
+        }
+
+        stage('Build Images') {
+            steps {
                 sh 'docker compose build --no-cache'
             }
         }
 
-        stage('Triển khai (Deploy)') {
+        stage('Deploy') {
             steps {
-                echo "Đang khởi động hệ thống Mutrapro..."
-                // Chạy ngầm toàn bộ các dịch vụ
                 sh 'docker compose up -d'
             }
         }
 
-        stage('Kiểm tra sức khỏe (Health Check)') {
+        stage('Show Container Status') {
             steps {
-                echo "Chờ các dịch vụ khởi động hoàn tất..."
-                // Sleep một chút để đợi DB và các service sẵn sàng
-                sleep time: 30, unit: 'SECONDS'
-                
-                // Kiểm tra trạng thái của các container
                 sh 'docker compose ps'
             }
         }
 
-        /* 
-        // Bỏ comment khối này nếu bạn muốn chạy tự động Postman Test bằng Newman 
-        stage('Automated API Testing') {
+        stage('Health Check') {
             steps {
-                echo "Chạy Postman Collection để test API..."
-                // Yêu cầu máy chủ Jenkins đã cài newman (npm install -g newman)
-                // Hoặc chạy newman qua docker container
-                sh 'docker run --network mutrapro-network -v ${PWD}/postman:/etc/newman -t postman/newman run /etc/newman/Presentation.postman_collection.json'
+                sh '''
+                    echo "Waiting for services to become healthy..."
+                    sleep 20
+                    docker compose ps
+                    curl -f http://localhost:3007/api/health
+                '''
             }
         }
-        */
     }
 
     post {
-        success {
-            echo "🎉 Hệ thống đã được Build và Deploy THÀNH CÔNG!"
-            // Ở đây bạn có thể thêm lệnh gửi Email hoặc Slack thông báo
-        }
         failure {
-            echo "❌ Quá trình Build/Deploy THẤT BẠI. Vui lòng kiểm tra lại log."
-            // Tự động tắt hệ thống nếu deploy lỗi để tránh lỗi lan truyền
-            // sh 'docker-compose down'
+            echo 'Pipeline thất bại. In log để debug...'
+            sh '''
+                docker compose ps || true
+                docker compose logs --tail=200 auth-service || true
+                docker compose logs --tail=200 api-gateway || true
+                docker compose logs --tail=200 mysql_db || true
+            '''
+        }
+        success {
+            echo 'Build/Deploy thành công!'
         }
     }
 }
