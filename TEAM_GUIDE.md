@@ -26,6 +26,9 @@ git pull origin dev
 ### Bước 2: Chạy hệ thống dưới máy Local (Tùy chọn)
 Nếu bạn muốn chạy thử ứng dụng trên máy tính của mình để viết Test Script, bạn chỉ cần dùng Docker (không cần Jenkins):
 ```bash
+#chạy terminal 2 với lệnh 
+npx smee-client --url https://smee.io/6FiZDsf2Zv9uvyby --target "http://127.0.0.1:8080/github-webhook/?smee=1"
+###để jenkinss của thể kết nối được với github
 # Đảm bảo Docker Desktop đang chạy
 docker compose up -d --build
 ```

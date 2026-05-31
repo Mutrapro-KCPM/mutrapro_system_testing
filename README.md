@@ -208,4 +208,4 @@ If MySQL port `3306` is already used locally, this project maps MySQL to host po
 If a backend service appears unreachable from the host, that is expected for internal services. Use `http://localhost:3007/api` through the API Gateway.
 
 <!-- CI/CD Webhook Test - Round 2 -->
-npx smee-client --url https://smee.io/6FiZDsf2Zv9uvyby --target http://127.0.0.1:8080/github-webhook/
+npx smee-client --url https://smee.io/6FiZDsf2Zv9uvyby --target "http://127.0.0.1:8080/github-webhook/?smee=1"
