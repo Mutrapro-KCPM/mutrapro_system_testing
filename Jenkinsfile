@@ -30,6 +30,7 @@ pipeline {
         stage('Stop Old System') {
             steps {
                 sh 'docker compose down --remove-orphans'
+                sh 'docker volume rm mutrapro_system_testing_mysql_data || true'
             }
         }
 

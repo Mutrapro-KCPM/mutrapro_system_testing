@@ -76,8 +76,8 @@ services:
     restart: always
     environment:
       - DB_HOST=mysql_db
-      - DB_USER=root
-      - DB_PASSWORD=${DB_PASSWORD}
+      - DB_USER=mutrapro_app
+      - DB_PASSWORD=123456
       - DB_AUTH_NAME=mutrapro_auth
       - JWT_SECRET=${JWT_SECRET}
       - INTERNAL_SERVICE_TOKEN=${INTERNAL_SERVICE_TOKEN}
@@ -104,8 +104,8 @@ services:
     restart: always
     environment:
       - DB_HOST=mysql_db
-      - DB_USER=root
-      - DB_PASSWORD=${DB_PASSWORD}
+      - DB_USER=mutrapro_app
+      - DB_PASSWORD=123456
       - DB_ORDER_NAME=mutrapro_order
       - JWT_SECRET=${JWT_SECRET}
       - INTERNAL_SERVICE_TOKEN=${INTERNAL_SERVICE_TOKEN}
@@ -131,8 +131,8 @@ services:
     restart: always
     environment:
       - DB_HOST=mysql_db
-      - DB_USER=root
-      - DB_PASSWORD=${DB_PASSWORD}
+      - DB_USER=mutrapro_app
+      - DB_PASSWORD=123456
       - DB_TASK_NAME=mutrapro_task
       - JWT_SECRET=${JWT_SECRET}
       - INTERNAL_SERVICE_TOKEN=${INTERNAL_SERVICE_TOKEN}
@@ -158,8 +158,8 @@ services:
     restart: always
     environment:
       - DB_HOST=mysql_db
-      - DB_USER=root
-      - DB_PASSWORD=${DB_PASSWORD}
+      - DB_USER=mutrapro_app
+      - DB_PASSWORD=123456
       - DB_FILE_NAME=mutrapro_file
       - JWT_SECRET=${JWT_SECRET}
       - INTERNAL_SERVICE_TOKEN=${INTERNAL_SERVICE_TOKEN}
@@ -186,8 +186,8 @@ services:
     restart: always
     environment:
       - DB_HOST=mysql_db
-      - DB_USER=root
-      - DB_PASSWORD=${DB_PASSWORD}
+      - DB_USER=mutrapro_app
+      - DB_PASSWORD=123456
       - DB_STUDIO_NAME=mutrapro_studio
       - JWT_SECRET=${JWT_SECRET}
       - INTERNAL_SERVICE_TOKEN=${INTERNAL_SERVICE_TOKEN}
@@ -215,8 +215,8 @@ services:
     restart: always
     environment:
       - DB_HOST=mysql_db
-      - DB_USER=root
-      - DB_PASSWORD=${DB_PASSWORD}
+      - DB_USER=mutrapro_app
+      - DB_PASSWORD=123456
       - JWT_SECRET=${JWT_SECRET}
       - INTERNAL_SERVICE_TOKEN=${INTERNAL_SERVICE_TOKEN}
       - CORS_ORIGIN=${CORS_ORIGIN}
@@ -243,8 +243,8 @@ services:
     restart: always
     environment:
       - DB_HOST=mysql_db
-      - DB_USER=root
-      - DB_PASSWORD=${DB_PASSWORD}
+      - DB_USER=mutrapro_app
+      - DB_PASSWORD=123456
       # Nó sẽ kết nối vào CSDL báo cáo MỚI
       - DB_ANALYTICS_NAME=mutrapro_analytics
       - JWT_SECRET=${JWT_SECRET}
