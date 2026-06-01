@@ -1162,7 +1162,7 @@
                     "header": [],
                     "body": {
                       "mode": "raw",
-                      "raw": "{\r\n  \"name\": \"NguyenVanA\",\r\n  \"email\": \"test3@gmail.com\",\r\n  \"password\": \"123456789\"\r\n}",
+                      "raw": "{\r\n  \"name\": \"NguyenVanA\",\r\n  \"email\": \"mutrapro54@gmail.com\",\r\n  \"password\": \"123456789\"\r\n}",
                       "options": {
                         "raw": {
                           "language": "json"
@@ -1393,7 +1393,7 @@
                     "header": [],
                     "body": {
                       "mode": "raw",
-                      "raw": "{\r\n  \"email\": \"test3@gmail.com\",\r\n  \"password\": \"1234567\"\r\n}\r\n",
+                      "raw": "{\r\n  \"email\": \"mutrapro54@gmail.com\",\r\n  \"password\": \"1234567\"\r\n}\r\n",
                       "options": {
                         "raw": {
                           "language": "json"
@@ -1742,7 +1742,7 @@
                     "header": [],
                     "body": {
                       "mode": "raw",
-                      "raw": "{\r\n    \"email\": \"test3@gmail.com\",\r\n    \"password\": \"123456789\"\r\n}",
+                      "raw": "{\r\n    \"email\": \"mutrapro54@gmail.com\",\r\n    \"password\": \"123456789\"\r\n}",
                       "options": {
                         "raw": {
                           "language": "json"
@@ -2249,11 +2249,12 @@
                           }
                         },
                         "url": {
-                          "raw": "{{baseUrl}}/send",
+                          "raw": "{{baseUrl}}/notifications/send",
                           "host": [
                             "{{baseUrl}}"
                           ],
                           "path": [
+                            "notifications",
                             "send"
                           ]
                         }
