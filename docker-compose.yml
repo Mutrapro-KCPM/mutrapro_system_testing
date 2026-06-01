@@ -88,6 +88,8 @@ services:
     depends_on:
       mysql_db:
         condition: service_healthy
+      redis_cache:
+        condition: service_started
     networks:
       - mutrapro-network
     healthcheck:
