@@ -1,0 +1,96 @@
+name: API CI with Newman
+
+on:
+  push:
+    branches:
+      - main
+      - dev
+  pull_request:
+    branches:
+      - main
+      - dev
+  workflow_dispatch:
+
+env:
+  COMPOSE_PROJECT_NAME: mutrapro_system_testing_ci
+  DB_PASSWORD: "123456"
+  JWT_SECRET: "9f7c2d1e4a8b6c5d3e7f1a9b2c4d6e8f0a1b3c5d7e9f2a4b6c8d1e3f5a7b9c2d"
+  CORS_ORIGIN: "http://localhost:3000"
+  RABBITMQ_DEFAULT_USER: "user"
+  RABBITMQ_DEFAULT_PASS: "password"
+  NIFI_SENSITIVE_PROPS_KEY: "change_me_for_demo"
+  INTERNAL_SERVICE_TOKEN: "change_me_internal_service_token"
+
+jobs:
+  api-newman:
+    name: Docker Compose API + Newman
+    runs-on: ubuntu-latest
+    timeout-minutes: 35
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Validate Docker Compose
+        run: docker compose config
+
+      - name: Build API stack
+        run: docker compose build --no-cache api-gateway
+
+      - name: Start API stack
+        run: docker compose up -d api-gateway
+
+      - name: Show container status
+        run: docker compose ps
+
+      - name: Wait for API Gateway health
+        run: |
+          set -e
+          for i in {1..30}; do
+            if curl -fsS http://localhost:3007/api/health; then
+              echo "API Gateway is healthy"
+              exit 0
+            fi
+            echo "Waiting for API Gateway health... attempt $i/30"
+            docker compose ps
+            sleep 10
+          done
+          echo "API Gateway did not become healthy in time"
+          docker compose logs --tail=200 api-gateway || true
+          docker compose logs --tail=200 auth-service || true
+          docker compose logs --tail=200 mysql_db || true
+          exit 1
+
+      - name: Install Newman
+        run: npm install -g newman newman-reporter-htmlextra
+
+      - name: Run Postman collection with Newman
+        run: |
+          mkdir -p newman-results
+          newman run "postman/Presentation.postman_collection.json" \
+            --environment "postman/MutraPro Local.postman_environment.json" \
+            --env-var "baseUrl=http://localhost:3007/api" \
+            --reporters cli,junit,json,htmlextra \
+            --reporter-junit-export newman-results/newman-report.xml \
+            --reporter-json-export newman-results/newman-report.json \
+            --reporter-htmlextra-export newman-results/newman-report.html
+
+      - name: Upload Newman reports
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: newman-results
+          path: newman-results/
+          if-no-files-found: ignore
+
+      - name: Print failure logs
+        if: failure()
+        run: |
+          docker compose ps || true
+          docker compose logs --tail=200 api-gateway || true
+          docker compose logs --tail=200 auth-service || true
+          docker compose logs --tail=200 mysql_db || true
+
+      - name: Stop containers
+        if: always()
+        run: docker compose down --remove-orphans -v

@@ -1,5 +1,5 @@
 # Sử dụng base image Node.js
-FROM node:18-alpine
+FROM node:20-alpine
 
 # Đặt thư mục làm việc trong container
 WORKDIR /app
@@ -7,8 +7,10 @@ WORKDIR /app
 # Sao chép package.json và package-lock.json từ đúng vị trí của nó
 COPY services/auth-service/package*.json ./
 
+RUN apk add --no-cache wget
+
 # Cài đặt dependencies
-RUN npm install
+RUN npm ci --omit=dev
 
 # Sao chép thư mục shared từ gốc vào
 COPY shared ./shared

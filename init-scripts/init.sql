@@ -205,3 +205,18 @@ CREATE TABLE IF NOT EXISTS report_dashboard (
 */
 INSERT IGNORE INTO report_dashboard (report_name, json_value) VALUES
 ('dashboard_stats', '{"totalRevenue": 0, "totalOrders": 0, "orderStats": []}');
+
+/*
+================================================================
+(MỚI) DATABASE: TẠO USER ỨNG DỤNG
+================================================================
+*/
+CREATE USER IF NOT EXISTS 'mutrapro_app'@'%' IDENTIFIED WITH mysql_native_password BY '123456';
+GRANT ALL PRIVILEGES ON mutrapro_auth.* TO 'mutrapro_app'@'%';
+GRANT ALL PRIVILEGES ON mutrapro_order.* TO 'mutrapro_app'@'%';
+GRANT ALL PRIVILEGES ON mutrapro_task.* TO 'mutrapro_app'@'%';
+GRANT ALL PRIVILEGES ON mutrapro_file.* TO 'mutrapro_app'@'%';
+GRANT ALL PRIVILEGES ON mutrapro_studio.* TO 'mutrapro_app'@'%';
+GRANT ALL PRIVILEGES ON mutrapro_notification.* TO 'mutrapro_app'@'%';
+GRANT ALL PRIVILEGES ON mutrapro_analytics.* TO 'mutrapro_app'@'%';
+FLUSH PRIVILEGES;

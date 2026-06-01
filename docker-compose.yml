@@ -1,7 +1,9 @@
 services:
   # Dịch vụ Cơ sở dữ liệu MySQL
   mysql_db:
-    image: mysql:8.0
+    build:
+      context: .
+      dockerfile: ./services/mysql_db/Dockerfile
     restart: always
     mem_limit: 1G
     environment:
@@ -9,16 +11,17 @@ services:
     ports:
       - "3307:3306"
     volumes:
-      - ./init-scripts:/docker-entrypoint-initdb.d
       - mysql_data:/var/lib/mysql
     command:
       - --default-authentication-plugin=mysql_native_password
       - --character-set-server=utf8mb4
       - --collation-server=utf8mb4_unicode_ci 
     healthcheck:
-      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
-      timeout: 20s
+      test: ["CMD-SHELL", "mysqladmin ping -h localhost -uroot -p${DB_PASSWORD} || exit 1"]
+      interval: 10s
+      timeout: 5s
       retries: 10
+      start_period: 40s
     networks:
       - mutrapro-network
 
@@ -43,7 +46,9 @@ services:
 
   # ================== START: THÊM MỚI NIFI ==================
   nifi:
-    image: apache/nifi:1.23.2
+    build:
+      context: .
+      dockerfile: ./services/nifi/Dockerfile
     restart: always
     mem_limit: 1G
     ports:
@@ -54,9 +59,6 @@ services:
       # Một key bí mật, ní có thể đổi thành gì cũng được
       - NIFI_SENSITIVE_PROPS_KEY=${NIFI_SENSITIVE_PROPS_KEY}
     volumes:
-      # Mount file .jar của MySQL vào thư viện của NiFi
-      # Đảm bảo file này tồn tại ở thư mục gốc của project!
-      - ./mysql-connector-j-8.0.33.jar:/opt/nifi/nifi-current/lib/mysql-connector-j-8.0.33.jar
       # Volumes để NiFi lưu trữ flow
       - nifi_data:/opt/nifi/nifi-current/database_repository
       - nifi_conf:/opt/nifi/nifi-current/conf
@@ -74,8 +76,8 @@ services:
     restart: always
     environment:
       - DB_HOST=mysql_db
-      - DB_USER=root
-      - DB_PASSWORD=${DB_PASSWORD}
+      - DB_USER=mutrapro_app
+      - DB_PASSWORD=123456
       - DB_AUTH_NAME=mutrapro_auth
       - JWT_SECRET=${JWT_SECRET}
       - INTERNAL_SERVICE_TOKEN=${INTERNAL_SERVICE_TOKEN}
@@ -89,10 +91,11 @@ services:
     networks:
       - mutrapro-network
     healthcheck:
-      test: ["CMD", "node", "-e", "fetch('http://localhost:3001/health').then(r=>process.exit(r.ok?0:1)).catch(()=>process.exit(1))"]
-      interval: 30s
-      timeout: 10s
-      retries: 3
+      test: ["CMD-SHELL", "wget -qO- http://localhost:3001/health || exit 1"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+      start_period: 40s
 
   order-service:
     build:
@@ -101,8 +104,8 @@ services:
     restart: always
     environment:
       - DB_HOST=mysql_db
-      - DB_USER=root
-      - DB_PASSWORD=${DB_PASSWORD}
+      - DB_USER=mutrapro_app
+      - DB_PASSWORD=123456
       - DB_ORDER_NAME=mutrapro_order
       - JWT_SECRET=${JWT_SECRET}
       - INTERNAL_SERVICE_TOKEN=${INTERNAL_SERVICE_TOKEN}
@@ -128,8 +131,8 @@ services:
     restart: always
     environment:
       - DB_HOST=mysql_db
-      - DB_USER=root
-      - DB_PASSWORD=${DB_PASSWORD}
+      - DB_USER=mutrapro_app
+      - DB_PASSWORD=123456
       - DB_TASK_NAME=mutrapro_task
       - JWT_SECRET=${JWT_SECRET}
       - INTERNAL_SERVICE_TOKEN=${INTERNAL_SERVICE_TOKEN}
@@ -155,8 +158,8 @@ services:
     restart: always
     environment:
       - DB_HOST=mysql_db
-      - DB_USER=root
-      - DB_PASSWORD=${DB_PASSWORD}
+      - DB_USER=mutrapro_app
+      - DB_PASSWORD=123456
       - DB_FILE_NAME=mutrapro_file
       - JWT_SECRET=${JWT_SECRET}
       - INTERNAL_SERVICE_TOKEN=${INTERNAL_SERVICE_TOKEN}
@@ -183,8 +186,8 @@ services:
     restart: always
     environment:
       - DB_HOST=mysql_db
-      - DB_USER=root
-      - DB_PASSWORD=${DB_PASSWORD}
+      - DB_USER=mutrapro_app
+      - DB_PASSWORD=123456
       - DB_STUDIO_NAME=mutrapro_studio
       - JWT_SECRET=${JWT_SECRET}
       - INTERNAL_SERVICE_TOKEN=${INTERNAL_SERVICE_TOKEN}
@@ -212,8 +215,8 @@ services:
     restart: always
     environment:
       - DB_HOST=mysql_db
-      - DB_USER=root
-      - DB_PASSWORD=${DB_PASSWORD}
+      - DB_USER=mutrapro_app
+      - DB_PASSWORD=123456
       - JWT_SECRET=${JWT_SECRET}
       - INTERNAL_SERVICE_TOKEN=${INTERNAL_SERVICE_TOKEN}
       - CORS_ORIGIN=${CORS_ORIGIN}
@@ -240,8 +243,8 @@ services:
     restart: always
     environment:
       - DB_HOST=mysql_db
-      - DB_USER=root
-      - DB_PASSWORD=${DB_PASSWORD}
+      - DB_USER=mutrapro_app
+      - DB_PASSWORD=123456
       # Nó sẽ kết nối vào CSDL báo cáo MỚI
       - DB_ANALYTICS_NAME=mutrapro_analytics
       - JWT_SECRET=${JWT_SECRET}

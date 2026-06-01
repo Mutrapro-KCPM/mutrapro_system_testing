@@ -1,4 +1,4 @@
-﻿// auth-service/index.js
+// auth-service/index.js
 process.on('unhandledRejection', (reason, promise) => {
     console.error('Unhandled promise rejection:', reason);
     promise.catch(err => console.error('Promise rejection details:', err));
@@ -291,14 +291,45 @@ app.delete('/admin/users/:id', authMiddleware, checkRole('admin'), idParamValida
 app.use(notFound);
 app.use(errorHandler);
 
+const requiredEnv = [
+  'DB_HOST',
+  'DB_USER',
+  'DB_PASSWORD',
+  'DB_AUTH_NAME',
+  'JWT_SECRET'
+];
+
+for (const key of requiredEnv) {
+  if (!process.env[key]) {
+    logger.error(`[CONFIG ERROR] Missing required env: ${key}`);
+    process.exit(1);
+  }
+}
+
 const PORT = process.env.PORT || 3001;
-ensureSoftDeleteColumn()
-    .then(() => {
-        app.listen(PORT, () => {
-            logger.info(`Auth Service is running on port ${PORT}`);
-        });
-    })
-    .catch((error) => {
-        logger.error('Failed to initialize auth-service soft-delete support.', { message: error.message });
+
+async function startServer() {
+  const retries = 10;
+  const delayMs = 3000;
+  
+  for (let attempt = 1; attempt <= retries; attempt++) {
+    try {
+      await ensureSoftDeleteColumn();
+      logger.info('[DB] Auth service connected to database successfully');
+      
+      app.listen(PORT, () => {
+        logger.info(`[AUTH] Auth Service is running on port ${PORT}`);
+      });
+      return;
+    } catch (error) {
+      logger.error(`[DB] Connection attempt ${attempt}/${retries} failed: ${error.message}`);
+      if (attempt === retries) {
+        logger.error('[STARTUP ERROR] Auth service failed to start.', { message: error.message });
         process.exit(1);
-    });
+      }
+      await new Promise(resolve => setTimeout(resolve, delayMs));
+    }
+  }
+}
+
+startServer();
