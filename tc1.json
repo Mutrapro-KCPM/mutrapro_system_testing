@@ -1,0 +1,59 @@
+{
+  "name": "TC1_updateProfile",
+  "event": [
+    {
+      "listen": "test",
+      "script": {
+        "exec": [
+          "pm.test(\"Update profile success\", function () {\r",
+          "    pm.response.to.have.status(200);\r",
+          "});\r",
+          "\r",
+          "const response = pm.response.json();\r",
+          "\r",
+          "pm.test(\"Tên đã update\", function () {\r",
+          "    pm.expect(response.user.name).to.eql(\"UpdatedName\");\r",
+          "});"
+        ],
+        "type": "text/javascript",
+        "packages": {},
+        "requests": {}
+      }
+    }
+  ],
+  "request": {
+    "auth": {
+      "type": "bearer",
+      "bearer": [
+        {
+          "key": "token",
+          "value": "{{authToken}}",
+          "type": "string"
+        }
+      ]
+    },
+    "method": "PUT",
+    "header": [],
+    "body": {
+      "mode": "raw",
+      "raw": "{\r\n    \"name\": \"UpdatedName\"\r\n}",
+      "options": {
+        "raw": {
+          "language": "json"
+        }
+      }
+    },
+    "url": {
+      "raw": "{{baseUrl}}/auth/users/{{userId}}",
+      "host": [
+        "{{baseUrl}}"
+      ],
+      "path": [
+        "auth",
+        "users",
+        "{{userId}}"
+      ]
+    }
+  },
+  "response": []
+}

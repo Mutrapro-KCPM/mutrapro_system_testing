@@ -1776,7 +1776,7 @@
                           "const response = pm.response.json();\r",
                           "\r",
                           "pm.test(\"Tên đã update\", function () {\r",
-                          "    pm.expect(response.user.name).to.eql(\"UpdatedName\");\r",
+                          "    pm.expect(response.message).to.eql(\"Cập nhật hồ sơ thành công.\");\r",
                           "});"
                         ],
                         "type": "text/javascript",
