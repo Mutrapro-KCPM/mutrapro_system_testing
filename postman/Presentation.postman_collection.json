@@ -13,6 +13,10 @@
           "name": "order-service",
           "item": [
             {
+              "name": "Xác nhận API thật từ source code",
+              "item": []
+            },
+            {
               "name": "00 - Chuẩn bị dữ liệu",
               "item": [
                 {
@@ -1116,7 +1120,7 @@
                     "header": [],
                     "body": {
                       "mode": "raw",
-                      "raw": "{\r\n  \"name\": \"NguyenVanA\",\r\n  \"email\": \"test10@gmail.com\",\r\n  \"password\": \"123456789\"\r\n}",
+                      "raw": "{\r\n  \"name\": \"NguyenVanA\",\r\n  \"email\": \"mutrapro54@gmail.com\",\r\n  \"password\": \"123456789\"\r\n}",
                       "options": {
                         "raw": {
                           "language": "json"
@@ -1138,7 +1142,7 @@
                   "response": []
                 },
                 {
-                  "name": "TC1_trungEmail",
+                  "name": "trungEmail",
                   "event": [
                     {
                       "listen": "test",
@@ -1181,7 +1185,7 @@
                   "response": []
                 },
                 {
-                  "name": "TC2_saiEmail",
+                  "name": "saiEmail",
                   "event": [
                     {
                       "listen": "test",
@@ -1224,7 +1228,48 @@
                   "response": []
                 },
                 {
-                  "name": "TC3_nameRong",
+                  "name": "nameRong",
+                  "event": [
+                    {
+                      "listen": "test",
+                      "script": {
+                        "exec": [
+                          ""
+                        ],
+                        "type": "text/javascript",
+                        "packages": {},
+                        "requests": {}
+                      }
+                    }
+                  ],
+                  "request": {
+                    "method": "POST",
+                    "header": [],
+                    "body": {
+                      "mode": "raw",
+                      "raw": "{\r\n  \"name\": \"\",\r\n  \"email\": \"new@gmail.com\",\r\n  \"password\": \"123456789\"\r\n}",
+                      "options": {
+                        "raw": {
+                          "language": "json"
+                        }
+                      }
+                    },
+                    "url": {
+                      "raw": "{{baseUrl}}/api/auth/register",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "api",
+                        "auth",
+                        "register"
+                      ]
+                    }
+                  },
+                  "response": []
+                },
+                {
+                  "name": "nameQuaDai",
                   "event": [
                     {
                       "listen": "test",
@@ -1245,7 +1290,7 @@
                     "header": [],
                     "body": {
                       "mode": "raw",
-                      "raw": "{\r\n  \"name\": \"\",\r\n  \"email\": \"new@gmail.com\",\r\n  \"password\": \"123456789\"\r\n}",
+                      "raw": "{\r\n  \"name\": \"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa\",\r\n  \"email\": \"mutrapro54@gmail.com\",\r\n  \"password\": \"123456789\"\r\n}",
                       "options": {
                         "raw": {
                           "language": "json"
@@ -1302,20 +1347,13 @@
                   ],
                   "request": {
                     "auth": {
-                      "type": "bearer",
-                      "bearer": [
-                        {
-                          "key": "token",
-                          "value": "{{token}}",
-                          "type": "string"
-                        }
-                      ]
+                      "type": "noauth"
                     },
                     "method": "POST",
                     "header": [],
                     "body": {
                       "mode": "raw",
-                      "raw": "{\r\n  \"email\": \"test3@gmail.com\",\r\n  \"password\": \"123456789\"\r\n}\r\n",
+                      "raw": "{\r\n  \"email\": \"mutrapro54@gmail.com\",\r\n  \"password\": \"123456789\"\r\n}\r\n",
                       "options": {
                         "raw": {
                           "language": "json"
@@ -1529,7 +1567,12 @@
                       "listen": "test",
                       "script": {
                         "exec": [
-                          "pm.response.to.have.status(401);"
+                          "pm.test(\"No token\", function () {\r",
+                          "    pm.response.to.have.status(401);\r",
+                          "});\r",
+                          "\r",
+                          "const response = pm.response.json();\r",
+                          ""
                         ],
                         "type": "text/javascript",
                         "packages": {},
@@ -1578,7 +1621,12 @@
                       "listen": "test",
                       "script": {
                         "exec": [
-                          "pm.response.to.have.status(401);"
+                          "pm.test(\"Invalid token\", function () {\r",
+                          "    pm.response.to.have.status(401);\r",
+                          "});\r",
+                          "\r",
+                          "const response = pm.response.json();\r",
+                          ""
                         ],
                         "type": "text/javascript",
                         "packages": {},
@@ -1627,7 +1675,12 @@
                       "listen": "test",
                       "script": {
                         "exec": [
-                          "pm.response.to.have.status(401);"
+                          "pm.test(\"Modified Token\", function () {\r",
+                          "    pm.response.to.have.status(401);\r",
+                          "});\r",
+                          "\r",
+                          "const response = pm.response.json();\r",
+                          ""
                         ],
                         "type": "text/javascript",
                         "packages": {},
@@ -1688,7 +1741,8 @@
                         "exec": [
                           "const response = pm.response.json();\r",
                           "\r",
-                          "pm.environment.set(\"token\", response.token);"
+                          "pm.environment.set(\"authToken\", response.token);\r",
+                          "pm.environment.set(\"userId\", response.user.id);"
                         ],
                         "type": "text/javascript",
                         "packages": {},
@@ -1753,7 +1807,7 @@
                       "bearer": [
                         {
                           "key": "token",
-                          "value": "{{token}}",
+                          "value": "{{authToken}}",
                           "type": "string"
                         }
                       ]
@@ -1770,7 +1824,7 @@
                       }
                     },
                     "url": {
-                      "raw": "{{baseUrl}}/api/auth/users/16",
+                      "raw": "{{baseUrl}}/api/auth/users/{{userId}}",
                       "host": [
                         "{{baseUrl}}"
                       ],
@@ -1778,7 +1832,7 @@
                         "api",
                         "auth",
                         "users",
-                        "16"
+                        "{{userId}}"
                       ]
                     }
                   },
@@ -1817,7 +1871,7 @@
                       }
                     },
                     "url": {
-                      "raw": "{{baseUrl}}/api/auth/users/16",
+                      "raw": "{{baseUrl}}/api/auth/users/{{userId}}",
                       "host": [
                         "{{baseUrl}}"
                       ],
@@ -1825,7 +1879,7 @@
                         "api",
                         "auth",
                         "users",
-                        "16"
+                        "{{userId}}"
                       ]
                     }
                   },
@@ -1854,7 +1908,7 @@
                       "bearer": [
                         {
                           "key": "token",
-                          "value": "{{token}}",
+                          "value": "{{authToken}}",
                           "type": "string"
                         }
                       ]
@@ -1892,7 +1946,12 @@
                       "listen": "test",
                       "script": {
                         "exec": [
-                          "pm.response.to.have.status(400);"
+                          "pm.test(\"Invalid Data\", function () {\r",
+                          "    pm.response.to.have.status(403);\r",
+                          "});\r",
+                          "\r",
+                          "const response = pm.response.json();\r",
+                          ""
                         ],
                         "type": "text/javascript",
                         "packages": {},
@@ -1906,7 +1965,7 @@
                       "bearer": [
                         {
                           "key": "token",
-                          "value": "{{token}}",
+                          "value": "{{authToken}}",
                           "type": "string"
                         }
                       ]
@@ -1944,7 +2003,12 @@
                       "listen": "test",
                       "script": {
                         "exec": [
-                          "pm.response.to.have.status(400);"
+                          "pm.test(\"Invalid name\", function () {\r",
+                          "    pm.response.to.have.status(500);\r",
+                          "});\r",
+                          "\r",
+                          "const response = pm.response.json();\r",
+                          ""
                         ],
                         "type": "text/javascript",
                         "packages": {},
@@ -1958,7 +2022,7 @@
                       "bearer": [
                         {
                           "key": "token",
-                          "value": "{{token}}",
+                          "value": "{{authToken}}",
                           "type": "string"
                         }
                       ]
@@ -1967,7 +2031,7 @@
                     "header": [],
                     "body": {
                       "mode": "raw",
-                      "raw": "{\r\n    \"name\": \"AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA\r\n}",
+                      "raw": "{\r\n    \"name\": \"AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA\"\r\n}",
                       "options": {
                         "raw": {
                           "language": "json"
@@ -1975,7 +2039,7 @@
                       }
                     },
                     "url": {
-                      "raw": "{{baseUrl}}/api/auth/users/16",
+                      "raw": "{{baseUrl}}/api/auth/users/{{userId}}",
                       "host": [
                         "{{baseUrl}}"
                       ],
@@ -1983,7 +2047,7 @@
                         "api",
                         "auth",
                         "users",
-                        "16"
+                        "{{userId}}"
                       ]
                     }
                   },
@@ -2074,17 +2138,17 @@
               "name": "Health Check",
               "item": [
                 {
-                  "name": "healthCheck",
+                  "name": "check_200",
                   "event": [
                     {
                       "listen": "test",
                       "script": {
                         "exec": [
                           "pm.test(\"Status is 200\", () => pm.response.to.have.status(200));\r",
-                          "pm.test(\"Service is OK\", () => {\r",
-                          "    const body = pm.response.json();\r",
-                          "    pm.expect(body.status).to.eql(\"ok\");\r",
-                          "    pm.expect(body.service).to.eql(\"notification-service\");\r",
+                          "pm.test(\"Service name is correct\", () => {\r",
+                          "  const json = pm.response.json();\r",
+                          "  pm.expect(json.service).to.eql(\"notification-service\");\r",
+                          "  pm.expect(json.status).to.eql(\"ok\");\r",
                           "});\r",
                           ""
                         ],
@@ -2098,9 +2162,9 @@
                     "method": "GET",
                     "header": [],
                     "url": {
-                      "raw": "{{baseUrl}}/health",
+                      "raw": "{{notificationUrl}}/health",
                       "host": [
-                        "{{baseUrl}}"
+                        "{{notificationUrl}}"
                       ],
                       "path": [
                         "health"
@@ -2112,22 +2176,20 @@
               ]
             },
             {
-              "name": "test DB",
+              "name": "Authentication (helper)",
               "item": [
                 {
-                  "name": "save_into_DB",
+                  "name": "login_200",
                   "event": [
                     {
                       "listen": "test",
                       "script": {
                         "exec": [
-                          "pm.test(\"Status is 201\", () => pm.response.to.have.status(201));\r",
-                          "pm.test(\"Has notification ID\", () => {\r",
-                          "    const body = pm.response.json();\r",
-                          "    pm.expect(body.id).to.be.a(\"number\");\r",
-                          "    // Lưu lại ID để dùng cho request sau\r",
-                          "    pm.collectionVariables.set(\"notification_id\", body.id);\r",
-                          "});\r",
+                          "pm.test(\"Login successful (200)\", () => pm.response.to.have.status(200));\r",
+                          "\r",
+                          "const json = pm.response.json();\r",
+                          "pm.environment.set(\"accessToken\", json.token);\r",
+                          "pm.environment.set(\"userId\", json.user.id);\r",
                           ""
                         ],
                         "type": "text/javascript",
@@ -2137,11 +2199,14 @@
                     }
                   ],
                   "request": {
+                    "auth": {
+                      "type": "noauth"
+                    },
                     "method": "POST",
                     "header": [],
                     "body": {
                       "mode": "raw",
-                      "raw": "{\r\n  \"user_id\": \"{{userId}}\",\r\n  \"title\": \"Thông báo test\",\r\n  \"message\": \"Đây là nội dung thông báo thử nghiệm\",\r\n  \"channel\": \"push\"\r\n}\r\n",
+                      "raw": "{\r\n  \"email\": \"admin@mutrapro.com\",\r\n  \"password\": \"Admin@123\"\r\n}\r\n",
                       "options": {
                         "raw": {
                           "language": "json"
@@ -2149,82 +2214,10 @@
                       }
                     },
                     "url": {
-                      "raw": "{{baseUrl}}/send",
+                      "raw": "{{authBaseUrl}}/api/auth/login",
                       "host": [
-                        "{{baseUrl}}"
+                        "{{authBaseUrl}}"
                       ],
-                      "path": [
-                        "send"
-                      ]
-                    }
-                  },
-                  "response": []
-                },
-                {
-                  "name": "save_into_DB_500",
-                  "event": [
-                    {
-                      "listen": "test",
-                      "script": {
-                        "exec": [
-                          "pm.test(\"Status is 400\", () => pm.response.to.have.status(400));"
-                        ],
-                        "type": "text/javascript",
-                        "packages": {},
-                        "requests": {}
-                      }
-                    }
-                  ],
-                  "request": {
-                    "method": "POST",
-                    "header": [],
-                    "body": {
-                      "mode": "raw",
-                      "raw": "{\r\n  \"title\": \"Thông báo test\",\r\n  \"message\": \"Đây là nội dung thông báo thử nghiệm\",\r\n  \"channel\": \"push\"\r\n}\r\n",
-                      "options": {
-                        "raw": {
-                          "language": "json"
-                        }
-                      }
-                    },
-                    "url": {
-                      "raw": "{{baseUrl}}/send",
-                      "host": [
-                        "{{baseUrl}}"
-                      ],
-                      "path": [
-                        "send"
-                      ]
-                    }
-                  },
-                  "response": []
-                }
-              ]
-            },
-            {
-              "name": "marked-as-read-notification",
-              "item": [
-                {
-                  "name": "login",
-                  "request": {
-                    "method": "POST",
-                    "header": [],
-                    "body": {
-                      "mode": "raw",
-                      "raw": "{\r\n    \"email\": \"test3@gmail.com\",\r\n    \"password\": \"123456789\"\r\n}",
-                      "options": {
-                        "raw": {
-                          "language": "json"
-                        }
-                      }
-                    },
-                    "url": {
-                      "raw": "http://localhost:3007/api/auth/login",
-                      "protocol": "http",
-                      "host": [
-                        "localhost"
-                      ],
-                      "port": "3007",
                       "path": [
                         "api",
                         "auth",
@@ -2233,505 +2226,1198 @@
                     }
                   },
                   "response": []
-                },
-                {
-                  "name": "IDnotFound",
-                  "event": [
-                    {
-                      "listen": "test",
-                      "script": {
-                        "exec": [
-                          "pm.test(\"Status is 404\", () => pm.response.to.have.status(404));"
-                        ],
-                        "type": "text/javascript",
-                        "packages": {},
-                        "requests": {}
-                      }
-                    }
-                  ],
-                  "request": {
-                    "auth": {
-                      "type": "bearer",
-                      "bearer": [
-                        {
-                          "key": "token",
-                          "value": "{{auth_token}}",
-                          "type": "string"
-                        }
-                      ]
-                    },
-                    "method": "PATCH",
-                    "header": [],
-                    "body": {
-                      "mode": "raw",
-                      "raw": ""
-                    },
-                    "url": {
-                      "raw": "{{baseUrl}}/9999/read",
-                      "host": [
-                        "{{baseUrl}}"
-                      ],
-                      "path": [
-                        "9999",
-                        "read"
-                      ]
-                    }
-                  },
-                  "response": []
-                },
-                {
-                  "name": "markedAsRead",
-                  "event": [
-                    {
-                      "listen": "test",
-                      "script": {
-                        "exec": [
-                          "pm.test(\"Status is 200\", () => pm.response.to.have.status(200));\r",
-                          "pm.test(\"Marked as read\", () => {\r",
-                          "    const body = pm.response.json();\r",
-                          "    pm.expect(body.success).to.be.true;\r",
-                          "    pm.expect(body.message).to.include(\"read\");\r",
-                          "});\r",
-                          ""
-                        ],
-                        "type": "text/javascript",
-                        "packages": {},
-                        "requests": {}
-                      }
-                    }
-                  ],
-                  "request": {
-                    "auth": {
-                      "type": "bearer",
-                      "bearer": [
-                        {
-                          "key": "token",
-                          "value": "{{auth_token}}",
-                          "type": "string"
-                        }
-                      ]
-                    },
-                    "method": "PATCH",
-                    "header": [],
-                    "url": {
-                      "raw": "{{baseUrl}}/{{notification_id}}/read",
-                      "host": [
-                        "{{baseUrl}}"
-                      ],
-                      "path": [
-                        "{{notification_id}}",
-                        "read"
-                      ]
-                    }
-                  },
-                  "response": []
-                },
-                {
-                  "name": "readAnotherUser",
-                  "event": [
-                    {
-                      "listen": "test",
-                      "script": {
-                        "exec": [
-                          "pm.test(\"Status is 403\", () => pm.response.to.have.status(403));\r",
-                          "\r",
-                          ""
-                        ],
-                        "type": "text/javascript",
-                        "packages": {},
-                        "requests": {}
-                      }
-                    }
-                  ],
-                  "request": {
-                    "auth": {
-                      "type": "bearer",
-                      "bearer": [
-                        {
-                          "key": "token",
-                          "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTYsIm5hbWUiOiJVcGRhdGVkTmFtZSIsImVtYWlsIjoidGVzdDNAZ21haWwuY29tIiwicm9sZSI6ImN1c3RvbWVyIiwiaWF0IjoxNzc5ODEwMTM2LCJleHAiOjE3Nzk4OTY1MzZ9.Bz2Gn9LG7_D0DFYnpCJ5qQ3fmQVPnHFGeWBthrVvrKo",
-                          "type": "string"
-                        }
-                      ]
-                    },
-                    "method": "PATCH",
-                    "header": [],
-                    "url": {
-                      "raw": "{{baseUrl}}/{{notification_id}}/read",
-                      "host": [
-                        "{{baseUrl}}"
-                      ],
-                      "path": [
-                        "{{notification_id}}",
-                        "read"
-                      ]
-                    }
-                  },
-                  "response": []
-                },
-                {
-                  "name": "noToken",
-                  "event": [
-                    {
-                      "listen": "test",
-                      "script": {
-                        "exec": [
-                          "pm.test(\"Status is 401\", () => pm.response.to.have.status(401));\r",
-                          ""
-                        ],
-                        "type": "text/javascript",
-                        "packages": {},
-                        "requests": {}
-                      }
-                    }
-                  ],
-                  "request": {
-                    "auth": {
-                      "type": "bearer",
-                      "bearer": [
-                        {
-                          "key": "token",
-                          "value": "",
-                          "type": "string"
-                        }
-                      ]
-                    },
-                    "method": "PATCH",
-                    "header": [],
-                    "url": {
-                      "raw": "{{baseUrl}}/{{notification_id}}/read",
-                      "host": [
-                        "{{baseUrl}}"
-                      ],
-                      "path": [
-                        "{{notification_id}}",
-                        "read"
-                      ]
-                    }
-                  },
-                  "response": []
                 }
               ]
             },
             {
-              "name": "take-notification-list",
+              "name": "Notification CRUD",
               "item": [
                 {
-                  "name": "getNotificationofUser",
-                  "event": [
+                  "name": "Create Notification",
+                  "item": [
                     {
-                      "listen": "test",
-                      "script": {
-                        "exec": [
-                          "pm.test(\"Status is 200\", () => pm.response.to.have.status(200));\r",
-                          "pm.test(\"Response structure is correct\", () => {\r",
-                          "    const body = pm.response.json();\r",
-                          "    pm.expect(body.success).to.be.true;\r",
-                          "    pm.expect(body.data.items).to.be.an(\"array\");\r",
-                          "    pm.expect(body.data.pagination).to.have.property(\"total\");\r",
-                          "    pm.expect(body.data.pagination).to.have.property(\"totalPages\");\r",
-                          "});\r",
-                          ""
-                        ],
-                        "type": "text/javascript",
-                        "packages": {},
-                        "requests": {}
-                      }
+                      "name": "Create_201",
+                      "event": [
+                        {
+                          "listen": "test",
+                          "script": {
+                            "exec": [
+                              "pm.test(\"Created (201)\", () => pm.response.to.have.status(201));\r",
+                              "const json = pm.response.json();\r",
+                              "pm.environment.set(\"notificationId\", json.id);\r",
+                              "pm.expect(json.message).to.eql(\"Notification saved successfully\");\r",
+                              ""
+                            ],
+                            "type": "text/javascript",
+                            "packages": {},
+                            "requests": {}
+                          }
+                        }
+                      ],
+                      "request": {
+                        "auth": {
+                          "type": "noauth"
+                        },
+                        "method": "POST",
+                        "header": [],
+                        "body": {
+                          "mode": "raw",
+                          "raw": "{\r\n  \"user_id\": \"{{userId}}\",\r\n  \"title\": \"Demo notification\",\r\n  \"message\": \"This is a test from Postman\",\r\n  \"channel\": \"push\"\r\n}\r\n",
+                          "options": {
+                            "raw": {
+                              "language": "json"
+                            }
+                          }
+                        },
+                        "url": {
+                          "raw": "{{notificationUrl}}/send",
+                          "host": [
+                            "{{notificationUrl}}"
+                          ],
+                          "path": [
+                            "send"
+                          ]
+                        }
+                      },
+                      "response": []
                     }
-                  ],
-                  "protocolProfileBehavior": {
-                    "disableBodyPruning": true
-                  },
-                  "request": {
-                    "auth": {
-                      "type": "bearer",
-                      "bearer": [
+                  ]
+                },
+                {
+                  "name": "List Notifications",
+                  "item": [
+                    {
+                      "name": "list_200",
+                      "event": [
                         {
-                          "key": "token",
-                          "value": "{{auth_token}}",
-                          "type": "string"
-                        }
-                      ]
-                    },
-                    "method": "GET",
-                    "header": [],
-                    "body": {
-                      "mode": "raw",
-                      "raw": "",
-                      "options": {
-                        "raw": {
-                          "language": "json"
-                        }
-                      }
-                    },
-                    "url": {
-                      "raw": "{{baseUrl}}/?page=1&limit=10",
-                      "host": [
-                        "{{baseUrl}}"
-                      ],
-                      "path": [
-                        ""
-                      ],
-                      "query": [
-                        {
-                          "key": "page",
-                          "value": "1"
+                          "listen": "test",
+                          "script": {
+                            "exec": [
+                              "pm.test(\"OK (200)\", () => pm.response.to.have.status(200));\r",
+                              "const json = pm.response.json();\r",
+                              "pm.test(\"Response schema\", () => {\r",
+                              "  pm.expect(json.success).to.be.true;\r",
+                              "  pm.expect(json.data).to.have.property(\"items\");\r",
+                              "  pm.expect(json.data).to.have.property(\"pagination\");\r",
+                              "});\r",
+                              ""
+                            ],
+                            "type": "text/javascript",
+                            "packages": {},
+                            "requests": {}
+                          }
                         },
                         {
-                          "key": "limit",
-                          "value": "10"
+                          "listen": "prerequest",
+                          "script": {
+                            "exec": [
+                              "if (!pm.environment.get(\"accessToken\")) {\r",
+                              "  // Run login request automatically\r",
+                              "  pm.sendRequest({\r",
+                              "    url: pm.environment.get(\"authBaseUrl\") + \"/auth/login\",\r",
+                              "    method: \"POST\",\r",
+                              "    header: { \"Content-Type\": \"application/json\" },\r",
+                              "    body: {\r",
+                              "      mode: \"raw\",\r",
+                              "      raw: JSON.stringify({ email: \"admin@mutrapro.com\", password: \"Admin@123\" })\r",
+                              "    }\r",
+                              "  }, (err, res) => {\r",
+                              "    if (!err && res.code === 200) {\r",
+                              "      const data = res.json();\r",
+                              "      pm.environment.set(\"accessToken\", data.token);\r",
+                              "      pm.environment.set(\"userId\", data.user.id);\r",
+                              "    }\r",
+                              "  });\r",
+                              "}\r",
+                              ""
+                            ],
+                            "type": "text/javascript",
+                            "packages": {},
+                            "requests": {}
+                          }
                         }
-                      ]
-                    }
-                  },
-                  "response": []
-                },
-                {
-                  "name": "getNotificationofUser_401",
-                  "event": [
-                    {
-                      "listen": "test",
-                      "script": {
-                        "exec": [
-                          "pm.test(\"Status is 401\", () => pm.response.to.have.status(401));\r",
-                          ""
-                        ],
-                        "type": "text/javascript",
-                        "packages": {},
-                        "requests": {}
-                      }
-                    }
-                  ],
-                  "protocolProfileBehavior": {
-                    "disableBodyPruning": true
-                  },
-                  "request": {
-                    "auth": {
-                      "type": "bearer",
-                      "bearer": [
-                        {
-                          "key": "token",
-                          "value": "",
-                          "type": "string"
-                        }
-                      ]
-                    },
-                    "method": "GET",
-                    "header": [],
-                    "body": {
-                      "mode": "raw",
-                      "raw": "",
-                      "options": {
-                        "raw": {
-                          "language": "json"
-                        }
-                      }
-                    },
-                    "url": {
-                      "raw": "{{baseUrl}}/?page=1&limit=10",
-                      "host": [
-                        "{{baseUrl}}"
                       ],
-                      "path": [
-                        ""
-                      ],
-                      "query": [
-                        {
-                          "key": "page",
-                          "value": "1"
+                      "protocolProfileBehavior": {
+                        "disableBodyPruning": true
+                      },
+                      "request": {
+                        "auth": {
+                          "type": "bearer",
+                          "bearer": [
+                            {
+                              "key": "token",
+                              "value": "{{accessToken}}",
+                              "type": "string"
+                            }
+                          ]
                         },
+                        "method": "GET",
+                        "header": [],
+                        "body": {
+                          "mode": "raw",
+                          "raw": "",
+                          "options": {
+                            "raw": {
+                              "language": "json"
+                            }
+                          }
+                        },
+                        "url": {
+                          "raw": "{{notificationUrl}}/?page=1&limit=10",
+                          "host": [
+                            "{{notificationUrl}}"
+                          ],
+                          "path": [
+                            ""
+                          ],
+                          "query": [
+                            {
+                              "key": "page",
+                              "value": "1"
+                            },
+                            {
+                              "key": "limit",
+                              "value": "10"
+                            }
+                          ]
+                        }
+                      },
+                      "response": []
+                    }
+                  ]
+                },
+                {
+                  "name": "Mark As Read",
+                  "item": [
+                    {
+                      "name": "mar_200",
+                      "event": [
                         {
-                          "key": "limit",
-                          "value": "10"
+                          "listen": "test",
+                          "script": {
+                            "exec": [
+                              "pm.test(\"OK (200)\", () => pm.response.to.have.status(200));\r",
+                              "const json = pm.response.json();\r",
+                              "pm.expect(json.success).to.be.true;\r",
+                              "pm.expect(json.message).to.eql(\"Notification marked as read.\");\r",
+                              ""
+                            ],
+                            "type": "text/javascript",
+                            "packages": {},
+                            "requests": {}
+                          }
                         }
-                      ]
+                      ],
+                      "request": {
+                        "auth": {
+                          "type": "bearer",
+                          "bearer": [
+                            {
+                              "key": "token",
+                              "value": "{{accessToken}}",
+                              "type": "string"
+                            }
+                          ]
+                        },
+                        "method": "PATCH",
+                        "header": [],
+                        "body": {
+                          "mode": "raw",
+                          "raw": "{\r\n  \"user_id\": \"{{userId}}\",\r\n  \"title\": \"Demo notification\",\r\n  \"message\": \"This is a test from Postman\",\r\n  \"channel\": \"push\"\r\n}\r\n"
+                        },
+                        "url": {
+                          "raw": "{{notificationUrl}}/{{notificationId}}/read",
+                          "host": [
+                            "{{notificationUrl}}"
+                          ],
+                          "path": [
+                            "{{notificationId}}",
+                            "read"
+                          ]
+                        }
+                      },
+                      "response": []
                     }
-                  },
-                  "response": []
+                  ]
+                }
+              ],
+              "event": [
+                {
+                  "listen": "prerequest",
+                  "script": {
+                    "type": "text/javascript",
+                    "packages": {},
+                    "requests": {},
+                    "exec": [
+                      "if (!pm.environment.get(\"accessToken\")) {\r",
+                      "  // Run login request automatically\r",
+                      "  pm.sendRequest({\r",
+                      "    url: pm.environment.get(\"authBaseUrl\") + \"/auth/login\",\r",
+                      "    method: \"POST\",\r",
+                      "    header: { \"Content-Type\": \"application/json\" },\r",
+                      "    body: {\r",
+                      "      mode: \"raw\",\r",
+                      "      raw: JSON.stringify({ email: \"admin@mutrapro.com\", password: \"Admin@123\" })\r",
+                      "    }\r",
+                      "  }, (err, res) => {\r",
+                      "    if (!err && res.code === 200) {\r",
+                      "      const data = res.json();\r",
+                      "      pm.environment.set(\"accessToken\", data.token);\r",
+                      "      pm.environment.set(\"userId\", data.user.id);\r",
+                      "    }\r",
+                      "  });\r",
+                      "}\r",
+                      ""
+                    ]
+                  }
+                },
+                {
+                  "listen": "test",
+                  "script": {
+                    "type": "text/javascript",
+                    "packages": {},
+                    "requests": {},
+                    "exec": [
+                      "// Generic status‑code check\r",
+                      "pm.test(\"Status code is 2xx\", () => pm.response.to.be.success);\r",
+                      "\r",
+                      "// If server returns an error object, surface it\r",
+                      "if (pm.response.code >= 400) {\r",
+                      "  console.warn(\"Error response:\", pm.response.json());\r",
+                      "}\r",
+                      ""
+                    ]
+                  }
                 }
               ]
             },
             {
-              "name": "FCM Token",
+              "name": "Device Management",
               "item": [
                 {
-                  "name": "fcmToken_200",
-                  "event": [
+                  "name": "Register Device",
+                  "item": [
                     {
-                      "listen": "test",
-                      "script": {
-                        "exec": [
-                          "pm.test(\"Status is 200\", () => pm.response.to.have.status(200));\r",
-                          "pm.test(\"Device registered\", () => {\r",
-                          "    const body = pm.response.json();\r",
-                          "    pm.expect(body.message).to.include(\"thành công\");\r",
-                          "});\r",
-                          ""
-                        ],
-                        "type": "text/javascript",
-                        "packages": {},
-                        "requests": {}
-                      }
-                    }
-                  ],
-                  "request": {
-                    "method": "POST",
-                    "header": [],
-                    "body": {
-                      "mode": "raw",
-                      "raw": "{\r\n  \"userId\": 1,\r\n  \"fcmToken\": \"dummy_fcm_token_for_testing_abc123xyz\"\r\n}\r\n",
-                      "options": {
-                        "raw": {
-                          "language": "json"
+                      "name": "registerDevice_200",
+                      "event": [
+                        {
+                          "listen": "test",
+                          "script": {
+                            "exec": [
+                              "pm.test(\"Registered (200)\", () => pm.response.to.have.status(200));\r",
+                              "pm.expect(pm.response.json().message).to.eql(\"Thiết bị đã được đăng ký thành công\");\r",
+                              ""
+                            ],
+                            "type": "text/javascript",
+                            "packages": {},
+                            "requests": {}
+                          }
                         }
-                      }
-                    },
-                    "url": {
-                      "raw": "{{baseUrl}}/register-device",
-                      "host": [
-                        "{{baseUrl}}"
                       ],
-                      "path": [
-                        "register-device"
-                      ]
-                    }
-                  },
-                  "response": []
-                },
-                {
-                  "name": "fcmToken_400",
-                  "event": [
-                    {
-                      "listen": "test",
-                      "script": {
-                        "exec": [
-                          "pm.test(\"Status is 400\", () => pm.response.to.have.status(400));\r",
-                          ""
-                        ],
-                        "type": "text/javascript",
-                        "packages": {},
-                        "requests": {}
-                      }
-                    }
-                  ],
-                  "request": {
-                    "method": "POST",
-                    "header": [],
-                    "body": {
-                      "mode": "raw",
-                      "raw": "{\r\n  \"fcmToken\": \"dummy_fcm_token_for_testing_abc123xyz\"\r\n}\r\n",
-                      "options": {
-                        "raw": {
-                          "language": "json"
+                      "request": {
+                        "auth": {
+                          "type": "noauth"
+                        },
+                        "method": "POST",
+                        "header": [],
+                        "body": {
+                          "mode": "raw",
+                          "raw": "{\r\n  \"userId\": \"{{userId}}\",\r\n  \"fcmToken\": \"FAKE_FCM_TOKEN_FOR_TESTING\"\r\n}\r\n",
+                          "options": {
+                            "raw": {
+                              "language": "json"
+                            }
+                          }
+                        },
+                        "url": {
+                          "raw": "{{notificationUrl}}/register-device",
+                          "host": [
+                            "{{notificationUrl}}"
+                          ],
+                          "path": [
+                            "register-device"
+                          ]
                         }
-                      }
-                    },
-                    "url": {
-                      "raw": "{{baseUrl}}/register-device",
-                      "host": [
-                        "{{baseUrl}}"
-                      ],
-                      "path": [
-                        "register-device"
-                      ]
+                      },
+                      "response": []
                     }
-                  },
-                  "response": []
+                  ]
                 }
               ]
             },
             {
-              "name": "Real Time",
+              "name": "Real‑time & Push",
               "item": [
                 {
-                  "name": "user(offline)_200",
-                  "event": [
+                  "name": "Notify (broadcast / single user)",
+                  "item": [
                     {
-                      "listen": "test",
-                      "script": {
-                        "exec": [
-                          "pm.test(\"Status is 200\", () => pm.response.to.have.status(200));\r",
-                          "pm.test(\"Has message\", () => {\r",
-                          "    const body = pm.response.json();\r",
-                          "    pm.expect(body.message).to.be.a(\"string\");\r",
-                          "});\r",
-                          ""
-                        ],
-                        "type": "text/javascript",
-                        "packages": {},
-                        "requests": {}
-                      }
-                    }
-                  ],
-                  "request": {
-                    "method": "POST",
-                    "header": [],
-                    "body": {
-                      "mode": "raw",
-                      "raw": "{\r\n  \"userId\": \"1\",\r\n  \"eventName\": \"new_order\",\r\n  \"data\": {\r\n    \"message\": \"Đơn hàng #123 của bạn đã được xác nhận\",\r\n    \"orderId\": 123\r\n  }\r\n}\r\n\r\n\r\n",
-                      "options": {
-                        "raw": {
-                          "language": "json"
+                      "name": "broadcast_200",
+                      "event": [
+                        {
+                          "listen": "test",
+                          "script": {
+                            "exec": [
+                              "pm.test(\"OK (200)\", () => pm.response.to.have.status(200));\r",
+                              "pm.expect(pm.response.json().message).to.match(/(Đã broadcast|đã gửi push notification|đã gửi realtime notification)/i);\r",
+                              ""
+                            ],
+                            "type": "text/javascript",
+                            "packages": {},
+                            "requests": {}
+                          }
                         }
-                      }
-                    },
-                    "url": {
-                      "raw": "{{baseUrl}}/notify",
-                      "host": [
-                        "{{baseUrl}}"
                       ],
-                      "path": [
-                        "notify"
-                      ]
-                    }
-                  },
-                  "response": []
-                },
-                {
-                  "name": "broadcast_200",
-                  "event": [
+                      "request": {
+                        "auth": {
+                          "type": "noauth"
+                        },
+                        "method": "POST",
+                        "header": [],
+                        "body": {
+                          "mode": "raw",
+                          "raw": "{\r\n  \"userId\": \"broadcast\",\r\n  \"eventName\": \"test-broadcast\",\r\n  \"data\": { \"message\": \"Hello everyone!\" }\r\n}\r\n",
+                          "options": {
+                            "raw": {
+                              "language": "json"
+                            }
+                          }
+                        },
+                        "url": {
+                          "raw": "{{notificationUrl}}/notify",
+                          "host": [
+                            "{{notificationUrl}}"
+                          ],
+                          "path": [
+                            "notify"
+                          ]
+                        }
+                      },
+                      "response": []
+                    },
                     {
-                      "listen": "test",
-                      "script": {
-                        "exec": [
-                          "pm.test(\"Status is 200\", () => pm.response.to.have.status(200));\r",
-                          "pm.test(\"Has message\", () => {\r",
-                          "    const body = pm.response.json();\r",
-                          "    pm.expect(body.message).to.be.a(\"string\");\r",
-                          "});\r",
-                          ""
-                        ],
-                        "type": "text/javascript",
-                        "packages": {},
-                        "requests": {}
-                      }
-                    }
-                  ],
-                  "request": {
-                    "method": "POST",
-                    "header": [],
-                    "body": {
-                      "mode": "raw",
-                      "raw": "{\r\n  \"userId\": \"broadcast\",\r\n  \"eventName\": \"system_announcement\",\r\n  \"data\": {\r\n    \"message\": \"Hệ thống sẽ bảo trì lúc 2 giờ sáng\"\r\n  }\r\n}\r\n",
-                      "options": {
-                        "raw": {
-                          "language": "json"
+                      "name": "singleUser_200",
+                      "event": [
+                        {
+                          "listen": "test",
+                          "script": {
+                            "exec": [
+                              "pm.test(\"OK (200)\", () => pm.response.to.have.status(200));\r",
+                              "pm.expect(pm.response.json().message).to.match(/(Đã broadcast|đã gửi push notification|đã gửi realtime notification)/i);\r",
+                              ""
+                            ],
+                            "type": "text/javascript",
+                            "packages": {},
+                            "requests": {}
+                          }
                         }
-                      }
-                    },
-                    "url": {
-                      "raw": "{{baseUrl}}/notify",
-                      "host": [
-                        "{{baseUrl}}"
                       ],
-                      "path": [
-                        "notify"
-                      ]
+                      "request": {
+                        "auth": {
+                          "type": "noauth"
+                        },
+                        "method": "POST",
+                        "header": [],
+                        "body": {
+                          "mode": "raw",
+                          "raw": "{\r\n  \"userId\": \"{{userId}}\",\r\n  \"eventName\": \"new-message\",\r\n  \"data\": { \"message\": \"You have a new alert!\" }\r\n}\r\n",
+                          "options": {
+                            "raw": {
+                              "language": "json"
+                            }
+                          }
+                        },
+                        "url": {
+                          "raw": "{{notificationUrl}}/notify",
+                          "host": [
+                            "{{notificationUrl}}"
+                          ],
+                          "path": [
+                            "notify"
+                          ]
+                        }
+                      },
+                      "response": []
                     }
-                  },
-                  "response": []
+                  ]
                 }
               ]
+            }
+          ],
+          "event": [
+            {
+              "listen": "prerequest",
+              "script": {
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {},
+                "exec": [
+                  ""
+                ]
+              }
+            },
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {},
+                "exec": [
+                  ""
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "analytics-service",
+          "item": [
+            {
+              "name": "Login Admin",
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "exec": [
+                      "const json = pm.response.json();\r",
+                      "pm.environment.set(\"token\", json.token);\r",
+                      "pm.environment.set(\"userId\", json.user?.id);\r",
+                      "console.log(\"Saved token:\", pm.environment.get(\"token\"));"
+                    ],
+                    "type": "text/javascript",
+                    "packages": {},
+                    "requests": {}
+                  }
+                }
+              ],
+              "request": {
+                "auth": {
+                  "type": "noauth"
+                },
+                "method": "POST",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\r\n  \"email\": \"admin@mutrapro.com\",\r\n  \"password\": \"Admin@123\"\r\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/auth/login",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "auth",
+                    "login"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "Dashboard Stats",
+              "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{baseUrl}}/analytics/stats",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "analytics",
+                    "stats"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "Reports Overview",
+              "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{baseUrl}}/analytics/reports/overview",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "analytics",
+                    "reports",
+                    "overview"
+                  ]
+                }
+              },
+              "response": []
+            }
+          ],
+          "auth": {
+            "type": "bearer",
+            "bearer": [
+              {
+                "key": "token",
+                "value": "{{token}}",
+                "type": "string"
+              }
+            ]
+          },
+          "event": [
+            {
+              "listen": "prerequest",
+              "script": {
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {},
+                "exec": [
+                  ""
+                ]
+              }
+            },
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {},
+                "exec": [
+                  ""
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "api-gateway",
+          "item": []
+        },
+        {
+          "name": "file-service",
+          "item": [
+            {
+              "name": "Get Files By Order",
+              "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{baseUrl}}/files/files/order/{{orderId}}\n",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "files",
+                    "files",
+                    "order",
+                    "{{orderId}}\n"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "Create Order For File Test",
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "exec": [
+                      "const json = pm.response.json();\r",
+                      "const data = json.data || json;\r",
+                      "\r",
+                      "pm.environment.set(\"orderId\", data.id || data.orderId);\r",
+                      "\r",
+                      "pm.test(\"Order ID saved\", function () {\r",
+                      "  pm.expect(pm.environment.get(\"orderId\")).to.not.be.empty;\r",
+                      "});"
+                    ],
+                    "type": "text/javascript",
+                    "packages": {},
+                    "requests": {}
+                  }
+                }
+              ],
+              "request": {
+                "method": "POST",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\r\n  \"customer_id\": {{userId}},\r\n  \"service_type\": \"transcription\",\r\n  \"description\": \"Order test upload file\",\r\n  \"price\": 300000\r\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/orders",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "orders"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "Upload File",
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "exec": [
+                      "const json = pm.response.json();\r",
+                      "pm.environment.set(\"fileId\", json.data?.id || json.id);"
+                    ],
+                    "type": "text/javascript",
+                    "packages": {},
+                    "requests": {}
+                  }
+                }
+              ],
+              "request": {
+                "method": "POST",
+                "header": [],
+                "body": {
+                  "mode": "formdata",
+                  "formdata": [
+                    {
+                      "key": "order_id",
+                      "value": "{{orderId}}",
+                      "type": "text",
+                      "uuid": "ef2c034c-c263-49fd-a7a4-6668df49e66e"
+                    },
+                    {
+                      "key": "file_type",
+                      "value": "audio",
+                      "type": "text",
+                      "uuid": "85df231b-7957-4b36-9e91-627740ec882f"
+                    },
+                    {
+                      "key": "file",
+                      "type": "file",
+                      "uuid": "12a6d5bb-440f-4fcb-a7b1-101da27c364c",
+                      "src": "/C:/Users/Admin/Downloads/(257) habibi - YouTube.mp3"
+                    }
+                  ]
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/files/upload",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "files",
+                    "upload"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "Download File",
+              "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{baseUrl}}/files/files/download/{{fileId}}\n",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "files",
+                    "files",
+                    "download",
+                    "{{fileId}}\n"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "Login Customer",
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "exec": [
+                      "const json = pm.response.json();\r",
+                      "\r",
+                      "pm.environment.set(\"token\", json.token);\r",
+                      "pm.environment.set(\"userId\", json.user?.id);\r",
+                      "\r",
+                      "pm.test(\"Customer token saved\", function () {\r",
+                      "  pm.expect(pm.environment.get(\"token\")).to.not.be.empty;\r",
+                      "});"
+                    ],
+                    "type": "text/javascript",
+                    "packages": {},
+                    "requests": {}
+                  }
+                }
+              ],
+              "request": {
+                "method": "POST",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\r\n  \"email\": \"trong@gmail.com\",\r\n  \"password\": \"trong1802\"\r\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/auth/login",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "auth",
+                    "login"
+                  ]
+                }
+              },
+              "response": []
+            }
+          ],
+          "auth": {
+            "type": "bearer",
+            "bearer": [
+              {
+                "key": "token",
+                "value": "{{token}}",
+                "type": "string"
+              }
+            ]
+          },
+          "event": [
+            {
+              "listen": "prerequest",
+              "script": {
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {},
+                "exec": [
+                  ""
+                ]
+              }
+            },
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {},
+                "exec": [
+                  ""
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "studio-service",
+          "item": [
+            {
+              "name": "Login Studio Admin",
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "exec": [
+                      "const json = pm.response.json();\r",
+                      "\r",
+                      "pm.environment.set(\"token\", json.token);\r",
+                      "pm.environment.set(\"userId\", json.user?.id);\r",
+                      "\r",
+                      "pm.test(\"Studio admin token saved\", function () {\r",
+                      "  pm.expect(pm.environment.get(\"token\")).to.not.be.empty;\r",
+                      "});"
+                    ],
+                    "type": "text/javascript",
+                    "packages": {},
+                    "requests": {}
+                  }
+                }
+              ],
+              "request": {
+                "auth": {
+                  "type": "noauth"
+                },
+                "method": "POST",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\r\n  \"email\": \"studio@mutrapro.com\",\r\n  \"password\": \"Admin@123\"\r\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/auth/login",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "auth",
+                    "login"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "Create Booking",
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "exec": [
+                      ""
+                    ],
+                    "type": "text/javascript",
+                    "packages": {},
+                    "requests": {}
+                  }
+                }
+              ],
+              "request": {
+                "method": "POST",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\r\n  \"studio_id\": {{studioId}},\r\n  \"artist_id\": 5,\r\n  \"order_id\": {{orderId}},\r\n  \"start_time\": \"2026-08-30T09:00:00.000Z\",\r\n  \"end_time\": \"2026-08-30T11:00:00.000Z\",\r\n  \"studioAdminId\": {{userId}}\r\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/studio/bookings",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "studio",
+                    "bookings"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "Confirm Booking",
+              "request": {
+                "method": "POST",
+                "header": [],
+                "url": {
+                  "raw": "{{baseUrl}}/studio/bookings/{{bookingId}}/confirm",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "studio",
+                    "bookings",
+                    "{{bookingId}}",
+                    "confirm"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "Get Studios",
+              "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{baseUrl}}/studio/studios",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "studio",
+                    "studios"
+                  ]
+                }
+              },
+              "response": []
+            }
+          ],
+          "auth": {
+            "type": "bearer",
+            "bearer": [
+              {
+                "key": "token",
+                "value": "{{token}}",
+                "type": "string"
+              }
+            ]
+          },
+          "event": [
+            {
+              "listen": "prerequest",
+              "script": {
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {},
+                "exec": [
+                  ""
+                ]
+              }
+            },
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {},
+                "exec": [
+                  ""
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "task-service",
+          "item": [
+            {
+              "name": "Login Coordinator",
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "exec": [
+                      "const json = pm.response.json();\r",
+                      "\r",
+                      "pm.environment.set(\"token\", json.token);\r",
+                      "pm.environment.set(\"userId\", json.user?.id);"
+                    ],
+                    "type": "text/javascript",
+                    "packages": {},
+                    "requests": {}
+                  }
+                }
+              ],
+              "request": {
+                "auth": {
+                  "type": "noauth"
+                },
+                "method": "POST",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\r\n  \"email\": \"dpv@mutrapro.com\",\r\n  \"password\": \"Admin@123\"\r\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/auth/login",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "auth",
+                    "login"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "Get Task By Order",
+              "protocolProfileBehavior": {
+                "disableBodyPruning": true
+              },
+              "request": {
+                "method": "GET",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\r\n  \"status\": \"in_progress\"\r\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/tasks/order/1",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "tasks",
+                    "order",
+                    "1"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "Create Task",
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "exec": [
+                      "const json = pm.response.json();\r",
+                      "const data = json.data || json;\r",
+                      "\r",
+                      "pm.environment.set(\"taskId\", data.id || data.taskId);\r",
+                      "\r",
+                      "pm.test(\"Task ID saved\", function () {\r",
+                      "  pm.expect(pm.environment.get(\"taskId\")).to.not.be.empty;\r",
+                      "});"
+                    ],
+                    "type": "text/javascript",
+                    "packages": {},
+                    "requests": {}
+                  }
+                },
+                {
+                  "listen": "prerequest",
+                  "script": {
+                    "exec": [
+                      ""
+                    ],
+                    "type": "text/javascript",
+                    "packages": {},
+                    "requests": {}
+                  }
+                }
+              ],
+              "request": {
+                "method": "POST",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\r\n  \"order_id\": 1,\r\n  \"assigned_to\": 2,\r\n  \"specialist_role\": \"artist\",\r\n  \"title\": \"Task test của Đạt\",\r\n  \"description\": \"Kiểm tra task service\",\r\n  \"deadline\": \"2026-06-30\"\r\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/tasks",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "tasks"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "Update Task Status",
+              "request": {
+                "method": "PUT",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\r\n  \"status\": \"in_progress\"\r\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/tasks/{{taskId}}/status",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "tasks",
+                    "{{taskId}}",
+                    "status"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "Get Tasks By Specialist",
+              "protocolProfileBehavior": {
+                "disableBodyPruning": true
+              },
+              "request": {
+                "method": "GET",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/tasks/specialist/2",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "tasks",
+                    "specialist",
+                    "2"
+                  ]
+                }
+              },
+              "response": []
+            }
+          ],
+          "auth": {
+            "type": "bearer",
+            "bearer": [
+              {
+                "key": "token",
+                "value": "{{token}}",
+                "type": "string"
+              }
+            ]
+          },
+          "event": [
+            {
+              "listen": "prerequest",
+              "script": {
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {},
+                "exec": [
+                  ""
+                ]
+              }
+            },
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {},
+                "exec": [
+                  ""
+                ]
+              }
             }
           ]
         }
@@ -2787,6 +3473,10 @@
     },
     {
       "key": "auth_token",
+      "value": ""
+    },
+    {
+      "key": "authToken",
       "value": ""
     }
   ]

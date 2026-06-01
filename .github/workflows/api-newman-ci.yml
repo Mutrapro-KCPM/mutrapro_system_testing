@@ -64,28 +64,16 @@ jobs:
       - name: Install Newman
         run: npm install -g newman newman-reporter-htmlextra
 
-      - name: Run Presentation Postman collection with Newman
-        continue-on-error: true
+      - name: Run Postman collection with Newman
         run: |
           mkdir -p newman-results
           newman run "postman/Presentation.postman_collection.json" \
             --environment "postman/MutraPro Local.postman_environment.json" \
             --env-var "baseUrl=http://localhost:3007/api" \
             --reporters cli,junit,json,htmlextra \
-            --reporter-junit-export newman-results/presentation-report.xml \
-            --reporter-json-export newman-results/presentation-report.json \
-            --reporter-htmlextra-export newman-results/presentation-report.html
-
-      - name: Run Order Service Postman collection with Newman
-        continue-on-error: true
-        run: |
-          newman run "postman/Order_Service_Tests.postman_collection.json" \
-            --environment "postman/MutraPro Local.postman_environment.json" \
-            --env-var "baseUrl=http://localhost:3007/api" \
-            --reporters cli,junit,json,htmlextra \
-            --reporter-junit-export newman-results/order-service-report.xml \
-            --reporter-json-export newman-results/order-service-report.json \
-            --reporter-htmlextra-export newman-results/order-service-report.html
+            --reporter-junit-export newman-results/newman-report.xml \
+            --reporter-json-export newman-results/newman-report.json \
+            --reporter-htmlextra-export newman-results/newman-report.html
 
       - name: Upload Newman reports
         if: always()
