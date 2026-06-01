@@ -1226,8 +1226,6 @@
                 },
                 {
                   "name": "nameRong",
-<<<<<<< HEAD
-=======
                   "event": [
                     {
                       "listen": "test",
@@ -1247,48 +1245,6 @@
                     "body": {
                       "mode": "raw",
                       "raw": "{\r\n  \"name\": \"\",\r\n  \"email\": \"new@gmail.com\",\r\n  \"password\": \"123456789\"\r\n}",
-                      "options": {
-                        "raw": {
-                          "language": "json"
-                        }
-                      }
-                    },
-                    "url": {
-                      "raw": "{{baseUrl}}/api/auth/register",
-                      "host": [
-                        "{{baseUrl}}"
-                      ],
-                      "path": [
-                        "api",
-                        "auth",
-                        "register"
-                      ]
-                    }
-                  },
-                  "response": []
-                },
-                {
-                  "name": "nameQuaDai",
->>>>>>> 15069bcb2d0f31a46740e3625e2294353d10795d
-                  "event": [
-                    {
-                      "listen": "test",
-                      "script": {
-                        "exec": [
-                          ""
-                        ],
-                        "type": "text/javascript",
-                        "packages": {},
-                        "requests": {}
-                      }
-                    }
-                  ],
-                  "request": {
-                    "method": "POST",
-                    "header": [],
-                    "body": {
-                      "mode": "raw",
-                      "raw": "{\r\n  \"name\": \"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa\",\r\n  \"email\": \"mutrapro54@gmail.com\",\r\n  \"password\": \"123456789\"\r\n}",
                       "options": {
                         "raw": {
                           "language": "json"
@@ -1852,11 +1808,7 @@
                       }
                     },
                     "url": {
-<<<<<<< HEAD
                       "raw": "{{baseUrl}}/auth/users/{{userId}}",
-=======
-                      "raw": "{{baseUrl}}/api/auth/users/{{userId}}",
->>>>>>> 15069bcb2d0f31a46740e3625e2294353d10795d
                       "host": [
                         "{{baseUrl}}"
                       ],
@@ -1902,11 +1854,7 @@
                       }
                     },
                     "url": {
-<<<<<<< HEAD
                       "raw": "{{baseUrl}}/auth/users/{{userId}}",
-=======
-                      "raw": "{{baseUrl}}/api/auth/users/{{userId}}",
->>>>>>> 15069bcb2d0f31a46740e3625e2294353d10795d
                       "host": [
                         "{{baseUrl}}"
                       ],
@@ -2071,11 +2019,7 @@
                       }
                     },
                     "url": {
-<<<<<<< HEAD
                       "raw": "{{baseUrl}}/auth/users/{{userId}}",
-=======
-                      "raw": "{{baseUrl}}/api/auth/users/{{userId}}",
->>>>>>> 15069bcb2d0f31a46740e3625e2294353d10795d
                       "host": [
                         "{{baseUrl}}"
                       ],
@@ -2197,13 +2141,9 @@
                     "method": "GET",
                     "header": [],
                     "url": {
-<<<<<<< HEAD
                       "raw": "{{baseUrl}}/notifications/health",
-=======
-                      "raw": "{{notificationUrl}}/health",
->>>>>>> 15069bcb2d0f31a46740e3625e2294353d10795d
                       "host": [
-                        "{{notificationUrl}}"
+                        "{{baseUrl}}"
                       ],
                       "path": [
                         "notifications",
@@ -2254,19 +2194,11 @@
                       }
                     },
                     "url": {
-<<<<<<< HEAD
                       "raw": "{{baseUrl}}/auth/login",
-=======
-                      "raw": "{{authBaseUrl}}/api/auth/login",
->>>>>>> 15069bcb2d0f31a46740e3625e2294353d10795d
                       "host": [
-                        "{{authBaseUrl}}"
+                        "{{baseUrl}}"
                       ],
                       "path": [
-<<<<<<< HEAD
-=======
-                        "api",
->>>>>>> 15069bcb2d0f31a46740e3625e2294353d10795d
                         "auth",
                         "login"
                       ]
@@ -2317,15 +2249,9 @@
                           }
                         },
                         "url": {
-<<<<<<< HEAD
                           "raw": "{{baseUrl}}/send",
                           "host": [
                             "{{baseUrl}}"
-=======
-                          "raw": "{{notificationUrl}}/send",
-                          "host": [
-                            "{{notificationUrl}}"
->>>>>>> 15069bcb2d0f31a46740e3625e2294353d10795d
                           ],
                           "path": [
                             "send"
@@ -2416,20 +2342,12 @@
                           }
                         },
                         "url": {
-<<<<<<< HEAD
                           "raw": "{{baseUrl}}/notifications/?page=1&limit=10",
                           "host": [
                             "{{baseUrl}}"
                           ],
                           "path": [
                             "notifications",
-=======
-                          "raw": "{{notificationUrl}}/?page=1&limit=10",
-                          "host": [
-                            "{{notificationUrl}}"
-                          ],
-                          "path": [
->>>>>>> 15069bcb2d0f31a46740e3625e2294353d10795d
                             ""
                           ],
                           "query": [
@@ -2488,20 +2406,12 @@
                           "raw": "{\r\n  \"user_id\": \"{{userId}}\",\r\n  \"title\": \"Demo notification\",\r\n  \"message\": \"This is a test from Postman\",\r\n  \"channel\": \"push\"\r\n}\r\n"
                         },
                         "url": {
-<<<<<<< HEAD
                           "raw": "{{baseUrl}}/notifications/{{notificationId}}/read",
                           "host": [
                             "{{baseUrl}}"
                           ],
                           "path": [
                             "notifications",
-=======
-                          "raw": "{{notificationUrl}}/{{notificationId}}/read",
-                          "host": [
-                            "{{notificationUrl}}"
-                          ],
-                          "path": [
->>>>>>> 15069bcb2d0f31a46740e3625e2294353d10795d
                             "{{notificationId}}",
                             "read"
                           ]
@@ -2601,20 +2511,12 @@
                           }
                         },
                         "url": {
-<<<<<<< HEAD
                           "raw": "{{baseUrl}}/notifications/register-device",
                           "host": [
                             "{{baseUrl}}"
                           ],
                           "path": [
                             "notifications",
-=======
-                          "raw": "{{notificationUrl}}/register-device",
-                          "host": [
-                            "{{notificationUrl}}"
-                          ],
-                          "path": [
->>>>>>> 15069bcb2d0f31a46740e3625e2294353d10795d
                             "register-device"
                           ]
                         }
@@ -2664,20 +2566,12 @@
                           }
                         },
                         "url": {
-<<<<<<< HEAD
                           "raw": "{{baseUrl}}/notifications/notify",
                           "host": [
                             "{{baseUrl}}"
                           ],
                           "path": [
                             "notifications",
-=======
-                          "raw": "{{notificationUrl}}/notify",
-                          "host": [
-                            "{{notificationUrl}}"
-                          ],
-                          "path": [
->>>>>>> 15069bcb2d0f31a46740e3625e2294353d10795d
                             "notify"
                           ]
                         }
@@ -2717,20 +2611,12 @@
                           }
                         },
                         "url": {
-<<<<<<< HEAD
                           "raw": "{{baseUrl}}/notifications/notify",
                           "host": [
                             "{{baseUrl}}"
                           ],
                           "path": [
                             "notifications",
-=======
-                          "raw": "{{notificationUrl}}/notify",
-                          "host": [
-                            "{{notificationUrl}}"
-                          ],
-                          "path": [
->>>>>>> 15069bcb2d0f31a46740e3625e2294353d10795d
                             "notify"
                           ]
                         }
@@ -3000,7 +2886,7 @@
                       "key": "file",
                       "type": "file",
                       "uuid": "12a6d5bb-440f-4fcb-a7b1-101da27c364c",
-                      "src": "/C:/Users/Admin/Downloads/(257) habibi - YouTube.mp3"
+                      "src": "uploads/1778997218405-CHASHKAKEFIRA---MONTAGEM-FAVELA_320k.mp3"
                     }
                   ]
                 },
@@ -3064,7 +2950,7 @@
                 "header": [],
                 "body": {
                   "mode": "raw",
-                  "raw": "{\r\n  \"email\": \"trong@gmail.com\",\r\n  \"password\": \"trong1802\"\r\n}",
+                  "raw": "{\r\n  \"email\": \"thanhtri1607@gmail.com\",\r\n  \"password\": \"Admin@123\"\r\n}",
                   "options": {
                     "raw": {
                       "language": "json"
