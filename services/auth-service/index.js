@@ -98,6 +98,14 @@ const ensureSoftDeleteColumn = async () => {
 // 1. API: Đăng ký người dùng
 app.post('/register', registerValidation, asyncHandler(async (req, res) => {
     const { name, email, password } = req.body;
+    const [existingUsers] = await pool.execute(
+        'SELECT id FROM users WHERE email = ? AND is_deleted = 0 LIMIT 1',
+        [email]
+    );
+    if (existingUsers.length > 0) {
+        throw new AppError('Email already exists.', 409);
+    }
+
     const salt = await bcrypt.genSalt(10);
     const hashedPassword = await bcrypt.hash(password, salt);
 
@@ -158,24 +166,40 @@ app.put('/users/:id', authMiddleware, idParamValidation, asyncHandler(async (req
     const targetUserId = parseInt(req.params.id, 10);
     const { name } = req.body;
     if (req.user.id !== targetUserId) {
-        throw new AppError('Bạn không có quyền thực hiện hành động này.', 403);
+        throw new AppError('You do not have permission to perform this action.', 403);
     }
-    if (!name) {
-        throw new AppError('Tên không được để trống.', 400);
+
+    const trimmedName = typeof name === 'string' ? name.trim() : '';
+    if (!trimmedName) {
+        throw new AppError('Name is required.', 400);
     }
-    const [result] = await pool.execute('UPDATE users SET name = ? WHERE id = ? AND is_deleted = 0', [name, targetUserId]);
-    // === THĂM Lá»†NH XĂ“A CACHE ===
+    if (trimmedName.length > 100) {
+        throw new AppError('Name must be at most 100 characters.', 400);
+    }
+
+    const [result] = await pool.execute(
+        'UPDATE users SET name = ? WHERE id = ? AND is_deleted = 0',
+        [trimmedName, targetUserId]
+    );
     if (result.affectedRows > 0) {
         const customerCacheKey = `user:${targetUserId}:name`;
-        await redis.del(customerCacheKey); // Lá»‡nh xĂ³a key
+        await redis.del(customerCacheKey);
         logger.info(`[Cache] Deleted key ${customerCacheKey} after user profile update.`);
     }
-    // === Káº¾T THĂC THĂM Má»I ===
     if (result.affectedRows === 0) {
-        throw new AppError('Không tìm thấy người dùng.', 404);
+        throw new AppError('User not found.', 404);
     }
+
     logger.info(`User profile updated: ${req.user.email}`);
-    res.json({ message: 'Cập nhật hồ sơ thành công.' });
+    res.json({
+        message: 'Profile updated successfully.',
+        user: {
+            id: targetUserId,
+            name: trimmedName,
+            email: req.user.email,
+            role: req.user.role
+        }
+    });
 }));
 
 // 6. API: Đổi mật khẩu

@@ -77,11 +77,15 @@ app.get('/api/health/all', async (req, res) => {
 app.use('/api/auth', (req, res) => {
     forwardRequest(req, res, `http://auth-service:3001${req.url}`);
 });
-app.use('/api/orders', proxy('http://order-service:3002'));
+app.use('/api/orders', (req, res) => {
+    forwardRequest(req, res, `http://order-service:3002${req.url}`);
+});
 app.use('/api/payments', async (req, res) => {
     forwardRequest(req, res, `http://order-service:3002/payments${req.url}`);
 });
-app.use('/api/tasks', proxy('http://task-service:3003'));
+app.use('/api/tasks', (req, res) => {
+    forwardRequest(req, res, `http://task-service:3003${req.url}`);
+});
 
 // === START: PHáº¦N Cáº¬P NHáº¬T CHĂNH Náº°M á» ÄĂ‚Y ===
 // ThĂªm { limit: '50mb' } Ä‘á»ƒ cho phĂ©p upload file náº·ng
@@ -90,8 +94,13 @@ app.use('/api/files', proxy('http://file-service:3004', {
 }));
 // === END: PHáº¦N Cáº¬P NHáº¬T ===
 
+app.use('/api/send', (req, res) => {
+    forwardRequest(req, res, `http://notification-service:3006/send`);
+});
 app.use('/api/studio', proxy('http://studio-service:3005'));
-app.use('/api/notifications', proxy('http://notification-service:3006'));
+app.use('/api/notifications', (req, res) => {
+    forwardRequest(req, res, `http://notification-service:3006${req.url}`);
+});
 app.use('/api/analytics', proxy('http://analytics-service:3008'));
 app.use('/api/reports', proxy('http://analytics-service:3008/reports'));
 

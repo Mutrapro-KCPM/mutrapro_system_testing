@@ -345,8 +345,8 @@ app.get('/payments', authMiddleware, checkRole('admin', 'coordinator'), asyncHan
     const params = status ? [status] : [];
     const [countRows] = await pool.execute(`SELECT COUNT(*) as total FROM payment ${where}`, params);
     const [items] = await pool.execute(
-        `SELECT * FROM payment ${where} ORDER BY created_at DESC LIMIT ? OFFSET ?`,
-        [...params, limit, offset]
+        `SELECT * FROM payment ${where} ORDER BY created_at DESC LIMIT ${limit} OFFSET ${offset}`,
+        params
     );
 
     res.json({

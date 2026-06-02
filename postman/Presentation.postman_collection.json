@@ -3054,15 +3054,16 @@
                       "script": {
                         "type": "text/javascript",
                         "exec": [
-                          "pm.test(\"HTTP 200\", function () { pm.expect([200]).to.include(pm.response.code); });",
-                          "function bodyJson(){try{return pm.response.json();}catch(e){return {};}}",
-                          "function payload(){const j=bodyJson();return j.data||j;}",
-                          "const j=bodyJson();",
-                          "const data = j.data || j;",
-                          "const list = Array.isArray(data) ? data : (Array.isArray(data.items) ? data.items : []);",
-                          "pm.test(\"payment list payload exists\",()=>pm.expect(Array.isArray(list)).to.eql(true));",
-                          "pm.test(\"pagination exists when endpoint is paginated\",()=>{ if (!Array.isArray(data)) pm.expect(data.pagination).to.exist; else pm.expect(true).to.eql(true); });",
-                          "if (!pm.environment.get('payment_id') && list.length && list[0].id) pm.environment.set('payment_id', String(list[0].id));"
+                          "{",
+                          "  pm.test('HTTP 200', function () { pm.expect([200]).to.include(pm.response.code); });",
+                          "  function bodyJson(){try{return pm.response.json();}catch(e){return {};}}",
+                          "  const responseJson = bodyJson();",
+                          "  const paymentPayload = responseJson.data || responseJson;",
+                          "  const paymentList = Array.isArray(paymentPayload) ? paymentPayload : (Array.isArray(paymentPayload.items) ? paymentPayload.items : []);",
+                          "  pm.test('payment list payload exists',()=>pm.expect(Array.isArray(paymentList)).to.eql(true));",
+                          "  pm.test('pagination exists when endpoint is paginated',()=>{ if (!Array.isArray(paymentPayload)) pm.expect(paymentPayload.pagination).to.exist; else pm.expect(true).to.eql(true); });",
+                          "  if (!pm.environment.get('payment_id') && paymentList.length && paymentList[0].id) pm.environment.set('payment_id', String(paymentList[0].id));",
+                          "}"
                         ]
                       }
                     }
@@ -3552,6 +3553,56 @@
                       "response": []
                     },
                     {
+                      "name": "ORD-REV-00 - Tạo order pending để test revision",
+                      "request": {
+                        "auth": {
+                          "type": "bearer",
+                          "bearer": [
+                            {
+                              "key": "token",
+                              "value": "{{customer_token}}",
+                              "type": "string"
+                            }
+                          ]
+                        },
+                        "method": "POST",
+                        "header": [
+                          {
+                            "key": "Content-Type",
+                            "value": "application/json"
+                          },
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          }
+                        ],
+                        "url": "{{baseUrl}}/orders",
+                        "body": {
+                          "mode": "raw",
+                          "raw": "{\n  \"service_type\": \"transcription\",\n  \"description\": \"Pending order for revision negative test\"\n}",
+                          "options": {
+                            "raw": {
+                              "language": "json"
+                            }
+                          }
+                        }
+                      },
+                      "response": [],
+                      "event": [
+                        {
+                          "listen": "test",
+                          "script": {
+                            "type": "text/javascript",
+                            "exec": [
+                              "pm.test('HTTP 201', function () { pm.expect(pm.response.code).to.eql(201); });",
+                              "const json = pm.response.json();",
+                              "pm.environment.set('revision_pending_order_id', String((json.data || json).id));"
+                            ]
+                          }
+                        }
+                      ]
+                    },
+                    {
                       "name": "ORD-REV-03 - Yêu cầu chỉnh sửa order pending",
                       "event": [
                         {
@@ -3595,17 +3646,7 @@
                             }
                           }
                         },
-                        "url": {
-                          "raw": "{{baseUrl}}/orders/{{arrangement_order_id}}/request-revision",
-                          "host": [
-                            "{{baseUrl}}"
-                          ],
-                          "path": [
-                            "orders",
-                            "{{arrangement_order_id}}",
-                            "request-revision"
-                          ]
-                        }
+                        "url": "{{baseUrl}}/orders/{{revision_pending_order_id}}/request-revision"
                       },
                       "response": []
                     },
@@ -4268,33 +4309,24 @@
                   "name": "Register",
                   "event": [
                     {
-                      "listen": "test",
+                      "listen": "prerequest",
                       "script": {
-                        "exec": [
-                          "pm.test(\"Register success\", function () {",
-                          "    pm.response.to.have.status(201);",
-                          "});",
-                          "",
-                          "const response = pm.response.json();",
-                          "",
-                          "pm.test(\"Có message\", function () {",
-                          "    pm.expect(response.message).to.exist;",
-                          "});"
-                        ],
                         "type": "text/javascript",
-                        "packages": {},
-                        "requests": {}
+                        "exec": [
+                          "const email = `mutrapro.register.${Date.now()}@gmail.com`;",
+                          "pm.environment.set('register_email', email);"
+                        ]
                       }
                     },
                     {
-                      "listen": "prerequest",
+                      "listen": "test",
                       "script": {
-                        "exec": [
-                          ""
-                        ],
                         "type": "text/javascript",
-                        "packages": {},
-                        "requests": {}
+                        "exec": [
+                          "pm.test('Register success', function () { pm.response.to.have.status(201); });",
+                          "const response = pm.response.json();",
+                          "pm.test('Có message', function () { pm.expect(response.message).to.exist; });"
+                        ]
                       }
                     }
                   ],
@@ -4303,7 +4335,7 @@
                     "header": [],
                     "body": {
                       "mode": "raw",
-                      "raw": "{\r\n  \"name\": \"NguyenVanA\",\r\n  \"email\": \"mutrapro54@gmail.com\",\r\n  \"password\": \"123456789\"\r\n}",
+                      "raw": "{\n  \"name\": \"NguyenVanA\",\n  \"email\": \"{{register_email}}\",\n  \"password\": \"123456789\"\n}",
                       "options": {
                         "raw": {
                           "language": "json"
@@ -4329,14 +4361,10 @@
                     {
                       "listen": "test",
                       "script": {
-                        "exec": [
-                          "pm.test(\"Duplicate email\", function () {\r",
-                          "    pm.response.to.have.status(409);\r",
-                          "});"
-                        ],
                         "type": "text/javascript",
-                        "packages": {},
-                        "requests": {}
+                        "exec": [
+                          "pm.test('Duplicate email', function () { pm.response.to.have.status(409); });"
+                        ]
                       }
                     }
                   ],
@@ -4345,7 +4373,7 @@
                     "header": [],
                     "body": {
                       "mode": "raw",
-                      "raw": "{\r\n  \"name\": \"NguyenVanA\",\r\n  \"email\": \"test3@gmail.com\",\r\n  \"password\": \"123456789\"\r\n}",
+                      "raw": "{\n  \"name\": \"NguyenVanA\",\n  \"email\": \"{{register_email}}\",\n  \"password\": \"123456789\"\n}",
                       "options": {
                         "raw": {
                           "language": "json"
@@ -5165,17 +5193,11 @@
                     {
                       "listen": "test",
                       "script": {
-                        "exec": [
-                          "pm.test(\"Invalid name\", function () {\r",
-                          "    pm.response.to.have.status(500);\r",
-                          "});\r",
-                          "\r",
-                          "const response = pm.response.json();\r",
-                          ""
-                        ],
                         "type": "text/javascript",
-                        "packages": {},
-                        "requests": {}
+                        "exec": [
+                          "pm.test('Invalid name', function () { pm.response.to.have.status(400); });",
+                          "pm.test('Response is JSON', function () { pm.expect(pm.response.json()).to.have.property('message'); });"
+                        ]
                       }
                     }
                   ],
@@ -5403,16 +5425,13 @@
                         {
                           "listen": "test",
                           "script": {
-                            "exec": [
-                              "pm.test(\"Created (201)\", () => pm.response.to.have.status(201));\r",
-                              "const json = pm.response.json();\r",
-                              "pm.environment.set(\"notificationId\", json.id);\r",
-                              "pm.expect(json.message).to.eql(\"Notification saved successfully\");\r",
-                              ""
-                            ],
                             "type": "text/javascript",
-                            "packages": {},
-                            "requests": {}
+                            "exec": [
+                              "pm.test('Created (201)', () => pm.response.to.have.status(201));",
+                              "const createdNotificationJson = pm.response.json();",
+                              "pm.environment.set('notificationId', String(createdNotificationJson.id));",
+                              "pm.expect(createdNotificationJson.message).to.eql('Notification saved successfully');"
+                            ]
                           }
                         }
                       ],
@@ -5431,15 +5450,7 @@
                             }
                           }
                         },
-                        "url": {
-                          "raw": "{{baseUrl}}/send",
-                          "host": [
-                            "{{baseUrl}}"
-                          ],
-                          "path": [
-                            "send"
-                          ]
-                        }
+                        "url": "{{baseUrl}}/notifications/send"
                       },
                       "response": []
                     }
@@ -5558,16 +5569,13 @@
                         {
                           "listen": "test",
                           "script": {
-                            "exec": [
-                              "pm.test(\"OK (200)\", () => pm.response.to.have.status(200));\r",
-                              "const json = pm.response.json();\r",
-                              "pm.expect(json.success).to.be.true;\r",
-                              "pm.expect(json.message).to.eql(\"Notification marked as read.\");\r",
-                              ""
-                            ],
                             "type": "text/javascript",
-                            "packages": {},
-                            "requests": {}
+                            "exec": [
+                              "pm.test('OK (200)', () => pm.response.to.have.status(200));",
+                              "const markReadJson = pm.response.json();",
+                              "pm.expect(markReadJson.success).to.be.true;",
+                              "pm.expect(markReadJson.message).to.eql('Notification marked as read.');"
+                            ]
                           }
                         }
                       ],
@@ -5588,17 +5596,7 @@
                           "mode": "raw",
                           "raw": "{\r\n  \"user_id\": \"{{userId}}\",\r\n  \"title\": \"Demo notification\",\r\n  \"message\": \"This is a test from Postman\",\r\n  \"channel\": \"push\"\r\n}\r\n"
                         },
-                        "url": {
-                          "raw": "{{baseUrl}}/notifications/{{notificationId}}/read",
-                          "host": [
-                            "{{baseUrl}}"
-                          ],
-                          "path": [
-                            "notifications",
-                            "{{notificationId}}",
-                            "read"
-                          ]
-                        }
+                        "url": "{{baseUrl}}/notifications/{{notificationId}}/read"
                       },
                       "response": []
                     }
@@ -5971,7 +5969,7 @@
                 "method": "GET",
                 "header": [],
                 "url": {
-                  "raw": "{{baseUrl}}/files/files/order/{{orderId}}\n",
+                  "raw": "{{baseUrl}}/files/files/order/{{orderId}}",
                   "host": [
                     "{{baseUrl}}"
                   ],
@@ -5979,7 +5977,17 @@
                     "files",
                     "files",
                     "order",
-                    "{{orderId}}\n"
+                    "{{orderId}}"
+                  ]
+                },
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "{{customer_token}}",
+                      "type": "string"
+                    }
                   ]
                 }
               },
@@ -5991,19 +5999,17 @@
                 {
                   "listen": "test",
                   "script": {
-                    "exec": [
-                      "const json = pm.response.json();\r",
-                      "const data = json.data || json;\r",
-                      "\r",
-                      "pm.environment.set(\"orderId\", data.id || data.orderId);\r",
-                      "\r",
-                      "pm.test(\"Order ID saved\", function () {\r",
-                      "  pm.expect(pm.environment.get(\"orderId\")).to.not.be.empty;\r",
-                      "});"
-                    ],
                     "type": "text/javascript",
-                    "packages": {},
-                    "requests": {}
+                    "exec": [
+                      "pm.test('HTTP 201', function () { pm.expect(pm.response.code).to.eql(201); });",
+                      "const createOrderJson = pm.response.json();",
+                      "const createOrderPayload = createOrderJson.data || createOrderJson.order || createOrderJson;",
+                      "const orderId = createOrderPayload.id || createOrderPayload.orderId;",
+                      "pm.test('Order ID exists in response', function () { pm.expect(orderId).to.exist; });",
+                      "pm.environment.set('orderId', String(orderId));",
+                      "pm.collectionVariables.set('orderId', String(orderId));",
+                      "pm.test('Order ID saved', function () { pm.expect(pm.environment.get('orderId')).to.be.a('string').and.not.empty; });"
+                    ]
                   }
                 }
               ],
@@ -6012,7 +6018,7 @@
                 "header": [],
                 "body": {
                   "mode": "raw",
-                  "raw": "{\r\n  \"customer_id\": {{userId}},\r\n  \"service_type\": \"transcription\",\r\n  \"description\": \"Order test upload file\",\r\n  \"price\": 300000\r\n}",
+                  "raw": "{\n  \"service_type\": \"transcription\",\n  \"description\": \"Order test upload file\"\n}",
                   "options": {
                     "raw": {
                       "language": "json"
@@ -6026,6 +6032,16 @@
                   ],
                   "path": [
                     "orders"
+                  ]
+                },
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "{{customer_token}}",
+                      "type": "string"
+                    }
                   ]
                 }
               },
@@ -6082,6 +6098,16 @@
                     "files",
                     "upload"
                   ]
+                },
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "{{customer_token}}",
+                      "type": "string"
+                    }
+                  ]
                 }
               },
               "response": []
@@ -6102,6 +6128,16 @@
                     "download",
                     "{{fileId}}\n"
                   ]
+                },
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "{{customer_token}}",
+                      "type": "string"
+                    }
+                  ]
                 }
               },
               "response": []
@@ -6112,19 +6148,13 @@
                 {
                   "listen": "test",
                   "script": {
-                    "exec": [
-                      "const json = pm.response.json();\r",
-                      "\r",
-                      "pm.environment.set(\"token\", json.token);\r",
-                      "pm.environment.set(\"userId\", json.user?.id);\r",
-                      "\r",
-                      "pm.test(\"Customer token saved\", function () {\r",
-                      "  pm.expect(pm.environment.get(\"token\")).to.not.be.empty;\r",
-                      "});"
-                    ],
                     "type": "text/javascript",
-                    "packages": {},
-                    "requests": {}
+                    "exec": [
+                      "const fileLoginJson = pm.response.json();",
+                      "pm.environment.set('token', fileLoginJson.token);",
+                      "pm.environment.set('userId', fileLoginJson.user && fileLoginJson.user.id);",
+                      "pm.test('Customer token saved', function () { pm.expect(pm.environment.get('token')).to.be.a('string').and.not.empty; });"
+                    ]
                   }
                 }
               ],
@@ -6133,7 +6163,7 @@
                 "header": [],
                 "body": {
                   "mode": "raw",
-                  "raw": "{\r\n  \"email\": \"thanhtri1607@gmail.com\",\r\n  \"password\": \"Admin@123\"\r\n}",
+                  "raw": "{\n  \"email\": \"{{customer_email}}\",\n  \"password\": \"{{default_password}}\"\n}",
                   "options": {
                     "raw": {
                       "language": "json"
@@ -6149,6 +6179,9 @@
                     "auth",
                     "login"
                   ]
+                },
+                "auth": {
+                  "type": "noauth"
                 }
               },
               "response": []
@@ -6365,15 +6398,15 @@
                 {
                   "listen": "test",
                   "script": {
-                    "exec": [
-                      "const json = pm.response.json();\r",
-                      "\r",
-                      "pm.environment.set(\"token\", json.token);\r",
-                      "pm.environment.set(\"userId\", json.user?.id);"
-                    ],
                     "type": "text/javascript",
-                    "packages": {},
-                    "requests": {}
+                    "exec": [
+                      "pm.test('HTTP 200', function () { pm.expect(pm.response.code).to.eql(200); });",
+                      "const json = pm.response.json();",
+                      "pm.environment.set('coordinator_token', json.token);",
+                      "pm.environment.set('token', json.token);",
+                      "pm.environment.set('userId', json.user?.id);",
+                      "pm.test('Coordinator token saved', function () { pm.expect(pm.environment.get('coordinator_token')).to.not.be.empty; });"
+                    ]
                   }
                 }
               ],
@@ -6406,6 +6439,248 @@
               "response": []
             },
             {
+              "name": "Register Customer For Task Order",
+              "event": [
+                {
+                  "listen": "prerequest",
+                  "script": {
+                    "type": "text/javascript",
+                    "exec": [
+                      "const email = `task.customer.${Date.now()}@mutrapro.test`;",
+                      "pm.environment.set('task_customer_email', email);"
+                    ]
+                  }
+                },
+                {
+                  "listen": "test",
+                  "script": {
+                    "type": "text/javascript",
+                    "exec": [
+                      "pm.test('HTTP 201', function () { pm.expect(pm.response.code).to.eql(201); });",
+                      "pm.test('Task customer email prepared', function () { pm.expect(pm.environment.get('task_customer_email')).to.not.be.empty; });"
+                    ]
+                  }
+                }
+              ],
+              "request": {
+                "auth": {
+                  "type": "noauth"
+                },
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"name\": \"Task Customer\",\n  \"email\": \"{{task_customer_email}}\",\n  \"password\": \"{{default_password}}\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/auth/register",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "auth",
+                    "register"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "Login Customer For Task Order",
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "type": "text/javascript",
+                    "exec": [
+                      "pm.test('HTTP 200', function () { pm.expect(pm.response.code).to.eql(200); });",
+                      "const json = pm.response.json();",
+                      "pm.environment.set('customer_token', json.token);",
+                      "pm.environment.set('customer_id', String(json.user && json.user.id));",
+                      "pm.test('Customer token saved', function () { pm.expect(pm.environment.get('customer_token')).to.not.be.empty; });"
+                    ]
+                  }
+                }
+              ],
+              "request": {
+                "auth": {
+                  "type": "noauth"
+                },
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"email\": \"{{task_customer_email}}\",\n  \"password\": \"{{default_password}}\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/auth/login",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "auth",
+                    "login"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "Create Order For Task Test",
+              "request": {
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "{{customer_token}}",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/orders",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "orders"
+                  ]
+                },
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"service_type\": \"recording\",\n  \"description\": \"Fresh order for task service test\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "response": [],
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "type": "text/javascript",
+                    "exec": [
+                      "pm.test('HTTP 201', function () { pm.expect(pm.response.code).to.eql(201); });",
+                      "const json = pm.response.json();",
+                      "const payload = json.data || json.order || json;",
+                      "const id = payload.id || payload.orderId;",
+                      "pm.expect(id, 'created order id').to.exist;",
+                      "pm.environment.set('task_order_id', String(id));",
+                      "pm.collectionVariables.set('task_order_id', String(id));",
+                      "pm.variables.set('task_order_id', String(id));",
+                      "pm.test('Task order ID saved', function () { pm.expect(pm.environment.get('task_order_id')).to.not.be.empty; });"
+                    ]
+                  }
+                }
+              ]
+            },
+            {
+              "name": "Create Task",
+              "event": [
+                {
+                  "listen": "prerequest",
+                  "script": {
+                    "type": "text/javascript",
+                    "exec": [
+                      "const orderId = pm.environment.get('task_order_id') || pm.collectionVariables.get('task_order_id');",
+                      "if (!orderId) { throw new Error('Missing task_order_id: run Login Customer For Task Order and Create Order For Task Test before Create Task.'); }",
+                      "pm.environment.set('task_order_id', String(orderId));"
+                    ]
+                  }
+                },
+                {
+                  "listen": "test",
+                  "script": {
+                    "type": "text/javascript",
+                    "exec": [
+                      "pm.test('HTTP 201', function () { pm.expect(pm.response.code).to.eql(201); });",
+                      "const createTaskJson = pm.response.json();",
+                      "const createTaskPayload = createTaskJson.data || createTaskJson;",
+                      "pm.environment.set('taskId', String(createTaskPayload.id || createTaskPayload.taskId));",
+                      "pm.test('Task ID saved', function () { pm.expect(pm.environment.get('taskId')).to.not.be.empty; });"
+                    ]
+                  }
+                }
+              ],
+              "request": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"order_id\": \"{{task_order_id}}\",\n  \"assigned_to\": 5,\n  \"specialist_role\": \"artist\",\n  \"title\": \"Task test cua Dat\",\n  \"description\": \"Kiem tra task service\",\n  \"deadline\": \"2026-06-30\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/tasks",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "tasks"
+                  ]
+                },
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "{{coordinator_token}}",
+                      "type": "string"
+                    }
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
               "name": "Get Task By Order",
               "protocolProfileBehavior": {
                 "disableBodyPruning": true
@@ -6422,74 +6697,7 @@
                     }
                   }
                 },
-                "url": {
-                  "raw": "{{baseUrl}}/tasks/order/1",
-                  "host": [
-                    "{{baseUrl}}"
-                  ],
-                  "path": [
-                    "tasks",
-                    "order",
-                    "1"
-                  ]
-                }
-              },
-              "response": []
-            },
-            {
-              "name": "Create Task",
-              "event": [
-                {
-                  "listen": "test",
-                  "script": {
-                    "exec": [
-                      "const json = pm.response.json();\r",
-                      "const data = json.data || json;\r",
-                      "\r",
-                      "pm.environment.set(\"taskId\", data.id || data.taskId);\r",
-                      "\r",
-                      "pm.test(\"Task ID saved\", function () {\r",
-                      "  pm.expect(pm.environment.get(\"taskId\")).to.not.be.empty;\r",
-                      "});"
-                    ],
-                    "type": "text/javascript",
-                    "packages": {},
-                    "requests": {}
-                  }
-                },
-                {
-                  "listen": "prerequest",
-                  "script": {
-                    "exec": [
-                      ""
-                    ],
-                    "type": "text/javascript",
-                    "packages": {},
-                    "requests": {}
-                  }
-                }
-              ],
-              "request": {
-                "method": "POST",
-                "header": [],
-                "body": {
-                  "mode": "raw",
-                  "raw": "{\r\n  \"order_id\": 1,\r\n  \"assigned_to\": 2,\r\n  \"specialist_role\": \"artist\",\r\n  \"title\": \"Task test của Đạt\",\r\n  \"description\": \"Kiểm tra task service\",\r\n  \"deadline\": \"2026-06-30\"\r\n}",
-                  "options": {
-                    "raw": {
-                      "language": "json"
-                    }
-                  }
-                },
-                "url": {
-                  "raw": "{{baseUrl}}/tasks",
-                  "host": [
-                    "{{baseUrl}}"
-                  ],
-                  "path": [
-                    "tasks"
-                  ]
-                }
+                "url": "{{baseUrl}}/tasks/order/{{task_order_id}}"
               },
               "response": []
             },
@@ -6538,17 +6746,7 @@
                     }
                   }
                 },
-                "url": {
-                  "raw": "{{baseUrl}}/tasks/specialist/2",
-                  "host": [
-                    "{{baseUrl}}"
-                  ],
-                  "path": [
-                    "tasks",
-                    "specialist",
-                    "2"
-                  ]
-                }
+                "url": "{{baseUrl}}/tasks/specialist/5"
               },
               "response": []
             }
