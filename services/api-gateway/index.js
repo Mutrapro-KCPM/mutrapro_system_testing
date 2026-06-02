@@ -6,6 +6,34 @@ const app = express();
 
 app.use(cors({ origin: process.env.CORS_ORIGIN || '*', credentials: true }));
 
+const forwardRequest = async (req, res, targetUrl) => {
+    try {
+        const headers = { ...req.headers };
+        delete headers.host;
+
+        const response = await fetch(targetUrl, {
+            method: req.method,
+            headers,
+            body: ['GET', 'HEAD'].includes(req.method) ? undefined : req
+        });
+
+        response.headers.forEach((value, key) => {
+            if (!['content-encoding', 'content-length'].includes(key.toLowerCase())) {
+                res.setHeader(key, value);
+            }
+        });
+
+        res.status(response.status);
+        response.body.pipe(res);
+    } catch (error) {
+        res.status(502).json({
+            success: false,
+            message: 'API Gateway proxy failed',
+            error: error.message
+        });
+    }
+};
+
 //  đŸ”¹  Health check route
 app.get('/api/health', (req, res) => {
     res.status(200).json({
@@ -46,9 +74,13 @@ app.get('/api/health/all', async (req, res) => {
 });
 
 //  đŸ”¹  Proxy routes
-app.use('/api/auth', proxy('http://auth-service:3001'));
+app.use('/api/auth', (req, res) => {
+    forwardRequest(req, res, `http://auth-service:3001${req.url}`);
+});
 app.use('/api/orders', proxy('http://order-service:3002'));
-app.use('/api/payments', proxy('http://order-service:3002/payments'));
+app.use('/api/payments', async (req, res) => {
+    forwardRequest(req, res, `http://order-service:3002/payments${req.url}`);
+});
 app.use('/api/tasks', proxy('http://task-service:3003'));
 
 // === START: PHáº¦N Cáº¬P NHáº¬T CHĂNH Náº°M á» ÄĂ‚Y ===
