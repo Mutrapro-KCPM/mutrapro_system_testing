@@ -4528,26 +4528,14 @@
                     {
                       "listen": "test",
                       "script": {
-                        "exec": [
-                          "pm.test(\"Login success\", function () {\r",
-                          "    pm.response.to.have.status(200);\r",
-                          "});\r",
-                          "\r",
-                          "const response = pm.response.json();\r",
-                          "\r",
-                          "pm.test(\"Có token\", function () {\r",
-                          "    pm.expect(response.token).to.exist;\r",
-                          "});\r",
-                          "\r",
-                          "pm.environment.set(\"token\", response.token);\r",
-                          "\r",
-                          "pm.test(\"JWT đúng format\", function () {\r",
-                          "    pm.expect(response.token.split('.').length).to.eql(3);\r",
-                          "});"
-                        ],
                         "type": "text/javascript",
-                        "packages": {},
-                        "requests": {}
+                        "exec": [
+                          "pm.test('Login success', function () { pm.response.to.have.status(200); });",
+                          "const response = pm.response.json();",
+                          "pm.test('Co token', function () { pm.expect(response.token).to.exist; });",
+                          "pm.environment.set('token', response.token);",
+                          "pm.test('JWT dung format', function () { pm.expect(response.token.split('.').length).to.eql(3); });"
+                        ]
                       }
                     }
                   ],
@@ -4556,10 +4544,15 @@
                       "type": "noauth"
                     },
                     "method": "POST",
-                    "header": [],
+                    "header": [
+                      {
+                        "key": "Content-Type",
+                        "value": "application/json"
+                      }
+                    ],
                     "body": {
                       "mode": "raw",
-                      "raw": "{\r\n  \"email\": \"mutrapro54@gmail.com\",\r\n  \"password\": \"123456789\"\r\n}\r\n",
+                      "raw": "{\n  \"email\": \"{{customer_email}}\",\n  \"password\": \"{{default_password}}\"\n}",
                       "options": {
                         "raw": {
                           "language": "json"
@@ -4719,12 +4712,10 @@
                     {
                       "listen": "test",
                       "script": {
-                        "exec": [
-                          "pm.response.to.have.status(200);"
-                        ],
                         "type": "text/javascript",
-                        "packages": {},
-                        "requests": {}
+                        "exec": [
+                          "pm.test('HTTP 200', function () { pm.response.to.have.status(200); });"
+                        ]
                       }
                     }
                   ],
@@ -4931,29 +4922,90 @@
               "name": "UpdateProfile",
               "item": [
                 {
+                  "name": "Register UpdateProfile User",
+                  "event": [
+                    {
+                      "listen": "prerequest",
+                      "script": {
+                        "type": "text/javascript",
+                        "exec": [
+                          "const email = `profile.${Date.now()}@mutrapro.test`;",
+                          "pm.environment.set('profile_email', email);"
+                        ]
+                      }
+                    },
+                    {
+                      "listen": "test",
+                      "script": {
+                        "type": "text/javascript",
+                        "exec": [
+                          "pm.test('HTTP 201', function () { pm.expect(pm.response.code).to.eql(201); });",
+                          "pm.test('Profile email saved', function () { pm.expect(pm.environment.get('profile_email')).to.not.be.empty; });"
+                        ]
+                      }
+                    }
+                  ],
+                  "request": {
+                    "auth": {
+                      "type": "noauth"
+                    },
+                    "method": "POST",
+                    "header": [
+                      {
+                        "key": "Content-Type",
+                        "value": "application/json"
+                      }
+                    ],
+                    "body": {
+                      "mode": "raw",
+                      "raw": "{\n  \"name\": \"Profile Test User\",\n  \"email\": \"{{profile_email}}\",\n  \"password\": \"{{default_password}}\"\n}",
+                      "options": {
+                        "raw": {
+                          "language": "json"
+                        }
+                      }
+                    },
+                    "url": {
+                      "raw": "{{baseUrl}}/auth/register",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "auth",
+                        "register"
+                      ]
+                    }
+                  },
+                  "response": []
+                },
+                {
                   "name": "Login",
                   "event": [
                     {
                       "listen": "test",
                       "script": {
-                        "exec": [
-                          "const response = pm.response.json();\r",
-                          "\r",
-                          "pm.environment.set(\"authToken\", response.token);\r",
-                          "pm.environment.set(\"userId\", response.user.id);"
-                        ],
                         "type": "text/javascript",
-                        "packages": {},
-                        "requests": {}
+                        "exec": [
+                          "pm.test('HTTP 200', function () { pm.expect(pm.response.code).to.eql(200); });",
+                          "const response = pm.response.json();",
+                          "pm.environment.set('authToken', response.token);",
+                          "pm.environment.set('userId', String(response.user && response.user.id));",
+                          "pm.test('Profile auth saved', function () { pm.expect(pm.environment.get('authToken')).to.not.be.empty; pm.expect(pm.environment.get('userId')).to.not.be.empty; });"
+                        ]
                       }
                     }
                   ],
                   "request": {
                     "method": "POST",
-                    "header": [],
+                    "header": [
+                      {
+                        "key": "Content-Type",
+                        "value": "application/json"
+                      }
+                    ],
                     "body": {
                       "mode": "raw",
-                      "raw": "{\r\n    \"email\": \"test3@gmail.com\",\r\n    \"password\": \"123456789\"\r\n}",
+                      "raw": "{\n  \"email\": \"{{profile_email}}\",\n  \"password\": \"{{default_password}}\"\n}",
                       "options": {
                         "raw": {
                           "language": "json"
@@ -4969,6 +5021,9 @@
                         "auth",
                         "login"
                       ]
+                    },
+                    "auth": {
+                      "type": "noauth"
                     }
                   },
                   "response": []
@@ -4979,20 +5034,12 @@
                     {
                       "listen": "test",
                       "script": {
-                        "exec": [
-                          "pm.test(\"Update profile success\", function () {\r",
-                          "    pm.response.to.have.status(200);\r",
-                          "});\r",
-                          "\r",
-                          "const response = pm.response.json();\r",
-                          "\r",
-                          "pm.test(\"Tên đã update\", function () {\r",
-                          "    pm.expect(response.user.name).to.eql(\"UpdatedName\");\r",
-                          "});"
-                        ],
                         "type": "text/javascript",
-                        "packages": {},
-                        "requests": {}
+                        "exec": [
+                          "pm.test('Update profile success', function () { pm.response.to.have.status(200); });",
+                          "const response = pm.response.json();",
+                          "pm.test('Ten da update', function () { pm.expect(response.user.name).to.eql('UpdatedName'); });"
+                        ]
                       }
                     }
                   ],
@@ -5008,10 +5055,15 @@
                       ]
                     },
                     "method": "PUT",
-                    "header": [],
+                    "header": [
+                      {
+                        "key": "Content-Type",
+                        "value": "application/json"
+                      }
+                    ],
                     "body": {
                       "mode": "raw",
-                      "raw": "{\r\n    \"name\": \"UpdatedName\"\r\n}",
+                      "raw": "{\n  \"name\": \"UpdatedName\"\n}",
                       "options": {
                         "raw": {
                           "language": "json"
@@ -5054,10 +5106,15 @@
                       "type": "noauth"
                     },
                     "method": "PUT",
-                    "header": [],
+                    "header": [
+                      {
+                        "key": "Content-Type",
+                        "value": "application/json"
+                      }
+                    ],
                     "body": {
                       "mode": "raw",
-                      "raw": "{\r\n    \"name\": \"UpdatedName\"\r\n}",
+                      "raw": "{\n  \"name\": \"UpdatedName\"\n}",
                       "options": {
                         "raw": {
                           "language": "json"
@@ -5084,14 +5141,10 @@
                     {
                       "listen": "test",
                       "script": {
-                        "exec": [
-                          "pm.test(\"Forbidden\", function () {\r",
-                          "    pm.response.to.have.status(403);\r",
-                          "});"
-                        ],
                         "type": "text/javascript",
-                        "packages": {},
-                        "requests": {}
+                        "exec": [
+                          "pm.test('Forbidden', function () { pm.response.to.have.status(403); });"
+                        ]
                       }
                     }
                   ],
@@ -5107,10 +5160,15 @@
                       ]
                     },
                     "method": "PUT",
-                    "header": [],
+                    "header": [
+                      {
+                        "key": "Content-Type",
+                        "value": "application/json"
+                      }
+                    ],
                     "body": {
                       "mode": "raw",
-                      "raw": "{\r\n    \"name\": \"UpdatedName\"\r\n}",
+                      "raw": "{\n  \"name\": \"UpdatedName\"\n}",
                       "options": {
                         "raw": {
                           "language": "json"
@@ -5118,14 +5176,14 @@
                       }
                     },
                     "url": {
-                      "raw": "{{baseUrl}}/auth/users/20",
+                      "raw": "{{baseUrl}}/auth/users/1",
                       "host": [
                         "{{baseUrl}}"
                       ],
                       "path": [
                         "auth",
                         "users",
-                        "20"
+                        "1"
                       ]
                     }
                   },
@@ -5137,17 +5195,11 @@
                     {
                       "listen": "test",
                       "script": {
-                        "exec": [
-                          "pm.test(\"Invalid Data\", function () {\r",
-                          "    pm.response.to.have.status(403);\r",
-                          "});\r",
-                          "\r",
-                          "const response = pm.response.json();\r",
-                          ""
-                        ],
                         "type": "text/javascript",
-                        "packages": {},
-                        "requests": {}
+                        "exec": [
+                          "pm.test('Invalid Data', function () { pm.response.to.have.status(400); });",
+                          "pm.test('Response is JSON', function () { pm.expect(pm.response.json()).to.have.property('message'); });"
+                        ]
                       }
                     }
                   ],
@@ -5163,10 +5215,15 @@
                       ]
                     },
                     "method": "PUT",
-                    "header": [],
+                    "header": [
+                      {
+                        "key": "Content-Type",
+                        "value": "application/json"
+                      }
+                    ],
                     "body": {
                       "mode": "raw",
-                      "raw": "{\r\n    \"name\": \"\"\r\n}",
+                      "raw": "{\n  \"name\": \"\"\n}",
                       "options": {
                         "raw": {
                           "language": "json"
@@ -5174,14 +5231,14 @@
                       }
                     },
                     "url": {
-                      "raw": "{{baseUrl}}/auth/users/16",
+                      "raw": "{{baseUrl}}/auth/users/{{userId}}",
                       "host": [
                         "{{baseUrl}}"
                       ],
                       "path": [
                         "auth",
                         "users",
-                        "16"
+                        "{{userId}}"
                       ]
                     }
                   },
@@ -5213,7 +5270,12 @@
                       ]
                     },
                     "method": "PUT",
-                    "header": [],
+                    "header": [
+                      {
+                        "key": "Content-Type",
+                        "value": "application/json"
+                      }
+                    ],
                     "body": {
                       "mode": "raw",
                       "raw": "{\r\n    \"name\": \"AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA\"\r\n}",
