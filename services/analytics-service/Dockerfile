@@ -1,6 +1,10 @@
 # File: services/analytics-service/Dockerfile (ĐÃ SỬA LỖI)
 
 FROM node:20-alpine
+ENV NPM_CONFIG_FETCH_RETRIES=5 \
+    NPM_CONFIG_FETCH_RETRY_FACTOR=2 \
+    NPM_CONFIG_FETCH_RETRY_MINTIMEOUT=10000 \
+    NPM_CONFIG_FETCH_RETRY_MAXTIMEOUT=120000
 WORKDIR /app
 
 # 1. Copy CHỈ file package.json của service này vào

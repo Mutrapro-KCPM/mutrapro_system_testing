@@ -35,7 +35,16 @@ jobs:
         run: docker compose config
 
       - name: Build API stack
-        run: docker compose build --no-cache api-gateway
+        run: |
+          set -e
+          for i in 1 2 3; do
+            if docker compose build api-gateway; then
+              exit 0
+            fi
+            echo "Docker compose build failed; retrying ($i/3)..."
+            sleep 15
+          done
+          docker compose build api-gateway
 
       - name: Start API stack
         run: docker compose up -d api-gateway
@@ -62,7 +71,12 @@ jobs:
           exit 1
 
       - name: Install Newman
-        run: npm install -g newman newman-reporter-htmlextra
+        run: |
+          npm config set fetch-retries 5
+          npm config set fetch-retry-factor 2
+          npm config set fetch-retry-mintimeout 10000
+          npm config set fetch-retry-maxtimeout 120000
+          npm install -g newman newman-reporter-htmlextra
 
       - name: Run Postman collection with Newman
         run: |
