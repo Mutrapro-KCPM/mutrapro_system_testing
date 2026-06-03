@@ -40,9 +40,12 @@
                     "method": "GET",
                     "header": [],
                     "url": {
-                      "raw": "{{orderServiceUrl}}",
+                      "raw": "{{orderServiceUrl}}/health",
                       "host": [
                         "{{orderServiceUrl}}"
+                      ],
+                      "path": [
+                        "health"
                       ]
                     }
                   },
