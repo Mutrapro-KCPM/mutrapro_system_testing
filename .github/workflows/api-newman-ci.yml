@@ -81,9 +81,11 @@ jobs:
       - name: Run Postman collection with Newman
         run: |
           mkdir -p newman-results
+          test -f tests/fixtures/upload-test.mp3
           newman run "postman/Presentation.postman_collection.json" \
             --environment "postman/MutraPro Local.postman_environment.json" \
             --env-var "baseUrl=http://localhost:3007/api" \
+            --working-dir "." \
             --reporters cli,junit,json,htmlextra \
             --reporter-junit-export newman-results/newman-report.xml \
             --reporter-json-export newman-results/newman-report.json \

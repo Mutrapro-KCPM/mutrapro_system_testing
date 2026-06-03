@@ -6251,7 +6251,7 @@
                       "key": "file",
                       "type": "file",
                       "uuid": "12a6d5bb-440f-4fcb-a7b1-101da27c364c",
-                      "src": "postman-cloud:///1f15f13b-9e9a-4330-857c-be0be762db4f"
+                      "src": "tests/fixtures/upload-test.mp3"
                     }
                   ]
                 },
