@@ -1,6 +1,6 @@
 {
   "info": {
-    "_postman_id": "c6bf4209-d6bd-4de9-8b53-67ebbbd2bfb4",
+    "_postman_id": "3c6842dc-0cdd-4444-8a58-00a4f9040161",
     "name": "Presentation",
     "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
     "_exporter_id": "55039415"
@@ -44,6 +44,62 @@
                       ],
                       "path": [
                         "health"
+                      ]
+                    }
+                  },
+                  "response": []
+                },
+                {
+                  "name": "ORD-SRC-04 - Xác nhận Auth Service dùng để đăng nhập và cấp token",
+                  "event": [
+                    {
+                      "listen": "test",
+                      "script": {
+                        "type": "text/javascript",
+                        "exec": [
+                          "pm.test(\"HTTP 200\", function () { pm.expect([200]).to.include(pm.response.code); });",
+                          "function bodyJson(){try{return pm.response.json();}catch(e){return {};}}",
+                          "function payload(){const j=bodyJson();return j.data||j;}",
+                          "const j=bodyJson();",
+                          "pm.test(\"token returned\",()=>pm.expect(j.token).to.be.a('string').and.not.empty);",
+                          "if(j.token) pm.environment.set(\"admin_token\", j.token);",
+                          "if(j.user&&j.user.id) pm.environment.set(\"admin_id\", String(j.user.id));"
+                        ]
+                      }
+                    }
+                  ],
+                  "request": {
+                    "auth": {
+                      "type": "noauth"
+                    },
+                    "method": "POST",
+                    "header": [
+                      {
+                        "key": "Content-Type",
+                        "value": "application/json"
+                      },
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      }
+                    ],
+                    "body": {
+                      "mode": "raw",
+                      "raw": "{\n  \"email\": \"{{admin_email}}\",\n  \"password\": \"{{default_password}}\"\n}",
+                      "options": {
+                        "raw": {
+                          "language": "json"
+                        }
+                      }
+                    },
+                    "url": {
+                      "raw": "{{baseUrl}}/auth/login",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "auth",
+                        "login"
                       ]
                     }
                   },
@@ -137,62 +193,6 @@
                           "key": "limit",
                           "value": "5"
                         }
-                      ]
-                    }
-                  },
-                  "response": []
-                },
-                {
-                  "name": "ORD-SRC-04 - Xác nhận Auth Service dùng để đăng nhập và cấp token",
-                  "event": [
-                    {
-                      "listen": "test",
-                      "script": {
-                        "type": "text/javascript",
-                        "exec": [
-                          "pm.test(\"HTTP 200\", function () { pm.expect([200]).to.include(pm.response.code); });",
-                          "function bodyJson(){try{return pm.response.json();}catch(e){return {};}}",
-                          "function payload(){const j=bodyJson();return j.data||j;}",
-                          "const j=bodyJson();",
-                          "pm.test(\"token returned\",()=>pm.expect(j.token).to.be.a('string').and.not.empty);",
-                          "if(j.token) pm.environment.set(\"admin_token\", j.token);",
-                          "if(j.user&&j.user.id) pm.environment.set(\"admin_id\", String(j.user.id));"
-                        ]
-                      }
-                    }
-                  ],
-                  "request": {
-                    "auth": {
-                      "type": "noauth"
-                    },
-                    "method": "POST",
-                    "header": [
-                      {
-                        "key": "Content-Type",
-                        "value": "application/json"
-                      },
-                      {
-                        "key": "Accept",
-                        "value": "application/json"
-                      }
-                    ],
-                    "body": {
-                      "mode": "raw",
-                      "raw": "{\n  \"email\": \"{{admin_email}}\",\n  \"password\": \"{{default_password}}\"\n}",
-                      "options": {
-                        "raw": {
-                          "language": "json"
-                        }
-                      }
-                    },
-                    "url": {
-                      "raw": "{{baseUrl}}/auth/login",
-                      "host": [
-                        "{{baseUrl}}"
-                      ],
-                      "path": [
-                        "auth",
-                        "login"
                       ]
                     }
                   },
@@ -6078,30 +6078,46 @@
           "name": "file-service",
           "item": [
             {
-              "name": "Get Files By Order",
+              "name": "Login Customer",
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "type": "text/javascript",
+                    "exec": [
+                      "const fileLoginJson = pm.response.json();",
+                      "pm.environment.set('token', fileLoginJson.token);",
+                      "pm.environment.set('customer_token', fileLoginJson.token);",
+                      "pm.environment.set('userId', fileLoginJson.user && fileLoginJson.user.id);",
+                      "pm.environment.set('customer_id', fileLoginJson.user && String(fileLoginJson.user.id));",
+                      "pm.test('Customer token saved', function () { pm.expect(pm.environment.get('customer_token')).to.be.a('string').and.not.empty; });"
+                    ]
+                  }
+                }
+              ],
               "request": {
                 "auth": {
-                  "type": "bearer",
-                  "bearer": [
-                    {
-                      "key": "token",
-                      "value": "{{customer_token}}",
-                      "type": "string"
-                    }
-                  ]
+                  "type": "noauth"
                 },
-                "method": "GET",
+                "method": "POST",
                 "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"email\": \"{{customer_email}}\",\n  \"password\": \"{{default_password}}\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
                 "url": {
-                  "raw": "{{baseUrl}}/files/files/order/{{orderId}}",
+                  "raw": "{{baseUrl}}/auth/login",
                   "host": [
                     "{{baseUrl}}"
                   ],
                   "path": [
-                    "files",
-                    "files",
-                    "order",
-                    "{{orderId}}"
+                    "auth",
+                    "login"
                   ]
                 }
               },
@@ -6165,11 +6181,37 @@
               "name": "Upload File",
               "event": [
                 {
+                  "listen": "prerequest",
+                  "script": {
+                    "exec": [
+                      "const orderId = pm.environment.get('orderId') || pm.collectionVariables.get('orderId');",
+                      "if (!orderId) { throw new Error('Missing orderId: run Create Order For File Test before Upload File.'); }",
+                      "pm.environment.set('orderId', String(orderId));",
+                      "const token = pm.environment.get('customer_token');",
+                      "if (!token) { throw new Error('Missing customer_token: run Login Customer before Upload File.'); }",
+                      "const contentTypeHeader = pm.request.headers.get('Content-Type');",
+                      "if (contentTypeHeader && contentTypeHeader.includes('application/json')) {",
+                      "  throw new Error('Upload File must use multipart/form-data. Remove manual Content-Type: application/json.');",
+                      "}"
+                    ],
+                    "type": "text/javascript",
+                    "packages": {},
+                    "requests": {}
+                  }
+                },
+                {
                   "listen": "test",
                   "script": {
                     "exec": [
-                      "const json = pm.response.json();\r",
-                      "pm.environment.set(\"fileId\", json.data?.id || json.id);"
+                      "let json = {};",
+                      "try { json = pm.response.json(); } catch (error) {}",
+                      "pm.test('HTTP 201', function () {",
+                      "  pm.expect(pm.response.code, json.message || pm.response.text()).to.eql(201);",
+                      "});",
+                      "const payload = json.data || json;",
+                      "const fileId = payload.id || payload.fileId;",
+                      "pm.test('File ID saved', function () { pm.expect(fileId).to.exist; });",
+                      "if (fileId) pm.environment.set('fileId', String(fileId));"
                     ],
                     "type": "text/javascript",
                     "packages": {},
@@ -6209,7 +6251,7 @@
                       "key": "file",
                       "type": "file",
                       "uuid": "12a6d5bb-440f-4fcb-a7b1-101da27c364c",
-                      "src": "uploads/1778997218405-CHASHKAKEFIRA---MONTAGEM-FAVELA_320k.mp3"
+                      "src": "postman-cloud:///1f15f13b-9e9a-4330-857c-be0be762db4f"
                     }
                   ]
                 },
@@ -6227,7 +6269,86 @@
               "response": []
             },
             {
+              "name": "Get Files By Order",
+              "event": [
+                {
+                  "listen": "prerequest",
+                  "script": {
+                    "type": "text/javascript",
+                    "exec": [
+                      "const orderId = pm.environment.get('orderId') || pm.collectionVariables.get('orderId');",
+                      "if (!orderId) { throw new Error('Missing orderId: run Create Order For File Test before Get Files By Order.'); }",
+                      "pm.environment.set('orderId', String(orderId));"
+                    ]
+                  }
+                },
+                {
+                  "listen": "test",
+                  "script": {
+                    "type": "text/javascript",
+                    "exec": [
+                      "pm.test('HTTP 200', function () { pm.expect(pm.response.code).to.eql(200); });",
+                      "pm.test('Response is JSON', function () { pm.response.to.be.json; });",
+                      "pm.test('Files payload is an array', function () {",
+                      "  const json = pm.response.json();",
+                      "  const payload = json.data || json;",
+                      "  pm.expect(payload).to.be.an('array');",
+                      "});"
+                    ]
+                  }
+                }
+              ],
+              "request": {
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "{{customer_token}}",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{baseUrl}}/files/files/order/{{orderId}}",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "files",
+                    "files",
+                    "order",
+                    "{{orderId}}"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
               "name": "Download File",
+              "event": [
+                {
+                  "listen": "prerequest",
+                  "script": {
+                    "type": "text/javascript",
+                    "exec": [
+                      "const fileId = pm.environment.get('fileId');",
+                      "if (!fileId) { throw new Error('Missing fileId: run Upload File before Download File.'); }"
+                    ]
+                  }
+                },
+                {
+                  "listen": "test",
+                  "script": {
+                    "type": "text/javascript",
+                    "exec": [
+                      "pm.test('HTTP 200', function () { pm.expect(pm.response.code).to.eql(200); });"
+                    ]
+                  }
+                }
+              ],
               "request": {
                 "auth": {
                   "type": "bearer",
@@ -6251,50 +6372,6 @@
                     "files",
                     "download",
                     "{{fileId}}\n"
-                  ]
-                }
-              },
-              "response": []
-            },
-            {
-              "name": "Login Customer",
-              "event": [
-                {
-                  "listen": "test",
-                  "script": {
-                    "type": "text/javascript",
-                    "exec": [
-                      "const fileLoginJson = pm.response.json();",
-                      "pm.environment.set('token', fileLoginJson.token);",
-                      "pm.environment.set('userId', fileLoginJson.user && fileLoginJson.user.id);",
-                      "pm.test('Customer token saved', function () { pm.expect(pm.environment.get('token')).to.be.a('string').and.not.empty; });"
-                    ]
-                  }
-                }
-              ],
-              "request": {
-                "auth": {
-                  "type": "noauth"
-                },
-                "method": "POST",
-                "header": [],
-                "body": {
-                  "mode": "raw",
-                  "raw": "{\n  \"email\": \"{{customer_email}}\",\n  \"password\": \"{{default_password}}\"\n}",
-                  "options": {
-                    "raw": {
-                      "language": "json"
-                    }
-                  }
-                },
-                "url": {
-                  "raw": "{{baseUrl}}/auth/login",
-                  "host": [
-                    "{{baseUrl}}"
-                  ],
-                  "path": [
-                    "auth",
-                    "login"
                   ]
                 }
               },
@@ -6393,14 +6470,38 @@
               "name": "Create Booking",
               "event": [
                 {
+                  "listen": "prerequest",
+                  "script": {
+                    "type": "text/javascript",
+                    "exec": [
+                      "pm.environment.unset('bookingId');",
+                      "pm.collectionVariables.unset('bookingId');",
+                      "const daysAhead = 365 + Math.floor(Math.random() * 3650);",
+                      "const hour = 8 + Math.floor(Math.random() * 10);",
+                      "const minute = Math.floor(Math.random() * 60);",
+                      "const start = new Date(Date.now() + (daysAhead * 24 * 60 * 60 * 1000));",
+                      "start.setUTCHours(hour, minute, 0, 0);",
+                      "const end = new Date(start.getTime() + (2 * 60 * 60 * 1000));",
+                      "pm.environment.set('studio_booking_start_time', start.toISOString());",
+                      "pm.environment.set('studio_booking_end_time', end.toISOString());"
+                    ]
+                  }
+                },
+                {
                   "listen": "test",
                   "script": {
-                    "exec": [
-                      ""
-                    ],
                     "type": "text/javascript",
-                    "packages": {},
-                    "requests": {}
+                    "exec": [
+                      "pm.test('HTTP 201', function () { pm.expect(pm.response.code).to.eql(201); });",
+                      "const json = pm.response.json();",
+                      "const payload = json.data || json;",
+                      "const bookingId = payload.id || payload.bookingId;",
+                      "pm.test('Booking ID saved', function () { pm.expect(bookingId).to.exist; });",
+                      "if (bookingId) {",
+                      "  pm.environment.set('bookingId', String(bookingId));",
+                      "  pm.collectionVariables.set('bookingId', String(bookingId));",
+                      "}"
+                    ]
                   }
                 }
               ],
@@ -6409,7 +6510,7 @@
                 "header": [],
                 "body": {
                   "mode": "raw",
-                  "raw": "{\r\n  \"studio_id\": {{studioId}},\r\n  \"artist_id\": 5,\r\n  \"order_id\": {{orderId}},\r\n  \"start_time\": \"2026-08-30T09:00:00.000Z\",\r\n  \"end_time\": \"2026-08-30T11:00:00.000Z\",\r\n  \"studioAdminId\": {{userId}}\r\n}",
+                  "raw": "{\r\n  \"studio_id\": {{studioId}},\r\n  \"artist_id\": 5,\r\n  \"order_id\": {{orderId}},\r\n  \"start_time\": \"{{studio_booking_start_time}}\",\r\n  \"end_time\": \"{{studio_booking_end_time}}\",\r\n  \"studioAdminId\": {{userId}}\r\n}",
                   "options": {
                     "raw": {
                       "language": "json"
@@ -6431,6 +6532,28 @@
             },
             {
               "name": "Confirm Booking",
+              "event": [
+                {
+                  "listen": "prerequest",
+                  "script": {
+                    "type": "text/javascript",
+                    "exec": [
+                      "const bookingId = pm.environment.get('bookingId') || pm.collectionVariables.get('bookingId');",
+                      "if (!bookingId) { throw new Error('Missing bookingId: run Create Booking before Confirm Booking.'); }",
+                      "pm.environment.set('bookingId', String(bookingId));"
+                    ]
+                  }
+                },
+                {
+                  "listen": "test",
+                  "script": {
+                    "type": "text/javascript",
+                    "exec": [
+                      "pm.test('HTTP 200', function () { pm.expect(pm.response.code).to.eql(200); });"
+                    ]
+                  }
+                }
+              ],
               "request": {
                 "method": "POST",
                 "header": [],
@@ -6796,21 +6919,33 @@
             },
             {
               "name": "Get Task By Order",
-              "protocolProfileBehavior": {
-                "disableBodyPruning": true
-              },
+              "event": [
+                {
+                  "listen": "prerequest",
+                  "script": {
+                    "type": "text/javascript",
+                    "exec": [
+                      "const orderId = pm.environment.get('task_order_id') || pm.collectionVariables.get('task_order_id');",
+                      "if (!orderId) { throw new Error('Missing task_order_id: run Create Order For Task Test first.'); }",
+                      "pm.environment.set('task_order_id', String(orderId));"
+                    ]
+                  }
+                },
+                {
+                  "listen": "test",
+                  "script": {
+                    "type": "text/javascript",
+                    "exec": [
+                      "pm.test('HTTP 200', function () { pm.expect(pm.response.code).to.eql(200); });",
+                      "const json = pm.response.json();",
+                      "pm.test('Task belongs to created order', function () { pm.expect(String(json.order_id)).to.eql(String(pm.environment.get('task_order_id'))); });"
+                    ]
+                  }
+                }
+              ],
               "request": {
                 "method": "GET",
                 "header": [],
-                "body": {
-                  "mode": "raw",
-                  "raw": "{\r\n  \"status\": \"in_progress\"\r\n}",
-                  "options": {
-                    "raw": {
-                      "language": "json"
-                    }
-                  }
-                },
                 "url": {
                   "raw": "{{baseUrl}}/tasks/order/{{task_order_id}}",
                   "host": [
@@ -6976,6 +7111,18 @@
     },
     {
       "key": "authToken",
+      "value": ""
+    },
+    {
+      "key": "orderId",
+      "value": ""
+    },
+    {
+      "key": "bookingId",
+      "value": ""
+    },
+    {
+      "key": "task_order_id",
       "value": ""
     }
   ]

@@ -1,0 +1,3 @@
+MuTraPro upload fixture.
+
+This is a small placeholder file used by Postman/Newman upload tests. The API validates the uploaded file by form field, extension, and MIME type provided by the client.
