@@ -1,6 +1,6 @@
 {
   "info": {
-    "_postman_id": "67ad97c3-c500-4e12-94af-f533ac940d87",
+    "_postman_id": "c6bf4209-d6bd-4de9-8b53-67ebbbd2bfb4",
     "name": "Presentation",
     "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
     "_exporter_id": "55039415"
@@ -44,62 +44,6 @@
                       ],
                       "path": [
                         "health"
-                      ]
-                    }
-                  },
-                  "response": []
-                },
-                {
-                  "name": "ORD-SRC-04 - Xác nhận Auth Service dùng để đăng nhập và cấp token",
-                  "event": [
-                    {
-                      "listen": "test",
-                      "script": {
-                        "type": "text/javascript",
-                        "exec": [
-                          "pm.test(\"HTTP 200\", function () { pm.expect([200]).to.include(pm.response.code); });",
-                          "function bodyJson(){try{return pm.response.json();}catch(e){return {};}}",
-                          "function payload(){const j=bodyJson();return j.data||j;}",
-                          "const j=bodyJson();",
-                          "pm.test(\"token returned\",()=>pm.expect(j.token).to.be.a('string').and.not.empty);",
-                          "if(j.token) pm.environment.set(\"admin_token\", j.token);",
-                          "if(j.user&&j.user.id) pm.environment.set(\"admin_id\", String(j.user.id));"
-                        ]
-                      }
-                    }
-                  ],
-                  "request": {
-                    "auth": {
-                      "type": "noauth"
-                    },
-                    "method": "POST",
-                    "header": [
-                      {
-                        "key": "Content-Type",
-                        "value": "application/json"
-                      },
-                      {
-                        "key": "Accept",
-                        "value": "application/json"
-                      }
-                    ],
-                    "body": {
-                      "mode": "raw",
-                      "raw": "{\n  \"email\": \"{{admin_email}}\",\n  \"password\": \"{{default_password}}\"\n}",
-                      "options": {
-                        "raw": {
-                          "language": "json"
-                        }
-                      }
-                    },
-                    "url": {
-                      "raw": "{{baseUrl}}/auth/login",
-                      "host": [
-                        "{{baseUrl}}"
-                      ],
-                      "path": [
-                        "auth",
-                        "login"
                       ]
                     }
                   },
@@ -199,14 +143,20 @@
                   "response": []
                 },
                 {
-                  "name": "ORD-SRC-05 - Xác nhận File Service có API lấy file theo order",
+                  "name": "ORD-SRC-04 - Xác nhận Auth Service dùng để đăng nhập và cấp token",
                   "event": [
                     {
                       "listen": "test",
                       "script": {
                         "type": "text/javascript",
                         "exec": [
-                          "pm.test(\"HTTP 401 or 404\",()=>pm.expect([401,404]).to.include(pm.response.code));"
+                          "pm.test(\"HTTP 200\", function () { pm.expect([200]).to.include(pm.response.code); });",
+                          "function bodyJson(){try{return pm.response.json();}catch(e){return {};}}",
+                          "function payload(){const j=bodyJson();return j.data||j;}",
+                          "const j=bodyJson();",
+                          "pm.test(\"token returned\",()=>pm.expect(j.token).to.be.a('string').and.not.empty);",
+                          "if(j.token) pm.environment.set(\"admin_token\", j.token);",
+                          "if(j.user&&j.user.id) pm.environment.set(\"admin_id\", String(j.user.id));"
                         ]
                       }
                     }
@@ -214,6 +164,71 @@
                   "request": {
                     "auth": {
                       "type": "noauth"
+                    },
+                    "method": "POST",
+                    "header": [
+                      {
+                        "key": "Content-Type",
+                        "value": "application/json"
+                      },
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      }
+                    ],
+                    "body": {
+                      "mode": "raw",
+                      "raw": "{\n  \"email\": \"{{admin_email}}\",\n  \"password\": \"{{default_password}}\"\n}",
+                      "options": {
+                        "raw": {
+                          "language": "json"
+                        }
+                      }
+                    },
+                    "url": {
+                      "raw": "{{baseUrl}}/auth/login",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "auth",
+                        "login"
+                      ]
+                    }
+                  },
+                  "response": []
+                },
+                {
+                  "name": "ORD-SRC-05 - Xác nhận File Service có API lấy file theo order",
+                  "event": [
+                    {
+                      "listen": "test",
+                      "script": {
+                        "exec": [
+                          "pm.test(\"HTTP 200\", () => {\r",
+                          "  pm.expect(pm.response.code).to.eql(200);\r",
+                          "});\r",
+                          "\r",
+                          "pm.test(\"Response is JSON\", () => {\r",
+                          "  pm.response.to.be.json;\r",
+                          "});"
+                        ],
+                        "type": "text/javascript",
+                        "packages": {},
+                        "requests": {}
+                      }
+                    }
+                  ],
+                  "request": {
+                    "auth": {
+                      "type": "bearer",
+                      "bearer": [
+                        {
+                          "key": "token",
+                          "value": "{{admin_token}}",
+                          "type": "string"
+                        }
+                      ]
                     },
                     "method": "GET",
                     "header": [],
@@ -3554,6 +3569,19 @@
                     },
                     {
                       "name": "ORD-REV-00 - Tạo order pending để test revision",
+                      "event": [
+                        {
+                          "listen": "test",
+                          "script": {
+                            "type": "text/javascript",
+                            "exec": [
+                              "pm.test('HTTP 201', function () { pm.expect(pm.response.code).to.eql(201); });",
+                              "const json = pm.response.json();",
+                              "pm.environment.set('revision_pending_order_id', String((json.data || json).id));"
+                            ]
+                          }
+                        }
+                      ],
                       "request": {
                         "auth": {
                           "type": "bearer",
@@ -3576,7 +3604,6 @@
                             "value": "application/json"
                           }
                         ],
-                        "url": "{{baseUrl}}/orders",
                         "body": {
                           "mode": "raw",
                           "raw": "{\n  \"service_type\": \"transcription\",\n  \"description\": \"Pending order for revision negative test\"\n}",
@@ -3585,22 +3612,18 @@
                               "language": "json"
                             }
                           }
+                        },
+                        "url": {
+                          "raw": "{{baseUrl}}/orders",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "orders"
+                          ]
                         }
                       },
-                      "response": [],
-                      "event": [
-                        {
-                          "listen": "test",
-                          "script": {
-                            "type": "text/javascript",
-                            "exec": [
-                              "pm.test('HTTP 201', function () { pm.expect(pm.response.code).to.eql(201); });",
-                              "const json = pm.response.json();",
-                              "pm.environment.set('revision_pending_order_id', String((json.data || json).id));"
-                            ]
-                          }
-                        }
-                      ]
+                      "response": []
                     },
                     {
                       "name": "ORD-REV-03 - Yêu cầu chỉnh sửa order pending",
@@ -3646,7 +3669,17 @@
                             }
                           }
                         },
-                        "url": "{{baseUrl}}/orders/{{revision_pending_order_id}}/request-revision"
+                        "url": {
+                          "raw": "{{baseUrl}}/orders/{{revision_pending_order_id}}/request-revision",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "orders",
+                            "{{revision_pending_order_id}}",
+                            "request-revision"
+                          ]
+                        }
                       },
                       "response": []
                     },
@@ -4996,6 +5029,9 @@
                     }
                   ],
                   "request": {
+                    "auth": {
+                      "type": "noauth"
+                    },
                     "method": "POST",
                     "header": [
                       {
@@ -5021,9 +5057,6 @@
                         "auth",
                         "login"
                       ]
-                    },
-                    "auth": {
-                      "type": "noauth"
                     }
                   },
                   "response": []
@@ -5512,7 +5545,16 @@
                             }
                           }
                         },
-                        "url": "{{baseUrl}}/notifications/send"
+                        "url": {
+                          "raw": "{{baseUrl}}/notifications/send",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "notifications",
+                            "send"
+                          ]
+                        }
                       },
                       "response": []
                     }
@@ -5658,7 +5700,17 @@
                           "mode": "raw",
                           "raw": "{\r\n  \"user_id\": \"{{userId}}\",\r\n  \"title\": \"Demo notification\",\r\n  \"message\": \"This is a test from Postman\",\r\n  \"channel\": \"push\"\r\n}\r\n"
                         },
-                        "url": "{{baseUrl}}/notifications/{{notificationId}}/read"
+                        "url": {
+                          "raw": "{{baseUrl}}/notifications/{{notificationId}}/read",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "notifications",
+                            "{{notificationId}}",
+                            "read"
+                          ]
+                        }
                       },
                       "response": []
                     }
@@ -6028,6 +6080,16 @@
             {
               "name": "Get Files By Order",
               "request": {
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "{{customer_token}}",
+                      "type": "string"
+                    }
+                  ]
+                },
                 "method": "GET",
                 "header": [],
                 "url": {
@@ -6040,16 +6102,6 @@
                     "files",
                     "order",
                     "{{orderId}}"
-                  ]
-                },
-                "auth": {
-                  "type": "bearer",
-                  "bearer": [
-                    {
-                      "key": "token",
-                      "value": "{{customer_token}}",
-                      "type": "string"
-                    }
                   ]
                 }
               },
@@ -6076,6 +6128,16 @@
                 }
               ],
               "request": {
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "{{customer_token}}",
+                      "type": "string"
+                    }
+                  ]
+                },
                 "method": "POST",
                 "header": [],
                 "body": {
@@ -6094,16 +6156,6 @@
                   ],
                   "path": [
                     "orders"
-                  ]
-                },
-                "auth": {
-                  "type": "bearer",
-                  "bearer": [
-                    {
-                      "key": "token",
-                      "value": "{{customer_token}}",
-                      "type": "string"
-                    }
                   ]
                 }
               },
@@ -6126,6 +6178,16 @@
                 }
               ],
               "request": {
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "{{customer_token}}",
+                      "type": "string"
+                    }
+                  ]
+                },
                 "method": "POST",
                 "header": [],
                 "body": {
@@ -6160,7 +6222,13 @@
                     "files",
                     "upload"
                   ]
-                },
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "Download File",
+              "request": {
                 "auth": {
                   "type": "bearer",
                   "bearer": [
@@ -6170,13 +6238,7 @@
                       "type": "string"
                     }
                   ]
-                }
-              },
-              "response": []
-            },
-            {
-              "name": "Download File",
-              "request": {
+                },
                 "method": "GET",
                 "header": [],
                 "url": {
@@ -6189,16 +6251,6 @@
                     "files",
                     "download",
                     "{{fileId}}\n"
-                  ]
-                },
-                "auth": {
-                  "type": "bearer",
-                  "bearer": [
-                    {
-                      "key": "token",
-                      "value": "{{customer_token}}",
-                      "type": "string"
-                    }
                   ]
                 }
               },
@@ -6221,6 +6273,9 @@
                 }
               ],
               "request": {
+                "auth": {
+                  "type": "noauth"
+                },
                 "method": "POST",
                 "header": [],
                 "body": {
@@ -6241,9 +6296,6 @@
                     "auth",
                     "login"
                   ]
-                },
-                "auth": {
-                  "type": "noauth"
                 }
               },
               "response": []
@@ -6609,6 +6661,25 @@
             },
             {
               "name": "Create Order For Task Test",
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "type": "text/javascript",
+                    "exec": [
+                      "pm.test('HTTP 201', function () { pm.expect(pm.response.code).to.eql(201); });",
+                      "const json = pm.response.json();",
+                      "const payload = json.data || json.order || json;",
+                      "const id = payload.id || payload.orderId;",
+                      "pm.expect(id, 'created order id').to.exist;",
+                      "pm.environment.set('task_order_id', String(id));",
+                      "pm.collectionVariables.set('task_order_id', String(id));",
+                      "pm.variables.set('task_order_id', String(id));",
+                      "pm.test('Task order ID saved', function () { pm.expect(pm.environment.get('task_order_id')).to.not.be.empty; });"
+                    ]
+                  }
+                }
+              ],
               "request": {
                 "auth": {
                   "type": "bearer",
@@ -6631,15 +6702,6 @@
                     "value": "application/json"
                   }
                 ],
-                "url": {
-                  "raw": "{{baseUrl}}/orders",
-                  "host": [
-                    "{{baseUrl}}"
-                  ],
-                  "path": [
-                    "orders"
-                  ]
-                },
                 "body": {
                   "mode": "raw",
                   "raw": "{\n  \"service_type\": \"recording\",\n  \"description\": \"Fresh order for task service test\"\n}",
@@ -6648,28 +6710,18 @@
                       "language": "json"
                     }
                   }
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/orders",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "orders"
+                  ]
                 }
               },
-              "response": [],
-              "event": [
-                {
-                  "listen": "test",
-                  "script": {
-                    "type": "text/javascript",
-                    "exec": [
-                      "pm.test('HTTP 201', function () { pm.expect(pm.response.code).to.eql(201); });",
-                      "const json = pm.response.json();",
-                      "const payload = json.data || json.order || json;",
-                      "const id = payload.id || payload.orderId;",
-                      "pm.expect(id, 'created order id').to.exist;",
-                      "pm.environment.set('task_order_id', String(id));",
-                      "pm.collectionVariables.set('task_order_id', String(id));",
-                      "pm.variables.set('task_order_id', String(id));",
-                      "pm.test('Task order ID saved', function () { pm.expect(pm.environment.get('task_order_id')).to.not.be.empty; });"
-                    ]
-                  }
-                }
-              ]
+              "response": []
             },
             {
               "name": "Create Task",
@@ -6700,6 +6752,16 @@
                 }
               ],
               "request": {
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "{{coordinator_token}}",
+                      "type": "string"
+                    }
+                  ]
+                },
                 "method": "POST",
                 "header": [
                   {
@@ -6728,16 +6790,6 @@
                   "path": [
                     "tasks"
                   ]
-                },
-                "auth": {
-                  "type": "bearer",
-                  "bearer": [
-                    {
-                      "key": "token",
-                      "value": "{{coordinator_token}}",
-                      "type": "string"
-                    }
-                  ]
                 }
               },
               "response": []
@@ -6759,7 +6811,17 @@
                     }
                   }
                 },
-                "url": "{{baseUrl}}/tasks/order/{{task_order_id}}"
+                "url": {
+                  "raw": "{{baseUrl}}/tasks/order/{{task_order_id}}",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "tasks",
+                    "order",
+                    "{{task_order_id}}"
+                  ]
+                }
               },
               "response": []
             },
@@ -6808,7 +6870,17 @@
                     }
                   }
                 },
-                "url": "{{baseUrl}}/tasks/specialist/5"
+                "url": {
+                  "raw": "{{baseUrl}}/tasks/specialist/5",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "tasks",
+                    "specialist",
+                    "5"
+                  ]
+                }
               },
               "response": []
             }
