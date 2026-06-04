@@ -16,6 +16,7 @@ on:
 
 permissions:
   contents: read
+  checks: write
 
 env:
   COMPOSE_PROJECT_NAME: mutrapro_system_testing_ci
@@ -36,6 +37,22 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
+
+      - name: Validate required CI secrets
+        shell: bash
+        run: |
+          set -e
+          missing=()
+          for name in DB_PASSWORD JWT_SECRET RABBITMQ_DEFAULT_PASS NIFI_SENSITIVE_PROPS_KEY INTERNAL_SERVICE_TOKEN; do
+            if [ -z "${!name}" ]; then
+              missing+=("$name")
+            fi
+          done
+
+          if [ "${#missing[@]}" -gt 0 ]; then
+            echo "Missing required GitHub Secrets: ${missing[*]}"
+            exit 1
+          fi
 
       - name: Validate Docker Compose
         run: docker compose config
@@ -104,6 +121,14 @@ jobs:
           name: newman-results
           path: newman-results/
           if-no-files-found: ignore
+
+      - name: Publish Newman test annotations
+        if: always() && hashFiles('newman-results/newman-report.xml') != ''
+        uses: dorny/test-reporter@v1
+        with:
+          name: Newman API Tests
+          path: newman-results/newman-report.xml
+          reporter: java-junit
 
       - name: Print failure logs
         if: failure()
