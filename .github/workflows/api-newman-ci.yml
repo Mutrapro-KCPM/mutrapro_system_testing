@@ -19,13 +19,13 @@ permissions:
 
 env:
   COMPOSE_PROJECT_NAME: mutrapro_system_testing_ci
-  DB_PASSWORD: "123456"
-  JWT_SECRET: "9f7c2d1e4a8b6c5d3e7f1a9b2c4d6e8f0a1b3c5d7e9f2a4b6c8d1e3f5a7b9c2d"
+  DB_PASSWORD: ${{ secrets.DB_PASSWORD }}
+  JWT_SECRET: ${{ secrets.JWT_SECRET }}
   CORS_ORIGIN: "http://localhost:3000"
   RABBITMQ_DEFAULT_USER: "user"
-  RABBITMQ_DEFAULT_PASS: "password"
-  NIFI_SENSITIVE_PROPS_KEY: "change_me_for_demo"
-  INTERNAL_SERVICE_TOKEN: "change_me_internal_service_token"
+  RABBITMQ_DEFAULT_PASS: ${{ secrets.RABBITMQ_DEFAULT_PASS }}
+  NIFI_SENSITIVE_PROPS_KEY: ${{ secrets.NIFI_SENSITIVE_PROPS_KEY }}
+  INTERNAL_SERVICE_TOKEN: ${{ secrets.INTERNAL_SERVICE_TOKEN }}
 
 jobs:
   api-newman:

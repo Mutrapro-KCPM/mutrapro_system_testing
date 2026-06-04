@@ -1,6 +1,7 @@
 ﻿﻿services/notification-service/firebase-admin-sdk.json
 .env
 .env.*
+!.env.example
 node_modules/
 logs/
 uploads/
