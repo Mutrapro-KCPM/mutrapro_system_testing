@@ -27,6 +27,7 @@ env:
   RABBITMQ_DEFAULT_PASS: ${{ secrets.RABBITMQ_DEFAULT_PASS }}
   NIFI_SENSITIVE_PROPS_KEY: ${{ secrets.NIFI_SENSITIVE_PROPS_KEY }}
   INTERNAL_SERVICE_TOKEN: ${{ secrets.INTERNAL_SERVICE_TOKEN }}
+  CI_LOG_SERVICES: "mysql_db redis_cache rabbitmq auth-service order-service task-service file-service studio-service notification-service analytics-service api-gateway"
 
 jobs:
   api-newman:
@@ -73,24 +74,85 @@ jobs:
         run: docker compose up -d api-gateway
 
       - name: Show container status
-        run: docker compose ps
+        shell: bash
+        run: |
+          docker compose ps --all
+          echo
+          echo "Service health summary:"
+          for service in $CI_LOG_SERVICES; do
+            container_id="$(docker compose ps -q "$service" || true)"
+            if [ -z "$container_id" ]; then
+              echo "- $service: not created"
+              continue
+            fi
+
+            status="$(docker inspect --format '{{.State.Status}}' "$container_id" 2>/dev/null || echo unknown)"
+            health="$(docker inspect --format '{{if .State.Health}}{{.State.Health.Status}}{{else}}no-healthcheck{{end}}' "$container_id" 2>/dev/null || echo unknown)"
+            exit_code="$(docker inspect --format '{{.State.ExitCode}}' "$container_id" 2>/dev/null || echo unknown)"
+            echo "- $service: status=$status health=$health exit_code=$exit_code"
+          done
 
       - name: Wait for API Gateway health
+        shell: bash
         run: |
           set -e
+
+          print_status() {
+            docker compose ps --all || true
+            echo
+            echo "Service health summary:"
+            for service in $CI_LOG_SERVICES; do
+              container_id="$(docker compose ps -q "$service" || true)"
+              if [ -z "$container_id" ]; then
+                echo "- $service: not created"
+                continue
+              fi
+
+              status="$(docker inspect --format '{{.State.Status}}' "$container_id" 2>/dev/null || echo unknown)"
+              health="$(docker inspect --format '{{if .State.Health}}{{.State.Health.Status}}{{else}}no-healthcheck{{end}}' "$container_id" 2>/dev/null || echo unknown)"
+              exit_code="$(docker inspect --format '{{.State.ExitCode}}' "$container_id" 2>/dev/null || echo unknown)"
+              echo "- $service: status=$status health=$health exit_code=$exit_code"
+            done
+          }
+
+          print_problem_logs() {
+            for service in $CI_LOG_SERVICES; do
+              container_id="$(docker compose ps -q "$service" || true)"
+              if [ -z "$container_id" ]; then
+                continue
+              fi
+
+              status="$(docker inspect --format '{{.State.Status}}' "$container_id" 2>/dev/null || echo unknown)"
+              health="$(docker inspect --format '{{if .State.Health}}{{.State.Health.Status}}{{else}}no-healthcheck{{end}}' "$container_id" 2>/dev/null || echo unknown)"
+              if [ "$status" = "exited" ] || [ "$status" = "dead" ] || [ "$health" = "unhealthy" ]; then
+                echo
+                echo "Logs for problem service: $service"
+                docker compose logs --tail=160 "$service" || true
+              fi
+            done
+          }
+
           for i in {1..30}; do
             if curl -fsS http://localhost:3007/api/health; then
               echo "API Gateway is healthy"
               exit 0
             fi
+
             echo "Waiting for API Gateway health... attempt $i/30"
-            docker compose ps
+            if [ $((i % 5)) -eq 0 ]; then
+              print_status
+              print_problem_logs
+            fi
             sleep 10
           done
+
           echo "API Gateway did not become healthy in time"
-          docker compose logs --tail=200 api-gateway || true
-          docker compose logs --tail=200 auth-service || true
-          docker compose logs --tail=200 mysql_db || true
+          print_status
+          echo
+          echo "Recent logs for API stack:"
+          for service in $CI_LOG_SERVICES; do
+            docker compose logs --tail=200 "$service" || true
+          done
           exit 1
 
       - name: Set up Docker Buildx
@@ -98,6 +160,8 @@ jobs:
 
       - name: Build Newman Docker image
         uses: docker/build-push-action@v6
+        env:
+          DOCKER_BUILD_RECORD_UPLOAD: false
         with:
           context: .
           file: .github/newman/Dockerfile
@@ -142,11 +206,29 @@ jobs:
 
       - name: Print failure logs
         if: failure()
+        shell: bash
         run: |
-          docker compose ps || true
-          docker compose logs --tail=200 api-gateway || true
-          docker compose logs --tail=200 auth-service || true
-          docker compose logs --tail=200 mysql_db || true
+          docker compose ps --all || true
+          echo
+          echo "Service health summary:"
+          for service in $CI_LOG_SERVICES; do
+            container_id="$(docker compose ps -q "$service" || true)"
+            if [ -z "$container_id" ]; then
+              echo "- $service: not created"
+              continue
+            fi
+
+            status="$(docker inspect --format '{{.State.Status}}' "$container_id" 2>/dev/null || echo unknown)"
+            health="$(docker inspect --format '{{if .State.Health}}{{.State.Health.Status}}{{else}}no-healthcheck{{end}}' "$container_id" 2>/dev/null || echo unknown)"
+            exit_code="$(docker inspect --format '{{.State.ExitCode}}' "$container_id" 2>/dev/null || echo unknown)"
+            echo "- $service: status=$status health=$health exit_code=$exit_code"
+          done
+
+          echo
+          echo "Recent logs for API stack:"
+          for service in $CI_LOG_SERVICES; do
+            docker compose logs --tail=200 "$service" || true
+          done
 
       - name: Stop containers
         if: always()

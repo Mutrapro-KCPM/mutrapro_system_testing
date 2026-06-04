@@ -141,12 +141,12 @@ Nhung buoc chinh:
 3. Validate docker compose config
 4. Build api-gateway va cac service phu thuoc
 5. Start API stack
-6. Cho API Gateway healthy tai http://localhost:3007/api/health
+6. Cho API Gateway healthy tai http://localhost:3007/api/health va in health/status cac service khi dang cho
 7. Build Newman Docker image tu .github/newman/Dockerfile, co cache Buildx/GHA
 8. Chay Postman collection bang Newman Docker
 9. Upload JUnit/JSON/HTML reports vao artifact newman-results
 10. Publish Newman API Tests len GitHub Checks/PR annotations
-11. In logs khi fail
+11. In health summary va logs cua toan bo API stack khi fail
 12. Stop containers va xoa volume CI
 13. Tim Jira issue key
 14. Comment pass/fail vao Jira neu da cau hinh secrets
@@ -162,14 +162,16 @@ Nhung buoc chinh:
    - `Wait for API Gateway health`
    - `Build Newman Docker image`
    - `Run Postman collection with Newman Docker`
-6. Tai artifact `newman-results`.
-7. Mo:
+6. Neu fail o health check, xem `Service health summary` de biet service nao `unhealthy`, `exited` hoac chua duoc tao.
+7. Xem `Recent logs for API stack` de doc log cua service loi.
+8. Tai artifact `newman-results`.
+9. Mo:
    - `newman-report.html`
    - `newman-report.json`
    - `newman-report.xml`
-8. Sua code, collection hoac environment.
-9. Commit lai voi cung ma Jira.
-10. Push lai de CI chay tiep.
+10. Sua code, collection hoac environment.
+11. Commit lai voi cung ma Jira.
+12. Push lai de CI chay tiep.
 
 ## 9. Jira Automation nen cau hinh
 
