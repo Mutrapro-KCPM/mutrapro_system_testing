@@ -193,10 +193,17 @@ app.get('/order/:orderId', asyncHandler(async (req, res) => {
 // API: Mở lại một task từ trạng thái 'done' (dùng nội bộ bởi order-service)
 app.post('/order/:orderId/re-open', asyncHandler(async (req, res) => {
   const { orderId } = req.params;
-  const { comment } = req.body; // Nhận comment từ yêu cầu revision
+  const { comment } = req.body;
 
-  // Gọi hàm logic đã tách
-  await handleReOpenTask(orderId, comment);
+  if (!orderId || isNaN(Number(orderId))) {
+    throw new AppError('Order ID không hợp lệ.', 400);
+  }
+
+  if (!comment || comment.trim() === '') {
+    throw new AppError('Vui lòng nhập nội dung yêu cầu chỉnh sửa.', 400);
+  }
+
+  await handleReOpenTask(orderId, comment.trim());
   res.json({ message: 'Task re-opened successfully' });
 }));
 
