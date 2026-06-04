@@ -93,8 +93,18 @@ jobs:
           docker compose logs --tail=200 mysql_db || true
           exit 1
 
-      - name: Pull Newman Docker image
-        run: docker pull postman/newman:alpine
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Build Newman Docker image
+        uses: docker/build-push-action@v6
+        with:
+          context: .
+          file: .github/newman/Dockerfile
+          tags: mutrapro-newman-ci:latest
+          load: true
+          cache-from: type=gha,scope=newman-ci
+          cache-to: type=gha,mode=max,scope=newman-ci
 
       - name: Run Postman collection with Newman Docker
         run: |
@@ -104,73 +114,15 @@ jobs:
             --network host \
             -v "${{ github.workspace }}:/etc/newman" \
             -w /etc/newman \
-            postman/newman:alpine \
+            mutrapro-newman-ci:latest \
             run "postman/Presentation.postman_collection.json" \
             --environment "postman/MutraPro Local.postman_environment.json" \
             --env-var "baseUrl=http://localhost:3007/api" \
             --working-dir "/etc/newman" \
-            --reporters cli,junit,json \
+            --reporters cli,junit,json,htmlextra \
             --reporter-junit-export newman-results/newman-report.xml \
-            --reporter-json-export newman-results/newman-report.json
-
-      - name: Generate Newman HTML report
-        if: always() && hashFiles('newman-results/newman-report.json') != ''
-        shell: bash
-        run: |
-          node <<'NODE'
-          const fs = require('fs');
-          const report = JSON.parse(fs.readFileSync('newman-results/newman-report.json', 'utf8'));
-          const escapeHtml = (value) => String(value ?? '')
-            .replace(/&/g, '&amp;')
-            .replace(/</g, '&lt;')
-            .replace(/>/g, '&gt;')
-            .replace(/"/g, '&quot;');
-          const stats = report.run?.stats || {};
-          const failures = report.run?.failures || [];
-          const rows = Object.entries(stats).map(([name, value]) => `
-            <tr>
-              <td>${escapeHtml(name)}</td>
-              <td>${escapeHtml(value.total)}</td>
-              <td>${escapeHtml(value.failed)}</td>
-            </tr>`).join('');
-          const failureRows = failures.length
-            ? failures.map((failure) => `
-              <tr>
-                <td>${escapeHtml(failure.source?.name || failure.parent?.name || 'Unknown')}</td>
-                <td>${escapeHtml(failure.error?.name || 'Error')}</td>
-                <td><pre>${escapeHtml(failure.error?.message || '')}</pre></td>
-              </tr>`).join('')
-            : '<tr><td colspan="3">No failures</td></tr>';
-          const html = `<!doctype html>
-          <html lang="en">
-          <head>
-            <meta charset="utf-8">
-            <title>Newman API Test Report</title>
-            <style>
-              body { font-family: Arial, sans-serif; margin: 32px; color: #1f2937; }
-              h1, h2 { margin-bottom: 12px; }
-              table { border-collapse: collapse; width: 100%; margin-bottom: 28px; }
-              th, td { border: 1px solid #d1d5db; padding: 10px; text-align: left; vertical-align: top; }
-              th { background: #f3f4f6; }
-              pre { margin: 0; white-space: pre-wrap; }
-            </style>
-          </head>
-          <body>
-            <h1>Newman API Test Report</h1>
-            <h2>Summary</h2>
-            <table>
-              <thead><tr><th>Metric</th><th>Total</th><th>Failed</th></tr></thead>
-              <tbody>${rows}</tbody>
-            </table>
-            <h2>Failures</h2>
-            <table>
-              <thead><tr><th>Request</th><th>Error</th><th>Message</th></tr></thead>
-              <tbody>${failureRows}</tbody>
-            </table>
-          </body>
-          </html>`;
-          fs.writeFileSync('newman-results/newman-report.html', html);
-          NODE
+            --reporter-json-export newman-results/newman-report.json \
+            --reporter-htmlextra-export newman-results/newman-report.html
 
       - name: Upload Newman reports
         if: always()

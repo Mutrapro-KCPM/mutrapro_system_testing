@@ -51,6 +51,11 @@ Settings -> Secrets and variables -> Actions -> New repository secret
 Tao cac secret sau:
 
 ```text
+DB_PASSWORD
+JWT_SECRET
+RABBITMQ_DEFAULT_PASS
+NIFI_SENSITIVE_PROPS_KEY
+INTERNAL_SERVICE_TOKEN
 JIRA_BASE_URL
 JIRA_EMAIL
 JIRA_API_TOKEN
@@ -59,6 +64,11 @@ JIRA_API_TOKEN
 Vi du:
 
 ```text
+DB_PASSWORD=123456
+JWT_SECRET=mutrapro_ci_jwt_secret_please_change_before_production_2026
+RABBITMQ_DEFAULT_PASS=password
+NIFI_SENSITIVE_PROPS_KEY=mutrapro_ci_nifi_sensitive_props_key_2026
+INTERNAL_SERVICE_TOKEN=mutrapro_ci_internal_service_token_2026
 JIRA_BASE_URL=https://ut-team-z6hmsj1i.atlassian.net
 JIRA_EMAIL=email-dang-nhap-jira@example.com
 JIRA_API_TOKEN=token-tao-tu-atlassian
@@ -127,17 +137,19 @@ Nhung buoc chinh:
 
 ```text
 1. Checkout source code
-2. Validate docker compose config
-3. Build api-gateway va cac service phu thuoc
-4. Start API stack
-5. Cho API Gateway healthy tai http://localhost:3007/api/health
-6. Cai Newman va reporter HTML
-7. Chay Postman collection bang Newman
-8. Upload JUnit/JSON/HTML reports vao artifact newman-results
-9. In logs khi fail
-10. Stop containers va xoa volume CI
-11. Tim Jira issue key
-12. Comment pass/fail vao Jira neu da cau hinh secrets
+2. Kiem tra cac CI secrets bat buoc
+3. Validate docker compose config
+4. Build api-gateway va cac service phu thuoc
+5. Start API stack
+6. Cho API Gateway healthy tai http://localhost:3007/api/health
+7. Build Newman Docker image tu .github/newman/Dockerfile, co cache Buildx/GHA
+8. Chay Postman collection bang Newman Docker
+9. Upload JUnit/JSON/HTML reports vao artifact newman-results
+10. Publish Newman API Tests len GitHub Checks/PR annotations
+11. In logs khi fail
+12. Stop containers va xoa volume CI
+13. Tim Jira issue key
+14. Comment pass/fail vao Jira neu da cau hinh secrets
 ```
 
 ## 8. Cach doc loi khi GitHub Actions fail
@@ -148,7 +160,8 @@ Nhung buoc chinh:
 4. Mo run bi do.
 5. Xem step bi loi, thuong la:
    - `Wait for API Gateway health`
-   - `Run Postman collection with Newman`
+   - `Build Newman Docker image`
+   - `Run Postman collection with Newman Docker`
 6. Tai artifact `newman-results`.
 7. Mo:
    - `newman-report.html`
@@ -188,6 +201,7 @@ Ready for Test -> In Progress
 - [ ] GitHub Actions hien workflow `API CI with Newman`.
 - [ ] Push branch `feature/KAN-xx-*` lam workflow tu chay.
 - [ ] Workflow upload artifact `newman-results`.
+- [ ] Check `Newman API Tests` hien trong GitHub Checks khi co file `newman-report.xml`.
 - [ ] Jira issue hien branch/commit/PR tu GitHub.
 - [ ] Jira co comment CI passed/failed neu da them secrets.
 - [ ] Branch `main` va `dev` bat branch protection.
@@ -206,4 +220,3 @@ Report duoc upload thanh artifact
 Jira issue nhan comment tu CI neu da cau hinh secrets
 Pull Request duoc review
 ```
-
