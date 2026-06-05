@@ -1,6 +1,6 @@
 {
   "info": {
-    "_postman_id": "801c81ca-7ac2-4359-996a-6decf5bb59bd",
+    "_postman_id": "2f51f312-bda3-4ebf-b3f4-fd846ab016e7",
     "name": "Presentation",
     "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
     "_exporter_id": "55039415"
@@ -9,6 +9,1494 @@
     {
       "name": "api",
       "item": [
+        {
+          "name": "auth-service",
+          "item": [
+            {
+              "name": "Register",
+              "item": [
+                {
+                  "name": "BVA_A1",
+                  "item": [
+                    {
+                      "name": "au-a1.1",
+                      "event": [
+                        {
+                          "listen": "prerequest",
+                          "script": {
+                            "exec": [
+                              "// Tạo một timestamp hoặc chuỗi ngẫu nhiên để làm email duy nhất\r",
+                              "const timestamp = new Date().getTime();\r",
+                              "const dynamicEmail = `auto_test_${timestamp}@example.com`;\r",
+                              "\r",
+                              "// Lưu vào biến môi trường (Environment/Collection variable)\r",
+                              "pm.environment.set(\"auto_register_email\", dynamicEmail);\r",
+                              "pm.environment.set(\"auto_register_pwd\", \"password123\");\r",
+                              ""
+                            ],
+                            "type": "text/javascript",
+                            "packages": {},
+                            "requests": {}
+                          }
+                        },
+                        {
+                          "listen": "test",
+                          "script": {
+                            "exec": [
+                              "pm.test(\"Status code must be 201 Created\", function () {\r",
+                              "    pm.response.to.have.status(201);\r",
+                              "});\r",
+                              "\r",
+                              "pm.test(\"Response body contains id and success message\", function () {\r",
+                              "    var jsonData = pm.response.json();\r",
+                              "    pm.expect(jsonData).to.have.property(\"id\");\r",
+                              "    pm.expect(jsonData.message).to.eql(\"Đăng ký người dùng thành công\");\r",
+                              "});\r",
+                              ""
+                            ],
+                            "type": "text/javascript",
+                            "packages": {},
+                            "requests": {}
+                          }
+                        }
+                      ],
+                      "request": {
+                        "auth": {
+                          "type": "noauth"
+                        },
+                        "method": "POST",
+                        "header": [],
+                        "body": {
+                          "mode": "raw",
+                          "raw": "{\r\n  \"name\": \"Auto Test User\",\r\n  \"email\": \"{{auto_register_email}}\",\r\n  \"password\": \"{{auto_register_pwd}}\"\r\n}\r\n",
+                          "options": {
+                            "raw": {
+                              "language": "json"
+                            }
+                          }
+                        },
+                        "url": {
+                          "raw": "{{baseUrl}}/auth/register",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "auth",
+                            "register"
+                          ]
+                        }
+                      },
+                      "response": []
+                    },
+                    {
+                      "name": "au-a1.2",
+                      "event": [
+                        {
+                          "listen": "prerequest",
+                          "script": {
+                            "exec": [
+                              "// Tạo một timestamp hoặc chuỗi ngẫu nhiên để làm email duy nhất\r",
+                              "const timestamp = new Date().getTime();\r",
+                              "const dynamicEmail = `auto_test_${timestamp}@example.com`;\r",
+                              "\r",
+                              "// Lưu vào biến môi trường (Environment/Collection variable)\r",
+                              "pm.environment.set(\"auto_register_email\", dynamicEmail);\r",
+                              "pm.environment.set(\"auto_register_pwd\", \"password123\");\r",
+                              ""
+                            ],
+                            "type": "text/javascript",
+                            "packages": {},
+                            "requests": {}
+                          }
+                        },
+                        {
+                          "listen": "test",
+                          "script": {
+                            "exec": [
+                              "pm.test(\"Status code must be 409 Conflict\", function () {\r",
+                              "    pm.response.to.have.status(409);\r",
+                              "});\r",
+                              "\r",
+                              "pm.test(\"Error message is correct\", function () {\r",
+                              "    var jsonData = pm.response.json();\r",
+                              "    // Dựa vào file index.js dòng 106, lỗi trả về là:\r",
+                              "    pm.expect(jsonData.message).to.eql(\"Email already exists.\");\r",
+                              "});\r",
+                              ""
+                            ],
+                            "type": "text/javascript",
+                            "packages": {},
+                            "requests": {}
+                          }
+                        }
+                      ],
+                      "request": {
+                        "auth": {
+                          "type": "noauth"
+                        },
+                        "method": "POST",
+                        "header": [],
+                        "body": {
+                          "mode": "raw",
+                          "raw": "{\r\n  \"name\": \"Duplicate User\",\r\n  \"email\": \"{{auto_register_email}}\",\r\n  \"password\": \"{{auto_register_pwd}}\"\r\n}\r\n",
+                          "options": {
+                            "raw": {
+                              "language": "json"
+                            }
+                          }
+                        },
+                        "url": {
+                          "raw": "{{baseUrl}}/auth/register",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "auth",
+                            "register"
+                          ]
+                        }
+                      },
+                      "response": []
+                    },
+                    {
+                      "name": "au-a1.3",
+                      "event": [
+                        {
+                          "listen": "prerequest",
+                          "script": {
+                            "exec": [
+                              "// Tạo một timestamp hoặc chuỗi ngẫu nhiên để làm email duy nhất\r",
+                              "const timestamp = new Date().getTime();\r",
+                              "const dynamicEmail = `auto_test_${timestamp}@example.com`;\r",
+                              "\r",
+                              "// Lưu vào biến môi trường (Environment/Collection variable)\r",
+                              "pm.environment.set(\"auto_register_email\", dynamicEmail);\r",
+                              "pm.environment.set(\"auto_register_pwd\", \"password123\");\r",
+                              ""
+                            ],
+                            "type": "text/javascript",
+                            "packages": {},
+                            "requests": {}
+                          }
+                        },
+                        {
+                          "listen": "test",
+                          "script": {
+                            "exec": [
+                              "pm.test(\"Status code must be 400 Bad Request\", function () {\r",
+                              "    pm.response.to.have.status(400);\r",
+                              "});\r",
+                              "\r",
+                              "pm.test(\"Validation returns error for 'name'\", function () {\r",
+                              "    var jsonData = pm.response.json();\r",
+                              "    pm.expect(jsonData.success).to.be.false;\r",
+                              "    \r",
+                              "    // Tìm trong mảng errors xem có lỗi của Name hay không\r",
+                              "    let nameError = jsonData.errors.find(e => e.path === \"name\");\r",
+                              "    pm.expect(nameError).to.exist;\r",
+                              "    pm.expect(nameError.msg).to.eql(\"Tên phải có từ 2-100 ký tự\");\r",
+                              "});\r",
+                              ""
+                            ],
+                            "type": "text/javascript",
+                            "packages": {},
+                            "requests": {}
+                          }
+                        }
+                      ],
+                      "request": {
+                        "auth": {
+                          "type": "noauth"
+                        },
+                        "method": "POST",
+                        "header": [],
+                        "body": {
+                          "mode": "raw",
+                          "raw": "{\r\n  \"name\": \"A\",\r\n  \"email\": \"{{$randomEmail}}\",\r\n  \"password\": \"password123\"\r\n}\r\n",
+                          "options": {
+                            "raw": {
+                              "language": "json"
+                            }
+                          }
+                        },
+                        "url": {
+                          "raw": "{{baseUrl}}/auth/register",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "auth",
+                            "register"
+                          ]
+                        }
+                      },
+                      "response": []
+                    },
+                    {
+                      "name": "au-a1.4",
+                      "event": [
+                        {
+                          "listen": "prerequest",
+                          "script": {
+                            "exec": [
+                              "// Tạo một timestamp hoặc chuỗi ngẫu nhiên để làm email duy nhất\r",
+                              "const timestamp = new Date().getTime();\r",
+                              "const dynamicEmail = `auto_test_${timestamp}@example.com`;\r",
+                              "\r",
+                              "// Lưu vào biến môi trường (Environment/Collection variable)\r",
+                              "pm.environment.set(\"auto_register_email\", dynamicEmail);\r",
+                              "pm.environment.set(\"auto_register_pwd\", \"password123\");\r",
+                              ""
+                            ],
+                            "type": "text/javascript",
+                            "packages": {},
+                            "requests": {}
+                          }
+                        },
+                        {
+                          "listen": "test",
+                          "script": {
+                            "exec": [
+                              "pm.test(\"Status code must be 400 Bad Request\", function () {\r",
+                              "    pm.response.to.have.status(400);\r",
+                              "});\r",
+                              "\r",
+                              "pm.test(\"Validation returns error for 'email'\", function () {\r",
+                              "    var jsonData = pm.response.json();\r",
+                              "    let emailError = jsonData.errors.find(e => e.path === \"email\");\r",
+                              "    pm.expect(emailError).to.exist;\r",
+                              "    pm.expect(emailError.msg).to.eql(\"Email không hợp lệ\");\r",
+                              "});\r",
+                              ""
+                            ],
+                            "type": "text/javascript",
+                            "packages": {},
+                            "requests": {}
+                          }
+                        }
+                      ],
+                      "request": {
+                        "auth": {
+                          "type": "noauth"
+                        },
+                        "method": "POST",
+                        "header": [],
+                        "body": {
+                          "mode": "raw",
+                          "raw": "{\r\n  \"name\": \"Valid Name\",\r\n  \"email\": \"invalid_email_format.com\",\r\n  \"password\": \"password123\"\r\n}\r\n",
+                          "options": {
+                            "raw": {
+                              "language": "json"
+                            }
+                          }
+                        },
+                        "url": {
+                          "raw": "{{baseUrl}}/auth/register",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "auth",
+                            "register"
+                          ]
+                        }
+                      },
+                      "response": []
+                    }
+                  ]
+                },
+                {
+                  "name": "test",
+                  "item": [
+                    {
+                      "name": "Register",
+                      "event": [
+                        {
+                          "listen": "prerequest",
+                          "script": {
+                            "type": "text/javascript",
+                            "exec": [
+                              "const email = `mutrapro.register.${Date.now()}@gmail.com`;",
+                              "pm.environment.set('register_email', email);"
+                            ]
+                          }
+                        },
+                        {
+                          "listen": "test",
+                          "script": {
+                            "type": "text/javascript",
+                            "exec": [
+                              "pm.test('Register success', function () { pm.response.to.have.status(201); });",
+                              "const response = pm.response.json();",
+                              "pm.test('Có message', function () { pm.expect(response.message).to.exist; });"
+                            ]
+                          }
+                        }
+                      ],
+                      "request": {
+                        "method": "POST",
+                        "header": [],
+                        "body": {
+                          "mode": "raw",
+                          "raw": "{\n  \"name\": \"NguyenVanA\",\n  \"email\": \"{{register_email}}\",\n  \"password\": \"123456789\"\n}",
+                          "options": {
+                            "raw": {
+                              "language": "json"
+                            }
+                          }
+                        },
+                        "url": {
+                          "raw": "{{baseUrl}}/auth/register",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "auth",
+                            "register"
+                          ]
+                        }
+                      },
+                      "response": []
+                    },
+                    {
+                      "name": "trungEmail",
+                      "event": [
+                        {
+                          "listen": "test",
+                          "script": {
+                            "type": "text/javascript",
+                            "exec": [
+                              "pm.test('Duplicate email', function () { pm.response.to.have.status(409); });"
+                            ]
+                          }
+                        }
+                      ],
+                      "request": {
+                        "method": "POST",
+                        "header": [],
+                        "body": {
+                          "mode": "raw",
+                          "raw": "{\n  \"name\": \"NguyenVanA\",\n  \"email\": \"{{register_email}}\",\n  \"password\": \"123456789\"\n}",
+                          "options": {
+                            "raw": {
+                              "language": "json"
+                            }
+                          }
+                        },
+                        "url": {
+                          "raw": "{{baseUrl}}/auth/register",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "auth",
+                            "register"
+                          ]
+                        }
+                      },
+                      "response": []
+                    },
+                    {
+                      "name": "saiEmail",
+                      "event": [
+                        {
+                          "listen": "test",
+                          "script": {
+                            "exec": [
+                              "pm.test(\"Invalid email\", function () {\r",
+                              "    pm.response.to.have.status(400);\r",
+                              "});"
+                            ],
+                            "type": "text/javascript",
+                            "packages": {},
+                            "requests": {}
+                          }
+                        }
+                      ],
+                      "request": {
+                        "method": "POST",
+                        "header": [],
+                        "body": {
+                          "mode": "raw",
+                          "raw": "{\r\n  \"name\": \"NguyenVanA\",\r\n  \"email\": \"abc\",\r\n  \"password\": \"123456789\"\r\n}",
+                          "options": {
+                            "raw": {
+                              "language": "json"
+                            }
+                          }
+                        },
+                        "url": {
+                          "raw": "{{baseUrl}}/auth/register",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "auth",
+                            "register"
+                          ]
+                        }
+                      },
+                      "response": []
+                    },
+                    {
+                      "name": "nameRong",
+                      "event": [
+                        {
+                          "listen": "test",
+                          "script": {
+                            "exec": [
+                              ""
+                            ],
+                            "type": "text/javascript",
+                            "packages": {},
+                            "requests": {}
+                          }
+                        }
+                      ],
+                      "request": {
+                        "method": "POST",
+                        "header": [],
+                        "body": {
+                          "mode": "raw",
+                          "raw": "{\r\n  \"name\": \"\",\r\n  \"email\": \"new@gmail.com\",\r\n  \"password\": \"123456789\"\r\n}",
+                          "options": {
+                            "raw": {
+                              "language": "json"
+                            }
+                          }
+                        },
+                        "url": {
+                          "raw": "{{baseUrl}}/auth/register",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "auth",
+                            "register"
+                          ]
+                        }
+                      },
+                      "response": []
+                    },
+                    {
+                      "name": "nameQuaDai",
+                      "event": [
+                        {
+                          "listen": "test",
+                          "script": {
+                            "exec": [
+                              "pm.test(\"Invalid name\", function () {\r",
+                              "    pm.response.to.have.status(400);\r",
+                              "});"
+                            ],
+                            "type": "text/javascript",
+                            "packages": {},
+                            "requests": {}
+                          }
+                        }
+                      ],
+                      "request": {
+                        "method": "POST",
+                        "header": [],
+                        "body": {
+                          "mode": "raw",
+                          "raw": "{\r\n  \"name\": \"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa\",\r\n  \"email\": \"mutrapro54@gmail.com\",\r\n  \"password\": \"123456789\"\r\n}",
+                          "options": {
+                            "raw": {
+                              "language": "json"
+                            }
+                          }
+                        },
+                        "url": {
+                          "raw": "{{baseUrl}}/auth/register",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "auth",
+                            "register"
+                          ]
+                        }
+                      },
+                      "response": []
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "name": "Login",
+              "item": [
+                {
+                  "name": "BVA",
+                  "item": [
+                    {
+                      "name": "au-a2.1",
+                      "event": [
+                        {
+                          "listen": "test",
+                          "script": {
+                            "exec": [
+                              "pm.test(\"Status code must be 200 OK\", function () {\r",
+                              "    pm.response.to.have.status(200);\r",
+                              "});\r",
+                              "\r",
+                              "pm.test(\"Response has JWT token and user details\", function () {\r",
+                              "    var jsonData = pm.response.json();\r",
+                              "    \r",
+                              "    // Kiểm tra thông điệp\r",
+                              "    pm.expect(jsonData.message).to.eql(\"Login successful\");\r",
+                              "    \r",
+                              "    // Kiểm tra có token trả về\r",
+                              "    pm.expect(jsonData).to.have.property(\"token\");\r",
+                              "    pm.expect(jsonData.user).to.have.property(\"email\", pm.environment.get(\"auto_register_email\"));\r",
+                              "    \r",
+                              "    // TRÍCH XUẤT TOKEN lưu vào biến môi trường dùng cho các API sau\r",
+                              "    pm.environment.set(\"auth_token\", jsonData.token);\r",
+                              "    console.log(\"Token đã được lưu vào biến 'auth_token'\");\r",
+                              "});\r",
+                              ""
+                            ],
+                            "type": "text/javascript",
+                            "packages": {},
+                            "requests": {}
+                          }
+                        },
+                        {
+                          "listen": "prerequest",
+                          "script": {
+                            "exec": [
+                              ""
+                            ],
+                            "type": "text/javascript",
+                            "packages": {},
+                            "requests": {}
+                          }
+                        }
+                      ],
+                      "request": {
+                        "method": "POST",
+                        "header": [],
+                        "body": {
+                          "mode": "raw",
+                          "raw": "{\n  \"email\": \"{{auto_register_email}}\",\n  \"password\": \"{{auto_register_pwd}}\"\n}\n",
+                          "options": {
+                            "raw": {
+                              "language": "json"
+                            }
+                          }
+                        },
+                        "url": {
+                          "raw": "{{baseUrl}}/auth/login",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "auth",
+                            "login"
+                          ]
+                        }
+                      },
+                      "response": []
+                    },
+                    {
+                      "name": "au-a2.2",
+                      "event": [
+                        {
+                          "listen": "test",
+                          "script": {
+                            "exec": [
+                              "pm.test(\"Status code must be 401 Unauthorized\", function () {\r",
+                              "    pm.response.to.have.status(401);\r",
+                              "});\r",
+                              "\r",
+                              "pm.test(\"Error message is correct for invalid credentials\", function () {\r",
+                              "    var jsonData = pm.response.json();\r",
+                              "    // Dựa vào mã nguồn của bạn ở dòng 131 file index.js\r",
+                              "    pm.expect(jsonData.message).to.eql(\"Email hoặc mật khẩu không đúng.\");\r",
+                              "});\r",
+                              ""
+                            ],
+                            "type": "text/javascript",
+                            "packages": {},
+                            "requests": {}
+                          }
+                        },
+                        {
+                          "listen": "prerequest",
+                          "script": {
+                            "exec": [
+                              "// Tạo một timestamp hoặc chuỗi ngẫu nhiên để làm email duy nhất\r",
+                              "const timestamp = new Date().getTime();\r",
+                              "const dynamicEmail = `auto_test_${timestamp}@example.com`;\r",
+                              "\r",
+                              "// Lưu vào biến môi trường (Environment/Collection variable)\r",
+                              "pm.environment.set(\"auto_register_email\", dynamicEmail);\r",
+                              "pm.environment.set(\"auto_register_pwd\", \"password123\");\r",
+                              ""
+                            ],
+                            "type": "text/javascript",
+                            "packages": {},
+                            "requests": {}
+                          }
+                        }
+                      ],
+                      "request": {
+                        "method": "POST",
+                        "header": [],
+                        "body": {
+                          "mode": "raw",
+                          "raw": "{\n  \"email\": \"{{auto_register_email}}\",\n  \"password\": \"wrongpassword_123\"\n}\n",
+                          "options": {
+                            "raw": {
+                              "language": "json"
+                            }
+                          }
+                        },
+                        "url": {
+                          "raw": "{{baseUrl}}/auth/login",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "auth",
+                            "login"
+                          ]
+                        }
+                      },
+                      "response": []
+                    },
+                    {
+                      "name": "au-a2.3",
+                      "event": [
+                        {
+                          "listen": "test",
+                          "script": {
+                            "exec": [
+                              "pm.test(\"Status code must be 401 Unauthorized\", function () {\r",
+                              "    pm.response.to.have.status(401);\r",
+                              "});\r",
+                              "\r",
+                              "pm.test(\"Error message is correct for non-existent email\", function () {\r",
+                              "    var jsonData = pm.response.json();\r",
+                              "    // Dựa vào mã nguồn dòng 126, lỗi trả về giống hệt sai mật khẩu để bảo mật\r",
+                              "    pm.expect(jsonData.message).to.eql(\"Email hoặc mật khẩu không đúng.\");\r",
+                              "});\r",
+                              ""
+                            ],
+                            "type": "text/javascript",
+                            "packages": {},
+                            "requests": {}
+                          }
+                        },
+                        {
+                          "listen": "prerequest",
+                          "script": {
+                            "exec": [
+                              "// Tạo một timestamp hoặc chuỗi ngẫu nhiên để làm email duy nhất\r",
+                              "const timestamp = new Date().getTime();\r",
+                              "const dynamicEmail = `auto_test_${timestamp}@example.com`;\r",
+                              "\r",
+                              "// Lưu vào biến môi trường (Environment/Collection variable)\r",
+                              "pm.environment.set(\"auto_register_email\", dynamicEmail);\r",
+                              "pm.environment.set(\"auto_register_pwd\", \"password123\");\r",
+                              ""
+                            ],
+                            "type": "text/javascript",
+                            "packages": {},
+                            "requests": {}
+                          }
+                        }
+                      ],
+                      "request": {
+                        "method": "POST",
+                        "header": [],
+                        "body": {
+                          "mode": "raw",
+                          "raw": "{\n  \"email\": \"{{$randomEmail}}\",\n  \"password\": \"password123\"\n}\n",
+                          "options": {
+                            "raw": {
+                              "language": "json"
+                            }
+                          }
+                        },
+                        "url": {
+                          "raw": "{{baseUrl}}/auth/login",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "auth",
+                            "login"
+                          ]
+                        }
+                      },
+                      "response": []
+                    },
+                    {
+                      "name": "au-a2.4",
+                      "event": [
+                        {
+                          "listen": "test",
+                          "script": {
+                            "exec": [
+                              "pm.test(\"Status code must be 400 Bad Request\", function () {\r",
+                              "    pm.response.to.have.status(400);\r",
+                              "});\r",
+                              "\r",
+                              "pm.test(\"Validation returns error for 'email'\", function () {\r",
+                              "    var jsonData = pm.response.json();\r",
+                              "    pm.expect(jsonData.success).to.be.false;\r",
+                              "    \r",
+                              "    let emailError = jsonData.errors.find(e => e.path === \"email\");\r",
+                              "    pm.expect(emailError).to.exist;\r",
+                              "    pm.expect(emailError.msg).to.eql(\"Email không hợp lệ\");\r",
+                              "});\r",
+                              ""
+                            ],
+                            "type": "text/javascript",
+                            "packages": {},
+                            "requests": {}
+                          }
+                        },
+                        {
+                          "listen": "prerequest",
+                          "script": {
+                            "exec": [
+                              "// Tạo một timestamp hoặc chuỗi ngẫu nhiên để làm email duy nhất\r",
+                              "const timestamp = new Date().getTime();\r",
+                              "const dynamicEmail = `auto_test_${timestamp}@example.com`;\r",
+                              "\r",
+                              "// Lưu vào biến môi trường (Environment/Collection variable)\r",
+                              "pm.environment.set(\"auto_register_email\", dynamicEmail);\r",
+                              "pm.environment.set(\"auto_register_pwd\", \"password123\");\r",
+                              ""
+                            ],
+                            "type": "text/javascript",
+                            "packages": {},
+                            "requests": {}
+                          }
+                        }
+                      ],
+                      "request": {
+                        "method": "POST",
+                        "header": [],
+                        "body": {
+                          "mode": "raw",
+                          "raw": "{\n  \"email\": \"invalid_email_format.com\",\n  \"password\": \"password123\"\n}\n",
+                          "options": {
+                            "raw": {
+                              "language": "json"
+                            }
+                          }
+                        },
+                        "url": {
+                          "raw": "{{baseUrl}}/auth/login",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "auth",
+                            "login"
+                          ]
+                        }
+                      },
+                      "response": []
+                    },
+                    {
+                      "name": "au-a2.5",
+                      "event": [
+                        {
+                          "listen": "test",
+                          "script": {
+                            "exec": [
+                              "pm.test(\"Status code must be 400 Bad Request\", function () {\r",
+                              "    pm.response.to.have.status(400);\r",
+                              "});\r",
+                              "\r",
+                              "pm.test(\"Validation returns error for empty 'password'\", function () {\r",
+                              "    var jsonData = pm.response.json();\r",
+                              "    pm.expect(jsonData.success).to.be.false;\r",
+                              "    \r",
+                              "    let pwdError = jsonData.errors.find(e => e.path === \"password\");\r",
+                              "    pm.expect(pwdError).to.exist;\r",
+                              "    pm.expect(pwdError.msg).to.eql(\"Mật khẩu không được để trống\");\r",
+                              "});\r",
+                              ""
+                            ],
+                            "type": "text/javascript",
+                            "packages": {},
+                            "requests": {}
+                          }
+                        },
+                        {
+                          "listen": "prerequest",
+                          "script": {
+                            "exec": [
+                              "// Tạo một timestamp hoặc chuỗi ngẫu nhiên để làm email duy nhất\r",
+                              "const timestamp = new Date().getTime();\r",
+                              "const dynamicEmail = `auto_test_${timestamp}@example.com`;\r",
+                              "\r",
+                              "// Lưu vào biến môi trường (Environment/Collection variable)\r",
+                              "pm.environment.set(\"auto_register_email\", dynamicEmail);\r",
+                              "pm.environment.set(\"auto_register_pwd\", \"password123\");\r",
+                              ""
+                            ],
+                            "type": "text/javascript",
+                            "packages": {},
+                            "requests": {}
+                          }
+                        }
+                      ],
+                      "request": {
+                        "method": "POST",
+                        "header": [],
+                        "body": {
+                          "mode": "raw",
+                          "raw": "{\n  \"email\": \"{{auto_register_email}}\",\n  \"password\": \"\"\n}\n",
+                          "options": {
+                            "raw": {
+                              "language": "json"
+                            }
+                          }
+                        },
+                        "url": {
+                          "raw": "{{baseUrl}}/auth/login",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "auth",
+                            "login"
+                          ]
+                        }
+                      },
+                      "response": []
+                    }
+                  ]
+                },
+                {
+                  "name": "Test",
+                  "item": [
+                    {
+                      "name": "TC1_validLogin",
+                      "event": [
+                        {
+                          "listen": "test",
+                          "script": {
+                            "type": "text/javascript",
+                            "exec": [
+                              "pm.test('Login success', function () { pm.response.to.have.status(200); });",
+                              "const response = pm.response.json();",
+                              "pm.test('Co token', function () { pm.expect(response.token).to.exist; });",
+                              "pm.environment.set('token', response.token);",
+                              "pm.test('JWT dung format', function () { pm.expect(response.token.split('.').length).to.eql(3); });"
+                            ]
+                          }
+                        }
+                      ],
+                      "request": {
+                        "auth": {
+                          "type": "noauth"
+                        },
+                        "method": "POST",
+                        "header": [
+                          {
+                            "key": "Content-Type",
+                            "value": "application/json"
+                          }
+                        ],
+                        "body": {
+                          "mode": "raw",
+                          "raw": "{\n  \"email\": \"{{customer_email}}\",\n  \"password\": \"{{default_password}}\"\n}",
+                          "options": {
+                            "raw": {
+                              "language": "json"
+                            }
+                          }
+                        },
+                        "url": {
+                          "raw": "{{baseUrl}}/auth/login",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "auth",
+                            "login"
+                          ]
+                        }
+                      },
+                      "response": []
+                    },
+                    {
+                      "name": "TC2_wrongPass",
+                      "event": [
+                        {
+                          "listen": "test",
+                          "script": {
+                            "exec": [
+                              "pm.test(\"Wrong password\", function () {\r",
+                              "    pm.response.to.have.status(401);\r",
+                              "});\r",
+                              "\r",
+                              "const response = pm.response.json();\r",
+                              ""
+                            ],
+                            "type": "text/javascript",
+                            "packages": {},
+                            "requests": {}
+                          }
+                        }
+                      ],
+                      "request": {
+                        "method": "POST",
+                        "header": [],
+                        "body": {
+                          "mode": "raw",
+                          "raw": "{\r\n  \"email\": \"test3@gmail.com\",\r\n  \"password\": \"1234567\"\r\n}\r\n",
+                          "options": {
+                            "raw": {
+                              "language": "json"
+                            }
+                          }
+                        },
+                        "url": {
+                          "raw": "{{baseUrl}}/auth/login",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "auth",
+                            "login"
+                          ]
+                        }
+                      },
+                      "response": []
+                    },
+                    {
+                      "name": "TC3_wrongEmail",
+                      "event": [
+                        {
+                          "listen": "test",
+                          "script": {
+                            "exec": [
+                              "pm.test(\"Wrong email\", function () {\r",
+                              "    pm.response.to.have.status(401);\r",
+                              "});\r",
+                              "\r",
+                              "const response = pm.response.json();"
+                            ],
+                            "type": "text/javascript",
+                            "packages": {},
+                            "requests": {}
+                          }
+                        }
+                      ],
+                      "request": {
+                        "method": "POST",
+                        "header": [],
+                        "body": {
+                          "mode": "raw",
+                          "raw": "{\r\n  \"email\": \"test6@gmail.com\",\r\n  \"password\": \"123456789\"\r\n}\r\n",
+                          "options": {
+                            "raw": {
+                              "language": "json"
+                            }
+                          }
+                        },
+                        "url": {
+                          "raw": "{{baseUrl}}/auth/login",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "auth",
+                            "login"
+                          ]
+                        }
+                      },
+                      "response": []
+                    },
+                    {
+                      "name": "TC4_emptyEmail",
+                      "event": [
+                        {
+                          "listen": "test",
+                          "script": {
+                            "exec": [
+                              "pm.test(\"Email empty\", function () {\r",
+                              "    pm.response.to.have.status(400);\r",
+                              "});\r",
+                              "\r",
+                              "const response = pm.response.json();\r",
+                              ""
+                            ],
+                            "type": "text/javascript",
+                            "packages": {},
+                            "requests": {}
+                          }
+                        }
+                      ],
+                      "request": {
+                        "method": "POST",
+                        "header": [],
+                        "body": {
+                          "mode": "raw",
+                          "raw": "{\r\n  \"email\": \"\",\r\n  \"password\": \"123456789\"\r\n}\r\n",
+                          "options": {
+                            "raw": {
+                              "language": "json"
+                            }
+                          }
+                        },
+                        "url": {
+                          "raw": "{{baseUrl}}/auth/login",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "auth",
+                            "login"
+                          ]
+                        }
+                      },
+                      "response": []
+                    },
+                    {
+                      "name": "TC5_checkToken",
+                      "event": [
+                        {
+                          "listen": "test",
+                          "script": {
+                            "type": "text/javascript",
+                            "exec": [
+                              "pm.test('HTTP 200', function () { pm.response.to.have.status(200); });"
+                            ]
+                          }
+                        }
+                      ],
+                      "protocolProfileBehavior": {
+                        "disableBodyPruning": true
+                      },
+                      "request": {
+                        "auth": {
+                          "type": "bearer",
+                          "bearer": [
+                            {
+                              "key": "token",
+                              "value": "{{token}}",
+                              "type": "string"
+                            }
+                          ]
+                        },
+                        "method": "GET",
+                        "header": [],
+                        "body": {
+                          "mode": "raw",
+                          "raw": ""
+                        },
+                        "url": {
+                          "raw": "{{baseUrl}}/auth/verify",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "auth",
+                            "verify"
+                          ]
+                        }
+                      },
+                      "response": []
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "name": "UpdateProfile",
+              "item": [
+                {
+                  "name": "Register UpdateProfile User",
+                  "event": [
+                    {
+                      "listen": "prerequest",
+                      "script": {
+                        "type": "text/javascript",
+                        "exec": [
+                          "const email = `profile.${Date.now()}@mutrapro.test`;",
+                          "pm.environment.set('profile_email', email);"
+                        ]
+                      }
+                    },
+                    {
+                      "listen": "test",
+                      "script": {
+                        "type": "text/javascript",
+                        "exec": [
+                          "pm.test('HTTP 201', function () { pm.expect(pm.response.code).to.eql(201); });",
+                          "pm.test('Profile email saved', function () { pm.expect(pm.environment.get('profile_email')).to.not.be.empty; });"
+                        ]
+                      }
+                    }
+                  ],
+                  "request": {
+                    "auth": {
+                      "type": "noauth"
+                    },
+                    "method": "POST",
+                    "header": [
+                      {
+                        "key": "Content-Type",
+                        "value": "application/json"
+                      }
+                    ],
+                    "body": {
+                      "mode": "raw",
+                      "raw": "{\n  \"name\": \"Profile Test User\",\n  \"email\": \"{{profile_email}}\",\n  \"password\": \"{{default_password}}\"\n}",
+                      "options": {
+                        "raw": {
+                          "language": "json"
+                        }
+                      }
+                    },
+                    "url": {
+                      "raw": "{{baseUrl}}/auth/register",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "auth",
+                        "register"
+                      ]
+                    }
+                  },
+                  "response": []
+                },
+                {
+                  "name": "Login",
+                  "event": [
+                    {
+                      "listen": "test",
+                      "script": {
+                        "type": "text/javascript",
+                        "exec": [
+                          "pm.test('HTTP 200', function () { pm.expect(pm.response.code).to.eql(200); });",
+                          "const response = pm.response.json();",
+                          "pm.environment.set('authToken', response.token);",
+                          "pm.environment.set('userId', String(response.user && response.user.id));",
+                          "pm.test('Profile auth saved', function () { pm.expect(pm.environment.get('authToken')).to.not.be.empty; pm.expect(pm.environment.get('userId')).to.not.be.empty; });"
+                        ]
+                      }
+                    }
+                  ],
+                  "request": {
+                    "auth": {
+                      "type": "noauth"
+                    },
+                    "method": "POST",
+                    "header": [
+                      {
+                        "key": "Content-Type",
+                        "value": "application/json"
+                      }
+                    ],
+                    "body": {
+                      "mode": "raw",
+                      "raw": "{\n  \"email\": \"{{profile_email}}\",\n  \"password\": \"{{default_password}}\"\n}",
+                      "options": {
+                        "raw": {
+                          "language": "json"
+                        }
+                      }
+                    },
+                    "url": {
+                      "raw": "{{baseUrl}}/auth/login",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "auth",
+                        "login"
+                      ]
+                    }
+                  },
+                  "response": []
+                },
+                {
+                  "name": "TC1_updateProfile",
+                  "event": [
+                    {
+                      "listen": "test",
+                      "script": {
+                        "type": "text/javascript",
+                        "exec": [
+                          "pm.test('Update profile success', function () { pm.response.to.have.status(200); });",
+                          "const response = pm.response.json();",
+                          "pm.test('Ten da update', function () { pm.expect(response.user.name).to.eql('UpdatedName'); });"
+                        ]
+                      }
+                    }
+                  ],
+                  "request": {
+                    "auth": {
+                      "type": "bearer",
+                      "bearer": [
+                        {
+                          "key": "token",
+                          "value": "{{authToken}}",
+                          "type": "string"
+                        }
+                      ]
+                    },
+                    "method": "PUT",
+                    "header": [
+                      {
+                        "key": "Content-Type",
+                        "value": "application/json"
+                      }
+                    ],
+                    "body": {
+                      "mode": "raw",
+                      "raw": "{\n  \"name\": \"UpdatedName\"\n}",
+                      "options": {
+                        "raw": {
+                          "language": "json"
+                        }
+                      }
+                    },
+                    "url": {
+                      "raw": "{{baseUrl}}/auth/users/{{userId}}",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "auth",
+                        "users",
+                        "{{userId}}"
+                      ]
+                    }
+                  },
+                  "response": []
+                },
+                {
+                  "name": "TC2_updateNoToken",
+                  "event": [
+                    {
+                      "listen": "test",
+                      "script": {
+                        "exec": [
+                          "pm.test(\"Unauthorized\", function () {\r",
+                          "    pm.response.to.have.status(401);\r",
+                          "});"
+                        ],
+                        "type": "text/javascript",
+                        "packages": {},
+                        "requests": {}
+                      }
+                    }
+                  ],
+                  "request": {
+                    "auth": {
+                      "type": "noauth"
+                    },
+                    "method": "PUT",
+                    "header": [
+                      {
+                        "key": "Content-Type",
+                        "value": "application/json"
+                      }
+                    ],
+                    "body": {
+                      "mode": "raw",
+                      "raw": "{\n  \"name\": \"UpdatedName\"\n}",
+                      "options": {
+                        "raw": {
+                          "language": "json"
+                        }
+                      }
+                    },
+                    "url": {
+                      "raw": "{{baseUrl}}/auth/users/{{userId}}",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "auth",
+                        "users",
+                        "{{userId}}"
+                      ]
+                    }
+                  },
+                  "response": []
+                },
+                {
+                  "name": "TC3_updateOtherUser",
+                  "event": [
+                    {
+                      "listen": "test",
+                      "script": {
+                        "type": "text/javascript",
+                        "exec": [
+                          "pm.test('Forbidden', function () { pm.response.to.have.status(403); });"
+                        ]
+                      }
+                    }
+                  ],
+                  "request": {
+                    "auth": {
+                      "type": "bearer",
+                      "bearer": [
+                        {
+                          "key": "token",
+                          "value": "{{authToken}}",
+                          "type": "string"
+                        }
+                      ]
+                    },
+                    "method": "PUT",
+                    "header": [
+                      {
+                        "key": "Content-Type",
+                        "value": "application/json"
+                      }
+                    ],
+                    "body": {
+                      "mode": "raw",
+                      "raw": "{\n  \"name\": \"UpdatedName\"\n}",
+                      "options": {
+                        "raw": {
+                          "language": "json"
+                        }
+                      }
+                    },
+                    "url": {
+                      "raw": "{{baseUrl}}/auth/users/1",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "auth",
+                        "users",
+                        "1"
+                      ]
+                    }
+                  },
+                  "response": []
+                },
+                {
+                  "name": "TC4_invalidData",
+                  "event": [
+                    {
+                      "listen": "test",
+                      "script": {
+                        "type": "text/javascript",
+                        "exec": [
+                          "pm.test('Invalid Data', function () { pm.response.to.have.status(400); });",
+                          "pm.test('Response is JSON', function () { pm.expect(pm.response.json()).to.have.property('message'); });"
+                        ]
+                      }
+                    }
+                  ],
+                  "request": {
+                    "auth": {
+                      "type": "bearer",
+                      "bearer": [
+                        {
+                          "key": "token",
+                          "value": "{{authToken}}",
+                          "type": "string"
+                        }
+                      ]
+                    },
+                    "method": "PUT",
+                    "header": [
+                      {
+                        "key": "Content-Type",
+                        "value": "application/json"
+                      }
+                    ],
+                    "body": {
+                      "mode": "raw",
+                      "raw": "{\n  \"name\": \"\"\n}",
+                      "options": {
+                        "raw": {
+                          "language": "json"
+                        }
+                      }
+                    },
+                    "url": {
+                      "raw": "{{baseUrl}}/auth/users/{{userId}}",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "auth",
+                        "users",
+                        "{{userId}}"
+                      ]
+                    }
+                  },
+                  "response": []
+                },
+                {
+                  "name": "TC5_invalidName",
+                  "event": [
+                    {
+                      "listen": "test",
+                      "script": {
+                        "type": "text/javascript",
+                        "exec": [
+                          "pm.test('Invalid name', function () { pm.response.to.have.status(400); });",
+                          "pm.test('Response is JSON', function () { pm.expect(pm.response.json()).to.have.property('message'); });"
+                        ]
+                      }
+                    }
+                  ],
+                  "request": {
+                    "auth": {
+                      "type": "bearer",
+                      "bearer": [
+                        {
+                          "key": "token",
+                          "value": "{{authToken}}",
+                          "type": "string"
+                        }
+                      ]
+                    },
+                    "method": "PUT",
+                    "header": [
+                      {
+                        "key": "Content-Type",
+                        "value": "application/json"
+                      }
+                    ],
+                    "body": {
+                      "mode": "raw",
+                      "raw": "{\r\n    \"name\": \"AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA\"\r\n}",
+                      "options": {
+                        "raw": {
+                          "language": "json"
+                        }
+                      }
+                    },
+                    "url": {
+                      "raw": "{{baseUrl}}/auth/users/{{userId}}",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "auth",
+                        "users",
+                        "{{userId}}"
+                      ]
+                    }
+                  },
+                  "response": []
+                }
+              ]
+            }
+          ]
+        },
         {
           "name": "orders",
           "item": [
@@ -314,7 +1802,7 @@
                       "script": {
                         "type": "text/javascript",
                         "exec": [
-                          "pm.test(\"Cố tình làm lỗi CI\",()=>pm.expect(pm.response.code).to.eql(999));",
+                          "pm.test(\"HTTP 201\",()=>pm.expect(pm.response.code).to.eql(201));",
                           "const j=pm.response.json();",
                           "if(j.id) pm.environment.set('customer_id', String(j.id));"
                         ]
@@ -4267,1084 +5755,6 @@
                       ],
                       "path": [
                         "health"
-                      ]
-                    }
-                  },
-                  "response": []
-                }
-              ]
-            }
-          ]
-        },
-        {
-          "name": "auth-service",
-          "item": [
-            {
-              "name": "Register",
-              "item": [
-                {
-                  "name": "Register",
-                  "event": [
-                    {
-                      "listen": "prerequest",
-                      "script": {
-                        "type": "text/javascript",
-                        "exec": [
-                          "const email = `mutrapro.register.${Date.now()}@gmail.com`;",
-                          "pm.environment.set('register_email', email);"
-                        ]
-                      }
-                    },
-                    {
-                      "listen": "test",
-                      "script": {
-                        "type": "text/javascript",
-                        "exec": [
-                          "pm.test('Register success', function () { pm.response.to.have.status(201); });",
-                          "const response = pm.response.json();",
-                          "pm.test('Có message', function () { pm.expect(response.message).to.exist; });"
-                        ]
-                      }
-                    }
-                  ],
-                  "request": {
-                    "method": "POST",
-                    "header": [],
-                    "body": {
-                      "mode": "raw",
-                      "raw": "{\n  \"name\": \"NguyenVanA\",\n  \"email\": \"{{register_email}}\",\n  \"password\": \"123456789\"\n}",
-                      "options": {
-                        "raw": {
-                          "language": "json"
-                        }
-                      }
-                    },
-                    "url": {
-                      "raw": "{{baseUrl}}/auth/register",
-                      "host": [
-                        "{{baseUrl}}"
-                      ],
-                      "path": [
-                        "auth",
-                        "register"
-                      ]
-                    }
-                  },
-                  "response": []
-                },
-                {
-                  "name": "trungEmail",
-                  "event": [
-                    {
-                      "listen": "test",
-                      "script": {
-                        "type": "text/javascript",
-                        "exec": [
-                          "pm.test('Duplicate email', function () { pm.response.to.have.status(409); });"
-                        ]
-                      }
-                    }
-                  ],
-                  "request": {
-                    "method": "POST",
-                    "header": [],
-                    "body": {
-                      "mode": "raw",
-                      "raw": "{\n  \"name\": \"NguyenVanA\",\n  \"email\": \"{{register_email}}\",\n  \"password\": \"123456789\"\n}",
-                      "options": {
-                        "raw": {
-                          "language": "json"
-                        }
-                      }
-                    },
-                    "url": {
-                      "raw": "{{baseUrl}}/auth/register",
-                      "host": [
-                        "{{baseUrl}}"
-                      ],
-                      "path": [
-                        "auth",
-                        "register"
-                      ]
-                    }
-                  },
-                  "response": []
-                },
-                {
-                  "name": "saiEmail",
-                  "event": [
-                    {
-                      "listen": "test",
-                      "script": {
-                        "exec": [
-                          "pm.test(\"Invalid email\", function () {\r",
-                          "    pm.response.to.have.status(400);\r",
-                          "});"
-                        ],
-                        "type": "text/javascript",
-                        "packages": {},
-                        "requests": {}
-                      }
-                    }
-                  ],
-                  "request": {
-                    "method": "POST",
-                    "header": [],
-                    "body": {
-                      "mode": "raw",
-                      "raw": "{\r\n  \"name\": \"NguyenVanA\",\r\n  \"email\": \"abc\",\r\n  \"password\": \"123456789\"\r\n}",
-                      "options": {
-                        "raw": {
-                          "language": "json"
-                        }
-                      }
-                    },
-                    "url": {
-                      "raw": "{{baseUrl}}/auth/register",
-                      "host": [
-                        "{{baseUrl}}"
-                      ],
-                      "path": [
-                        "auth",
-                        "register"
-                      ]
-                    }
-                  },
-                  "response": []
-                },
-                {
-                  "name": "nameRong",
-                  "event": [
-                    {
-                      "listen": "test",
-                      "script": {
-                        "exec": [
-                          ""
-                        ],
-                        "type": "text/javascript",
-                        "packages": {},
-                        "requests": {}
-                      }
-                    }
-                  ],
-                  "request": {
-                    "method": "POST",
-                    "header": [],
-                    "body": {
-                      "mode": "raw",
-                      "raw": "{\r\n  \"name\": \"\",\r\n  \"email\": \"new@gmail.com\",\r\n  \"password\": \"123456789\"\r\n}",
-                      "options": {
-                        "raw": {
-                          "language": "json"
-                        }
-                      }
-                    },
-                    "url": {
-                      "raw": "{{baseUrl}}/auth/register",
-                      "host": [
-                        "{{baseUrl}}"
-                      ],
-                      "path": [
-                        "auth",
-                        "register"
-                      ]
-                    }
-                  },
-                  "response": []
-                },
-                {
-                  "name": "nameQuaDai",
-                  "event": [
-                    {
-                      "listen": "test",
-                      "script": {
-                        "exec": [
-                          "pm.test(\"Invalid name\", function () {\r",
-                          "    pm.response.to.have.status(400);\r",
-                          "});"
-                        ],
-                        "type": "text/javascript",
-                        "packages": {},
-                        "requests": {}
-                      }
-                    }
-                  ],
-                  "request": {
-                    "method": "POST",
-                    "header": [],
-                    "body": {
-                      "mode": "raw",
-                      "raw": "{\r\n  \"name\": \"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa\",\r\n  \"email\": \"mutrapro54@gmail.com\",\r\n  \"password\": \"123456789\"\r\n}",
-                      "options": {
-                        "raw": {
-                          "language": "json"
-                        }
-                      }
-                    },
-                    "url": {
-                      "raw": "{{baseUrl}}/auth/register",
-                      "host": [
-                        "{{baseUrl}}"
-                      ],
-                      "path": [
-                        "auth",
-                        "register"
-                      ]
-                    }
-                  },
-                  "response": []
-                }
-              ]
-            },
-            {
-              "name": "Login",
-              "item": [
-                {
-                  "name": "TC1_validLogin",
-                  "event": [
-                    {
-                      "listen": "test",
-                      "script": {
-                        "type": "text/javascript",
-                        "exec": [
-                          "pm.test('Login success', function () { pm.response.to.have.status(200); });",
-                          "const response = pm.response.json();",
-                          "pm.test('Co token', function () { pm.expect(response.token).to.exist; });",
-                          "pm.environment.set('token', response.token);",
-                          "pm.test('JWT dung format', function () { pm.expect(response.token.split('.').length).to.eql(3); });"
-                        ]
-                      }
-                    }
-                  ],
-                  "request": {
-                    "auth": {
-                      "type": "noauth"
-                    },
-                    "method": "POST",
-                    "header": [
-                      {
-                        "key": "Content-Type",
-                        "value": "application/json"
-                      }
-                    ],
-                    "body": {
-                      "mode": "raw",
-                      "raw": "{\n  \"email\": \"{{customer_email}}\",\n  \"password\": \"{{default_password}}\"\n}",
-                      "options": {
-                        "raw": {
-                          "language": "json"
-                        }
-                      }
-                    },
-                    "url": {
-                      "raw": "{{baseUrl}}/auth/login",
-                      "host": [
-                        "{{baseUrl}}"
-                      ],
-                      "path": [
-                        "auth",
-                        "login"
-                      ]
-                    }
-                  },
-                  "response": []
-                },
-                {
-                  "name": "TC2_wrongPass",
-                  "event": [
-                    {
-                      "listen": "test",
-                      "script": {
-                        "exec": [
-                          "pm.test(\"Wrong password\", function () {\r",
-                          "    pm.response.to.have.status(401);\r",
-                          "});\r",
-                          "\r",
-                          "const response = pm.response.json();\r",
-                          ""
-                        ],
-                        "type": "text/javascript",
-                        "packages": {},
-                        "requests": {}
-                      }
-                    }
-                  ],
-                  "request": {
-                    "method": "POST",
-                    "header": [],
-                    "body": {
-                      "mode": "raw",
-                      "raw": "{\r\n  \"email\": \"test3@gmail.com\",\r\n  \"password\": \"1234567\"\r\n}\r\n",
-                      "options": {
-                        "raw": {
-                          "language": "json"
-                        }
-                      }
-                    },
-                    "url": {
-                      "raw": "{{baseUrl}}/auth/login",
-                      "host": [
-                        "{{baseUrl}}"
-                      ],
-                      "path": [
-                        "auth",
-                        "login"
-                      ]
-                    }
-                  },
-                  "response": []
-                },
-                {
-                  "name": "TC3_wrongEmail",
-                  "event": [
-                    {
-                      "listen": "test",
-                      "script": {
-                        "exec": [
-                          "pm.test(\"Wrong email\", function () {\r",
-                          "    pm.response.to.have.status(401);\r",
-                          "});\r",
-                          "\r",
-                          "const response = pm.response.json();"
-                        ],
-                        "type": "text/javascript",
-                        "packages": {},
-                        "requests": {}
-                      }
-                    }
-                  ],
-                  "request": {
-                    "method": "POST",
-                    "header": [],
-                    "body": {
-                      "mode": "raw",
-                      "raw": "{\r\n  \"email\": \"test6@gmail.com\",\r\n  \"password\": \"123456789\"\r\n}\r\n",
-                      "options": {
-                        "raw": {
-                          "language": "json"
-                        }
-                      }
-                    },
-                    "url": {
-                      "raw": "{{baseUrl}}/auth/login",
-                      "host": [
-                        "{{baseUrl}}"
-                      ],
-                      "path": [
-                        "auth",
-                        "login"
-                      ]
-                    }
-                  },
-                  "response": []
-                },
-                {
-                  "name": "TC4_emptyEmail",
-                  "event": [
-                    {
-                      "listen": "test",
-                      "script": {
-                        "exec": [
-                          "pm.test(\"Email empty\", function () {\r",
-                          "    pm.response.to.have.status(400);\r",
-                          "});\r",
-                          "\r",
-                          "const response = pm.response.json();\r",
-                          ""
-                        ],
-                        "type": "text/javascript",
-                        "packages": {},
-                        "requests": {}
-                      }
-                    }
-                  ],
-                  "request": {
-                    "method": "POST",
-                    "header": [],
-                    "body": {
-                      "mode": "raw",
-                      "raw": "{\r\n  \"email\": \"\",\r\n  \"password\": \"123456789\"\r\n}\r\n",
-                      "options": {
-                        "raw": {
-                          "language": "json"
-                        }
-                      }
-                    },
-                    "url": {
-                      "raw": "{{baseUrl}}/auth/login",
-                      "host": [
-                        "{{baseUrl}}"
-                      ],
-                      "path": [
-                        "auth",
-                        "login"
-                      ]
-                    }
-                  },
-                  "response": []
-                },
-                {
-                  "name": "TC5_checkToken",
-                  "event": [
-                    {
-                      "listen": "test",
-                      "script": {
-                        "type": "text/javascript",
-                        "exec": [
-                          "pm.test('HTTP 200', function () { pm.response.to.have.status(200); });"
-                        ]
-                      }
-                    }
-                  ],
-                  "protocolProfileBehavior": {
-                    "disableBodyPruning": true
-                  },
-                  "request": {
-                    "auth": {
-                      "type": "bearer",
-                      "bearer": [
-                        {
-                          "key": "token",
-                          "value": "{{token}}",
-                          "type": "string"
-                        }
-                      ]
-                    },
-                    "method": "GET",
-                    "header": [],
-                    "body": {
-                      "mode": "raw",
-                      "raw": ""
-                    },
-                    "url": {
-                      "raw": "{{baseUrl}}/auth/verify",
-                      "host": [
-                        "{{baseUrl}}"
-                      ],
-                      "path": [
-                        "auth",
-                        "verify"
-                      ]
-                    }
-                  },
-                  "response": []
-                },
-                {
-                  "name": "TC6_noToken",
-                  "event": [
-                    {
-                      "listen": "test",
-                      "script": {
-                        "exec": [
-                          "pm.test(\"No token\", function () {\r",
-                          "    pm.response.to.have.status(401);\r",
-                          "});\r",
-                          "\r",
-                          "const response = pm.response.json();\r",
-                          ""
-                        ],
-                        "type": "text/javascript",
-                        "packages": {},
-                        "requests": {}
-                      }
-                    }
-                  ],
-                  "protocolProfileBehavior": {
-                    "disableBodyPruning": true
-                  },
-                  "request": {
-                    "auth": {
-                      "type": "bearer",
-                      "bearer": [
-                        {
-                          "key": "token",
-                          "value": "",
-                          "type": "string"
-                        }
-                      ]
-                    },
-                    "method": "GET",
-                    "header": [],
-                    "body": {
-                      "mode": "raw",
-                      "raw": ""
-                    },
-                    "url": {
-                      "raw": "{{baseUrl}}/auth/verify",
-                      "host": [
-                        "{{baseUrl}}"
-                      ],
-                      "path": [
-                        "auth",
-                        "verify"
-                      ]
-                    }
-                  },
-                  "response": []
-                },
-                {
-                  "name": "TC7_invalidToken",
-                  "event": [
-                    {
-                      "listen": "test",
-                      "script": {
-                        "exec": [
-                          "pm.test(\"Invalid token\", function () {\r",
-                          "    pm.response.to.have.status(401);\r",
-                          "});\r",
-                          "\r",
-                          "const response = pm.response.json();\r",
-                          ""
-                        ],
-                        "type": "text/javascript",
-                        "packages": {},
-                        "requests": {}
-                      }
-                    }
-                  ],
-                  "protocolProfileBehavior": {
-                    "disableBodyPruning": true
-                  },
-                  "request": {
-                    "auth": {
-                      "type": "bearer",
-                      "bearer": [
-                        {
-                          "key": "token",
-                          "value": "abcd123",
-                          "type": "string"
-                        }
-                      ]
-                    },
-                    "method": "GET",
-                    "header": [],
-                    "body": {
-                      "mode": "raw",
-                      "raw": ""
-                    },
-                    "url": {
-                      "raw": "{{baseUrl}}/auth/verify",
-                      "host": [
-                        "{{baseUrl}}"
-                      ],
-                      "path": [
-                        "auth",
-                        "verify"
-                      ]
-                    }
-                  },
-                  "response": []
-                },
-                {
-                  "name": "TC8_modifiedToken",
-                  "event": [
-                    {
-                      "listen": "test",
-                      "script": {
-                        "exec": [
-                          "pm.test(\"Modified Token\", function () {\r",
-                          "    pm.response.to.have.status(401);\r",
-                          "});\r",
-                          "\r",
-                          "const response = pm.response.json();\r",
-                          ""
-                        ],
-                        "type": "text/javascript",
-                        "packages": {},
-                        "requests": {}
-                      }
-                    }
-                  ],
-                  "protocolProfileBehavior": {
-                    "disableBodyPruning": true
-                  },
-                  "request": {
-                    "auth": {
-                      "type": "bearer",
-                      "bearer": [
-                        {
-                          "key": "token",
-                          "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpvVCJ9.eyJpZCI6MTYsIm5hbWUiOiJOZ3V5ZW5WYW5BIiwiZW1haWwiOiJ0ZXN0M0BnbWFpbC5jb20iLCJyb2xlIjoiY3VzdG9tZXIiLCJpYXQiOjE3Nzk0NzE0MjIsImV4cCI6MTc3OTU1NzgyMn0.cN45qzflMai-fJy9w0yi2Nag9dZCJkzxKLjboW9vbDqc",
-                          "type": "string"
-                        }
-                      ]
-                    },
-                    "method": "GET",
-                    "header": [],
-                    "body": {
-                      "mode": "raw",
-                      "raw": "",
-                      "options": {
-                        "raw": {
-                          "language": "json"
-                        }
-                      }
-                    },
-                    "url": {
-                      "raw": "{{baseUrl}}/auth/verify",
-                      "host": [
-                        "{{baseUrl}}"
-                      ],
-                      "path": [
-                        "auth",
-                        "verify"
-                      ]
-                    }
-                  },
-                  "response": []
-                }
-              ]
-            },
-            {
-              "name": "UpdateProfile",
-              "item": [
-                {
-                  "name": "Register UpdateProfile User",
-                  "event": [
-                    {
-                      "listen": "prerequest",
-                      "script": {
-                        "type": "text/javascript",
-                        "exec": [
-                          "const email = `profile.${Date.now()}@mutrapro.test`;",
-                          "pm.environment.set('profile_email', email);"
-                        ]
-                      }
-                    },
-                    {
-                      "listen": "test",
-                      "script": {
-                        "type": "text/javascript",
-                        "exec": [
-                          "pm.test('HTTP 201', function () { pm.expect(pm.response.code).to.eql(201); });",
-                          "pm.test('Profile email saved', function () { pm.expect(pm.environment.get('profile_email')).to.not.be.empty; });"
-                        ]
-                      }
-                    }
-                  ],
-                  "request": {
-                    "auth": {
-                      "type": "noauth"
-                    },
-                    "method": "POST",
-                    "header": [
-                      {
-                        "key": "Content-Type",
-                        "value": "application/json"
-                      }
-                    ],
-                    "body": {
-                      "mode": "raw",
-                      "raw": "{\n  \"name\": \"Profile Test User\",\n  \"email\": \"{{profile_email}}\",\n  \"password\": \"{{default_password}}\"\n}",
-                      "options": {
-                        "raw": {
-                          "language": "json"
-                        }
-                      }
-                    },
-                    "url": {
-                      "raw": "{{baseUrl}}/auth/register",
-                      "host": [
-                        "{{baseUrl}}"
-                      ],
-                      "path": [
-                        "auth",
-                        "register"
-                      ]
-                    }
-                  },
-                  "response": []
-                },
-                {
-                  "name": "Login",
-                  "event": [
-                    {
-                      "listen": "test",
-                      "script": {
-                        "type": "text/javascript",
-                        "exec": [
-                          "pm.test('HTTP 200', function () { pm.expect(pm.response.code).to.eql(200); });",
-                          "const response = pm.response.json();",
-                          "pm.environment.set('authToken', response.token);",
-                          "pm.environment.set('userId', String(response.user && response.user.id));",
-                          "pm.test('Profile auth saved', function () { pm.expect(pm.environment.get('authToken')).to.not.be.empty; pm.expect(pm.environment.get('userId')).to.not.be.empty; });"
-                        ]
-                      }
-                    }
-                  ],
-                  "request": {
-                    "auth": {
-                      "type": "noauth"
-                    },
-                    "method": "POST",
-                    "header": [
-                      {
-                        "key": "Content-Type",
-                        "value": "application/json"
-                      }
-                    ],
-                    "body": {
-                      "mode": "raw",
-                      "raw": "{\n  \"email\": \"{{profile_email}}\",\n  \"password\": \"{{default_password}}\"\n}",
-                      "options": {
-                        "raw": {
-                          "language": "json"
-                        }
-                      }
-                    },
-                    "url": {
-                      "raw": "{{baseUrl}}/auth/login",
-                      "host": [
-                        "{{baseUrl}}"
-                      ],
-                      "path": [
-                        "auth",
-                        "login"
-                      ]
-                    }
-                  },
-                  "response": []
-                },
-                {
-                  "name": "TC1_updateProfile",
-                  "event": [
-                    {
-                      "listen": "test",
-                      "script": {
-                        "type": "text/javascript",
-                        "exec": [
-                          "pm.test('Update profile success', function () { pm.response.to.have.status(200); });",
-                          "const response = pm.response.json();",
-                          "pm.test('Ten da update', function () { pm.expect(response.user.name).to.eql('UpdatedName'); });"
-                        ]
-                      }
-                    }
-                  ],
-                  "request": {
-                    "auth": {
-                      "type": "bearer",
-                      "bearer": [
-                        {
-                          "key": "token",
-                          "value": "{{authToken}}",
-                          "type": "string"
-                        }
-                      ]
-                    },
-                    "method": "PUT",
-                    "header": [
-                      {
-                        "key": "Content-Type",
-                        "value": "application/json"
-                      }
-                    ],
-                    "body": {
-                      "mode": "raw",
-                      "raw": "{\n  \"name\": \"UpdatedName\"\n}",
-                      "options": {
-                        "raw": {
-                          "language": "json"
-                        }
-                      }
-                    },
-                    "url": {
-                      "raw": "{{baseUrl}}/auth/users/{{userId}}",
-                      "host": [
-                        "{{baseUrl}}"
-                      ],
-                      "path": [
-                        "auth",
-                        "users",
-                        "{{userId}}"
-                      ]
-                    }
-                  },
-                  "response": []
-                },
-                {
-                  "name": "TC2_updateNoToken",
-                  "event": [
-                    {
-                      "listen": "test",
-                      "script": {
-                        "exec": [
-                          "pm.test(\"Unauthorized\", function () {\r",
-                          "    pm.response.to.have.status(401);\r",
-                          "});"
-                        ],
-                        "type": "text/javascript",
-                        "packages": {},
-                        "requests": {}
-                      }
-                    }
-                  ],
-                  "request": {
-                    "auth": {
-                      "type": "noauth"
-                    },
-                    "method": "PUT",
-                    "header": [
-                      {
-                        "key": "Content-Type",
-                        "value": "application/json"
-                      }
-                    ],
-                    "body": {
-                      "mode": "raw",
-                      "raw": "{\n  \"name\": \"UpdatedName\"\n}",
-                      "options": {
-                        "raw": {
-                          "language": "json"
-                        }
-                      }
-                    },
-                    "url": {
-                      "raw": "{{baseUrl}}/auth/users/{{userId}}",
-                      "host": [
-                        "{{baseUrl}}"
-                      ],
-                      "path": [
-                        "auth",
-                        "users",
-                        "{{userId}}"
-                      ]
-                    }
-                  },
-                  "response": []
-                },
-                {
-                  "name": "TC3_updateOtherUser",
-                  "event": [
-                    {
-                      "listen": "test",
-                      "script": {
-                        "type": "text/javascript",
-                        "exec": [
-                          "pm.test('Forbidden', function () { pm.response.to.have.status(403); });"
-                        ]
-                      }
-                    }
-                  ],
-                  "request": {
-                    "auth": {
-                      "type": "bearer",
-                      "bearer": [
-                        {
-                          "key": "token",
-                          "value": "{{authToken}}",
-                          "type": "string"
-                        }
-                      ]
-                    },
-                    "method": "PUT",
-                    "header": [
-                      {
-                        "key": "Content-Type",
-                        "value": "application/json"
-                      }
-                    ],
-                    "body": {
-                      "mode": "raw",
-                      "raw": "{\n  \"name\": \"UpdatedName\"\n}",
-                      "options": {
-                        "raw": {
-                          "language": "json"
-                        }
-                      }
-                    },
-                    "url": {
-                      "raw": "{{baseUrl}}/auth/users/1",
-                      "host": [
-                        "{{baseUrl}}"
-                      ],
-                      "path": [
-                        "auth",
-                        "users",
-                        "1"
-                      ]
-                    }
-                  },
-                  "response": []
-                },
-                {
-                  "name": "TC4_invalidData",
-                  "event": [
-                    {
-                      "listen": "test",
-                      "script": {
-                        "type": "text/javascript",
-                        "exec": [
-                          "pm.test('Invalid Data', function () { pm.response.to.have.status(400); });",
-                          "pm.test('Response is JSON', function () { pm.expect(pm.response.json()).to.have.property('message'); });"
-                        ]
-                      }
-                    }
-                  ],
-                  "request": {
-                    "auth": {
-                      "type": "bearer",
-                      "bearer": [
-                        {
-                          "key": "token",
-                          "value": "{{authToken}}",
-                          "type": "string"
-                        }
-                      ]
-                    },
-                    "method": "PUT",
-                    "header": [
-                      {
-                        "key": "Content-Type",
-                        "value": "application/json"
-                      }
-                    ],
-                    "body": {
-                      "mode": "raw",
-                      "raw": "{\n  \"name\": \"\"\n}",
-                      "options": {
-                        "raw": {
-                          "language": "json"
-                        }
-                      }
-                    },
-                    "url": {
-                      "raw": "{{baseUrl}}/auth/users/{{userId}}",
-                      "host": [
-                        "{{baseUrl}}"
-                      ],
-                      "path": [
-                        "auth",
-                        "users",
-                        "{{userId}}"
-                      ]
-                    }
-                  },
-                  "response": []
-                },
-                {
-                  "name": "TC5_invalidName",
-                  "event": [
-                    {
-                      "listen": "test",
-                      "script": {
-                        "type": "text/javascript",
-                        "exec": [
-                          "pm.test('Invalid name', function () { pm.response.to.have.status(400); });",
-                          "pm.test('Response is JSON', function () { pm.expect(pm.response.json()).to.have.property('message'); });"
-                        ]
-                      }
-                    }
-                  ],
-                  "request": {
-                    "auth": {
-                      "type": "bearer",
-                      "bearer": [
-                        {
-                          "key": "token",
-                          "value": "{{authToken}}",
-                          "type": "string"
-                        }
-                      ]
-                    },
-                    "method": "PUT",
-                    "header": [
-                      {
-                        "key": "Content-Type",
-                        "value": "application/json"
-                      }
-                    ],
-                    "body": {
-                      "mode": "raw",
-                      "raw": "{\r\n    \"name\": \"AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA\"\r\n}",
-                      "options": {
-                        "raw": {
-                          "language": "json"
-                        }
-                      }
-                    },
-                    "url": {
-                      "raw": "{{baseUrl}}/auth/users/{{userId}}",
-                      "host": [
-                        "{{baseUrl}}"
-                      ],
-                      "path": [
-                        "auth",
-                        "users",
-                        "{{userId}}"
-                      ]
-                    }
-                  },
-                  "response": []
-                }
-              ]
-            },
-            {
-              "name": "otherTest",
-              "item": [
-                {
-                  "name": "TC1_userNotFound",
-                  "event": [
-                    {
-                      "listen": "test",
-                      "script": {
-                        "exec": [
-                          "pm.test(\"User not found\", function () {\r",
-                          "    pm.response.to.have.status(404);\r",
-                          "});\r",
-                          ""
-                        ],
-                        "type": "text/javascript",
-                        "packages": {},
-                        "requests": {}
-                      }
-                    }
-                  ],
-                  "request": {
-                    "method": "GET",
-                    "header": [],
-                    "url": {
-                      "raw": "{{baseUrl}}/auth/users/999999",
-                      "host": [
-                        "{{baseUrl}}"
-                      ],
-                      "path": [
-                        "auth",
-                        "users",
-                        "999999"
-                      ]
-                    }
-                  },
-                  "response": []
-                },
-                {
-                  "name": "TC2_responseTime",
-                  "event": [
-                    {
-                      "listen": "test",
-                      "script": {
-                        "exec": [
-                          "pm.test(\"Response dưới 500ms\", function () {\r",
-                          "    pm.expect(pm.response.responseTime).to.be.below(500);\r",
-                          "});"
-                        ],
-                        "type": "text/javascript",
-                        "packages": {},
-                        "requests": {}
-                      }
-                    }
-                  ],
-                  "request": {
-                    "method": "GET",
-                    "header": [],
-                    "url": {
-                      "raw": "{{baseUrl}}/auth/users/999999",
-                      "host": [
-                        "{{baseUrl}}"
-                      ],
-                      "path": [
-                        "auth",
-                        "users",
-                        "999999"
                       ]
                     }
                   },

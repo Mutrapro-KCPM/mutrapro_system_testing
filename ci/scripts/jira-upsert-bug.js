@@ -114,6 +114,28 @@ ${failureDetailsText}
 - Bug Signature: ${signature}
 `;
 
+  // Tính toán thời gian (Chia thời gian) - Đã tăng thời gian rộng rãi hơn
+  const now = new Date();
+  let dueDate;
+  if (bugCount <= 2) {
+    // Cho hẳn 2 ngày để sửa
+    dueDate = new Date(now.getTime() + 2 * 24 * 60 * 60 * 1000);
+  } else if (bugCount <= 5) {
+    // Dời sang thứ 6 của TUẦN SAU
+    dueDate = new Date(now);
+    const day = dueDate.getDay();
+    const diff = 5 - day + 7;
+    dueDate.setDate(dueDate.getDate() + diff);
+  } else {
+    // Dời sang thứ 6 của 2 TUẦN NỮA
+    dueDate = new Date(now);
+    const day = dueDate.getDay();
+    const diff = 5 - day + 14;
+    dueDate.setDate(dueDate.getDate() + diff);
+  }
+  const dueDateStr = dueDate.toISOString().split('T')[0];
+  const originalEstimateStr = `${bugCount * 4}h`; // Tăng từ 2h lên 4h cho mỗi lỗi
+
   const payload = {
     fields: {
       project: { key: JIRA_PROJECT_KEY },
@@ -127,6 +149,10 @@ ${failureDetailsText}
       },
       issuetype: { name: "Bug" },
       labels: ["ci-failed", "auto-created", "newman", "github-actions", service, errorType.toLowerCase().replace(/\s+/g, '-'), signature],
+      duedate: dueDateStr,
+      timetracking: {
+        originalEstimate: originalEstimateStr
+      }
     }
   };
 

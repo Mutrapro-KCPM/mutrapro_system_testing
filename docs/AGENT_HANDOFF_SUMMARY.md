@@ -414,3 +414,27 @@ failed: 0
 - Khi sua CI, uu tien test local bang Docker truoc, sau do moi bao nguoi dung push/CI.
 - Neu Docker bi sandbox/permission chan, can xin escalated permission.
 
+## 13. Nâng cấp CI/Jira Automation V2
+
+Dựa trên tài liệu `docs/workflow-ci-jira-agent-guide-v2.md`, hệ thống CI đã được nâng cấp để tự động bắt lỗi và tạo vé Bug trên Jira:
+
+### 13.1. Cấu hình Phân quyền (Ownership)
+- **`ci/service-owners.yml`**: Ánh xạ 9 services cho 5 thành viên (Minh Trọng, Gia Bảo, Thanh Trí, Phát Đạt, Hoàng Trọng), bao gồm GitHub Username và Jira Account ID.
+- **`.github/CODEOWNERS`**: Tự động assign PR reviewer dựa trên thư mục service.
+
+### 13.2. Script xử lý lỗi tự động (Node.js)
+Thay vì dùng bash script phức tạp, hệ thống dùng 3 file Node.js độc lập trong `ci/scripts/`:
+- **`detect-service.js`**: Trích xuất tên service từ URL bị lỗi trong báo cáo Newman.
+- **`classify-error.js`**: Phân loại lỗi (Validation, Auth, Database...) dựa trên HTTP Status Code và nội dung phản hồi, đồng thời phân cấp Priority (Critical, High, Medium).
+- **`jira-upsert-bug.js`**: Tập lệnh chính kết nối với Jira API v3:
+  - Tạo `bug_signature` (mã băm) để chặn việc tạo trùng lặp thẻ Bug cho cùng một lỗi.
+  - Tự động cấp phát thời gian (Original Estimate: 4 giờ/lỗi) và Due Date (rộng rãi từ 2 ngày đến 2 tuần tùy khối lượng lỗi).
+  - Tự động tạo Bug và gán đích danh cho thành viên phụ trách service, hoặc tự động comment nhắc nhở nếu lỗi cũ chưa được sửa.
+
+### 13.3. Tích hợp Workflow & Tài liệu
+- **`.github/workflows/api-newman-ci.yml`**: Gắn `jira-upsert-bug.js` vào luồng chạy GitHub Actions hiện có.
+- **`ci/weekly-plan-template.md`**: Mẫu báo cáo tiến độ tuần cho nhóm.
+- **`ci/jira-task-template.md`**: Mẫu cấu trúc thẻ Jira task/bug.
+- **`docs/github_actions_jira_workflow.md`**: Tài liệu hướng dẫn sử dụng luồng CI/Jira dành cho các thành viên.
+
+**Lưu ý cho Agent tiếp theo**: Hệ thống Node.js này hoạt động ổn định và chính xác. Tránh can thiệp hoặc thay đổi cấu trúc thư mục `ci/scripts/` trừ khi có yêu cầu nâng cấp nghiệp vụ.
