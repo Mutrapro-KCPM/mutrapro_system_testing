@@ -155,13 +155,6 @@
                           "listen": "prerequest",
                           "script": {
                             "exec": [
-                              "// Tạo một timestamp hoặc chuỗi ngẫu nhiên để làm email duy nhất\r",
-                              "const timestamp = new Date().getTime();\r",
-                              "const dynamicEmail = `auto_test_${timestamp}@example.com`;\r",
-                              "\r",
-                              "// Lưu vào biến môi trường (Environment/Collection variable)\r",
-                              "pm.environment.set(\"auto_register_email\", dynamicEmail);\r",
-                              "pm.environment.set(\"auto_register_pwd\", \"password123\");\r",
                               ""
                             ],
                             "type": "text/javascript",
@@ -229,13 +222,6 @@
                           "listen": "prerequest",
                           "script": {
                             "exec": [
-                              "// Tạo một timestamp hoặc chuỗi ngẫu nhiên để làm email duy nhất\r",
-                              "const timestamp = new Date().getTime();\r",
-                              "const dynamicEmail = `auto_test_${timestamp}@example.com`;\r",
-                              "\r",
-                              "// Lưu vào biến môi trường (Environment/Collection variable)\r",
-                              "pm.environment.set(\"auto_register_email\", dynamicEmail);\r",
-                              "pm.environment.set(\"auto_register_pwd\", \"password123\");\r",
                               ""
                             ],
                             "type": "text/javascript",
