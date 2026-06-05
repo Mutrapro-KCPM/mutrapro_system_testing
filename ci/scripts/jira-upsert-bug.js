@@ -55,9 +55,8 @@ async function addJiraComment(issueKey, text) {
 }
 
 function buildBugSignature(service, failure, errorType) {
-  // Use a hash of service + errorType + request name
-  const requestName = failure.source?.name || 'Unknown Request';
-  const str = `${service}|${errorType}|${requestName}`;
+  // Chỉ dùng service và errorType làm chữ ký để gom nhóm cố định, chống duplicate triệt để
+  const str = `${service}|${errorType}`;
   const hash = crypto.createHash('md5').update(str).digest('hex').substring(0, 6);
   return `sig-${hash}`;
 }
