@@ -139,7 +139,7 @@ Nhung buoc chinh:
 1. Checkout source code
 2. Kiem tra cac CI secrets bat buoc
 3. Validate docker compose config
-4. Build truoc cac image API chinh: mysql_db, cac backend service va api-gateway
+4. Build truoc cac image API chinh bang BuildKit: mysql_db, cac backend service va api-gateway
 5. Start API stack bang `docker compose up -d --no-build api-gateway`
 6. Cho API Gateway healthy tai http://localhost:3007/api/health va in health/status cac service khi dang cho
 7. Build Newman Docker image tu .github/newman/Dockerfile, co cache Buildx/GHA
@@ -151,6 +151,10 @@ Nhung buoc chinh:
 13. Tim Jira issue key
 14. Comment pass/fail vao Jira neu da cau hinh secrets
 ```
+
+Dockerfile cua cac Node service dung `npm ci --omit=dev` va BuildKit cache mount tai `/root/.npm`.
+Dieu nay giup build on dinh theo `package-lock.json` va giam viec tai lai npm package trong qua trinh build.
+File `.dockerignore` loai bo upload/log/node_modules va cac thu muc khong can cho backend build de giam Docker build context.
 
 ## 8. Cach doc loi khi GitHub Actions fail
 
