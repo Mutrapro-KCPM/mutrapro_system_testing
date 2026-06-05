@@ -1,0 +1,430 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuites name="Presentation" tests="129" time="3.170">
+  <testsuite name="api / orders / 00 - Xác nhận API thật từ source code / ORD-SRC-01 - Xác nhận Order Service nằm tại services/order-service" id="0ab48192-1d7c-433d-a105-68c493274640" timestamp="2026-06-05T02:34:21.062Z" tests="2" failures="0" errors="0" time="0.073">
+    <testcase name="HTTP 200" time="0.073" classname="Presentation"/>
+    <testcase name="order-service health" time="0.073" classname="Presentation"/>
+  </testsuite>
+  <testsuite name="api / orders / 00 - Xác nhận API thật từ source code / ORD-SRC-04 - Xác nhận Auth Service dùng để đăng nhập và cấp token" id="2666ee9e-99d6-4c76-991c-0a0b21bd8557" timestamp="2026-06-05T02:34:21.062Z" tests="2" failures="0" errors="0" time="0.138">
+    <testcase name="HTTP 200" time="0.138" classname="Presentation"/>
+    <testcase name="token returned" time="0.138" classname="Presentation"/>
+  </testsuite>
+  <testsuite name="api / orders / 00 - Xác nhận API thật từ source code / ORD-SRC-02 - Xác nhận API Gateway route /api/orders đến Order Service" id="d0a3f96c-aad2-4a18-8864-0033cfc8b0b7" timestamp="2026-06-05T02:34:21.062Z" tests="2" failures="0" errors="0" time="0.072">
+    <testcase name="HTTP 200" time="0.072" classname="Presentation"/>
+    <testcase name="stats has totalOrders" time="0.072" classname="Presentation"/>
+  </testsuite>
+  <testsuite name="api / orders / 00 - Xác nhận API thật từ source code / ORD-SRC-03 - Xác nhận API Gateway route /api/payments đến Payment API trong Order Service" id="30a048a5-060d-490d-91f3-44b9fbaa72bc" timestamp="2026-06-05T02:34:21.062Z" tests="2" failures="0" errors="0" time="0.026">
+    <testcase name="HTTP 200" time="0.026" classname="Presentation"/>
+    <testcase name="payments payload exists" time="0.026" classname="Presentation"/>
+  </testsuite>
+  <testsuite name="api / orders / 00 - Xác nhận API thật từ source code / ORD-SRC-05 - Xác nhận File Service có API lấy file theo order" id="fcd881bd-3a89-4fea-9a96-24dab1e27413" timestamp="2026-06-05T02:34:21.062Z" tests="2" failures="0" errors="0" time="0.067">
+    <testcase name="HTTP 200" time="0.067" classname="Presentation"/>
+    <testcase name="Response is JSON" time="0.067" classname="Presentation"/>
+  </testsuite>
+  <testsuite name="api / orders / 00 - Xác nhận API thật từ source code / ORD-SRC-06 - Xác nhận Analytics Service có API thống kê riêng" id="ca7e74b3-2bd5-4b9f-af83-0f74c4e4459f" timestamp="2026-06-05T02:34:21.062Z" tests="2" failures="0" errors="0" time="0.052">
+    <testcase name="HTTP 200" time="0.052" classname="Presentation"/>
+    <testcase name="analytics payload exists" time="0.052" classname="Presentation"/>
+  </testsuite>
+  <testsuite name="api / orders / 01 - Chuẩn bị dữ liệu kiểm thử / ORD-SETUP-08 - Tạo customer test nếu chưa có" id="02b533cd-cce0-41cc-b3e3-0e46ac907569" timestamp="2026-06-05T02:34:21.062Z" tests="1" failures="0" errors="0" time="0.089">
+    <testcase name="HTTP 201" time="0.089" classname="Presentation"/>
+  </testsuite>
+  <testsuite name="api / orders / 01 - Chuẩn bị dữ liệu kiểm thử / ORD-SETUP-01 - Đăng nhập customer" id="d0fad70b-589b-4d55-af1a-cd345f803390" timestamp="2026-06-05T02:34:21.062Z" tests="2" failures="0" errors="0" time="0.052">
+    <testcase name="HTTP 200" time="0.052" classname="Presentation"/>
+    <testcase name="token returned" time="0.052" classname="Presentation"/>
+  </testsuite>
+  <testsuite name="api / orders / 01 - Chuẩn bị dữ liệu kiểm thử / ORD-SETUP-02 - Đăng nhập admin" id="4921154e-ef48-41e9-912c-11b85f1fc5e4" timestamp="2026-06-05T02:34:21.062Z" tests="2" failures="0" errors="0" time="0.051">
+    <testcase name="HTTP 200" time="0.051" classname="Presentation"/>
+    <testcase name="token returned" time="0.051" classname="Presentation"/>
+  </testsuite>
+  <testsuite name="api / orders / 01 - Chuẩn bị dữ liệu kiểm thử / ORD-SETUP-03 - Đăng nhập coordinator" id="645f7e7e-8612-4591-aff1-819eddd1d9b8" timestamp="2026-06-05T02:34:21.062Z" tests="2" failures="0" errors="0" time="0.051">
+    <testcase name="HTTP 200" time="0.051" classname="Presentation"/>
+    <testcase name="token returned" time="0.051" classname="Presentation"/>
+  </testsuite>
+  <testsuite name="api / orders / 01 - Chuẩn bị dữ liệu kiểm thử / ORD-SETUP-04 - Đăng nhập transcriber" id="7789e9cc-9a6a-4081-959e-49f15f3c9cea" timestamp="2026-06-05T02:34:21.062Z" tests="2" failures="0" errors="0" time="0.051">
+    <testcase name="HTTP 200" time="0.051" classname="Presentation"/>
+    <testcase name="token returned" time="0.051" classname="Presentation"/>
+  </testsuite>
+  <testsuite name="api / orders / 01 - Chuẩn bị dữ liệu kiểm thử / ORD-SETUP-05 - Đăng nhập arranger" id="869f6c87-c92f-4f1c-ac5b-ce6f2fb07713" timestamp="2026-06-05T02:34:21.062Z" tests="2" failures="0" errors="0" time="0.052">
+    <testcase name="HTTP 200" time="0.052" classname="Presentation"/>
+    <testcase name="token returned" time="0.052" classname="Presentation"/>
+  </testsuite>
+  <testsuite name="api / orders / 01 - Chuẩn bị dữ liệu kiểm thử / ORD-SETUP-06 - Đăng nhập artist" id="6a9636e6-a721-4fde-8577-0e6e4054531e" timestamp="2026-06-05T02:34:21.062Z" tests="2" failures="0" errors="0" time="0.054">
+    <testcase name="HTTP 200" time="0.054" classname="Presentation"/>
+    <testcase name="token returned" time="0.054" classname="Presentation"/>
+  </testsuite>
+  <testsuite name="api / orders / 01 - Chuẩn bị dữ liệu kiểm thử / ORD-SETUP-07 - Đăng nhập studio_admin" id="517f3bdd-b994-4dcd-880f-1fea54b8bd22" timestamp="2026-06-05T02:34:21.062Z" tests="2" failures="0" errors="0" time="0.052">
+    <testcase name="HTTP 200" time="0.052" classname="Presentation"/>
+    <testcase name="token returned" time="0.052" classname="Presentation"/>
+  </testsuite>
+  <testsuite name="api / orders / 02 - Luồng kiểm thử chuẩn / ORD-S01 - Customer tạo đơn transcription thành công" id="cc6dae95-7e52-4345-871e-bb937fd77899" timestamp="2026-06-05T02:34:21.062Z" tests="2" failures="0" errors="0" time="0.055">
+    <testcase name="HTTP 201" time="0.055" classname="Presentation"/>
+    <testcase name="order id returned" time="0.055" classname="Presentation"/>
+  </testsuite>
+  <testsuite name="api / orders / 02 - Luồng kiểm thử chuẩn / ORD-S02 - Customer tạo đơn arrangement thành công" id="05d272e9-367a-4832-afad-144066bdda79" timestamp="2026-06-05T02:34:21.062Z" tests="2" failures="0" errors="0" time="0.023">
+    <testcase name="HTTP 201" time="0.023" classname="Presentation"/>
+    <testcase name="order id returned" time="0.023" classname="Presentation"/>
+  </testsuite>
+  <testsuite name="api / orders / 02 - Luồng kiểm thử chuẩn / ORD-S03 - Customer tạo đơn recording thành công" id="b079dbe6-aeaa-4f57-9a0f-300960b07708" timestamp="2026-06-05T02:34:21.062Z" tests="2" failures="0" errors="0" time="0.017">
+    <testcase name="HTTP 201" time="0.017" classname="Presentation"/>
+    <testcase name="order id returned" time="0.017" classname="Presentation"/>
+  </testsuite>
+  <testsuite name="api / orders / 02 - Luồng kiểm thử chuẩn / ORD-S04 - Customer xem danh sách đơn hàng của chính mình" id="29f76154-5ab3-424a-a859-a89f68ba3a3c" timestamp="2026-06-05T02:34:21.062Z" tests="2" failures="0" errors="0" time="0.010">
+    <testcase name="HTTP 200" time="0.010" classname="Presentation"/>
+    <testcase name="array payload" time="0.010" classname="Presentation"/>
+  </testsuite>
+  <testsuite name="api / orders / 02 - Luồng kiểm thử chuẩn / ORD-S05 - Customer xem chi tiết đơn hàng của chính mình" id="24d5aa55-229f-4cc5-b1dd-85677604cb64" timestamp="2026-06-05T02:34:21.062Z" tests="2" failures="0" errors="0" time="0.023">
+    <testcase name="HTTP 200" time="0.023" classname="Presentation"/>
+    <testcase name="belongs to customer" time="0.023" classname="Presentation"/>
+  </testsuite>
+  <testsuite name="api / orders / 02 - Luồng kiểm thử chuẩn / ORD-S06 - Coordinator xem tất cả đơn hàng" id="b0eab640-f6d6-4421-beae-66389dca18f8" timestamp="2026-06-05T02:34:21.062Z" tests="2" failures="0" errors="0" time="0.058">
+    <testcase name="HTTP 200" time="0.058" classname="Presentation"/>
+    <testcase name="array payload" time="0.058" classname="Presentation"/>
+  </testsuite>
+  <testsuite name="api / orders / 02 - Luồng kiểm thử chuẩn / ORD-S07 - Admin xem tất cả đơn hàng" id="9bf49d9f-0f25-479c-9440-929208861a1c" timestamp="2026-06-05T02:34:21.062Z" tests="2" failures="0" errors="0" time="0.016">
+    <testcase name="HTTP 200" time="0.016" classname="Presentation"/>
+    <testcase name="array payload" time="0.016" classname="Presentation"/>
+  </testsuite>
+  <testsuite name="api / orders / 02 - Luồng kiểm thử chuẩn / ORD-S08 - Coordinator cập nhật trạng thái đơn hàng" id="1a16a891-18a1-47e5-a434-7218b4056a11" timestamp="2026-06-05T02:34:21.062Z" tests="1" failures="0" errors="0" time="0.020">
+    <testcase name="HTTP 200" time="0.020" classname="Presentation"/>
+  </testsuite>
+  <testsuite name="api / orders / 02 - Luồng kiểm thử chuẩn / ORD-S09 - Admin cập nhật trạng thái đơn hàng" id="271d7ddf-334f-4215-a7a3-0200fd7fc75c" timestamp="2026-06-05T02:34:21.062Z" tests="1" failures="0" errors="0" time="0.016">
+    <testcase name="HTTP 200" time="0.016" classname="Presentation"/>
+  </testsuite>
+  <testsuite name="api / orders / 03 - Kiểm thử giá trị biên BVA cơ bản / Service Type / BVA-ORD-SERVICE-01 - service_type = transcription" id="c8db7f0a-ffc5-4642-b1b4-f7caa69a402f" timestamp="2026-06-05T02:34:21.062Z" tests="1" failures="0" errors="0" time="0.019">
+    <testcase name="HTTP 201" time="0.019" classname="Presentation"/>
+  </testsuite>
+  <testsuite name="api / orders / 03 - Kiểm thử giá trị biên BVA cơ bản / Service Type / BVA-ORD-SERVICE-04 - service_type rỗng" id="11589370-32c3-40e2-8f04-3d3bef26ab95" timestamp="2026-06-05T02:34:21.062Z" tests="1" failures="0" errors="0" time="0.009">
+    <testcase name="HTTP 400" time="0.009" classname="Presentation"/>
+  </testsuite>
+  <testsuite name="api / orders / 03 - Kiểm thử giá trị biên BVA cơ bản / Service Type / BVA-ORD-SERVICE-05 - service_type không thuộc enum" id="936d8d57-b84a-40b1-ba25-1ccf69221f93" timestamp="2026-06-05T02:34:21.062Z" tests="1" failures="0" errors="0" time="0.007">
+    <testcase name="HTTP 400" time="0.007" classname="Presentation"/>
+  </testsuite>
+  <testsuite name="api / orders / 03 - Kiểm thử giá trị biên BVA cơ bản / Description / BVA-ORD-DESC-01 - description rỗng" id="9be9326e-3959-4a54-af79-0c1340b60e80" timestamp="2026-06-05T02:34:21.062Z" tests="1" failures="0" errors="0" time="0.007">
+    <testcase name="HTTP 400" time="0.007" classname="Presentation"/>
+  </testsuite>
+  <testsuite name="api / orders / 03 - Kiểm thử giá trị biên BVA cơ bản / Description / BVA-ORD-DESC-03 - description 1 ký tự" id="859a8d21-cc8b-4f51-978d-2d52498907fa" timestamp="2026-06-05T02:34:21.062Z" tests="1" failures="0" errors="0" time="0.018">
+    <testcase name="HTTP 201" time="0.018" classname="Presentation"/>
+  </testsuite>
+  <testsuite name="api / orders / 03 - Kiểm thử giá trị biên BVA cơ bản / Order ID / BVA-ORD-ID-01 - id = 0" id="332cbc2c-69fa-4d95-ac81-e06ad02bb190" timestamp="2026-06-05T02:34:21.062Z" tests="1" failures="0" errors="0" time="0.007">
+    <testcase name="HTTP 400 or 404" time="0.007" classname="Presentation"/>
+  </testsuite>
+  <testsuite name="api / orders / 03 - Kiểm thử giá trị biên BVA cơ bản / Order ID / BVA-ORD-ID-03 - id là chữ" id="2487edad-0744-471f-a3c3-b8e676f08693" timestamp="2026-06-05T02:34:21.062Z" tests="1" failures="0" errors="0" time="0.005">
+    <testcase name="HTTP 400" time="0.005" classname="Presentation"/>
+  </testsuite>
+  <testsuite name="api / orders / 03 - Kiểm thử giá trị biên BVA cơ bản / Order ID / BVA-ORD-ID-05 - id hợp lệ" id="3c4b4df1-8b1d-43af-b66c-70fb096ce8ec" timestamp="2026-06-05T02:34:21.062Z" tests="1" failures="0" errors="0" time="0.007">
+    <testcase name="HTTP 200" time="0.007" classname="Presentation"/>
+  </testsuite>
+  <testsuite name="api / orders / 04 - Kiểm thử validation dữ liệu đầu vào / ORD-V01 - Tạo đơn thiếu service_type" id="c521ce0f-2c95-460a-8a30-3b31f7e75178" timestamp="2026-06-05T02:34:21.062Z" tests="1" failures="0" errors="0" time="0.006">
+    <testcase name="HTTP 400" time="0.006" classname="Presentation"/>
+  </testsuite>
+  <testsuite name="api / orders / 04 - Kiểm thử validation dữ liệu đầu vào / ORD-V02 - Tạo đơn service_type sai enum" id="39f96db5-4390-4291-abd3-ac1152f55594" timestamp="2026-06-05T02:34:21.062Z" tests="1" failures="0" errors="0" time="0.006">
+    <testcase name="HTTP 400" time="0.006" classname="Presentation"/>
+  </testsuite>
+  <testsuite name="api / orders / 04 - Kiểm thử validation dữ liệu đầu vào / ORD-V03 - Tạo đơn thiếu description" id="3d49af44-32cf-4f6f-8831-f6260b9b3d08" timestamp="2026-06-05T02:34:21.062Z" tests="1" failures="0" errors="0" time="0.006">
+    <testcase name="HTTP 400" time="0.006" classname="Presentation"/>
+  </testsuite>
+  <testsuite name="api / orders / 04 - Kiểm thử validation dữ liệu đầu vào / ORD-V04 - Tạo đơn description rỗng" id="2933f681-dda4-4492-92d1-e068b6f4f02d" timestamp="2026-06-05T02:34:21.062Z" tests="1" failures="0" errors="0" time="0.006">
+    <testcase name="HTTP 400" time="0.006" classname="Presentation"/>
+  </testsuite>
+  <testsuite name="api / orders / 04 - Kiểm thử validation dữ liệu đầu vào / ORD-V08 - Cập nhật trạng thái thiếu status" id="c92ac028-a8e2-4363-9876-fc1b7112f572" timestamp="2026-06-05T02:34:21.062Z" tests="1" failures="0" errors="0" time="0.006">
+    <testcase name="HTTP 400" time="0.006" classname="Presentation"/>
+  </testsuite>
+  <testsuite name="api / orders / 04 - Kiểm thử validation dữ liệu đầu vào / ORD-V09 - Cập nhật trạng thái sai enum" id="e91ecfe5-e90c-4407-890a-0f7cf7274ff7" timestamp="2026-06-05T02:34:21.062Z" tests="1" failures="0" errors="0" time="0.006">
+    <testcase name="HTTP 400" time="0.006" classname="Presentation"/>
+  </testsuite>
+  <testsuite name="api / orders / 05 - Kiểm thử xác thực và phân quyền / Xác thực token / ORD-AUTH-01 - Tạo đơn không có token" id="21d8822d-b556-488b-a22f-749a4c18bcdf" timestamp="2026-06-05T02:34:21.062Z" tests="1" failures="0" errors="0" time="0.011">
+    <testcase name="HTTP 401" time="0.011" classname="Presentation"/>
+  </testsuite>
+  <testsuite name="api / orders / 05 - Kiểm thử xác thực và phân quyền / Xác thực token / ORD-AUTH-02 - Tạo đơn với token sai" id="93200d81-c9e6-4be8-a3a8-67ae2dad8cb6" timestamp="2026-06-05T02:34:21.062Z" tests="1" failures="0" errors="0" time="0.006">
+    <testcase name="HTTP 401 or 403" time="0.006" classname="Presentation"/>
+  </testsuite>
+  <testsuite name="api / orders / 05 - Kiểm thử xác thực và phân quyền / Xác thực token / ORD-AUTH-03 - Xem chi tiết đơn không có token" id="8c3c0640-efa5-4e60-9523-1ac0598bfa74" timestamp="2026-06-05T02:34:21.062Z" tests="1" failures="0" errors="0" time="0.004">
+    <testcase name="HTTP 401" time="0.004" classname="Presentation"/>
+  </testsuite>
+  <testsuite name="api / orders / 05 - Kiểm thử xác thực và phân quyền / Xác thực token / ORD-AUTH-04 - Cập nhật status không có token" id="e6e47d6f-f6c4-4207-afac-3c46e6791b82" timestamp="2026-06-05T02:34:21.062Z" tests="1" failures="0" errors="0" time="0.005">
+    <testcase name="HTTP 401" time="0.005" classname="Presentation"/>
+  </testsuite>
+  <testsuite name="api / orders / 05 - Kiểm thử xác thực và phân quyền / Xác thực token / ORD-AUTH-05 - Thanh toán không có token" id="dc3991c4-040f-4b7a-8ae9-fc6f8c1953b5" timestamp="2026-06-05T02:34:21.062Z" tests="1" failures="0" errors="0" time="0.005">
+    <testcase name="HTTP 401" time="0.005" classname="Presentation"/>
+  </testsuite>
+  <testsuite name="api / orders / 05 - Kiểm thử xác thực và phân quyền / Phân quyền theo role / ORD-RBAC-01 - Customer tạo đơn hàng" id="3d7eefad-d101-4b01-a225-66d27a3066dd" timestamp="2026-06-05T02:34:21.062Z" tests="1" failures="0" errors="0" time="0.017">
+    <testcase name="HTTP 201" time="0.017" classname="Presentation"/>
+  </testsuite>
+  <testsuite name="api / orders / 05 - Kiểm thử xác thực và phân quyền / Phân quyền theo role / ORD-RBAC-02 - Admin tạo đơn hàng" id="eca80675-10f7-496d-aa60-dfe0ac4b6b8b" timestamp="2026-06-05T02:34:21.062Z" tests="1" failures="0" errors="0" time="0.005">
+    <testcase name="HTTP 403" time="0.005" classname="Presentation"/>
+  </testsuite>
+  <testsuite name="api / orders / 05 - Kiểm thử xác thực và phân quyền / Phân quyền theo role / ORD-RBAC-04 - Customer xem tất cả đơn hàng" id="e285f9f8-fab4-4c3a-9bd2-a09fc3d7b999" timestamp="2026-06-05T02:34:21.062Z" tests="1" failures="0" errors="0" time="0.005">
+    <testcase name="HTTP 403" time="0.005" classname="Presentation"/>
+  </testsuite>
+  <testsuite name="api / orders / 05 - Kiểm thử xác thực và phân quyền / Phân quyền theo role / ORD-RBAC-06 - Coordinator xem tất cả đơn hàng" id="aa7a7f22-5d94-4cd4-a632-884b633f663b" timestamp="2026-06-05T02:34:21.062Z" tests="1" failures="0" errors="0" time="0.017">
+    <testcase name="HTTP 200" time="0.017" classname="Presentation"/>
+  </testsuite>
+  <testsuite name="api / orders / 05 - Kiểm thử xác thực và phân quyền / Phân quyền theo role / ORD-RBAC-08 - Customer cập nhật status" id="9ef4125e-583d-4ea5-a0f4-ad37d4fca35e" timestamp="2026-06-05T02:34:21.062Z" tests="1" failures="0" errors="0" time="0.005">
+    <testcase name="HTTP 403" time="0.005" classname="Presentation"/>
+  </testsuite>
+  <testsuite name="api / orders / 05 - Kiểm thử xác thực và phân quyền / Phân quyền theo role / ORD-RBAC-14 - Studio_admin xem chi tiết order" id="34950df5-97ab-40b0-b903-a0cc39bd30b2" timestamp="2026-06-05T02:34:21.062Z" tests="1" failures="0" errors="0" time="0.006">
+    <testcase name="HTTP 200" time="0.006" classname="Presentation"/>
+  </testsuite>
+  <testsuite name="api / orders / 06 - Kiểm thử luồng trạng thái đơn hàng / ORD-STATUS-02 - Cập nhật status assigned" id="a71f0b31-6f53-4bc2-9637-0cbb61f61ad3" timestamp="2026-06-05T02:34:21.062Z" tests="1" failures="0" errors="0" time="0.019">
+    <testcase name="HTTP 200" time="0.019" classname="Presentation"/>
+  </testsuite>
+  <testsuite name="api / orders / 06 - Kiểm thử luồng trạng thái đơn hàng / ORD-STATUS-03 - Cập nhật status in_progress" id="3104d326-1711-43d2-bdc5-53874b00e123" timestamp="2026-06-05T02:34:21.062Z" tests="1" failures="0" errors="0" time="0.013">
+    <testcase name="HTTP 200" time="0.013" classname="Presentation"/>
+  </testsuite>
+  <testsuite name="api / orders / 06 - Kiểm thử luồng trạng thái đơn hàng / ORD-STATUS-04 - Cập nhật status completed" id="2eb74710-dd1f-417a-9369-14592f45db2d" timestamp="2026-06-05T02:34:21.062Z" tests="1" failures="0" errors="0" time="0.014">
+    <testcase name="HTTP 200" time="0.014" classname="Presentation"/>
+  </testsuite>
+  <testsuite name="api / orders / 06 - Kiểm thử luồng trạng thái đơn hàng / ORD-STATUS-09 - Cập nhật status không tồn tại" id="c12cbe09-cb43-4f05-8ebf-805378697570" timestamp="2026-06-05T02:34:21.062Z" tests="1" failures="0" errors="0" time="0.006">
+    <testcase name="HTTP 400" time="0.006" classname="Presentation"/>
+  </testsuite>
+  <testsuite name="api / orders / 07 - Kiểm thử thanh toán / ORD-PAY-00A - Tạo order riêng để test payment" id="ef253097-dbc6-4017-a59b-7fef85265b29" timestamp="2026-06-05T02:34:21.062Z" tests="2" failures="0" errors="0" time="0.025">
+    <testcase name="HTTP 201" time="0.025" classname="Presentation"/>
+    <testcase name="payment test order id returned" time="0.025" classname="Presentation"/>
+  </testsuite>
+  <testsuite name="api / orders / 07 - Kiểm thử thanh toán / ORD-PAY-00B - Admin cập nhật payment order sang completed" id="c5e2947b-2c2e-4529-998f-c4e6155dae7d" timestamp="2026-06-05T02:34:21.062Z" tests="1" failures="0" errors="0" time="0.029">
+    <testcase name="HTTP 200" time="0.029" classname="Presentation"/>
+  </testsuite>
+  <testsuite name="api / orders / 07 - Kiểm thử thanh toán / ORD-PAY-01 - Thanh toán order completed đúng amount" id="c33f0d57-9178-44c6-816a-0064f8a2e2cc" timestamp="2026-06-05T02:34:21.062Z" tests="1" failures="0" errors="0" time="0.016">
+    <testcase name="HTTP 200 or 400" time="0.016" classname="Presentation"/>
+  </testsuite>
+  <testsuite name="api / orders / 07 - Kiểm thử thanh toán / ORD-PAY-04 - Thanh toán sai amount" id="07ef3ada-09cd-4b15-ba74-f9aacd8e9b46" timestamp="2026-06-05T02:34:21.062Z" tests="1" failures="0" errors="0" time="0.006">
+    <testcase name="HTTP 400" time="0.006" classname="Presentation"/>
+  </testsuite>
+  <testsuite name="api / orders / 07 - Kiểm thử thanh toán / ORD-PAY-07 - Tạo payment pending cho order completed" id="b8727891-5c89-403f-a0ac-0d238f742569" timestamp="2026-06-05T02:34:21.062Z" tests="2" failures="0" errors="0" time="0.024">
+    <testcase name="HTTP 201" time="0.024" classname="Presentation"/>
+    <testcase name="payment id returned" time="0.024" classname="Presentation"/>
+  </testsuite>
+  <testsuite name="api / orders / 07 - Kiểm thử thanh toán / ORD-PAY-11 - Admin xem danh sách payment" id="adb83b32-84ce-4387-b29c-a25e6a12e50f" timestamp="2026-06-05T02:34:21.062Z" tests="3" failures="0" errors="0" time="0.008">
+    <testcase name="HTTP 200" time="0.008" classname="Presentation"/>
+    <testcase name="payment list payload exists" time="0.008" classname="Presentation"/>
+    <testcase name="pagination exists when endpoint is paginated" time="0.008" classname="Presentation"/>
+  </testsuite>
+  <testsuite name="api / orders / 07 - Kiểm thử thanh toán / ORD-PAY-14 - Xem chi tiết payment theo id" id="f5561f6c-cdfd-4ea7-b6dc-3a7cd0d44fdd" timestamp="2026-06-05T02:34:21.062Z" tests="2" failures="0" errors="0" time="0.006">
+    <testcase name="HTTP 200" time="0.006" classname="Presentation"/>
+    <testcase name="payment id matches" time="0.006" classname="Presentation"/>
+  </testsuite>
+  <testsuite name="api / orders / 07 - Kiểm thử thanh toán / ORD-PAY-15 - Mock payment success" id="382f18b6-1e47-491f-ab04-943787ebf72d" timestamp="2026-06-05T02:34:21.062Z" tests="2" failures="0" errors="0" time="0.030">
+    <testcase name="HTTP 200" time="0.030" classname="Presentation"/>
+    <testcase name="transaction id exists" time="0.030" classname="Presentation"/>
+  </testsuite>
+  <testsuite name="api / orders / 08 - Kiểm thử feedback và revision / Feedback / ORD-FB-01 - Gửi feedback cho order paid" id="000da438-25d2-4926-8156-b12bd5bd06dc" timestamp="2026-06-05T02:34:21.062Z" tests="1" failures="0" errors="0" time="0.016">
+    <testcase name="HTTP 201 or 409" time="0.016" classname="Presentation"/>
+  </testsuite>
+  <testsuite name="api / orders / 08 - Kiểm thử feedback và revision / Feedback / ORD-FB-02 - Gửi feedback cho order chưa paid" id="7d361928-f955-4bb5-91c6-4fdf2807e0c9" timestamp="2026-06-05T02:34:21.062Z" tests="1" failures="0" errors="0" time="0.006">
+    <testcase name="HTTP 400" time="0.006" classname="Presentation"/>
+  </testsuite>
+  <testsuite name="api / orders / 08 - Kiểm thử feedback và revision / Feedback / ORD-FB-03 - Gửi feedback rating = 0" id="fbcbc578-e763-44d1-85f2-bb4477a55771" timestamp="2026-06-05T02:34:21.062Z" tests="1" failures="0" errors="0" time="0.005">
+    <testcase name="HTTP 400" time="0.005" classname="Presentation"/>
+  </testsuite>
+  <testsuite name="api / orders / 08 - Kiểm thử feedback và revision / Feedback / ORD-FB-06 - Gửi feedback rating = 6" id="5aea7e20-1694-471c-a233-1ca8e47127fe" timestamp="2026-06-05T02:34:21.062Z" tests="1" failures="0" errors="0" time="0.006">
+    <testcase name="HTTP 400" time="0.006" classname="Presentation"/>
+  </testsuite>
+  <testsuite name="api / orders / 08 - Kiểm thử feedback và revision / Feedback / ORD-FB-09 - Kiểm tra order đã có feedback chưa" id="f1c59d04-a196-4f32-a811-933186da82d3" timestamp="2026-06-05T02:34:21.062Z" tests="2" failures="0" errors="0" time="0.007">
+    <testcase name="HTTP 200" time="0.007" classname="Presentation"/>
+    <testcase name="hasFeedback boolean" time="0.007" classname="Presentation"/>
+  </testsuite>
+  <testsuite name="api / orders / 08 - Kiểm thử feedback và revision / Revision / ORD-REV-01 - Yêu cầu chỉnh sửa order completed" id="5e60e76f-8ef7-4ab0-aebf-8a1f5745a4a2" timestamp="2026-06-05T02:34:21.062Z" tests="1" failures="0" errors="0" time="0.134">
+    <testcase name="HTTP 200" time="0.134" classname="Presentation"/>
+  </testsuite>
+  <testsuite name="api / orders / 08 - Kiểm thử feedback và revision / Revision / ORD-REV-00 - Tạo order pending để test revision" id="7a1f3ca2-e195-4e65-9ffa-579146b3fbd4" timestamp="2026-06-05T02:34:21.062Z" tests="1" failures="0" errors="0" time="0.015">
+    <testcase name="HTTP 201" time="0.015" classname="Presentation"/>
+  </testsuite>
+  <testsuite name="api / orders / 08 - Kiểm thử feedback và revision / Revision / ORD-REV-03 - Yêu cầu chỉnh sửa order pending" id="afa3b0d2-40b8-41b3-a9bd-568a36d2e9ee" timestamp="2026-06-05T02:34:21.062Z" tests="1" failures="0" errors="0" time="0.007">
+    <testcase name="HTTP 400" time="0.007" classname="Presentation"/>
+  </testsuite>
+  <testsuite name="api / orders / 08 - Kiểm thử feedback và revision / Revision / ORD-REV-05 - Yêu cầu chỉnh sửa thiếu comment" id="0df1779b-b051-4b4b-93ef-b72da6bc8c0d" timestamp="2026-06-05T02:34:21.062Z" tests="1" failures="0" errors="0" time="0.006">
+    <testcase name="HTTP 400" time="0.006" classname="Presentation"/>
+  </testsuite>
+  <testsuite name="api / orders / 09 - Kiểm thử thống kê / ORD-STATS-01 - Admin xem thống kê đơn hàng từ Order Service" id="ee0358da-887f-4a61-8c9c-b614296cbf73" timestamp="2026-06-05T02:34:21.062Z" tests="2" failures="0" errors="0" time="0.007">
+    <testcase name="HTTP 200" time="0.007" classname="Presentation"/>
+    <testcase name="stats structure" time="0.007" classname="Presentation"/>
+  </testsuite>
+  <testsuite name="api / orders / 09 - Kiểm thử thống kê / ORD-STATS-02 - Coordinator xem thống kê đơn hàng từ Order Service" id="28d7d2f0-7467-49c4-bb58-fb14419ed41d" timestamp="2026-06-05T02:34:21.062Z" tests="1" failures="0" errors="0" time="0.007">
+    <testcase name="HTTP 200" time="0.007" classname="Presentation"/>
+  </testsuite>
+  <testsuite name="api / orders / 09 - Kiểm thử thống kê / ORD-STATS-03 - Customer xem thống kê đơn hàng từ Order Service" id="f08f2c9a-0650-4006-a7d4-770aac5350d0" timestamp="2026-06-05T02:34:21.062Z" tests="1" failures="0" errors="0" time="0.006">
+    <testcase name="HTTP 403" time="0.006" classname="Presentation"/>
+  </testsuite>
+  <testsuite name="api / orders / 09 - Kiểm thử thống kê / ORD-STATS-04 - Không token xem thống kê" id="3f8779ac-1b75-4105-8f59-2be3ce186fcc" timestamp="2026-06-05T02:34:21.062Z" tests="1" failures="0" errors="0" time="0.005">
+    <testcase name="HTTP 401" time="0.005" classname="Presentation"/>
+  </testsuite>
+  <testsuite name="api / orders / 09 - Kiểm thử thống kê / ORD-STATS-06 - Admin xem thống kê từ Analytics Service" id="9a920dce-9650-4493-ac34-4cb34cf5f02f" timestamp="2026-06-05T02:34:21.062Z" tests="1" failures="0" errors="0" time="0.008">
+    <testcase name="HTTP 200" time="0.008" classname="Presentation"/>
+  </testsuite>
+  <testsuite name="api / orders / 09 - Kiểm thử thống kê / ORD-STATS-07 - Coordinator xem thống kê từ Analytics Service" id="fe258bd5-a477-4cd6-9ebb-becb0fd84765" timestamp="2026-06-05T02:34:21.062Z" tests="1" failures="0" errors="0" time="0.010">
+    <testcase name="HTTP 200" time="0.010" classname="Presentation"/>
+  </testsuite>
+  <testsuite name="api / orders / 12 - Dọn dữ liệu test / ORD-CLEAN-01 - Cập nhật order transcription test sang cancelled" id="42ffc859-1cf3-4d9e-96c8-3cec04b5408a" timestamp="2026-06-05T02:34:21.062Z" tests="1" failures="0" errors="0" time="0.030">
+    <testcase name="HTTP 200 or 400" time="0.030" classname="Presentation"/>
+  </testsuite>
+  <testsuite name="api / orders / 12 - Dọn dữ liệu test / ORD-CLEAN-02 - Cập nhật order arrangement test sang cancelled" id="7daaf0c9-7539-4798-adc8-7445b5c2cb89" timestamp="2026-06-05T02:34:21.062Z" tests="1" failures="0" errors="0" time="0.014">
+    <testcase name="HTTP 200 or 400" time="0.014" classname="Presentation"/>
+  </testsuite>
+  <testsuite name="api / orders / 12 - Dọn dữ liệu test / ORD-CLEAN-03 - Cập nhật order recording test sang cancelled" id="e7d9a6c2-f178-4e39-8204-2d0753b2f99c" timestamp="2026-06-05T02:34:21.062Z" tests="1" failures="0" errors="0" time="0.013">
+    <testcase name="HTTP 200 or 400" time="0.013" classname="Presentation"/>
+  </testsuite>
+  <testsuite name="api / orders / 12 - Dọn dữ liệu test / ORD-CLEAN-04 - Clear biến môi trường trong Postman" id="bdd90f61-64e4-4600-a4b4-300059d7a14e" timestamp="2026-06-05T02:34:21.062Z" tests="2" failures="0" errors="0" time="0.003">
+    <testcase name="HTTP 200" time="0.003" classname="Presentation"/>
+    <testcase name="temporary variables cleared" time="0.003" classname="Presentation"/>
+  </testsuite>
+  <testsuite name="api / auth-service / Register / Register" id="686e8b1f-a9ce-42d9-bfb3-c9a7d961d975" timestamp="2026-06-05T02:34:21.062Z" tests="2" failures="0" errors="0" time="0.074">
+    <testcase name="Register success" time="0.074" classname="Presentation"/>
+    <testcase name="Có message" time="0.074" classname="Presentation"/>
+  </testsuite>
+  <testsuite name="api / auth-service / Register / trungEmail" id="fa494ace-db18-400f-bbbe-71bb4c307fb5" timestamp="2026-06-05T02:34:21.062Z" tests="1" failures="0" errors="0" time="0.007">
+    <testcase name="Duplicate email" time="0.007" classname="Presentation"/>
+  </testsuite>
+  <testsuite name="api / auth-service / Register / saiEmail" id="221ecfae-6285-4529-9a15-7fc8ec3acf5a" timestamp="2026-06-05T02:34:21.062Z" tests="1" failures="0" errors="0" time="0.007">
+    <testcase name="Invalid email" time="0.007" classname="Presentation"/>
+  </testsuite>
+  <testsuite name="api / auth-service / Register / nameRong" id="f7cf2a77-ed19-47e4-ab66-e6f75c985d4e" timestamp="2026-06-05T02:34:21.062Z" tests="0" failures="0" errors="0" time="0.005"/>
+  <testsuite name="api / auth-service / Register / nameQuaDai" id="9cc56485-14b1-4b20-aee6-d227dfc00e46" timestamp="2026-06-05T02:34:21.062Z" tests="1" failures="0" errors="0" time="0.005">
+    <testcase name="Invalid name" time="0.005" classname="Presentation"/>
+  </testsuite>
+  <testsuite name="api / auth-service / Login / TC1_validLogin" id="ca43b73e-8e95-4b02-b753-a13bddc7e8a8" timestamp="2026-06-05T02:34:21.062Z" tests="3" failures="0" errors="0" time="0.050">
+    <testcase name="Login success" time="0.050" classname="Presentation"/>
+    <testcase name="Co token" time="0.050" classname="Presentation"/>
+    <testcase name="JWT dung format" time="0.050" classname="Presentation"/>
+  </testsuite>
+  <testsuite name="api / auth-service / Login / TC2_wrongPass" id="20a41a3b-fb57-4a26-8b82-53e165046ef3" timestamp="2026-06-05T02:34:21.062Z" tests="1" failures="0" errors="0" time="0.006">
+    <testcase name="Wrong password" time="0.006" classname="Presentation"/>
+  </testsuite>
+  <testsuite name="api / auth-service / Login / TC3_wrongEmail" id="fd31a1e1-009b-4ac3-992b-40619989cebc" timestamp="2026-06-05T02:34:21.062Z" tests="1" failures="0" errors="0" time="0.006">
+    <testcase name="Wrong email" time="0.006" classname="Presentation"/>
+  </testsuite>
+  <testsuite name="api / auth-service / Login / TC4_emptyEmail" id="6dfd1207-1c15-475a-b89f-264cd6d82ba2" timestamp="2026-06-05T02:34:21.062Z" tests="1" failures="0" errors="0" time="0.005">
+    <testcase name="Email empty" time="0.005" classname="Presentation"/>
+  </testsuite>
+  <testsuite name="api / auth-service / Login / TC5_checkToken" id="3f20adcf-1a0e-41e1-9597-7645e8d51329" timestamp="2026-06-05T02:34:21.062Z" tests="1" failures="0" errors="0" time="0.007">
+    <testcase name="HTTP 200" time="0.007" classname="Presentation"/>
+  </testsuite>
+  <testsuite name="api / auth-service / Login / TC6_noToken" id="f0159b1c-876d-47ed-91d1-02d50412b6b9" timestamp="2026-06-05T02:34:21.062Z" tests="1" failures="0" errors="0" time="0.005">
+    <testcase name="No token" time="0.005" classname="Presentation"/>
+  </testsuite>
+  <testsuite name="api / auth-service / Login / TC7_invalidToken" id="0569c549-04d5-464f-b7db-b59578c22682" timestamp="2026-06-05T02:34:21.062Z" tests="1" failures="0" errors="0" time="0.004">
+    <testcase name="Invalid token" time="0.004" classname="Presentation"/>
+  </testsuite>
+  <testsuite name="api / auth-service / Login / TC8_modifiedToken" id="686410af-39ab-44cd-90a4-5bb7e215d668" timestamp="2026-06-05T02:34:21.062Z" tests="1" failures="0" errors="0" time="0.006">
+    <testcase name="Modified Token" time="0.006" classname="Presentation"/>
+  </testsuite>
+  <testsuite name="api / auth-service / UpdateProfile / Register UpdateProfile User" id="e4c044a2-408b-48d6-abd7-65034476c4ab" timestamp="2026-06-05T02:34:21.062Z" tests="2" failures="0" errors="0" time="0.069">
+    <testcase name="HTTP 201" time="0.069" classname="Presentation"/>
+    <testcase name="Profile email saved" time="0.069" classname="Presentation"/>
+  </testsuite>
+  <testsuite name="api / auth-service / UpdateProfile / Login" id="b41d5521-d21d-4e4f-8d3f-e595eb961ff6" timestamp="2026-06-05T02:34:21.062Z" tests="2" failures="0" errors="0" time="0.052">
+    <testcase name="HTTP 200" time="0.052" classname="Presentation"/>
+    <testcase name="Profile auth saved" time="0.052" classname="Presentation"/>
+  </testsuite>
+  <testsuite name="api / auth-service / UpdateProfile / TC1_updateProfile" id="f0925cb8-51fb-442c-8af1-db5597fad18b" timestamp="2026-06-05T02:34:21.062Z" tests="2" failures="0" errors="0" time="0.029">
+    <testcase name="Update profile success" time="0.029" classname="Presentation"/>
+    <testcase name="Ten da update" time="0.029" classname="Presentation"/>
+  </testsuite>
+  <testsuite name="api / auth-service / UpdateProfile / TC2_updateNoToken" id="c2944c70-ab4f-4f76-9266-e99f6669a391" timestamp="2026-06-05T02:34:21.062Z" tests="1" failures="0" errors="0" time="0.005">
+    <testcase name="Unauthorized" time="0.005" classname="Presentation"/>
+  </testsuite>
+  <testsuite name="api / auth-service / UpdateProfile / TC3_updateOtherUser" id="9f9088f1-ab14-460b-b981-0195401acb67" timestamp="2026-06-05T02:34:21.062Z" tests="1" failures="0" errors="0" time="0.007">
+    <testcase name="Forbidden" time="0.007" classname="Presentation"/>
+  </testsuite>
+  <testsuite name="api / auth-service / UpdateProfile / TC4_invalidData" id="7514717c-e881-425e-b72e-cca5c9d8f93d" timestamp="2026-06-05T02:34:21.062Z" tests="2" failures="0" errors="0" time="0.006">
+    <testcase name="Invalid Data" time="0.006" classname="Presentation"/>
+    <testcase name="Response is JSON" time="0.006" classname="Presentation"/>
+  </testsuite>
+  <testsuite name="api / auth-service / UpdateProfile / TC5_invalidName" id="d944b618-ce7e-4557-b81d-cab841906cd9" timestamp="2026-06-05T02:34:21.062Z" tests="2" failures="0" errors="0" time="0.007">
+    <testcase name="Invalid name" time="0.007" classname="Presentation"/>
+    <testcase name="Response is JSON" time="0.007" classname="Presentation"/>
+  </testsuite>
+  <testsuite name="api / auth-service / otherTest / TC1_userNotFound" id="d8acd601-065e-43f1-9190-714fcda5a07d" timestamp="2026-06-05T02:34:21.062Z" tests="1" failures="0" errors="0" time="0.007">
+    <testcase name="User not found" time="0.007" classname="Presentation"/>
+  </testsuite>
+  <testsuite name="api / auth-service / otherTest / TC2_responseTime" id="7793f7dc-936a-4a52-a4db-0042ea92d2ed" timestamp="2026-06-05T02:34:21.062Z" tests="1" failures="0" errors="0" time="0.005">
+    <testcase name="Response dưới 500ms" time="0.005" classname="Presentation"/>
+  </testsuite>
+  <testsuite name="api / notification-service / Health Check / check_200" id="5afd3e89-2054-4f8b-81de-ab1c484c97cc" timestamp="2026-06-05T02:34:21.062Z" tests="2" failures="0" errors="0" time="0.005">
+    <testcase name="Status is 200" time="0.005" classname="Presentation"/>
+    <testcase name="Service name is correct" time="0.005" classname="Presentation"/>
+  </testsuite>
+  <testsuite name="api / notification-service / Authentication (helper) / login_200" id="3a66635e-eeb5-4528-9984-ce0ada48cc16" timestamp="2026-06-05T02:34:21.062Z" tests="1" failures="0" errors="0" time="0.051">
+    <testcase name="Login successful (200)" time="0.051" classname="Presentation"/>
+  </testsuite>
+  <testsuite name="api / notification-service / Notification CRUD / Create Notification / Create_201" id="c43e444e-52cc-411e-adca-897f8b642402" timestamp="2026-06-05T02:34:21.062Z" tests="2" failures="0" errors="0" time="0.030">
+    <testcase name="Status code is 2xx" time="0.030" classname="Presentation"/>
+    <testcase name="Created (201)" time="0.030" classname="Presentation"/>
+  </testsuite>
+  <testsuite name="api / notification-service / Notification CRUD / List Notifications / list_200" id="aab335a2-af3a-4853-9050-fd9c4056202e" timestamp="2026-06-05T02:34:21.062Z" tests="3" failures="0" errors="0" time="0.014">
+    <testcase name="Status code is 2xx" time="0.014" classname="Presentation"/>
+    <testcase name="OK (200)" time="0.014" classname="Presentation"/>
+    <testcase name="Response schema" time="0.014" classname="Presentation"/>
+  </testsuite>
+  <testsuite name="api / notification-service / Notification CRUD / Mark As Read / mar_200" id="6910efd5-04bc-47a8-9b7a-fae61af220ec" timestamp="2026-06-05T02:34:21.062Z" tests="2" failures="0" errors="0" time="0.025">
+    <testcase name="Status code is 2xx" time="0.025" classname="Presentation"/>
+    <testcase name="OK (200)" time="0.025" classname="Presentation"/>
+  </testsuite>
+  <testsuite name="api / notification-service / Device Management / Register Device / registerDevice_200" id="f6276bcc-2ebb-41a1-900c-4116f1f16d54" timestamp="2026-06-05T02:34:21.062Z" tests="1" failures="0" errors="0" time="0.015">
+    <testcase name="Registered (200)" time="0.015" classname="Presentation"/>
+  </testsuite>
+  <testsuite name="api / notification-service / Real‑time &amp; Push / Notify (broadcast / single user) / broadcast_200" id="60d21714-37b2-40b9-b6b4-73229a51997d" timestamp="2026-06-05T02:34:21.062Z" tests="1" failures="0" errors="0" time="0.010">
+    <testcase name="OK (200)" time="0.010" classname="Presentation"/>
+  </testsuite>
+  <testsuite name="api / notification-service / Real‑time &amp; Push / Notify (broadcast / single user) / singleUser_200" id="ff08b9d3-e532-477a-9fd3-b5f3cb7eaf2e" timestamp="2026-06-05T02:34:21.062Z" tests="1" failures="0" errors="0" time="0.006">
+    <testcase name="OK (200)" time="0.006" classname="Presentation"/>
+  </testsuite>
+  <testsuite name="api / analytics-service / Login Admin" id="7a650121-41be-42e9-af64-036740c2e2ad" timestamp="2026-06-05T02:34:21.062Z" tests="0" failures="0" errors="0" time="0.053"/>
+  <testsuite name="api / analytics-service / Dashboard Stats" id="e138623d-c03f-4359-b475-e6bd25d9d3a8" timestamp="2026-06-05T02:34:21.062Z" tests="0" failures="0" errors="0" time="0.007"/>
+  <testsuite name="api / analytics-service / Reports Overview" id="cf7442a0-357a-4768-b6a5-15c7b54afbb6" timestamp="2026-06-05T02:34:21.062Z" tests="0" failures="0" errors="0" time="0.009"/>
+  <testsuite name="api / file-service / Login Customer" id="bba96a23-3be2-415c-af6f-d058e1ecb533" timestamp="2026-06-05T02:34:21.062Z" tests="1" failures="0" errors="0" time="0.056">
+    <testcase name="Customer token saved" time="0.056" classname="Presentation"/>
+  </testsuite>
+  <testsuite name="api / file-service / Create Order For File Test" id="e7de86d3-8175-4969-9e5e-a3f754802eb0" timestamp="2026-06-05T02:34:21.062Z" tests="3" failures="0" errors="0" time="0.026">
+    <testcase name="HTTP 201" time="0.026" classname="Presentation"/>
+    <testcase name="Order ID exists in response" time="0.026" classname="Presentation"/>
+    <testcase name="Order ID saved" time="0.026" classname="Presentation"/>
+  </testsuite>
+  <testsuite name="api / file-service / Upload File" id="e6b795ac-b703-481a-8633-49857bc1ff57" timestamp="2026-06-05T02:34:21.062Z" tests="2" failures="0" errors="0" time="0.102">
+    <testcase name="HTTP 201" time="0.102" classname="Presentation"/>
+    <testcase name="File ID saved" time="0.102" classname="Presentation"/>
+  </testsuite>
+  <testsuite name="api / file-service / Get Files By Order" id="2a5d2967-34df-45ec-9472-a7a5cf19690d" timestamp="2026-06-05T02:34:21.062Z" tests="3" failures="0" errors="0" time="0.015">
+    <testcase name="HTTP 200" time="0.015" classname="Presentation"/>
+    <testcase name="Response is JSON" time="0.015" classname="Presentation"/>
+    <testcase name="Files payload is an array" time="0.015" classname="Presentation"/>
+  </testsuite>
+  <testsuite name="api / file-service / Download File" id="38c7d6a5-bb80-49fb-96dc-3528a655bddc" timestamp="2026-06-05T02:34:21.062Z" tests="1" failures="0" errors="0" time="0.022">
+    <testcase name="HTTP 200" time="0.022" classname="Presentation"/>
+  </testsuite>
+  <testsuite name="api / studio-service / Login Studio Admin" id="40635f10-a420-4647-9e4e-840452749c5f" timestamp="2026-06-05T02:34:21.062Z" tests="1" failures="0" errors="0" time="0.053">
+    <testcase name="Studio admin token saved" time="0.053" classname="Presentation"/>
+  </testsuite>
+  <testsuite name="api / studio-service / Create Booking" id="c271577f-089e-469c-b287-6ed741e14a77" timestamp="2026-06-05T02:34:21.062Z" tests="2" failures="0" errors="0" time="0.111">
+    <testcase name="HTTP 201" time="0.111" classname="Presentation"/>
+    <testcase name="Booking ID saved" time="0.111" classname="Presentation"/>
+  </testsuite>
+  <testsuite name="api / studio-service / Confirm Booking" id="55d392f6-814b-4c68-83a4-177863d69c7f" timestamp="2026-06-05T02:34:21.062Z" tests="1" failures="0" errors="0" time="0.015">
+    <testcase name="HTTP 200" time="0.015" classname="Presentation"/>
+  </testsuite>
+  <testsuite name="api / studio-service / Get Studios" id="8c08b76a-e49d-4df1-a03b-696d6ae4897d" timestamp="2026-06-05T02:34:21.062Z" tests="0" failures="0" errors="0" time="0.012"/>
+  <testsuite name="api / task-service / Login Coordinator" id="3fbb7cae-243d-41f6-9b73-ff949ead39e4" timestamp="2026-06-05T02:34:21.062Z" tests="2" failures="0" errors="0" time="0.055">
+    <testcase name="HTTP 200" time="0.055" classname="Presentation"/>
+    <testcase name="Coordinator token saved" time="0.055" classname="Presentation"/>
+  </testsuite>
+  <testsuite name="api / task-service / Register Customer For Task Order" id="e132ac04-6c62-45c0-8464-920218b264f9" timestamp="2026-06-05T02:34:21.062Z" tests="2" failures="0" errors="0" time="0.070">
+    <testcase name="HTTP 201" time="0.070" classname="Presentation"/>
+    <testcase name="Task customer email prepared" time="0.070" classname="Presentation"/>
+  </testsuite>
+  <testsuite name="api / task-service / Login Customer For Task Order" id="93213b72-3212-40a6-80aa-f168f1957fd6" timestamp="2026-06-05T02:34:21.062Z" tests="2" failures="0" errors="0" time="0.057">
+    <testcase name="HTTP 200" time="0.057" classname="Presentation"/>
+    <testcase name="Customer token saved" time="0.057" classname="Presentation"/>
+  </testsuite>
+  <testsuite name="api / task-service / Create Order For Task Test" id="d31ebe89-fe30-4e2c-91f2-91016bcb45e4" timestamp="2026-06-05T02:34:21.062Z" tests="2" failures="0" errors="0" time="0.022">
+    <testcase name="HTTP 201" time="0.022" classname="Presentation"/>
+    <testcase name="Task order ID saved" time="0.022" classname="Presentation"/>
+  </testsuite>
+  <testsuite name="api / task-service / Create Task" id="3fecb4ed-e0aa-424b-923a-cbaf710ae947" timestamp="2026-06-05T02:34:21.062Z" tests="2" failures="0" errors="0" time="0.064">
+    <testcase name="HTTP 201" time="0.064" classname="Presentation"/>
+    <testcase name="Task ID saved" time="0.064" classname="Presentation"/>
+  </testsuite>
+  <testsuite name="api / task-service / Get Task By Order" id="cc095e96-fce1-44bb-bee4-ad6dc6280fa5" timestamp="2026-06-05T02:34:21.062Z" tests="2" failures="0" errors="0" time="0.006">
+    <testcase name="HTTP 200" time="0.006" classname="Presentation"/>
+    <testcase name="Task belongs to created order" time="0.006" classname="Presentation"/>
+  </testsuite>
+  <testsuite name="api / task-service / Update Task Status" id="c41a1e0e-f0e7-4a7d-8c8a-fa00c193f1ae" timestamp="2026-06-05T02:34:21.062Z" tests="0" failures="0" errors="0" time="0.045"/>
+  <testsuite name="api / task-service / Get Tasks By Specialist" id="631f5aec-15d2-4bc3-b646-f386711ba87f" timestamp="2026-06-05T02:34:21.062Z" tests="0" failures="0" errors="0" time="0.020"/>
+</testsuites>

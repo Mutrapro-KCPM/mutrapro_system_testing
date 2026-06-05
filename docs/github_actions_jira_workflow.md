@@ -227,3 +227,16 @@ Report duoc upload thanh artifact
 Jira issue nhan comment tu CI neu da cau hinh secrets
 Pull Request duoc review
 ```
+
+## 12. Manual notes removed from automated regression
+
+Nhung request Postman dang la placeholder khong kiem tra nghiep vu that da duoc loai khoi CI regression suite:
+
+```text
+ORD-BUG-01 - Ghi nhan bug sai phan quyen
+ORD-BUG-06 - Retest bug sau khi backend sua
+ORD-REPORT-01 - Tong hop so test case Pass
+ORD-REPORT-05 - Ghi nhan rui ro con lai
+```
+
+Neu can ghi nhan cac muc nay, dung Jira comment, PR description hoac bao cao kiem thu thay vi de chung lam request pass ao trong Newman.
