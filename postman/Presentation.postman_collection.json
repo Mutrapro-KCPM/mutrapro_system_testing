@@ -3512,6 +3512,78 @@
                   "name": "Revision",
                   "item": [
                     {
+                      "name": "ORD-REV-SETUP-01 - T?o task cho order revision",
+                      "event": [
+                        {
+                          "listen": "prerequest",
+                          "script": {
+                            "type": "text/javascript",
+                            "exec": [
+                              "const orderId = pm.environment.get('recording_order_id');",
+                              "if (!orderId) { throw new Error('Missing recording_order_id: run order setup before revision tests.'); }"
+                            ]
+                          }
+                        },
+                        {
+                          "listen": "test",
+                          "script": {
+                            "type": "text/javascript",
+                            "exec": [
+                              "pm.test('HTTP 201 or existing active task', function () { pm.expect([201, 409]).to.include(pm.response.code); });",
+                              "if (pm.response.code === 201) {",
+                              "  const json = pm.response.json();",
+                              "  const payload = json.data || json;",
+                              "  pm.environment.set('revision_task_id', String(payload.id || payload.taskId));",
+                              "}",
+                              "pm.test('revision task setup completed', function () { pm.expect([201, 409]).to.include(pm.response.code); });"
+                            ]
+                          }
+                        }
+                      ],
+                      "request": {
+                        "auth": {
+                          "type": "bearer",
+                          "bearer": [
+                            {
+                              "key": "token",
+                              "value": "{{coordinator_token}}",
+                              "type": "string"
+                            }
+                          ]
+                        },
+                        "method": "POST",
+                        "header": [
+                          {
+                            "key": "Content-Type",
+                            "value": "application/json"
+                          },
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          }
+                        ],
+                        "body": {
+                          "mode": "raw",
+                          "raw": "{\n  \"order_id\": \"{{recording_order_id}}\",\n  \"assigned_to\": 5,\n  \"specialist_role\": \"artist\",\n  \"deadline\": \"2026-06-30\"\n}",
+                          "options": {
+                            "raw": {
+                              "language": "json"
+                            }
+                          }
+                        },
+                        "url": {
+                          "raw": "{{baseUrl}}/tasks",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "tasks"
+                          ]
+                        }
+                      },
+                      "response": []
+                    },
+                    {
                       "name": "ORD-REV-01 - Yêu cầu chỉnh sửa order completed",
                       "event": [
                         {
