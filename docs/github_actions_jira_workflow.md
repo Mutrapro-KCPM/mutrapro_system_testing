@@ -139,8 +139,8 @@ Nhung buoc chinh:
 1. Checkout source code
 2. Kiem tra cac CI secrets bat buoc
 3. Validate docker compose config
-4. Build api-gateway va cac service phu thuoc
-5. Start API stack
+4. Build truoc cac image API chinh: mysql_db, cac backend service va api-gateway
+5. Start API stack bang `docker compose up -d --no-build api-gateway`
 6. Cho API Gateway healthy tai http://localhost:3007/api/health va in health/status cac service khi dang cho
 7. Build Newman Docker image tu .github/newman/Dockerfile, co cache Buildx/GHA
 8. Chay Postman collection bang Newman Docker

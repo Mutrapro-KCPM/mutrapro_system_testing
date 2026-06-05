@@ -27,6 +27,7 @@ env:
   RABBITMQ_DEFAULT_PASS: ${{ secrets.RABBITMQ_DEFAULT_PASS }}
   NIFI_SENSITIVE_PROPS_KEY: ${{ secrets.NIFI_SENSITIVE_PROPS_KEY }}
   INTERNAL_SERVICE_TOKEN: ${{ secrets.INTERNAL_SERVICE_TOKEN }}
+  CI_BUILD_SERVICES: "mysql_db auth-service order-service task-service file-service studio-service notification-service analytics-service api-gateway"
   CI_LOG_SERVICES: "mysql_db redis_cache rabbitmq auth-service order-service task-service file-service studio-service notification-service analytics-service api-gateway"
 
 jobs:
@@ -58,20 +59,24 @@ jobs:
       - name: Validate Docker Compose
         run: docker compose config
 
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
       - name: Build API stack
+        shell: bash
         run: |
           set -e
           for i in 1 2 3; do
-            if docker compose build api-gateway; then
+            if docker compose build $CI_BUILD_SERVICES; then
               exit 0
             fi
             echo "Docker compose build failed; retrying ($i/3)..."
             sleep 15
           done
-          docker compose build api-gateway
+          docker compose build $CI_BUILD_SERVICES
 
       - name: Start API stack
-        run: docker compose up -d api-gateway
+        run: docker compose up -d --no-build api-gateway
 
       - name: Show container status
         shell: bash
@@ -154,9 +159,6 @@ jobs:
             docker compose logs --tail=200 "$service" || true
           done
           exit 1
-
-      - name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@v3
 
       - name: Build Newman Docker image
         uses: docker/build-push-action@v6
