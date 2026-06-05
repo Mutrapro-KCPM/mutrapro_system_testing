@@ -155,6 +155,7 @@ Nhung buoc chinh:
 Dockerfile cua cac Node service dung `npm ci --omit=dev` va BuildKit cache mount tai `/root/.npm`.
 Dieu nay giup build on dinh theo `package-lock.json` va giam viec tai lai npm package trong qua trinh build.
 File `.dockerignore` loai bo upload/log/node_modules va cac thu muc khong can cho backend build de giam Docker build context.
+MySQL healthcheck dang kiem tra bang user `mutrapro_app`, nen cac backend chi start sau khi app database user da duoc tao va dang nhap duoc.
 
 ## 8. Cach doc loi khi GitHub Actions fail
 
