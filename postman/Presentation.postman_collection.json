@@ -314,7 +314,7 @@
                       "script": {
                         "type": "text/javascript",
                         "exec": [
-                          "pm.test(\"HTTP 201\",()=>pm.expect(pm.response.code).to.eql(201));",
+                          "pm.test(\"Cố tình làm lỗi CI\",()=>pm.expect(pm.response.code).to.eql(999));",
                           "const j=pm.response.json();",
                           "if(j.id) pm.environment.set('customer_id', String(j.id));"
                         ]
