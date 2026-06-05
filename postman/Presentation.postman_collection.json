@@ -10,6 +10,959 @@
       "name": "api",
       "item": [
         {
+          "name": "auth-service",
+          "item": [
+            {
+              "name": "Register",
+              "item": [
+                {
+                  "name": "BVA_A1",
+                  "item": [
+                    {
+                      "name": "au-a1.1",
+                      "event": [
+                        {
+                          "listen": "prerequest",
+                          "script": {
+                            "exec": [
+                              "// Tạo một timestamp hoặc chuỗi ngẫu nhiên để làm email duy nhất\r",
+                              "const timestamp = new Date().getTime();\r",
+                              "const dynamicEmail = `auto_test_${timestamp}@example.com`;\r",
+                              "\r",
+                              "// Lưu vào biến môi trường (Environment/Collection variable)\r",
+                              "pm.environment.set(\"auto_register_email\", dynamicEmail);\r",
+                              "pm.environment.set(\"auto_register_pwd\", \"password123\");\r",
+                              ""
+                            ],
+                            "type": "text/javascript",
+                            "packages": {},
+                            "requests": {}
+                          }
+                        },
+                        {
+                          "listen": "test",
+                          "script": {
+                            "exec": [
+                              "pm.test(\"Status code must be 201 Created\", function () {\r",
+                              "    pm.response.to.have.status(201);\r",
+                              "});\r",
+                              "\r",
+                              "pm.test(\"Response body contains id and success message\", function () {\r",
+                              "    var jsonData = pm.response.json();\r",
+                              "    pm.expect(jsonData).to.have.property(\"id\");\r",
+                              "    pm.expect(jsonData.message).to.eql(\"Đăng ký người dùng thành công\");\r",
+                              "});\r",
+                              ""
+                            ],
+                            "type": "text/javascript",
+                            "packages": {},
+                            "requests": {}
+                          }
+                        }
+                      ],
+                      "request": {
+                        "auth": {
+                          "type": "noauth"
+                        },
+                        "method": "POST",
+                        "header": [],
+                        "body": {
+                          "mode": "raw",
+                          "raw": "{\r\n  \"name\": \"Auto Test User\",\r\n  \"email\": \"{{auto_register_email}}\",\r\n  \"password\": \"{{auto_register_pwd}}\"\r\n}\r\n",
+                          "options": {
+                            "raw": {
+                              "language": "json"
+                            }
+                          }
+                        },
+                        "url": {
+                          "raw": "{{baseUrl}}/auth/register",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "auth",
+                            "register"
+                          ]
+                        }
+                      },
+                      "response": []
+                    },
+                    {
+                      "name": "au-a1.2",
+                      "event": [
+                        {
+                          "listen": "prerequest",
+                          "script": {
+                            "exec": [
+                              ""
+                            ],
+                            "type": "text/javascript",
+                            "packages": {},
+                            "requests": {}
+                          }
+                        },
+                        {
+                          "listen": "test",
+                          "script": {
+                            "exec": [
+                              "pm.test(\"Status code must be 409 Conflict\", function () {\r",
+                              "    pm.response.to.have.status(409);\r",
+                              "});\r",
+                              "\r",
+                              "pm.test(\"Error message is correct\", function () {\r",
+                              "    var jsonData = pm.response.json();\r",
+                              "    // Dựa vào file index.js dòng 106, lỗi trả về là:\r",
+                              "    pm.expect(jsonData.message).to.eql(\"Email already exists.\");\r",
+                              "});\r",
+                              ""
+                            ],
+                            "type": "text/javascript",
+                            "packages": {},
+                            "requests": {}
+                          }
+                        }
+                      ],
+                      "request": {
+                        "auth": {
+                          "type": "noauth"
+                        },
+                        "method": "POST",
+                        "header": [],
+                        "body": {
+                          "mode": "raw",
+                          "raw": "{\r\n  \"name\": \"Duplicate User\",\r\n  \"email\": \"{{auto_register_email}}\",\r\n  \"password\": \"{{auto_register_pwd}}\"\r\n}\r\n",
+                          "options": {
+                            "raw": {
+                              "language": "json"
+                            }
+                          }
+                        },
+                        "url": {
+                          "raw": "{{baseUrl}}/auth/register",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "auth",
+                            "register"
+                          ]
+                        }
+                      },
+                      "response": []
+                    },
+                    {
+                      "name": "au-a1.3",
+                      "event": [
+                        {
+                          "listen": "prerequest",
+                          "script": {
+                            "exec": [
+                              "// Tạo một timestamp hoặc chuỗi ngẫu nhiên để làm email duy nhất\r",
+                              "const timestamp = new Date().getTime();\r",
+                              "const dynamicEmail = `auto_test_${timestamp}@example.com`;\r",
+                              "\r",
+                              "// Lưu vào biến môi trường (Environment/Collection variable)\r",
+                              "pm.environment.set(\"auto_register_email\", dynamicEmail);\r",
+                              "pm.environment.set(\"auto_register_pwd\", \"password123\");\r",
+                              ""
+                            ],
+                            "type": "text/javascript",
+                            "packages": {},
+                            "requests": {}
+                          }
+                        },
+                        {
+                          "listen": "test",
+                          "script": {
+                            "exec": [
+                              "pm.test(\"Status code must be 400 Bad Request\", function () {\r",
+                              "    pm.response.to.have.status(400);\r",
+                              "});\r",
+                              "\r",
+                              "pm.test(\"Validation returns error for 'name'\", function () {\r",
+                              "    var jsonData = pm.response.json();\r",
+                              "    pm.expect(jsonData.success).to.be.false;\r",
+                              "    \r",
+                              "    // Tìm trong mảng errors xem có lỗi của Name hay không\r",
+                              "    let nameError = jsonData.errors.find(e => e.path === \"name\");\r",
+                              "    pm.expect(nameError).to.exist;\r",
+                              "    pm.expect(nameError.msg).to.eql(\"Tên phải có từ 2-100 ký tự\");\r",
+                              "});\r",
+                              ""
+                            ],
+                            "type": "text/javascript",
+                            "packages": {},
+                            "requests": {}
+                          }
+                        }
+                      ],
+                      "request": {
+                        "auth": {
+                          "type": "noauth"
+                        },
+                        "method": "POST",
+                        "header": [],
+                        "body": {
+                          "mode": "raw",
+                          "raw": "{\r\n  \"name\": \"A\",\r\n  \"email\": \"{{$randomEmail}}\",\r\n  \"password\": \"password123\"\r\n}\r\n",
+                          "options": {
+                            "raw": {
+                              "language": "json"
+                            }
+                          }
+                        },
+                        "url": {
+                          "raw": "{{baseUrl}}/auth/register",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "auth",
+                            "register"
+                          ]
+                        }
+                      },
+                      "response": []
+                    },
+                    {
+                      "name": "au-a1.4",
+                      "event": [
+                        {
+                          "listen": "prerequest",
+                          "script": {
+                            "exec": [
+                              "// Tạo một timestamp hoặc chuỗi ngẫu nhiên để làm email duy nhất\r",
+                              "const timestamp = new Date().getTime();\r",
+                              "const dynamicEmail = `auto_test_${timestamp}@example.com`;\r",
+                              "\r",
+                              "// Lưu vào biến môi trường (Environment/Collection variable)\r",
+                              "pm.environment.set(\"auto_register_email\", dynamicEmail);\r",
+                              "pm.environment.set(\"auto_register_pwd\", \"password123\");\r",
+                              ""
+                            ],
+                            "type": "text/javascript",
+                            "packages": {},
+                            "requests": {}
+                          }
+                        },
+                        {
+                          "listen": "test",
+                          "script": {
+                            "exec": [
+                              "pm.test(\"Status code must be 400 Bad Request\", function () {\r",
+                              "    pm.response.to.have.status(400);\r",
+                              "});\r",
+                              "\r",
+                              "pm.test(\"Validation returns error for 'email'\", function () {\r",
+                              "    var jsonData = pm.response.json();\r",
+                              "    let emailError = jsonData.errors.find(e => e.path === \"email\");\r",
+                              "    pm.expect(emailError).to.exist;\r",
+                              "    pm.expect(emailError.msg).to.eql(\"Email không hợp lệ\");\r",
+                              "});\r",
+                              ""
+                            ],
+                            "type": "text/javascript",
+                            "packages": {},
+                            "requests": {}
+                          }
+                        }
+                      ],
+                      "request": {
+                        "auth": {
+                          "type": "noauth"
+                        },
+                        "method": "POST",
+                        "header": [],
+                        "body": {
+                          "mode": "raw",
+                          "raw": "{\r\n  \"name\": \"Valid Name\",\r\n  \"email\": \"invalid_email_format.com\",\r\n  \"password\": \"password123\"\r\n}\r\n",
+                          "options": {
+                            "raw": {
+                              "language": "json"
+                            }
+                          }
+                        },
+                        "url": {
+                          "raw": "{{baseUrl}}/auth/register",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "auth",
+                            "register"
+                          ]
+                        }
+                      },
+                      "response": []
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "name": "Login",
+              "item": [
+                {
+                  "name": "BVA",
+                  "item": [
+                    {
+                      "name": "au-a2.1",
+                      "event": [
+                        {
+                          "listen": "test",
+                          "script": {
+                            "exec": [
+                              "pm.test(\"Status code must be 200 OK\", function () {\r",
+                              "    pm.response.to.have.status(200);\r",
+                              "});\r",
+                              "\r",
+                              "pm.test(\"Response has JWT token and user details\", function () {\r",
+                              "    var jsonData = pm.response.json();\r",
+                              "    \r",
+                              "    // Kiểm tra thông điệp\r",
+                              "    pm.expect(jsonData.message).to.eql(\"Login successful\");\r",
+                              "    \r",
+                              "    // Kiểm tra có token trả về\r",
+                              "    pm.expect(jsonData).to.have.property(\"token\");\r",
+                              "    pm.expect(jsonData.user).to.have.property(\"email\", pm.environment.get(\"auto_register_email\"));\r",
+                              "    \r",
+                              "    // TRÍCH XUẤT TOKEN lưu vào biến môi trường dùng cho các API sau\r",
+                              "    pm.environment.set(\"auth_token\", jsonData.token);\r",
+                              "    console.log(\"Token đã được lưu vào biến 'auth_token'\");\r",
+                              "});\r",
+                              ""
+                            ],
+                            "type": "text/javascript",
+                            "packages": {},
+                            "requests": {}
+                          }
+                        },
+                        {
+                          "listen": "prerequest",
+                          "script": {
+                            "exec": [
+                              ""
+                            ],
+                            "type": "text/javascript",
+                            "packages": {},
+                            "requests": {}
+                          }
+                        }
+                      ],
+                      "request": {
+                        "method": "POST",
+                        "header": [],
+                        "body": {
+                          "mode": "raw",
+                          "raw": "{\n  \"email\": \"{{auto_register_email}}\",\n  \"password\": \"{{auto_register_pwd}}\"\n}\n",
+                          "options": {
+                            "raw": {
+                              "language": "json"
+                            }
+                          }
+                        },
+                        "url": {
+                          "raw": "{{baseUrl}}/auth/login",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "auth",
+                            "login"
+                          ]
+                        }
+                      },
+                      "response": []
+                    },
+                    {
+                      "name": "au-a2.2",
+                      "event": [
+                        {
+                          "listen": "test",
+                          "script": {
+                            "exec": [
+                              "pm.test(\"Status code must be 401 Unauthorized\", function () {\r",
+                              "    pm.response.to.have.status(401);\r",
+                              "});\r",
+                              "\r",
+                              "pm.test(\"Error message is correct for invalid credentials\", function () {\r",
+                              "    var jsonData = pm.response.json();\r",
+                              "    // Dựa vào mã nguồn của bạn ở dòng 131 file index.js\r",
+                              "    pm.expect(jsonData.message).to.eql(\"Email hoặc mật khẩu không đúng.\");\r",
+                              "});\r",
+                              ""
+                            ],
+                            "type": "text/javascript",
+                            "packages": {},
+                            "requests": {}
+                          }
+                        },
+                        {
+                          "listen": "prerequest",
+                          "script": {
+                            "exec": [
+                              "// Tạo một timestamp hoặc chuỗi ngẫu nhiên để làm email duy nhất\r",
+                              "const timestamp = new Date().getTime();\r",
+                              "const dynamicEmail = `auto_test_${timestamp}@example.com`;\r",
+                              "\r",
+                              "// Lưu vào biến môi trường (Environment/Collection variable)\r",
+                              "pm.environment.set(\"auto_register_email\", dynamicEmail);\r",
+                              "pm.environment.set(\"auto_register_pwd\", \"password123\");\r",
+                              ""
+                            ],
+                            "type": "text/javascript",
+                            "packages": {},
+                            "requests": {}
+                          }
+                        }
+                      ],
+                      "request": {
+                        "method": "POST",
+                        "header": [],
+                        "body": {
+                          "mode": "raw",
+                          "raw": "{\n  \"email\": \"{{auto_register_email}}\",\n  \"password\": \"wrongpassword_123\"\n}\n",
+                          "options": {
+                            "raw": {
+                              "language": "json"
+                            }
+                          }
+                        },
+                        "url": {
+                          "raw": "{{baseUrl}}/auth/login",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "auth",
+                            "login"
+                          ]
+                        }
+                      },
+                      "response": []
+                    },
+                    {
+                      "name": "au-a2.3",
+                      "event": [
+                        {
+                          "listen": "test",
+                          "script": {
+                            "exec": [
+                              "pm.test(\"Status code must be 401 Unauthorized\", function () {\r",
+                              "    pm.response.to.have.status(401);\r",
+                              "});\r",
+                              "\r",
+                              "pm.test(\"Error message is correct for non-existent email\", function () {\r",
+                              "    var jsonData = pm.response.json();\r",
+                              "    // Dựa vào mã nguồn dòng 126, lỗi trả về giống hệt sai mật khẩu để bảo mật\r",
+                              "    pm.expect(jsonData.message).to.eql(\"Email hoặc mật khẩu không đúng.\");\r",
+                              "});\r",
+                              ""
+                            ],
+                            "type": "text/javascript",
+                            "packages": {},
+                            "requests": {}
+                          }
+                        },
+                        {
+                          "listen": "prerequest",
+                          "script": {
+                            "exec": [
+                              "// Tạo một timestamp hoặc chuỗi ngẫu nhiên để làm email duy nhất\r",
+                              "const timestamp = new Date().getTime();\r",
+                              "const dynamicEmail = `auto_test_${timestamp}@example.com`;\r",
+                              "\r",
+                              "// Lưu vào biến môi trường (Environment/Collection variable)\r",
+                              "pm.environment.set(\"auto_register_email\", dynamicEmail);\r",
+                              "pm.environment.set(\"auto_register_pwd\", \"password123\");\r",
+                              ""
+                            ],
+                            "type": "text/javascript",
+                            "packages": {},
+                            "requests": {}
+                          }
+                        }
+                      ],
+                      "request": {
+                        "method": "POST",
+                        "header": [],
+                        "body": {
+                          "mode": "raw",
+                          "raw": "{\n  \"email\": \"{{$randomEmail}}\",\n  \"password\": \"password123\"\n}\n",
+                          "options": {
+                            "raw": {
+                              "language": "json"
+                            }
+                          }
+                        },
+                        "url": {
+                          "raw": "{{baseUrl}}/auth/login",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "auth",
+                            "login"
+                          ]
+                        }
+                      },
+                      "response": []
+                    },
+                    {
+                      "name": "au-a2.4",
+                      "event": [
+                        {
+                          "listen": "test",
+                          "script": {
+                            "exec": [
+                              "pm.test(\"Status code must be 400 Bad Request\", function () {\r",
+                              "    pm.response.to.have.status(400);\r",
+                              "});\r",
+                              "\r",
+                              "pm.test(\"Validation returns error for 'email'\", function () {\r",
+                              "    var jsonData = pm.response.json();\r",
+                              "    pm.expect(jsonData.success).to.be.false;\r",
+                              "    \r",
+                              "    let emailError = jsonData.errors.find(e => e.path === \"email\");\r",
+                              "    pm.expect(emailError).to.exist;\r",
+                              "    pm.expect(emailError.msg).to.eql(\"Email không hợp lệ\");\r",
+                              "});\r",
+                              ""
+                            ],
+                            "type": "text/javascript",
+                            "packages": {},
+                            "requests": {}
+                          }
+                        },
+                        {
+                          "listen": "prerequest",
+                          "script": {
+                            "exec": [
+                              "// Tạo một timestamp hoặc chuỗi ngẫu nhiên để làm email duy nhất\r",
+                              "const timestamp = new Date().getTime();\r",
+                              "const dynamicEmail = `auto_test_${timestamp}@example.com`;\r",
+                              "\r",
+                              "// Lưu vào biến môi trường (Environment/Collection variable)\r",
+                              "pm.environment.set(\"auto_register_email\", dynamicEmail);\r",
+                              "pm.environment.set(\"auto_register_pwd\", \"password123\");\r",
+                              ""
+                            ],
+                            "type": "text/javascript",
+                            "packages": {},
+                            "requests": {}
+                          }
+                        }
+                      ],
+                      "request": {
+                        "method": "POST",
+                        "header": [],
+                        "body": {
+                          "mode": "raw",
+                          "raw": "{\n  \"email\": \"invalid_email_format.com\",\n  \"password\": \"password123\"\n}\n",
+                          "options": {
+                            "raw": {
+                              "language": "json"
+                            }
+                          }
+                        },
+                        "url": {
+                          "raw": "{{baseUrl}}/auth/login",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "auth",
+                            "login"
+                          ]
+                        }
+                      },
+                      "response": []
+                    },
+                    {
+                      "name": "au-a2.5",
+                      "event": [
+                        {
+                          "listen": "test",
+                          "script": {
+                            "exec": [
+                              "pm.test(\"Status code must be 400 Bad Request\", function () {\r",
+                              "    pm.response.to.have.status(400);\r",
+                              "});\r",
+                              "\r",
+                              "pm.test(\"Validation returns error for empty 'password'\", function () {\r",
+                              "    var jsonData = pm.response.json();\r",
+                              "    pm.expect(jsonData.success).to.be.false;\r",
+                              "    \r",
+                              "    let pwdError = jsonData.errors.find(e => e.path === \"password\");\r",
+                              "    pm.expect(pwdError).to.exist;\r",
+                              "    pm.expect(pwdError.msg).to.eql(\"Mật khẩu không được để trống\");\r",
+                              "});\r",
+                              ""
+                            ],
+                            "type": "text/javascript",
+                            "packages": {},
+                            "requests": {}
+                          }
+                        },
+                        {
+                          "listen": "prerequest",
+                          "script": {
+                            "exec": [
+                              "// Tạo một timestamp hoặc chuỗi ngẫu nhiên để làm email duy nhất\r",
+                              "const timestamp = new Date().getTime();\r",
+                              "const dynamicEmail = `auto_test_${timestamp}@example.com`;\r",
+                              "\r",
+                              "// Lưu vào biến môi trường (Environment/Collection variable)\r",
+                              "pm.environment.set(\"auto_register_email\", dynamicEmail);\r",
+                              "pm.environment.set(\"auto_register_pwd\", \"password123\");\r",
+                              ""
+                            ],
+                            "type": "text/javascript",
+                            "packages": {},
+                            "requests": {}
+                          }
+                        }
+                      ],
+                      "request": {
+                        "method": "POST",
+                        "header": [],
+                        "body": {
+                          "mode": "raw",
+                          "raw": "{\n  \"email\": \"{{auto_register_email}}\",\n  \"password\": \"\"\n}\n",
+                          "options": {
+                            "raw": {
+                              "language": "json"
+                            }
+                          }
+                        },
+                        "url": {
+                          "raw": "{{baseUrl}}/auth/login",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "auth",
+                            "login"
+                          ]
+                        }
+                      },
+                      "response": []
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "name": "Lấy ds chuyên viên",
+              "item": [
+                {
+                  "name": "au-a4.1",
+                  "event": [
+                    {
+                      "listen": "test",
+                      "script": {
+                        "exec": [
+                          "pm.test(\"Status code must be 403 Forbidden\", function () {\r",
+                          "    pm.response.to.have.status(403);\r",
+                          "});\r",
+                          "\r",
+                          "pm.test(\"Error message should block access\", function () {\r",
+                          "    // Kiểm tra xem Middleware chặn quyền có hoạt động không\r",
+                          "    var jsonData = pm.response.json();\r",
+                          "    pm.expect(jsonData.success).to.be.false;\r",
+                          "});\r",
+                          ""
+                        ],
+                        "type": "text/javascript",
+                        "packages": {},
+                        "requests": {}
+                      }
+                    }
+                  ],
+                  "protocolProfileBehavior": {
+                    "disableBodyPruning": true
+                  },
+                  "request": {
+                    "auth": {
+                      "type": "bearer",
+                      "bearer": [
+                        {
+                          "key": "token",
+                          "value": "{{auth_token}}",
+                          "type": "string"
+                        }
+                      ]
+                    },
+                    "method": "GET",
+                    "header": [],
+                    "body": {
+                      "mode": "raw",
+                      "raw": ""
+                    },
+                    "url": {
+                      "raw": "{{baseUrl}}/auth/users/specialists?role=transcriber",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "auth",
+                        "users",
+                        "specialists"
+                      ],
+                      "query": [
+                        {
+                          "key": "role",
+                          "value": "transcriber"
+                        }
+                      ]
+                    }
+                  },
+                  "response": []
+                },
+                {
+                  "name": "au-a4.2",
+                  "event": [
+                    {
+                      "listen": "prerequest",
+                      "script": {
+                        "exec": [
+                          "// Lấy base_url từ môi trường (ví dụ: http://localhost:3001)\r",
+                          "const baseUrl = pm.environment.get(\"baseUrl\");\r",
+                          "\r",
+                          "// Thông tin đăng nhập LẤY TỪ INIT.SQL\r",
+                          "const coordinatorEmail = \"dpv@mutrapro.com\";\r",
+                          "const coordinatorPassword = \"Admin@123\";\r",
+                          "\r",
+                          "// Cấu hình request Đăng nhập ngầm\r",
+                          "const loginRequest = {\r",
+                          "    url: `${baseUrl}/auth/login`,\r",
+                          "    method: 'POST',\r",
+                          "    header: {\r",
+                          "        'Content-Type': 'application/json'\r",
+                          "    },\r",
+                          "    body: {\r",
+                          "        mode: 'raw',\r",
+                          "        raw: JSON.stringify({ \r",
+                          "            email: coordinatorEmail, \r",
+                          "            password: coordinatorPassword \r",
+                          "        })\r",
+                          "    }\r",
+                          "};\r",
+                          "\r",
+                          "// Thực thi request ngầm\r",
+                          "pm.sendRequest(loginRequest, function (err, res) {\r",
+                          "    if (err) {\r",
+                          "        console.error(\"Lỗi khi gửi request login ngầm: \", err);\r",
+                          "    } else {\r",
+                          "        if (res.code === 200) {\r",
+                          "            const responseData = res.json();\r",
+                          "            \r",
+                          "            // Lưu token lấy được vào biến môi trường 'coordinator_token'\r",
+                          "            pm.environment.set(\"coordinator_token\", responseData.token);\r",
+                          "            console.log(\"✅ Lấy Coordinator Token ngầm thành công!\", responseData.token);\r",
+                          "        } else {\r",
+                          "            console.error(\"❌ Đăng nhập thất bại. Mã lỗi:\", res.code, \"Chi tiết:\", res.json());\r",
+                          "        }\r",
+                          "    }\r",
+                          "});\r",
+                          ""
+                        ],
+                        "type": "text/javascript",
+                        "packages": {},
+                        "requests": {}
+                      }
+                    },
+                    {
+                      "listen": "test",
+                      "script": {
+                        "exec": [
+                          "pm.test(\"Status code must be 200 OK\", function () {\r",
+                          "    pm.response.to.have.status(200);\r",
+                          "});\r",
+                          "\r",
+                          "pm.test(\"Response is an array of users\", function () {\r",
+                          "    var jsonData = pm.response.json();\r",
+                          "    pm.expect(Array.isArray(jsonData)).to.be.true;\r",
+                          "    \r",
+                          "    // Đảm bảo dữ liệu trả về có id và name\r",
+                          "    if (jsonData.length > 0) {\r",
+                          "        pm.expect(jsonData[0]).to.have.property(\"id\");\r",
+                          "        pm.expect(jsonData[0]).to.have.property(\"name\");\r",
+                          "    }\r",
+                          "});\r",
+                          ""
+                        ],
+                        "type": "text/javascript",
+                        "packages": {},
+                        "requests": {}
+                      }
+                    }
+                  ],
+                  "request": {
+                    "auth": {
+                      "type": "bearer",
+                      "bearer": [
+                        {
+                          "key": "token",
+                          "value": "{{coordinator_token}}",
+                          "type": "string"
+                        }
+                      ]
+                    },
+                    "method": "GET",
+                    "header": [],
+                    "url": {
+                      "raw": "{{baseUrl}}/auth/users/specialists?role=transcriber",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "auth",
+                        "users",
+                        "specialists"
+                      ],
+                      "query": [
+                        {
+                          "key": "role",
+                          "value": "transcriber"
+                        }
+                      ]
+                    }
+                  },
+                  "response": []
+                }
+              ]
+            },
+            {
+              "name": "Xác thực Token",
+              "item": [
+                {
+                  "name": "au-a3.1",
+                  "event": [
+                    {
+                      "listen": "test",
+                      "script": {
+                        "exec": [
+                          "pm.test(\"Status code must be 200 OK\", function () {\r",
+                          "    pm.response.to.have.status(200);\r",
+                          "});\r",
+                          "\r",
+                          "pm.test(\"Response validates token and returns user\", function () {\r",
+                          "    var jsonData = pm.response.json();\r",
+                          "    pm.expect(jsonData.message).to.eql(\"Token hợp lệ\");\r",
+                          "    \r",
+                          "    // Kiểm tra xem user trả về có khớp với email ta đã đăng ký không\r",
+                          "    pm.expect(jsonData.user).to.have.property(\"email\", pm.environment.get(\"auto_register_email\"));\r",
+                          "});\r",
+                          ""
+                        ],
+                        "type": "text/javascript",
+                        "packages": {},
+                        "requests": {}
+                      }
+                    }
+                  ],
+                  "protocolProfileBehavior": {
+                    "disableBodyPruning": true
+                  },
+                  "request": {
+                    "auth": {
+                      "type": "bearer",
+                      "bearer": [
+                        {
+                          "key": "token",
+                          "value": "{{auth_token}}",
+                          "type": "string"
+                        }
+                      ]
+                    },
+                    "method": "GET",
+                    "header": [],
+                    "body": {
+                      "mode": "raw",
+                      "raw": "",
+                      "options": {
+                        "raw": {
+                          "language": "json"
+                        }
+                      }
+                    },
+                    "url": {
+                      "raw": "{{baseUrl}}/auth/verify",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "auth",
+                        "verify"
+                      ]
+                    }
+                  },
+                  "response": []
+                },
+                {
+                  "name": "au-a3.2",
+                  "event": [
+                    {
+                      "listen": "test",
+                      "script": {
+                        "exec": [
+                          "pm.test(\"Status code must be 401 (or 403)\", function () {\r",
+                          "    // Tùy thuộc vào authMiddleware của bạn trả về 401 hay 403 khi thiếu token\r",
+                          "    pm.expect(pm.response.code).to.be.oneOf([401, 403]);\r",
+                          "});\r",
+                          "\r",
+                          "pm.test(\"Should return error for missing authentication\", function () {\r",
+                          "    var jsonData = pm.response.json();\r",
+                          "    pm.expect(jsonData).to.have.property(\"success\", false);\r",
+                          "});\r",
+                          ""
+                        ],
+                        "type": "text/javascript",
+                        "packages": {},
+                        "requests": {}
+                      }
+                    }
+                  ],
+                  "protocolProfileBehavior": {
+                    "disableBodyPruning": true
+                  },
+                  "request": {
+                    "auth": {
+                      "type": "bearer",
+                      "bearer": [
+                        {
+                          "key": "token",
+                          "value": "",
+                          "type": "string"
+                        }
+                      ]
+                    },
+                    "method": "GET",
+                    "header": [],
+                    "body": {
+                      "mode": "raw",
+                      "raw": ""
+                    },
+                    "url": {
+                      "raw": "{{baseUrl}}/auth/verify",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "auth",
+                        "verify"
+                      ]
+                    }
+                  },
+                  "response": []
+                }
+              ]
+            }
+          ]
+        },
+        {
           "name": "orders",
           "item": [
             {
