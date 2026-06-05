@@ -18,7 +18,7 @@ services:
       - --character-set-server=utf8mb4
       - --collation-server=utf8mb4_unicode_ci 
     healthcheck:
-      test: ["CMD-SHELL", "MYSQL_PWD=\"$$MYSQL_APP_PASSWORD\" mysql -h localhost -umutrapro_app -e 'SELECT 1' || exit 1"]
+      test: ["CMD-SHELL", "MYSQL_PWD=\"$$MYSQL_ROOT_PASSWORD\" mysqladmin ping -h localhost -uroot --silent || exit 1"]
       interval: 10s
       timeout: 5s
       retries: 10

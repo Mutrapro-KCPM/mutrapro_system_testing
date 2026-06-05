@@ -79,7 +79,30 @@ jobs:
           docker compose build $CI_BUILD_SERVICES
 
       - name: Start API stack
-        run: docker compose up -d --no-build api-gateway
+        shell: bash
+        run: |
+          set -e
+
+          docker compose up -d --no-build mysql_db redis_cache rabbitmq
+
+          for i in {1..45}; do
+            if docker compose exec -T -e MYSQL_PWD="$DB_PASSWORD" mysql_db mysql -h localhost -umutrapro_app -e "SELECT 1"; then
+              echo "MySQL app user is ready"
+              break
+            fi
+
+            if [ "$i" -eq 45 ]; then
+              echo "MySQL app user did not become ready in time"
+              docker compose ps --all || true
+              docker compose logs --tail=200 mysql_db || true
+              exit 1
+            fi
+
+            echo "Waiting for MySQL app user... attempt $i/45"
+            sleep 5
+          done
+
+          docker compose up -d --no-build api-gateway
 
       - name: Show container status
         shell: bash
