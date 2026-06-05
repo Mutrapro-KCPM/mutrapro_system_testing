@@ -295,48 +295,22 @@ jobs:
             echo "Jira secrets are not fully configured; Jira feedback will be skipped."
           fi
 
-      - name: Comment Jira when CI passed
-        if: success() && steps.jira.outputs.issue_key != '' && steps.jira_credentials.outputs.available == 'true'
-        continue-on-error: true
-        shell: bash
-        env:
-          ISSUE_KEY: ${{ steps.jira.outputs.issue_key }}
-          JIRA_BASE_URL: ${{ secrets.JIRA_BASE_URL }}
-          JIRA_EMAIL: ${{ secrets.JIRA_EMAIL }}
-          JIRA_API_TOKEN: ${{ secrets.JIRA_API_TOKEN }}
-          BRANCH_NAME: ${{ github.head_ref || github.ref_name }}
-          RUN_URL: https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}
-        run: |
-          BODY_TEXT="CI PASSED: GitHub Actions completed Newman API tests successfully. Branch: ${BRANCH_NAME}. Commit: ${GITHUB_SHA}. Run: ${RUN_URL}"
-          jq -n --arg text "$BODY_TEXT" \
-            '{body:{type:"doc",version:1,content:[{type:"paragraph",content:[{type:"text",text:$text}]}]}}' \
-            > jira-comment.json
-          curl --fail --silent --show-error --request POST \
-            --url "${JIRA_BASE_URL}/rest/api/3/issue/${ISSUE_KEY}/comment" \
-            --user "${JIRA_EMAIL}:${JIRA_API_TOKEN}" \
-            --header "Accept: application/json" \
-            --header "Content-Type: application/json" \
-            --data @jira-comment.json
+      - name: Install CI helper dependencies
+        if: always() && steps.jira_credentials.outputs.available == 'true'
+        run: npm install js-yaml
 
-      - name: Comment Jira when CI failed
-        if: failure() && steps.jira.outputs.issue_key != '' && steps.jira_credentials.outputs.available == 'true'
+      - name: Analyze CI result and sync Jira
+        if: always() && steps.jira_credentials.outputs.available == 'true'
         continue-on-error: true
-        shell: bash
         env:
-          ISSUE_KEY: ${{ steps.jira.outputs.issue_key }}
           JIRA_BASE_URL: ${{ secrets.JIRA_BASE_URL }}
           JIRA_EMAIL: ${{ secrets.JIRA_EMAIL }}
           JIRA_API_TOKEN: ${{ secrets.JIRA_API_TOKEN }}
-          BRANCH_NAME: ${{ github.head_ref || github.ref_name }}
-          RUN_URL: https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}
-        run: |
-          BODY_TEXT="CI FAILED: GitHub Actions found a problem while running Newman API tests. Open the run logs, fix the code/test/environment, then push again. Branch: ${BRANCH_NAME}. Commit: ${GITHUB_SHA}. Run: ${RUN_URL}"
-          jq -n --arg text "$BODY_TEXT" \
-            '{body:{type:"doc",version:1,content:[{type:"paragraph",content:[{type:"text",text:$text}]}]}}' \
-            > jira-comment.json
-          curl --fail --silent --show-error --request POST \
-            --url "${JIRA_BASE_URL}/rest/api/3/issue/${ISSUE_KEY}/comment" \
-            --user "${JIRA_EMAIL}:${JIRA_API_TOKEN}" \
-            --header "Accept: application/json" \
-            --header "Content-Type: application/json" \
-            --data @jira-comment.json
+          JIRA_PROJECT_KEY: ${{ secrets.JIRA_PROJECT_KEY }}
+          ISSUE_KEY: ${{ steps.jira.outputs.issue_key }}
+          GITHUB_RUN_URL: https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}
+          GITHUB_ACTOR: ${{ github.actor }}
+          GITHUB_BRANCH: ${{ github.head_ref || github.ref_name }}
+          GITHUB_SHA: ${{ github.sha }}
+          EVENT_NAME: ${{ github.event_name }}
+        run: node ci/scripts/jira-upsert-bug.js
