@@ -83,6 +83,25 @@ async function searchJiraIssueBySignature(signature) {
   return null;
 }
 
+async function getOpenCiBugs() {
+  const jql = `project = ${JIRA_PROJECT_KEY} AND labels = ci-failed AND statusCategory != Done`;
+  try {
+    const response = await fetch(`${JIRA_BASE_URL}/rest/api/3/search?jql=${encodeURIComponent(jql)}`, {
+      headers: {
+        'Authorization': getAuthHeader(),
+        'Accept': 'application/json'
+      }
+    });
+    if (response.ok) {
+      const data = await response.json();
+      return data.issues || [];
+    }
+  } catch (err) {
+    console.error('Error fetching open CI bugs:', err);
+  }
+  return [];
+}
+
 async function createJiraBug({ service, ownerInfo, errorType, priority, failures, signature }) {
   console.log(`Creating Bug for ${service} (${signature})...`);
   const bugCount = failures.length;
@@ -204,60 +223,79 @@ async function main() {
   }
 
   const failures = reportData.run?.failures || [];
+  const currentSignatures = new Set();
 
   if (failures.length === 0) {
     console.log('No failures found in Newman report. CI Passed.');
     const comment = `CI PASSED: GitHub Actions completed Newman API tests successfully. Branch: ${GITHUB_BRANCH}. Commit: ${GITHUB_SHA}. Run: ${GITHUB_RUN_URL}`;
     await addJiraComment(ISSUE_KEY, comment);
-    return;
-  }
-
-  // Load owners
-  let ownersMap = {};
-  if (fs.existsSync(OWNERS_PATH)) {
-    try {
-      ownersMap = yaml.load(fs.readFileSync(OWNERS_PATH, 'utf8'));
-    } catch (e) {
-      console.error("Error loading service-owners.yml:", e);
+  } else {
+    // Load owners
+    let ownersMap = {};
+    if (fs.existsSync(OWNERS_PATH)) {
+      try {
+        ownersMap = yaml.load(fs.readFileSync(OWNERS_PATH, 'utf8'));
+      } catch (e) {
+        console.error("Error loading service-owners.yml:", e);
+      }
     }
-  }
 
-  // Group failures by service
-  const grouped = {};
-  for (const failure of failures) {
-    const service = detectService(failure);
-    if (!grouped[service]) grouped[service] = [];
-    grouped[service].push(failure);
-  }
+    // Group failures by service
+    const grouped = {};
+    for (const failure of failures) {
+      const service = detectService(failure);
+      if (!grouped[service]) grouped[service] = [];
+      grouped[service].push(failure);
+    }
 
-  for (const [service, serviceFailures] of Object.entries(grouped)) {
-    const errorType = classifyError(serviceFailures[0]);
-    const priority = determinePriority(service, errorType, serviceFailures[0].error?.message);
-    const signature = buildBugSignature(service, serviceFailures[0], errorType);
-    
-    const ownerInfo = ownersMap[service] || {
-      owner_name: 'Unknown',
-      github_username: 'unknown',
-      jira_account_id: null
-    };
+    for (const [service, serviceFailures] of Object.entries(grouped)) {
+      const errorType = classifyError(serviceFailures[0]);
+      const priority = determinePriority(service, errorType, serviceFailures[0].error?.message);
+      const signature = buildBugSignature(service, serviceFailures[0], errorType);
+      
+      currentSignatures.add(signature); // Track this signature
+      
+      const ownerInfo = ownersMap[service] || {
+        owner_name: 'Unknown',
+        github_username: 'unknown',
+        jira_account_id: null
+      };
 
-    const existingIssue = await searchJiraIssueBySignature(signature);
+      const existingIssue = await searchJiraIssueBySignature(signature);
 
-    if (existingIssue) {
-      console.log(`Found existing open bug ${existingIssue.key} for signature ${signature}. Adding comment instead of creating new bug.`);
-      const comment = `Lỗi này lại xuất hiện trên CI!
+      if (existingIssue) {
+        console.log(`Found existing open bug ${existingIssue.key} for signature ${signature}. Adding comment instead of creating new bug.`);
+        const comment = `Lỗi này lại xuất hiện trên CI!
 - Branch: ${GITHUB_BRANCH}
 - Commit: ${GITHUB_SHA}
 - Run: ${GITHUB_RUN_URL}
 - ${serviceFailures.length} request(s) failed.`;
-      await addJiraComment(existingIssue.key, comment);
-    } else {
-      await createJiraBug({ service, ownerInfo, errorType, priority, failures: serviceFailures, signature });
+        await addJiraComment(existingIssue.key, comment);
+      } else {
+        await createJiraBug({ service, ownerInfo, errorType, priority, failures: serviceFailures, signature });
+      }
+    }
+  }
+
+  // Auto-detect fixed bugs
+  const openBugs = await getOpenCiBugs();
+  for (const bug of openBugs) {
+    const labels = bug.fields?.labels || [];
+    const sigLabel = labels.find(l => l.startsWith('sig-'));
+    // If the bug has a signature and it's NOT in the current failures, it means it was FIXED!
+    if (sigLabel && !currentSignatures.has(sigLabel)) {
+      console.log(`Bug ${bug.key} (${sigLabel}) is no longer failing. Adding success comment...`);
+      const comment = `✅ CHÚC MỪNG: Lỗi này đã ĐƯỢC FIX thành công trên bản build mới nhất!
+- Branch: ${GITHUB_BRANCH}
+- Commit: ${GITHUB_SHA}
+- Run: ${GITHUB_RUN_URL}
+👉 Hệ thống xác nhận test case đã Pass. Bạn có thể tự tin kéo thẻ này sang cột Done nhé!`;
+      await addJiraComment(bug.key, comment);
     }
   }
 
   // Also comment on the original PR issue if applicable
-  if (ISSUE_KEY) {
+  if (ISSUE_KEY && failures.length > 0) {
     const comment = `CI FAILED: GitHub Actions phát hiện lỗi Newman tests. Branch: ${GITHUB_BRANCH}. Commit: ${GITHUB_SHA}. Run: ${GITHUB_RUN_URL}`;
     await addJiraComment(ISSUE_KEY, comment);
   }
