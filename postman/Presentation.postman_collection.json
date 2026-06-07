@@ -3,7 +3,7 @@
     "_postman_id": "2f51f312-bda3-4ebf-b3f4-fd846ab016e7",
     "name": "Presentation",
     "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
-    "_exporter_id": "48989832"
+    "_exporter_id": "55039415"
   },
   "item": [
     {
@@ -3439,6 +3439,540 @@
                           "path": [
                             "orders",
                             "{{recording_order_id}}"
+                          ]
+                        }
+                      },
+                      "response": []
+                    }
+                  ]
+                },
+                {
+                  "name": "Phân quyền theo ownership",
+                  "item": [
+                    {
+                      "name": "ORD-OWNER-SETUP-01 - Tạo Customer A",
+                      "event": [
+                        {
+                          "listen": "prerequest",
+                          "script": {
+                            "exec": [
+                              "const email = `owner.a.${Date.now()}@mutrapro.com`;\r",
+                              "pm.environment.set(\"owner_customer_a_email\", email);\r",
+                              ""
+                            ],
+                            "type": "text/javascript",
+                            "packages": {},
+                            "requests": {}
+                          }
+                        },
+                        {
+                          "listen": "test",
+                          "script": {
+                            "exec": [
+                              "pm.test(\"HTTP 201\", function () {\r",
+                              "  pm.response.to.have.status(201);\r",
+                              "});"
+                            ],
+                            "type": "text/javascript",
+                            "packages": {},
+                            "requests": {}
+                          }
+                        }
+                      ],
+                      "request": {
+                        "method": "POST",
+                        "header": [],
+                        "body": {
+                          "mode": "raw",
+                          "raw": "{\r\n  \"name\": \"Owner Customer A\",\r\n  \"email\": \"{{owner_customer_a_email}}\",\r\n  \"password\": \"{{default_password}}\"\r\n}",
+                          "options": {
+                            "raw": {
+                              "language": "json"
+                            }
+                          }
+                        },
+                        "url": {
+                          "raw": "{{baseUrl}}/auth/register",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "auth",
+                            "register"
+                          ]
+                        }
+                      },
+                      "response": []
+                    },
+                    {
+                      "name": "ORD-OWNER-SETUP-02 - Login Customer A",
+                      "event": [
+                        {
+                          "listen": "prerequest",
+                          "script": {
+                            "exec": [
+                              ""
+                            ],
+                            "type": "text/javascript",
+                            "packages": {},
+                            "requests": {}
+                          }
+                        },
+                        {
+                          "listen": "test",
+                          "script": {
+                            "exec": [
+                              "const json = pm.response.json();\r",
+                              "\r",
+                              "pm.test(\"HTTP 200\", function () {\r",
+                              "  pm.response.to.have.status(200);\r",
+                              "});\r",
+                              "\r",
+                              "pm.test(\"Customer A token saved\", function () {\r",
+                              "  pm.expect(json.token).to.be.a(\"string\").and.not.empty;\r",
+                              "  pm.expect(json.user.id).to.exist;\r",
+                              "});\r",
+                              "\r",
+                              "pm.environment.set(\"owner_customer_a_token\", json.token);\r",
+                              "pm.environment.set(\"owner_customer_a_id\", String(json.user.id));"
+                            ],
+                            "type": "text/javascript",
+                            "packages": {},
+                            "requests": {}
+                          }
+                        }
+                      ],
+                      "request": {
+                        "method": "POST",
+                        "header": [],
+                        "body": {
+                          "mode": "raw",
+                          "raw": "{\r\n  \"email\": \"{{owner_customer_a_email}}\",\r\n  \"password\": \"{{default_password}}\"\r\n}",
+                          "options": {
+                            "raw": {
+                              "language": "json"
+                            }
+                          }
+                        },
+                        "url": {
+                          "raw": "{{baseUrl}}/auth/login",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "auth",
+                            "login"
+                          ]
+                        }
+                      },
+                      "response": []
+                    },
+                    {
+                      "name": "ORD-OWNER-SETUP-03 - Tạo Customer B",
+                      "event": [
+                        {
+                          "listen": "test",
+                          "script": {
+                            "exec": [
+                              "\r",
+                              "pm.test(\"HTTP 201\", function () {\r",
+                              "  pm.response.to.have.status(201);\r",
+                              "});"
+                            ],
+                            "type": "text/javascript",
+                            "packages": {},
+                            "requests": {}
+                          }
+                        },
+                        {
+                          "listen": "prerequest",
+                          "script": {
+                            "exec": [
+                              "const email = `owner.b.${Date.now()}@mutrapro.com`;\r",
+                              "pm.environment.set(\"owner_customer_b_email\", email);"
+                            ],
+                            "type": "text/javascript",
+                            "packages": {},
+                            "requests": {}
+                          }
+                        }
+                      ],
+                      "request": {
+                        "method": "POST",
+                        "header": [],
+                        "body": {
+                          "mode": "raw",
+                          "raw": "{\r\n  \"name\": \"Owner Customer B\",\r\n  \"email\": \"{{owner_customer_b_email}}\",\r\n  \"password\": \"{{default_password}}\"\r\n}",
+                          "options": {
+                            "raw": {
+                              "language": "json"
+                            }
+                          }
+                        },
+                        "url": {
+                          "raw": "{{baseUrl}}/auth/register",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "auth",
+                            "register"
+                          ]
+                        }
+                      },
+                      "response": []
+                    },
+                    {
+                      "name": "ORD-OWNER-SETUP-04 - Login Customer B",
+                      "event": [
+                        {
+                          "listen": "prerequest",
+                          "script": {
+                            "exec": [
+                              ""
+                            ],
+                            "type": "text/javascript",
+                            "packages": {},
+                            "requests": {}
+                          }
+                        },
+                        {
+                          "listen": "test",
+                          "script": {
+                            "exec": [
+                              "const json = pm.response.json();\r",
+                              "\r",
+                              "pm.test(\"HTTP 200\", function () {\r",
+                              "  pm.response.to.have.status(200);\r",
+                              "});\r",
+                              "\r",
+                              "pm.test(\"Customer B token saved\", function () {\r",
+                              "  pm.expect(json.token).to.be.a(\"string\").and.not.empty;\r",
+                              "  pm.expect(json.user.id).to.exist;\r",
+                              "});\r",
+                              "\r",
+                              "pm.environment.set(\"owner_customer_b_token\", json.token);\r",
+                              "pm.environment.set(\"owner_customer_b_id\", String(json.user.id));"
+                            ],
+                            "type": "text/javascript",
+                            "packages": {},
+                            "requests": {}
+                          }
+                        }
+                      ],
+                      "request": {
+                        "method": "POST",
+                        "header": [],
+                        "body": {
+                          "mode": "raw",
+                          "raw": "{\r\n  \"email\": \"{{owner_customer_b_email}}\",\r\n  \"password\": \"{{default_password}}\"\r\n}",
+                          "options": {
+                            "raw": {
+                              "language": "json"
+                            }
+                          }
+                        },
+                        "url": {
+                          "raw": "{{baseUrl}}/auth/login",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "auth",
+                            "login"
+                          ]
+                        }
+                      },
+                      "response": []
+                    },
+                    {
+                      "name": "ORD-OWNER-SETUP-05 - Customer A tạo order ownership",
+                      "event": [
+                        {
+                          "listen": "prerequest",
+                          "script": {
+                            "exec": [
+                              ""
+                            ],
+                            "type": "text/javascript",
+                            "packages": {},
+                            "requests": {}
+                          }
+                        },
+                        {
+                          "listen": "test",
+                          "script": {
+                            "exec": [
+                              "const ownerCreateOrderJson = pm.response.json();\r",
+                              "const ownerCreateOrderPayload = ownerCreateOrderJson.data || ownerCreateOrderJson;\r",
+                              "\r",
+                              "pm.test(\"HTTP 201\", function () {\r",
+                              "  pm.response.to.have.status(201);\r",
+                              "});\r",
+                              "\r",
+                              "pm.test(\"Ownership order id saved\", function () {\r",
+                              "  pm.expect(ownerCreateOrderPayload.id).to.exist;\r",
+                              "});\r",
+                              "\r",
+                              "pm.environment.set(\"owner_order_id\", String(ownerCreateOrderPayload.id));"
+                            ],
+                            "type": "text/javascript",
+                            "packages": {},
+                            "requests": {}
+                          }
+                        }
+                      ],
+                      "request": {
+                        "auth": {
+                          "type": "bearer",
+                          "bearer": [
+                            {
+                              "key": "token",
+                              "value": "{{owner_customer_a_token}}",
+                              "type": "string"
+                            }
+                          ]
+                        },
+                        "method": "POST",
+                        "header": [],
+                        "body": {
+                          "mode": "raw",
+                          "raw": "{\r\n  \"service_type\": \"transcription\",\r\n  \"description\": \"Ownership test order created by Customer A\"\r\n}",
+                          "options": {
+                            "raw": {
+                              "language": "json"
+                            }
+                          }
+                        },
+                        "url": {
+                          "raw": "{{baseUrl}}/orders",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "orders"
+                          ]
+                        }
+                      },
+                      "response": []
+                    },
+                    {
+                      "name": "ORD-OWNER-01 - Customer B không được xem order của Customer A",
+                      "event": [
+                        {
+                          "listen": "test",
+                          "script": {
+                            "exec": [
+                              "pm.test(\"HTTP 403\", function () {\r",
+                              "  pm.response.to.have.status(403);\r",
+                              "});\r",
+                              "\r",
+                              "pm.test(\"Customer B is blocked from Customer A order\", function () {\r",
+                              "  const json = pm.response.json();\r",
+                              "  pm.expect(json.success).to.eql(false);\r",
+                              "});"
+                            ],
+                            "type": "text/javascript",
+                            "packages": {},
+                            "requests": {}
+                          }
+                        }
+                      ],
+                      "request": {
+                        "auth": {
+                          "type": "bearer",
+                          "bearer": [
+                            {
+                              "key": "token",
+                              "value": "{{owner_customer_b_token}}",
+                              "type": "string"
+                            }
+                          ]
+                        },
+                        "method": "GET",
+                        "header": [],
+                        "url": {
+                          "raw": "{{baseUrl}}/orders/{{owner_order_id}}",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "orders",
+                            "{{owner_order_id}}"
+                          ]
+                        }
+                      },
+                      "response": []
+                    },
+                    {
+                      "name": "ORD-OWNER-02 - Customer B không được thanh toán order của Customer A",
+                      "event": [
+                        {
+                          "listen": "test",
+                          "script": {
+                            "exec": [
+                              "pm.test(\"HTTP 403\", function () {\r",
+                              "  pm.response.to.have.status(403);\r",
+                              "});\r",
+                              "\r",
+                              "pm.test(\"Customer B is blocked from paying Customer A order\", function () {\r",
+                              "  const json = pm.response.json();\r",
+                              "  pm.expect(json.success).to.eql(false);\r",
+                              "});"
+                            ],
+                            "type": "text/javascript",
+                            "packages": {},
+                            "requests": {}
+                          }
+                        }
+                      ],
+                      "request": {
+                        "auth": {
+                          "type": "bearer",
+                          "bearer": [
+                            {
+                              "key": "token",
+                              "value": "{{owner_customer_b_token}}",
+                              "type": "string"
+                            }
+                          ]
+                        },
+                        "method": "POST",
+                        "header": [],
+                        "body": {
+                          "mode": "raw",
+                          "raw": "{\r\n  \"amount\": 300000,\r\n  \"method\": \"bank_transfer\"\r\n}",
+                          "options": {
+                            "raw": {
+                              "language": "json"
+                            }
+                          }
+                        },
+                        "url": {
+                          "raw": "{{baseUrl}}/orders/{{owner_order_id}}/pay",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "orders",
+                            "{{owner_order_id}}",
+                            "pay"
+                          ]
+                        }
+                      },
+                      "response": []
+                    },
+                    {
+                      "name": "ORD-OWNER-03 - Customer B không được feedback order của Customer A",
+                      "event": [
+                        {
+                          "listen": "test",
+                          "script": {
+                            "exec": [
+                              "pm.test(\"HTTP 403\", function () {\r",
+                              "  pm.response.to.have.status(403);\r",
+                              "});\r",
+                              "\r",
+                              "pm.test(\"Customer B is blocked from feedbacking Customer A order\", function () {\r",
+                              "  const json = pm.response.json();\r",
+                              "  pm.expect(json.success).to.eql(false);\r",
+                              "});"
+                            ],
+                            "type": "text/javascript",
+                            "packages": {},
+                            "requests": {}
+                          }
+                        }
+                      ],
+                      "request": {
+                        "auth": {
+                          "type": "bearer",
+                          "bearer": [
+                            {
+                              "key": "token",
+                              "value": "{{owner_customer_b_token}}",
+                              "type": "string"
+                            }
+                          ]
+                        },
+                        "method": "POST",
+                        "header": [],
+                        "body": {
+                          "mode": "raw",
+                          "raw": "{\r\n  \"rating\": 5,\r\n  \"comment\": \"Unauthorized feedback attempt by Customer B\"\r\n}",
+                          "options": {
+                            "raw": {
+                              "language": "json"
+                            }
+                          }
+                        },
+                        "url": {
+                          "raw": "{{baseUrl}}/orders/{{owner_order_id}}/feedback",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "orders",
+                            "{{owner_order_id}}",
+                            "feedback"
+                          ]
+                        }
+                      },
+                      "response": []
+                    },
+                    {
+                      "name": "ORD-OWNER-04 - Customer B không được request revision order của Customer A",
+                      "event": [
+                        {
+                          "listen": "test",
+                          "script": {
+                            "exec": [
+                              "pm.test(\"HTTP 403\", function () {\r",
+                              "  pm.response.to.have.status(403);\r",
+                              "});\r",
+                              "\r",
+                              "pm.test(\"Customer B is blocked from requesting revision on Customer A order\", function () {\r",
+                              "  const json = pm.response.json();\r",
+                              "  pm.expect(json.success).to.eql(false);\r",
+                              "});"
+                            ],
+                            "type": "text/javascript",
+                            "packages": {},
+                            "requests": {}
+                          }
+                        }
+                      ],
+                      "request": {
+                        "auth": {
+                          "type": "bearer",
+                          "bearer": [
+                            {
+                              "key": "token",
+                              "value": "{{owner_customer_b_token}}",
+                              "type": "string"
+                            }
+                          ]
+                        },
+                        "method": "POST",
+                        "header": [],
+                        "body": {
+                          "mode": "raw",
+                          "raw": "{\r\n  \"comment\": \"Unauthorized revision request by Customer B\"\r\n}",
+                          "options": {
+                            "raw": {
+                              "language": "json"
+                            }
+                          }
+                        },
+                        "url": {
+                          "raw": "{{baseUrl}}/orders/{{owner_order_id}}/request-revision",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "orders",
+                            "{{owner_order_id}}",
+                            "request-revision"
                           ]
                         }
                       },

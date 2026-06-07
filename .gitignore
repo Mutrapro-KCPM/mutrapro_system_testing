@@ -11,3 +11,5 @@ coverage/
 .DS_Store
 .vscode/
 .idea/
+local-test-notes/
+newman-results/
