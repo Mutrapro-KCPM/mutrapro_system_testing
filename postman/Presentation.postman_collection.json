@@ -1277,17 +1277,39 @@
                       "listen": "test",
                       "script": {
                         "exec": [
-                          "var jsonData = pm.response.json();\r",
-                          "pm.environment.set(\"admin_token\", jsonData.token);\r",
-                          "pm.environment.set(\"admin_id\", jsonData.user.id); // Lấy ID của chính admin để test case \"Không tự xóa mình\"\r",
+                          "// ✅ ĐÚNG\r",
+                          "pm.test(\"Admin login success\", function () {\r",
+                          "    var jsonData = pm.response.json();\r",
+                          "    \r",
+                          "    pm.expect(pm.response.code).to.eql(200);\r",
+                          "    pm.expect(jsonData).to.have.property(\"token\");\r",
+                          "    pm.expect(jsonData.user.role).to.eql('admin'); // ← SỬA THÀNH 'admin'\r",
+                          "    \r",
+                          "    // Lưu token và id vào biến môi trường\r",
+                          "    pm.environment.set(\"admin_token\", jsonData.token);\r",
+                          "    pm.environment.set(\"admin_id\", String(jsonData.user.id));\r",
+                          "    \r",
+                          "    console.log(\"Admin token saved successfully.\");\r",
+                          "});\r",
                           ""
                         ],
                         "type": "text/javascript",
-                        "packages": {}
+                        "packages": {},
+                        "requests": {}
                       }
                     }
                   ],
                   "request": {
+                    "auth": {
+                      "type": "bearer",
+                      "bearer": [
+                        {
+                          "key": "token",
+                          "value": "",
+                          "type": "string"
+                        }
+                      ]
+                    },
                     "method": "POST",
                     "header": [],
                     "body": {
