@@ -34,7 +34,7 @@ const forwardRequest = async (req, res, targetUrl) => {
     }
 };
 
-//  dŸ”¹  Health check route
+// Health check route
 app.get('/api/health', (req, res) => {
     res.status(200).json({
         success: true,
@@ -73,7 +73,7 @@ app.get('/api/health/all', async (req, res) => {
     });
 });
 
-//  dŸ”¹  Proxy routes
+//  dï¿½ï¿½ï¿½  Proxy routes
 app.use('/api/auth', (req, res) => {
     forwardRequest(req, res, `http://auth-service:3001${req.url}`);
 });
@@ -87,8 +87,8 @@ app.use('/api/tasks', (req, res) => {
     forwardRequest(req, res, `http://task-service:3003${req.url}`);
 });
 
-// === START: PHáº¦N Cáº¬P NHáº¬T CHANH Náº°M á»? ÄA‚Y ===
-// ThAªm { limit: '50mb' } Ä‘á»ƒ cho phA©p upload file náº·ng
+// === START: PHáº¦N Cáº¬P NHáº¬T CHAï¿½NH Náº°M ï¿½? ÄAï¿½Y ===
+// ThAï¿½m { limit: '50mb' } Ä‘á»ƒ cho phAï¿½p upload file náº·ng
 app.use('/api/files', proxy('http://file-service:3004', {
     limit: '50mb' 
 }));
@@ -106,7 +106,7 @@ app.use('/api/reports', (req, res) => {
     forwardRequest(req, res, `http://analytics-service:3008/reports${req.url}`);
 });
 
-//  dŸ”¹  Start server
+//  dï¿½ï¿½ï¿½  Start server
 const PORT = 3007;
 app.listen(PORT, () => {
     console.log(`API Gateway is running on port ${PORT}`);
