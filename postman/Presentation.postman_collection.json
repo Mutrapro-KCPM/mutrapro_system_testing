@@ -3,7 +3,7 @@
     "_postman_id": "2f51f312-bda3-4ebf-b3f4-fd846ab016e7",
     "name": "Presentation",
     "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
-    "_exporter_id": "55039415"
+    "_exporter_id": "48989832"
   },
   "item": [
     {
@@ -313,23 +313,13 @@
                               "    // TRÍCH XUẤT TOKEN lưu vào biến môi trường dùng cho các API sau\r",
                               "    pm.environment.set(\"auth_token\", jsonData.token);\r",
                               "    console.log(\"Token đã được lưu vào biến 'auth_token'\");\r",
+                              "\r",
+                              "    pm.environment.set(\"auto_user_id\", jsonData.user.id);\r",
                               "});\r",
                               ""
                             ],
                             "type": "text/javascript",
-                            "packages": {},
-                            "requests": {}
-                          }
-                        },
-                        {
-                          "listen": "prerequest",
-                          "script": {
-                            "exec": [
-                              ""
-                            ],
-                            "type": "text/javascript",
-                            "packages": {},
-                            "requests": {}
+                            "packages": {}
                           }
                         }
                       ],
@@ -422,6 +412,16 @@
                       "name": "au-a2.3",
                       "event": [
                         {
+                          "listen": "prerequest",
+                          "script": {
+                            "exec": [
+                              ""
+                            ],
+                            "type": "text/javascript",
+                            "packages": {}
+                          }
+                        },
+                        {
                           "listen": "test",
                           "script": {
                             "exec": [
@@ -437,26 +437,7 @@
                               ""
                             ],
                             "type": "text/javascript",
-                            "packages": {},
-                            "requests": {}
-                          }
-                        },
-                        {
-                          "listen": "prerequest",
-                          "script": {
-                            "exec": [
-                              "// Tạo một timestamp hoặc chuỗi ngẫu nhiên để làm email duy nhất\r",
-                              "const timestamp = new Date().getTime();\r",
-                              "const dynamicEmail = `auto_test_${timestamp}@example.com`;\r",
-                              "\r",
-                              "// Lưu vào biến môi trường (Environment/Collection variable)\r",
-                              "pm.environment.set(\"auto_register_email\", dynamicEmail);\r",
-                              "pm.environment.set(\"auto_register_pwd\", \"password123\");\r",
-                              ""
-                            ],
-                            "type": "text/javascript",
-                            "packages": {},
-                            "requests": {}
+                            "packages": {}
                           }
                         }
                       ],
@@ -489,6 +470,16 @@
                       "name": "au-a2.4",
                       "event": [
                         {
+                          "listen": "prerequest",
+                          "script": {
+                            "exec": [
+                              ""
+                            ],
+                            "type": "text/javascript",
+                            "packages": {}
+                          }
+                        },
+                        {
                           "listen": "test",
                           "script": {
                             "exec": [
@@ -507,26 +498,7 @@
                               ""
                             ],
                             "type": "text/javascript",
-                            "packages": {},
-                            "requests": {}
-                          }
-                        },
-                        {
-                          "listen": "prerequest",
-                          "script": {
-                            "exec": [
-                              "// Tạo một timestamp hoặc chuỗi ngẫu nhiên để làm email duy nhất\r",
-                              "const timestamp = new Date().getTime();\r",
-                              "const dynamicEmail = `auto_test_${timestamp}@example.com`;\r",
-                              "\r",
-                              "// Lưu vào biến môi trường (Environment/Collection variable)\r",
-                              "pm.environment.set(\"auto_register_email\", dynamicEmail);\r",
-                              "pm.environment.set(\"auto_register_pwd\", \"password123\");\r",
-                              ""
-                            ],
-                            "type": "text/javascript",
-                            "packages": {},
-                            "requests": {}
+                            "packages": {}
                           }
                         }
                       ],
@@ -559,6 +531,16 @@
                       "name": "au-a2.5",
                       "event": [
                         {
+                          "listen": "prerequest",
+                          "script": {
+                            "exec": [
+                              ""
+                            ],
+                            "type": "text/javascript",
+                            "packages": {}
+                          }
+                        },
+                        {
                           "listen": "test",
                           "script": {
                             "exec": [
@@ -577,26 +559,7 @@
                               ""
                             ],
                             "type": "text/javascript",
-                            "packages": {},
-                            "requests": {}
-                          }
-                        },
-                        {
-                          "listen": "prerequest",
-                          "script": {
-                            "exec": [
-                              "// Tạo một timestamp hoặc chuỗi ngẫu nhiên để làm email duy nhất\r",
-                              "const timestamp = new Date().getTime();\r",
-                              "const dynamicEmail = `auto_test_${timestamp}@example.com`;\r",
-                              "\r",
-                              "// Lưu vào biến môi trường (Environment/Collection variable)\r",
-                              "pm.environment.set(\"auto_register_email\", dynamicEmail);\r",
-                              "pm.environment.set(\"auto_register_pwd\", \"password123\");\r",
-                              ""
-                            ],
-                            "type": "text/javascript",
-                            "packages": {},
-                            "requests": {}
+                            "packages": {}
                           }
                         }
                       ],
@@ -626,6 +589,124 @@
                       "response": []
                     }
                   ]
+                }
+              ]
+            },
+            {
+              "name": "Xác thực Token",
+              "item": [
+                {
+                  "name": "au-a3.1",
+                  "event": [
+                    {
+                      "listen": "test",
+                      "script": {
+                        "exec": [
+                          "pm.test(\"Status code must be 200 OK\", function () {\r",
+                          "    pm.response.to.have.status(200);\r",
+                          "});\r",
+                          ""
+                        ],
+                        "type": "text/javascript",
+                        "packages": {},
+                        "requests": {}
+                      }
+                    }
+                  ],
+                  "protocolProfileBehavior": {
+                    "disableBodyPruning": true
+                  },
+                  "request": {
+                    "auth": {
+                      "type": "bearer",
+                      "bearer": [
+                        {
+                          "key": "token",
+                          "value": "{{auth_token}}",
+                          "type": "string"
+                        }
+                      ]
+                    },
+                    "method": "GET",
+                    "header": [],
+                    "body": {
+                      "mode": "raw",
+                      "raw": "",
+                      "options": {
+                        "raw": {
+                          "language": "json"
+                        }
+                      }
+                    },
+                    "url": {
+                      "raw": "{{baseUrl}}/auth/verify",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "auth",
+                        "verify"
+                      ]
+                    }
+                  },
+                  "response": []
+                },
+                {
+                  "name": "au-a3.2",
+                  "event": [
+                    {
+                      "listen": "test",
+                      "script": {
+                        "exec": [
+                          "pm.test(\"Status code must be 401 (or 403)\", function () {\r",
+                          "    // Tùy thuộc vào authMiddleware của bạn trả về 401 hay 403 khi thiếu token\r",
+                          "    pm.expect(pm.response.code).to.be.oneOf([401, 403]);\r",
+                          "});\r",
+                          "\r",
+                          "pm.test(\"Should return error for missing authentication\", function () {\r",
+                          "    var jsonData = pm.response.json();\r",
+                          "    pm.expect(jsonData).to.have.property(\"success\", false);\r",
+                          "});\r",
+                          ""
+                        ],
+                        "type": "text/javascript",
+                        "packages": {},
+                        "requests": {}
+                      }
+                    }
+                  ],
+                  "protocolProfileBehavior": {
+                    "disableBodyPruning": true
+                  },
+                  "request": {
+                    "auth": {
+                      "type": "bearer",
+                      "bearer": [
+                        {
+                          "key": "token",
+                          "value": "",
+                          "type": "string"
+                        }
+                      ]
+                    },
+                    "method": "GET",
+                    "header": [],
+                    "body": {
+                      "mode": "raw",
+                      "raw": ""
+                    },
+                    "url": {
+                      "raw": "{{baseUrl}}/auth/verify",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "auth",
+                        "verify"
+                      ]
+                    }
+                  },
+                  "response": []
                 }
               ]
             },
@@ -811,29 +892,276 @@
               ]
             },
             {
-              "name": "Xác thực Token",
+              "name": "Đổi mật khẩu",
               "item": [
                 {
-                  "name": "au-a3.1",
+                  "name": "au-a5.1",
                   "event": [
                     {
                       "listen": "test",
                       "script": {
                         "exec": [
-                          "pm.test(\"Status code must be 200 OK\", function () {\r",
+                          "pm.test(\"Status code is 200\", function () {\r",
                           "    pm.response.to.have.status(200);\r",
+                          "});\r",
+                          "\r",
+                          "pm.test(\"Success message is correct\", function () {\r",
+                          "    var jsonData = pm.response.json();\r",
+                          "    pm.expect(jsonData.message).to.eql(\"Đổi mật khẩu thành công.\");\r",
+                          "});\r",
+                          "\r",
+                          "// Tự động cập nhật mật khẩu mới vào biến môi trường để dùng cho các luồng sau (nếu có)\r",
+                          "pm.environment.set(\"auto_register_pwd\", \"newpassword123\");\r",
+                          ""
+                        ],
+                        "type": "text/javascript",
+                        "packages": {}
+                      }
+                    }
+                  ],
+                  "request": {
+                    "auth": {
+                      "type": "bearer",
+                      "bearer": [
+                        {
+                          "key": "token",
+                          "value": "{{auth_token}}",
+                          "type": "string"
+                        }
+                      ]
+                    },
+                    "method": "PUT",
+                    "header": [],
+                    "body": {
+                      "mode": "raw",
+                      "raw": "{\r\n  \"oldPassword\": \"{{auto_register_pwd}}\",\r\n  \"newPassword\": \"newpassword123\"\r\n}\r\n",
+                      "options": {
+                        "raw": {
+                          "language": "json"
+                        }
+                      }
+                    },
+                    "url": {
+                      "raw": "{{baseUrl}}/auth/users/{{auto_user_id}}/password",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "auth",
+                        "users",
+                        "{{auto_user_id}}",
+                        "password"
+                      ]
+                    }
+                  },
+                  "response": []
+                },
+                {
+                  "name": "au-a5.2",
+                  "event": [
+                    {
+                      "listen": "test",
+                      "script": {
+                        "exec": [
+                          "pm.test(\"Status code is 401\", () => pm.response.to.have.status(401));\r",
+                          "pm.test(\"Error message is correct\", () => {\r",
+                          "    pm.expect(pm.response.json().message).to.eql(\"Mật khẩu cũ không đúng.\");\r",
                           "});\r",
                           ""
                         ],
                         "type": "text/javascript",
-                        "packages": {},
-                        "requests": {}
+                        "packages": {}
                       }
                     }
                   ],
-                  "protocolProfileBehavior": {
-                    "disableBodyPruning": true
+                  "request": {
+                    "auth": {
+                      "type": "bearer",
+                      "bearer": [
+                        {
+                          "key": "token",
+                          "value": "{{auth_token}}",
+                          "type": "string"
+                        }
+                      ]
+                    },
+                    "method": "PUT",
+                    "header": [],
+                    "body": {
+                      "mode": "raw",
+                      "raw": "{\r\n  \"oldPassword\": \"wrongpassword123\",\r\n  \"newPassword\": \"newpassword123\"\r\n}\r\n",
+                      "options": {
+                        "raw": {
+                          "language": "json"
+                        }
+                      }
+                    },
+                    "url": {
+                      "raw": "{{baseUrl}}/auth/users/{{auto_user_id}}/password",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "auth",
+                        "users",
+                        "{{auto_user_id}}",
+                        "password"
+                      ]
+                    }
                   },
+                  "response": []
+                },
+                {
+                  "name": "au-a5.3",
+                  "event": [
+                    {
+                      "listen": "test",
+                      "script": {
+                        "exec": [
+                          "pm.test(\"Status code is 400\", () => pm.response.to.have.status(400));\r",
+                          "pm.test(\"Error message is correct\", () => {\r",
+                          "    pm.expect(pm.response.json().message).to.eql(\"Vui lòng cung cấp mật khẩu cũ và mật khẩu mới (ít nhất 6 ký tự).\");\r",
+                          "});\r",
+                          ""
+                        ],
+                        "type": "text/javascript",
+                        "packages": {}
+                      }
+                    }
+                  ],
+                  "request": {
+                    "auth": {
+                      "type": "bearer",
+                      "bearer": [
+                        {
+                          "key": "token",
+                          "value": "{{auth_token}}",
+                          "type": "string"
+                        }
+                      ]
+                    },
+                    "method": "PUT",
+                    "header": [],
+                    "body": {
+                      "mode": "raw",
+                      "raw": "{\r\n  \"oldPassword\": \"{{auto_register_pwd}}\",\r\n  \"newPassword\": \"12345\"\r\n}\r\n",
+                      "options": {
+                        "raw": {
+                          "language": "json"
+                        }
+                      }
+                    },
+                    "url": {
+                      "raw": "{{baseUrl}}/auth/users/{{auto_user_id}}/password",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "auth",
+                        "users",
+                        "{{auto_user_id}}",
+                        "password"
+                      ]
+                    }
+                  },
+                  "response": []
+                },
+                {
+                  "name": "au-a5.4",
+                  "event": [
+                    {
+                      "listen": "test",
+                      "script": {
+                        "exec": [
+                          "pm.test(\"Status code is 403 Forbidden\", () => pm.response.to.have.status(403));\r",
+                          "pm.test(\"Error message is correct\", () => {\r",
+                          "    pm.expect(pm.response.json().message).to.eql(\"Bạn không có quyền thực hiện hành động này.\");\r",
+                          "});\r",
+                          ""
+                        ],
+                        "type": "text/javascript",
+                        "packages": {}
+                      }
+                    }
+                  ],
+                  "request": {
+                    "auth": {
+                      "type": "bearer",
+                      "bearer": [
+                        {
+                          "key": "token",
+                          "value": "{{auth_token}}",
+                          "type": "string"
+                        }
+                      ]
+                    },
+                    "method": "PUT",
+                    "header": [],
+                    "body": {
+                      "mode": "raw",
+                      "raw": "{\r\n  \"oldPassword\": \"{{auto_register_pwd}}\",\r\n  \"newPassword\": \"123456\"\r\n}\r\n",
+                      "options": {
+                        "raw": {
+                          "language": "json"
+                        }
+                      }
+                    },
+                    "url": {
+                      "raw": "{{baseUrl}}/auth/users/99999/password",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "auth",
+                        "users",
+                        "99999",
+                        "password"
+                      ]
+                    }
+                  },
+                  "response": []
+                }
+              ]
+            },
+            {
+              "name": "Lấy thông tin thông qua ID",
+              "item": [
+                {
+                  "name": "au-a6.1",
+                  "event": [
+                    {
+                      "listen": "prerequest",
+                      "script": {
+                        "exec": [
+                          ""
+                        ],
+                        "type": "text/javascript",
+                        "packages": {}
+                      }
+                    },
+                    {
+                      "listen": "test",
+                      "script": {
+                        "exec": [
+                          "pm.test(\"Status code is 200\", () => pm.response.to.have.status(200));\r",
+                          "\r",
+                          "pm.test(\"Returns correct user structure\", () => {\r",
+                          "    var data = pm.response.json();\r",
+                          "    pm.expect(data).to.have.property(\"id\");\r",
+                          "    pm.expect(data).to.have.property(\"name\");\r",
+                          "    pm.expect(data).to.have.property(\"email\");\r",
+                          "    pm.expect(data).to.have.property(\"role\");\r",
+                          "    \r",
+                          "    // Xác minh đúng email của test case\r",
+                          "    pm.expect(data.email).to.eql(pm.environment.get(\"auto_register_email\"));\r",
+                          "});\r",
+                          ""
+                        ],
+                        "type": "text/javascript",
+                        "packages": {}
+                      }
+                    }
+                  ],
                   "request": {
                     "auth": {
                       "type": "bearer",
@@ -847,9 +1175,124 @@
                     },
                     "method": "GET",
                     "header": [],
+                    "url": {
+                      "raw": "{{baseUrl}}/auth/users/{{auto_user_id}}",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "auth",
+                        "users",
+                        "{{auto_user_id}}"
+                      ]
+                    }
+                  },
+                  "response": []
+                },
+                {
+                  "name": "au-a6.2",
+                  "event": [
+                    {
+                      "listen": "test",
+                      "script": {
+                        "exec": [
+                          "pm.test(\"Status code is 404\", () => pm.response.to.have.status(404));\r",
+                          "pm.test(\"Error message is correct\", () => {\r",
+                          "    pm.expect(pm.response.json().message).to.eql(\"Không tìm thấy người dùng.\");\r",
+                          "});\r",
+                          ""
+                        ],
+                        "type": "text/javascript",
+                        "packages": {}
+                      }
+                    }
+                  ],
+                  "request": {
+                    "method": "GET",
+                    "header": [],
+                    "url": {
+                      "raw": "{{baseUrl}}/auth/users/99999",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "auth",
+                        "users",
+                        "99999"
+                      ]
+                    }
+                  },
+                  "response": []
+                },
+                {
+                  "name": "au-a6.3",
+                  "event": [
+                    {
+                      "listen": "test",
+                      "script": {
+                        "exec": [
+                          "pm.test(\"Status code is 400\", () => pm.response.to.have.status(400));\r",
+                          "pm.test(\"Validation error for ID\", () => {\r",
+                          "    var jsonData = pm.response.json();\r",
+                          "    pm.expect(jsonData.success).to.be.false;\r",
+                          "    \r",
+                          "    // Kiểm tra validation trả về từ express-validator\r",
+                          "    let idError = jsonData.errors.find(e => e.path === \"id\");\r",
+                          "    pm.expect(idError).to.exist;\r",
+                          "    pm.expect(idError.msg).to.eql(\"ID không hợp lệ\");\r",
+                          "});\r",
+                          ""
+                        ],
+                        "type": "text/javascript",
+                        "packages": {}
+                      }
+                    }
+                  ],
+                  "request": {
+                    "method": "GET",
+                    "header": [],
+                    "url": {
+                      "raw": "{{baseUrl}}/auth/users/abc",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "auth",
+                        "users",
+                        "abc"
+                      ]
+                    }
+                  },
+                  "response": []
+                }
+              ]
+            },
+            {
+              "name": "Admin",
+              "item": [
+                {
+                  "name": "admin login",
+                  "event": [
+                    {
+                      "listen": "test",
+                      "script": {
+                        "exec": [
+                          "var jsonData = pm.response.json();\r",
+                          "pm.environment.set(\"admin_token\", jsonData.token);\r",
+                          "pm.environment.set(\"admin_id\", jsonData.user.id); // Lấy ID của chính admin để test case \"Không tự xóa mình\"\r",
+                          ""
+                        ],
+                        "type": "text/javascript",
+                        "packages": {}
+                      }
+                    }
+                  ],
+                  "request": {
+                    "method": "POST",
+                    "header": [],
                     "body": {
                       "mode": "raw",
-                      "raw": "",
+                      "raw": "{\r\n    \"email\": \"admin@mutrapro.com\",\r\n    \"password\": \"Admin@123\"\r\n}",
                       "options": {
                         "raw": {
                           "language": "json"
@@ -857,70 +1300,400 @@
                       }
                     },
                     "url": {
-                      "raw": "{{baseUrl}}/auth/verify",
+                      "raw": "{{baseUrl}}/auth/login",
                       "host": [
                         "{{baseUrl}}"
                       ],
                       "path": [
                         "auth",
-                        "verify"
+                        "login"
                       ]
                     }
                   },
                   "response": []
                 },
                 {
-                  "name": "au-a3.2",
+                  "name": "au-a8.1",
                   "event": [
                     {
                       "listen": "test",
                       "script": {
                         "exec": [
-                          "pm.test(\"Status code must be 401 (or 403)\", function () {\r",
-                          "    // Tùy thuộc vào authMiddleware của bạn trả về 401 hay 403 khi thiếu token\r",
-                          "    pm.expect(pm.response.code).to.be.oneOf([401, 403]);\r",
+                          "pm.test(\"Status code is 200\", function () {\r",
+                          "    pm.response.to.have.status(200);\r",
                           "});\r",
                           "\r",
-                          "pm.test(\"Should return error for missing authentication\", function () {\r",
+                          "pm.test(\"Returns an array of user objects containing only id\", function () {\r",
                           "    var jsonData = pm.response.json();\r",
-                          "    pm.expect(jsonData).to.have.property(\"success\", false);\r",
+                          "    pm.expect(jsonData).to.be.an('array');\r",
+                          "    if(jsonData.length > 0) {\r",
+                          "        pm.expect(jsonData[0]).to.have.property('id');\r",
+                          "        pm.expect(jsonData[0]).to.not.have.property('name'); // Vì API này chỉ Select id\r",
+                          "    }\r",
                           "});\r",
                           ""
                         ],
                         "type": "text/javascript",
-                        "packages": {},
-                        "requests": {}
+                        "packages": {}
                       }
                     }
                   ],
-                  "protocolProfileBehavior": {
-                    "disableBodyPruning": true
+                  "request": {
+                    "method": "GET",
+                    "header": [],
+                    "url": {
+                      "raw": "{{baseUrl}}/auth/users/by-role/customer",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "auth",
+                        "users",
+                        "by-role",
+                        "customer"
+                      ]
+                    }
                   },
+                  "response": []
+                },
+                {
+                  "name": "au-a8.2",
+                  "event": [
+                    {
+                      "listen": "test",
+                      "script": {
+                        "exec": [
+                          "pm.test(\"Status code is 200\", function () {\r",
+                          "    pm.response.to.have.status(200);\r",
+                          "});\r",
+                          "\r",
+                          "pm.test(\"List of users is returned without password_hash\", function () {\r",
+                          "    var jsonData = pm.response.json();\r",
+                          "    pm.expect(jsonData).to.be.an('array');\r",
+                          "    if(jsonData.length > 0) {\r",
+                          "        pm.expect(jsonData[0]).to.have.property('role');\r",
+                          "        pm.expect(jsonData[0]).to.not.have.property('password_hash');\r",
+                          "    }\r",
+                          "});\r",
+                          ""
+                        ],
+                        "type": "text/javascript",
+                        "packages": {}
+                      }
+                    }
+                  ],
                   "request": {
                     "auth": {
                       "type": "bearer",
                       "bearer": [
                         {
                           "key": "token",
-                          "value": "",
+                          "value": "{{admin_token}}",
                           "type": "string"
                         }
                       ]
                     },
                     "method": "GET",
                     "header": [],
-                    "body": {
-                      "mode": "raw",
-                      "raw": ""
-                    },
                     "url": {
-                      "raw": "{{baseUrl}}/auth/verify",
+                      "raw": "{{baseUrl}}/auth/admin/users",
                       "host": [
                         "{{baseUrl}}"
                       ],
                       "path": [
                         "auth",
-                        "verify"
+                        "admin",
+                        "users"
+                      ]
+                    }
+                  },
+                  "response": []
+                },
+                {
+                  "name": "au-a8.3",
+                  "event": [
+                    {
+                      "listen": "prerequest",
+                      "script": {
+                        "exec": [
+                          "let dynamicEmail = \"admin_created_\" + Date.now() + \"@example.com\";\r",
+                          "pm.environment.set(\"temp_target_email\", dynamicEmail);\r",
+                          ""
+                        ],
+                        "type": "text/javascript",
+                        "packages": {}
+                      }
+                    },
+                    {
+                      "listen": "test",
+                      "script": {
+                        "exec": [
+                          "pm.test(\"Status code is 201 Created\", function () {\r",
+                          "    pm.response.to.have.status(201);\r",
+                          "});\r",
+                          "\r",
+                          "pm.test(\"Save created user ID for next steps\", function () {\r",
+                          "    var jsonData = pm.response.json();\r",
+                          "    pm.expect(jsonData).to.have.property(\"id\");\r",
+                          "    // LƯU LẠI ID NÀY CHO REQUEST UPDATE/DELETE\r",
+                          "    pm.environment.set(\"target_user_id\", jsonData.id); \r",
+                          "});\r",
+                          ""
+                        ],
+                        "type": "text/javascript",
+                        "packages": {}
+                      }
+                    }
+                  ],
+                  "request": {
+                    "auth": {
+                      "type": "bearer",
+                      "bearer": [
+                        {
+                          "key": "token",
+                          "value": "{{admin_token}}",
+                          "type": "string"
+                        }
+                      ]
+                    },
+                    "method": "POST",
+                    "header": [],
+                    "body": {
+                      "mode": "raw",
+                      "raw": "{\r\n  \"name\": \"Target User\",\r\n  \"email\": \"{{temp_target_email}}\",\r\n  \"password\": \"password123\",\r\n  \"role\": \"transcriber\"\r\n}\r\n",
+                      "options": {
+                        "raw": {
+                          "language": "json"
+                        }
+                      }
+                    },
+                    "url": {
+                      "raw": "{{baseUrl}}/auth/admin/users",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "auth",
+                        "admin",
+                        "users"
+                      ]
+                    }
+                  },
+                  "response": []
+                },
+                {
+                  "name": "au-a8.4",
+                  "event": [
+                    {
+                      "listen": "test",
+                      "script": {
+                        "exec": [
+                          "pm.test(\"Status code is 200 OK\", function () {\r",
+                          "    pm.response.to.have.status(200);\r",
+                          "});\r",
+                          "\r",
+                          "pm.test(\"Update success message\", function () {\r",
+                          "    var jsonData = pm.response.json();\r",
+                          "    pm.expect(jsonData.message).to.eql(\"Cập nhật người dùng thành công\");\r",
+                          "});\r",
+                          ""
+                        ],
+                        "type": "text/javascript",
+                        "packages": {}
+                      }
+                    }
+                  ],
+                  "request": {
+                    "auth": {
+                      "type": "bearer",
+                      "bearer": [
+                        {
+                          "key": "token",
+                          "value": "{{admin_token}}",
+                          "type": "string"
+                        }
+                      ]
+                    },
+                    "method": "PUT",
+                    "header": [],
+                    "body": {
+                      "mode": "raw",
+                      "raw": "{\r\n  \"name\": \"Target User Updated\",\r\n  \"email\": \"{{temp_target_email}}\",\r\n  \"role\": \"coordinator\"\r\n}\r\n",
+                      "options": {
+                        "raw": {
+                          "language": "json"
+                        }
+                      }
+                    },
+                    "url": {
+                      "raw": "{{baseUrl}}/auth/admin/users/{{target_user_id}}",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "auth",
+                        "admin",
+                        "users",
+                        "{{target_user_id}}"
+                      ]
+                    }
+                  },
+                  "response": []
+                },
+                {
+                  "name": "au-a8.5",
+                  "event": [
+                    {
+                      "listen": "test",
+                      "script": {
+                        "exec": [
+                          "pm.test(\"Status code must be 400 Bad Request\", function () {\r",
+                          "    pm.response.to.have.status(400);\r",
+                          "});\r",
+                          "\r",
+                          "pm.test(\"Must block self-update\", function () {\r",
+                          "    var jsonData = pm.response.json();\r",
+                          "    pm.expect(jsonData.message).to.eql(\"Không thể tự sửa vai trò của chính mình. Vui lòng sửa trong CSDL.\");\r",
+                          "});\r",
+                          ""
+                        ],
+                        "type": "text/javascript",
+                        "packages": {}
+                      }
+                    }
+                  ],
+                  "request": {
+                    "auth": {
+                      "type": "bearer",
+                      "bearer": [
+                        {
+                          "key": "token",
+                          "value": "{{admin_token}}",
+                          "type": "string"
+                        }
+                      ]
+                    },
+                    "method": "PUT",
+                    "header": [],
+                    "body": {
+                      "mode": "raw",
+                      "raw": "{\r\n  \"name\": \"Admin Tự Đổi Tên\",\r\n  \"email\": \"admin@example.com\",\r\n  \"role\": \"admin\"\r\n}\r\n",
+                      "options": {
+                        "raw": {
+                          "language": "json"
+                        }
+                      }
+                    },
+                    "url": {
+                      "raw": "{{baseUrl}}/auth/admin/users/{{admin_id}}",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "auth",
+                        "admin",
+                        "users",
+                        "{{admin_id}}"
+                      ]
+                    }
+                  },
+                  "response": []
+                },
+                {
+                  "name": "au-a8.6",
+                  "event": [
+                    {
+                      "listen": "test",
+                      "script": {
+                        "exec": [
+                          "pm.test(\"Status code is 200 OK\", function () {\r",
+                          "    pm.response.to.have.status(200);\r",
+                          "});\r",
+                          "\r",
+                          "pm.test(\"Delete success message\", function () {\r",
+                          "    var jsonData = pm.response.json();\r",
+                          "    pm.expect(jsonData.message).to.eql(\"Xóa người dùng thành công\");\r",
+                          "});\r",
+                          ""
+                        ],
+                        "type": "text/javascript",
+                        "packages": {}
+                      }
+                    }
+                  ],
+                  "request": {
+                    "auth": {
+                      "type": "bearer",
+                      "bearer": [
+                        {
+                          "key": "token",
+                          "value": "{{admin_token}}",
+                          "type": "string"
+                        }
+                      ]
+                    },
+                    "method": "DELETE",
+                    "header": [],
+                    "url": {
+                      "raw": "{{baseUrl}}/auth/admin/users/{{target_user_id}}",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "auth",
+                        "admin",
+                        "users",
+                        "{{target_user_id}}"
+                      ]
+                    }
+                  },
+                  "response": []
+                },
+                {
+                  "name": "au-a8.7",
+                  "event": [
+                    {
+                      "listen": "test",
+                      "script": {
+                        "exec": [
+                          "pm.test(\"Status code must be 400 Bad Request\", function () {\r",
+                          "    pm.response.to.have.status(400);\r",
+                          "});\r",
+                          "\r",
+                          "pm.test(\"Must block self-delete\", function () {\r",
+                          "    var jsonData = pm.response.json();\r",
+                          "    pm.expect(jsonData.message).to.eql(\"Bạn không thể tự xóa chính mình.\");\r",
+                          "});\r",
+                          ""
+                        ],
+                        "type": "text/javascript",
+                        "packages": {}
+                      }
+                    }
+                  ],
+                  "request": {
+                    "auth": {
+                      "type": "bearer",
+                      "bearer": [
+                        {
+                          "key": "token",
+                          "value": "{{admin_token}}",
+                          "type": "string"
+                        }
+                      ]
+                    },
+                    "method": "DELETE",
+                    "header": [],
+                    "url": {
+                      "raw": "{{baseUrl}}/auth/admin/users/{{admin_id}}",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "auth",
+                        "admin",
+                        "users",
+                        "{{admin_id}}"
                       ]
                     }
                   },
@@ -7373,6 +8146,642 @@
                   ""
                 ]
               }
+            }
+          ]
+        },
+        {
+          "name": "My Scope - Analytics Gateway Studio",
+          "item": [
+            {
+              "name": "00 - Setup",
+              "item": [
+                {
+                  "name": "Login Admin",
+                  "event": [
+                    {
+                      "listen": "test",
+                      "script": {
+                        "exec": [
+                          "pm.test(\"HTTP 200\", () => pm.response.to.have.status(200));\r",
+                          "\r",
+                          "const json = pm.response.json();\r",
+                          "\r",
+                          "pm.test(\"Artist login success\", () => {\r",
+                          "  pm.expect(json.token).to.exist;\r",
+                          "  pm.expect(json.user.role).to.eql(\"artist\");\r",
+                          "});\r",
+                          "\r",
+                          "pm.environment.set(\"artist_token\", json.token);\r",
+                          "pm.environment.set(\"artist_id\", String(json.user.id));"
+                        ],
+                        "type": "text/javascript",
+                        "packages": {},
+                        "requests": {}
+                      }
+                    }
+                  ],
+                  "request": {
+                    "auth": {
+                      "type": "noauth"
+                    },
+                    "method": "POST",
+                    "header": [],
+                    "body": {
+                      "mode": "raw",
+                      "raw": "{\r\n  \"email\": \"{{admin_email}}\",\r\n  \"password\": \"{{default_password}}\"\r\n}",
+                      "options": {
+                        "raw": {
+                          "language": "json"
+                        }
+                      }
+                    },
+                    "url": {
+                      "raw": "{{baseUrl}}/auth/login",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "auth",
+                        "login"
+                      ]
+                    }
+                  },
+                  "response": []
+                },
+                {
+                  "name": "Login Studio Admin",
+                  "event": [
+                    {
+                      "listen": "test",
+                      "script": {
+                        "exec": [
+                          "pm.test(\"HTTP 200\", () => pm.response.to.have.status(200));\r",
+                          "\r",
+                          "const json = pm.response.json();\r",
+                          "\r",
+                          "pm.test(\"Studio admin login success\", () => {\r",
+                          "  pm.expect(json.token).to.exist;\r",
+                          "  pm.expect(json.user.role).to.eql(\"studio_admin\");\r",
+                          "});\r",
+                          "\r",
+                          "pm.environment.set(\"studio_admin_token\", json.token);\r",
+                          "pm.environment.set(\"studio_admin_id\", String(json.user.id));"
+                        ],
+                        "type": "text/javascript",
+                        "packages": {},
+                        "requests": {}
+                      }
+                    }
+                  ],
+                  "request": {
+                    "auth": {
+                      "type": "noauth"
+                    },
+                    "method": "POST",
+                    "header": [],
+                    "body": {
+                      "mode": "raw",
+                      "raw": "{\r\n  \"email\": \"{{studio_admin_email}}\",\r\n  \"password\": \"{{default_password}}\"\r\n}",
+                      "options": {
+                        "raw": {
+                          "language": "json"
+                        }
+                      }
+                    },
+                    "url": {
+                      "raw": "{{baseUrl}}/auth/login",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "auth",
+                        "login"
+                      ]
+                    }
+                  },
+                  "response": []
+                },
+                {
+                  "name": "Login Coordinator",
+                  "event": [
+                    {
+                      "listen": "test",
+                      "script": {
+                        "exec": [
+                          "pm.test(\"HTTP 200\", () => pm.response.to.have.status(200));\r",
+                          "\r",
+                          "const json = pm.response.json();\r",
+                          "\r",
+                          "pm.test(\"Coordinator login success\", () => {\r",
+                          "  pm.expect(json.token).to.exist;\r",
+                          "  pm.expect(json.user.role).to.eql(\"coordinator\");\r",
+                          "});\r",
+                          "\r",
+                          "pm.environment.set(\"coordinator_token\", json.token);\r",
+                          "pm.environment.set(\"coordinator_id\", String(json.user.id));"
+                        ],
+                        "type": "text/javascript",
+                        "packages": {},
+                        "requests": {}
+                      }
+                    }
+                  ],
+                  "request": {
+                    "auth": {
+                      "type": "noauth"
+                    },
+                    "method": "POST",
+                    "header": [],
+                    "body": {
+                      "mode": "raw",
+                      "raw": "{\r\n  \"email\": \"{{coordinator_email}}\",\r\n  \"password\": \"{{default_password}}\"\r\n}",
+                      "options": {
+                        "raw": {
+                          "language": "json"
+                        }
+                      }
+                    },
+                    "url": {
+                      "raw": "{{baseUrl}}/auth/login",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "auth",
+                        "login"
+                      ]
+                    }
+                  },
+                  "response": []
+                },
+                {
+                  "name": "Login Artist",
+                  "event": [
+                    {
+                      "listen": "test",
+                      "script": {
+                        "exec": [
+                          "pm.test(\"HTTP 200\", () => pm.response.to.have.status(200));\r",
+                          "\r",
+                          "const json = pm.response.json();\r",
+                          "\r",
+                          "pm.test(\"Artist login success\", () => {\r",
+                          "  pm.expect(json.token).to.exist;\r",
+                          "  pm.expect(json.user.role).to.eql(\"artist\");\r",
+                          "});\r",
+                          "\r",
+                          "pm.environment.set(\"artist_token\", json.token);\r",
+                          "pm.environment.set(\"artist_id\", String(json.user.id));"
+                        ],
+                        "type": "text/javascript",
+                        "packages": {},
+                        "requests": {}
+                      }
+                    }
+                  ],
+                  "request": {
+                    "auth": {
+                      "type": "noauth"
+                    },
+                    "method": "POST",
+                    "header": [],
+                    "body": {
+                      "mode": "raw",
+                      "raw": "{\r\n  \"email\": \"{{artist_email}}\",\r\n  \"password\": \"{{default_password}}\"\r\n}",
+                      "options": {
+                        "raw": {
+                          "language": "json"
+                        }
+                      }
+                    },
+                    "url": {
+                      "raw": "{{baseUrl}}/auth/login",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "auth",
+                        "login"
+                      ]
+                    }
+                  },
+                  "response": []
+                },
+                {
+                  "name": "Prepare Booking Time",
+                  "event": [
+                    {
+                      "listen": "test",
+                      "script": {
+                        "exec": [
+                          "pm.test(\"HTTP 200\", () => pm.response.to.have.status(200));\r",
+                          "\r",
+                          "pm.test(\"Booking time variables saved\", () => {\r",
+                          "  pm.expect(pm.environment.get(\"studio_booking_start_time\")).to.not.be.empty;\r",
+                          "  pm.expect(pm.environment.get(\"studio_booking_end_time\")).to.not.be.empty;\r",
+                          "});"
+                        ],
+                        "type": "text/javascript",
+                        "packages": {},
+                        "requests": {}
+                      }
+                    },
+                    {
+                      "listen": "prerequest",
+                      "script": {
+                        "exec": [
+                          "const start = new Date();\r",
+                          "start.setDate(start.getDate() + 7);\r",
+                          "start.setHours(9, 0, 0, 0);\r",
+                          "\r",
+                          "const end = new Date(start);\r",
+                          "end.setHours(10, 0, 0, 0);\r",
+                          "\r",
+                          "const format = d => d.toISOString().slice(0, 19).replace(\"T\", \" \");\r",
+                          "\r",
+                          "pm.environment.set(\"studio_booking_start_time\", format(start));\r",
+                          "pm.environment.set(\"studio_booking_end_time\", format(end));"
+                        ],
+                        "type": "text/javascript",
+                        "packages": {},
+                        "requests": {}
+                      }
+                    }
+                  ],
+                  "request": {
+                    "auth": {
+                      "type": "noauth"
+                    },
+                    "method": "GET",
+                    "header": [],
+                    "url": {
+                      "raw": "{{baseUrl}}/health",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "health"
+                      ]
+                    }
+                  },
+                  "response": []
+                }
+              ]
+            },
+            {
+              "name": "01 - API Gateway",
+              "item": [
+                {
+                  "name": "Gateway Health",
+                  "event": [
+                    {
+                      "listen": "test",
+                      "script": {
+                        "exec": [
+                          "pm.test(\"HTTP 200\", () => pm.response.to.have.status(200));\r",
+                          "\r",
+                          "const json = pm.response.json();\r",
+                          "\r",
+                          "pm.test(\"Gateway is running\", () => {\r",
+                          "  pm.expect(json.success).to.eql(true);\r",
+                          "  pm.expect(json.data.service).to.eql(\"api-gateway\");\r",
+                          "  pm.expect(json.data.status).to.eql(\"ok\");\r",
+                          "});"
+                        ],
+                        "type": "text/javascript",
+                        "packages": {},
+                        "requests": {}
+                      }
+                    }
+                  ],
+                  "request": {
+                    "auth": {
+                      "type": "noauth"
+                    },
+                    "method": "GET",
+                    "header": [],
+                    "url": {
+                      "raw": "{{baseUrl}}/health",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "health"
+                      ]
+                    }
+                  },
+                  "response": []
+                },
+                {
+                  "name": "All Services Health",
+                  "event": [
+                    {
+                      "listen": "test",
+                      "script": {
+                        "exec": [
+                          "pm.test(\"HTTP 200\", () => pm.response.to.have.status(200));\r",
+                          "\r",
+                          "const json = pm.response.json();\r",
+                          "\r",
+                          "pm.test(\"Has service health data\", () => {\r",
+                          "  pm.expect(json.success).to.eql(true);\r",
+                          "  pm.expect(json.data).to.have.property(\"auth\");\r",
+                          "  pm.expect(json.data).to.have.property(\"order\");\r",
+                          "  pm.expect(json.data).to.have.property(\"task\");\r",
+                          "  pm.expect(json.data).to.have.property(\"file\");\r",
+                          "  pm.expect(json.data).to.have.property(\"studio\");\r",
+                          "  pm.expect(json.data).to.have.property(\"notification\");\r",
+                          "});"
+                        ],
+                        "type": "text/javascript",
+                        "packages": {},
+                        "requests": {}
+                      }
+                    }
+                  ],
+                  "request": {
+                    "method": "GET",
+                    "header": [],
+                    "url": {
+                      "raw": "{{baseUrl}}/health/all",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "health",
+                        "all"
+                      ]
+                    }
+                  },
+                  "response": []
+                }
+              ]
+            },
+            {
+              "name": "02 - Analytics Service",
+              "item": [
+                {
+                  "name": "Dashboard Stats",
+                  "event": [
+                    {
+                      "listen": "test",
+                      "script": {
+                        "exec": [
+                          "pm.test(\"HTTP 200\", () => pm.response.to.have.status(200));\r",
+                          "\r",
+                          "const json = pm.response.json();\r",
+                          "const payload = json.data?.data || json.data || json;\r",
+                          "\r",
+                          "pm.test(\"Dashboard stats shape is valid\", () => {\r",
+                          "  pm.expect(payload).to.have.property(\"totalRevenue\");\r",
+                          "  pm.expect(payload).to.have.property(\"totalOrders\");\r",
+                          "  pm.expect(payload).to.have.property(\"orderStats\");\r",
+                          "  pm.expect(payload.orderStats).to.be.an(\"array\");\r",
+                          "});"
+                        ],
+                        "type": "text/javascript",
+                        "packages": {},
+                        "requests": {}
+                      }
+                    }
+                  ],
+                  "request": {
+                    "auth": {
+                      "type": "bearer",
+                      "bearer": [
+                        {
+                          "key": "token",
+                          "value": "{{admin_token}}",
+                          "type": "string"
+                        }
+                      ]
+                    },
+                    "method": "GET",
+                    "header": [],
+                    "url": {
+                      "raw": "{{baseUrl}}/analytics/stats",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "analytics",
+                        "stats"
+                      ]
+                    }
+                  },
+                  "response": []
+                },
+                {
+                  "name": "Reports Overview",
+                  "event": [
+                    {
+                      "listen": "test",
+                      "script": {
+                        "exec": [
+                          "pm.test(\"HTTP 200\", () => pm.response.to.have.status(200));\r",
+                          "\r",
+                          "const json = pm.response.json();\r",
+                          "const payload = json.data?.data || json.data || json;\r",
+                          "\r",
+                          "pm.test(\"Reports overview shape is valid\", () => {\r",
+                          "  pm.expect(payload).to.have.property(\"totalRevenue\");\r",
+                          "  pm.expect(payload).to.have.property(\"totalOrders\");\r",
+                          "  pm.expect(payload).to.have.property(\"orderStats\");\r",
+                          "  pm.expect(payload.orderStats).to.be.an(\"array\");\r",
+                          "});"
+                        ],
+                        "type": "text/javascript",
+                        "packages": {},
+                        "requests": {}
+                      }
+                    }
+                  ],
+                  "request": {
+                    "auth": {
+                      "type": "bearer",
+                      "bearer": [
+                        {
+                          "key": "token",
+                          "value": "{{admin_token}}",
+                          "type": "string"
+                        }
+                      ]
+                    },
+                    "method": "GET",
+                    "header": [],
+                    "url": {
+                      "raw": "{{baseUrl}}/analytics/reports/overview",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "analytics",
+                        "reports",
+                        "overview"
+                      ]
+                    }
+                  },
+                  "response": []
+                },
+                {
+                  "name": "Reports Alias - BUG KAN-76",
+                  "event": [
+                    {
+                      "listen": "test",
+                      "script": {
+                        "exec": [
+                          "pm.test(\"HTTP 200\", () => pm.response.to.have.status(200));\r",
+                          "\r",
+                          "const json = pm.response.json();\r",
+                          "const payload = json.data?.data || json.data || json;\r",
+                          "\r",
+                          "pm.test(\"Reports overview shape is valid\", () => {\r",
+                          "  pm.expect(payload).to.have.property(\"totalRevenue\");\r",
+                          "  pm.expect(payload).to.have.property(\"totalOrders\");\r",
+                          "  pm.expect(payload).to.have.property(\"orderStats\");\r",
+                          "  pm.expect(payload.orderStats).to.be.an(\"array\");\r",
+                          "});"
+                        ],
+                        "type": "text/javascript",
+                        "packages": {},
+                        "requests": {}
+                      }
+                    }
+                  ],
+                  "request": {
+                    "auth": {
+                      "type": "bearer",
+                      "bearer": [
+                        {
+                          "key": "token",
+                          "value": "{{admin_token}}",
+                          "type": "string"
+                        }
+                      ]
+                    },
+                    "method": "GET",
+                    "header": [],
+                    "url": {
+                      "raw": "{{baseUrl}}/reports/overview",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "reports",
+                        "overview"
+                      ]
+                    }
+                  },
+                  "response": []
+                }
+              ]
+            },
+            {
+              "name": "03 - Studio Service",
+              "item": [
+                {
+                  "name": "Get Studios",
+                  "event": [
+                    {
+                      "listen": "test",
+                      "script": {
+                        "exec": [
+                          "pm.test(\"HTTP 200\", () => pm.response.to.have.status(200));\r",
+                          "\r",
+                          "const json = pm.response.json();\r",
+                          "\r",
+                          "pm.test(\"Studio list is valid\", () => {\r",
+                          "  pm.expect(json).to.be.an(\"array\");\r",
+                          "  pm.expect(json.length).to.be.above(0);\r",
+                          "  pm.expect(json[0]).to.have.property(\"id\");\r",
+                          "  pm.expect(json[0]).to.have.property(\"name\");\r",
+                          "  pm.expect(json[0]).to.have.property(\"location\");\r",
+                          "  pm.expect(json[0]).to.have.property(\"status\");\r",
+                          "});"
+                        ],
+                        "type": "text/javascript",
+                        "packages": {},
+                        "requests": {}
+                      }
+                    }
+                  ],
+                  "request": {
+                    "auth": {
+                      "type": "noauth"
+                    },
+                    "method": "GET",
+                    "header": [],
+                    "url": {
+                      "raw": "{{baseUrl}}/studio/studios",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "studio",
+                        "studios"
+                      ]
+                    }
+                  },
+                  "response": []
+                },
+                {
+                  "name": "Create Booking",
+                  "event": [
+                    {
+                      "listen": "test",
+                      "script": {
+                        "exec": [
+                          "pm.test(\"HTTP 201\", () => pm.response.to.have.status(201));\r",
+                          "\r",
+                          "const json = pm.response.json();\r",
+                          "\r",
+                          "pm.test(\"Booking created and id saved\", () => {\r",
+                          "  pm.expect(json.id).to.exist;\r",
+                          "  pm.environment.set(\"bookingId\", String(json.id));\r",
+                          "});"
+                        ],
+                        "type": "text/javascript",
+                        "packages": {},
+                        "requests": {}
+                      }
+                    }
+                  ],
+                  "request": {
+                    "auth": {
+                      "type": "bearer",
+                      "bearer": [
+                        {
+                          "key": "token",
+                          "value": "{{artist_token}}",
+                          "type": "string"
+                        }
+                      ]
+                    },
+                    "method": "POST",
+                    "header": [],
+                    "body": {
+                      "mode": "raw",
+                      "raw": "{\r\n  \"studio_id\": {{studioId}},\r\n  \"order_id\": {{orderId}},\r\n  \"start_time\": \"{{studio_booking_start_time}}\",\r\n  \"end_time\": \"{{studio_booking_end_time}}\",\r\n  \"studioAdminId\": {{studio_admin_id}}\r\n}",
+                      "options": {
+                        "raw": {
+                          "language": "json"
+                        }
+                      }
+                    },
+                    "url": {
+                      "raw": "{{baseUrl}}/studio/bookings",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "studio",
+                        "bookings"
+                      ]
+                    }
+                  },
+                  "response": []
+                }
+              ]
             }
           ]
         }
