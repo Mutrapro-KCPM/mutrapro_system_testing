@@ -1,4 +1,4 @@
-﻿const express = require('express');
+const express = require('express');
 const proxy = require('express-http-proxy');
 const cors = require('cors');
 const fetch = require('node-fetch');
@@ -34,7 +34,7 @@ const forwardRequest = async (req, res, targetUrl) => {
     }
 };
 
-//  đŸ”¹  Health check route
+//  d���  Health check route
 app.get('/api/health', (req, res) => {
     res.status(200).json({
         success: true,
@@ -73,7 +73,7 @@ app.get('/api/health/all', async (req, res) => {
     });
 });
 
-//  đŸ”¹  Proxy routes
+//  d���  Proxy routes
 app.use('/api/auth', (req, res) => {
     forwardRequest(req, res, `http://auth-service:3001${req.url}`);
 });
@@ -87,12 +87,12 @@ app.use('/api/tasks', (req, res) => {
     forwardRequest(req, res, `http://task-service:3003${req.url}`);
 });
 
-// === START: PHáº¦N Cáº¬P NHáº¬T CHĂNH Náº°M á» ÄĂ‚Y ===
-// ThĂªm { limit: '50mb' } Ä‘á»ƒ cho phĂ©p upload file náº·ng
+// === START: PHẦN CẬP NHẬT CHA�NH NẰM �? ĐA�Y ===
+// ThA�m { limit: '50mb' } để cho phA�p upload file nặng
 app.use('/api/files', proxy('http://file-service:3004', {
     limit: '50mb' 
 }));
-// === END: PHáº¦N Cáº¬P NHáº¬T ===
+// === END: PHẦN CẬP NHẬT ===
 
 app.use('/api/send', (req, res) => {
     forwardRequest(req, res, `http://notification-service:3006/send`);
@@ -102,9 +102,11 @@ app.use('/api/notifications', (req, res) => {
     forwardRequest(req, res, `http://notification-service:3006${req.url}`);
 });
 app.use('/api/analytics', proxy('http://analytics-service:3008'));
-app.use('/api/reports', proxy('http://analytics-service:3008/reports'));
+app.use('/api/reports', (req, res) => {
+    forwardRequest(req, res, `http://analytics-service:3008/reports${req.url}`);
+});
 
-//  đŸ”¹  Start server
+//  d���  Start server
 const PORT = 3007;
 app.listen(PORT, () => {
     console.log(`API Gateway is running on port ${PORT}`);
