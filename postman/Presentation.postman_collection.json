@@ -74,8 +74,13 @@
                         },
                         "url": {
                           "raw": "{{baseUrl}}/auth/register",
-                          "host": ["{{baseUrl}}"],
-                          "path": ["auth", "register"]
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "auth",
+                            "register"
+                          ]
                         }
                       },
                       "response": []
@@ -86,7 +91,9 @@
                         {
                           "listen": "prerequest",
                           "script": {
-                            "exec": [""],
+                            "exec": [
+                              ""
+                            ],
                             "type": "text/javascript",
                             "packages": {},
                             "requests": {}
@@ -130,8 +137,13 @@
                         },
                         "url": {
                           "raw": "{{baseUrl}}/auth/register",
-                          "host": ["{{baseUrl}}"],
-                          "path": ["auth", "register"]
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "auth",
+                            "register"
+                          ]
                         }
                       },
                       "response": []
@@ -142,7 +154,9 @@
                         {
                           "listen": "prerequest",
                           "script": {
-                            "exec": [""],
+                            "exec": [
+                              ""
+                            ],
                             "type": "text/javascript",
                             "packages": {},
                             "requests": {}
@@ -190,8 +204,13 @@
                         },
                         "url": {
                           "raw": "{{baseUrl}}/auth/register",
-                          "host": ["{{baseUrl}}"],
-                          "path": ["auth", "register"]
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "auth",
+                            "register"
+                          ]
                         }
                       },
                       "response": []
@@ -202,7 +221,9 @@
                         {
                           "listen": "prerequest",
                           "script": {
-                            "exec": [""],
+                            "exec": [
+                              ""
+                            ],
                             "type": "text/javascript",
                             "packages": {},
                             "requests": {}
@@ -247,8 +268,13 @@
                         },
                         "url": {
                           "raw": "{{baseUrl}}/auth/register",
-                          "host": ["{{baseUrl}}"],
-                          "path": ["auth", "register"]
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "auth",
+                            "register"
+                          ]
                         }
                       },
                       "response": []
@@ -311,8 +337,13 @@
                         },
                         "url": {
                           "raw": "{{baseUrl}}/auth/login",
-                          "host": ["{{baseUrl}}"],
-                          "path": ["auth", "login"]
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "auth",
+                            "login"
+                          ]
                         }
                       },
                       "response": []
@@ -343,7 +374,9 @@
                         {
                           "listen": "prerequest",
                           "script": {
-                            "exec": [""],
+                            "exec": [
+                              ""
+                            ],
                             "type": "text/javascript",
                             "packages": {},
                             "requests": {}
@@ -364,8 +397,13 @@
                         },
                         "url": {
                           "raw": "{{baseUrl}}/auth/login",
-                          "host": ["{{baseUrl}}"],
-                          "path": ["auth", "login"]
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "auth",
+                            "login"
+                          ]
                         }
                       },
                       "response": []
@@ -376,7 +414,9 @@
                         {
                           "listen": "prerequest",
                           "script": {
-                            "exec": [""],
+                            "exec": [
+                              ""
+                            ],
                             "type": "text/javascript",
                             "packages": {}
                           }
@@ -415,8 +455,13 @@
                         },
                         "url": {
                           "raw": "{{baseUrl}}/auth/login",
-                          "host": ["{{baseUrl}}"],
-                          "path": ["auth", "login"]
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "auth",
+                            "login"
+                          ]
                         }
                       },
                       "response": []
@@ -427,7 +472,9 @@
                         {
                           "listen": "prerequest",
                           "script": {
-                            "exec": [""],
+                            "exec": [
+                              ""
+                            ],
                             "type": "text/javascript",
                             "packages": {}
                           }
@@ -469,8 +516,13 @@
                         },
                         "url": {
                           "raw": "{{baseUrl}}/auth/login",
-                          "host": ["{{baseUrl}}"],
-                          "path": ["auth", "login"]
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "auth",
+                            "login"
+                          ]
                         }
                       },
                       "response": []
@@ -481,7 +533,9 @@
                         {
                           "listen": "prerequest",
                           "script": {
-                            "exec": [""],
+                            "exec": [
+                              ""
+                            ],
                             "type": "text/javascript",
                             "packages": {}
                           }
@@ -523,8 +577,13 @@
                         },
                         "url": {
                           "raw": "{{baseUrl}}/auth/login",
-                          "host": ["{{baseUrl}}"],
-                          "path": ["auth", "login"]
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "auth",
+                            "login"
+                          ]
                         }
                       },
                       "response": []
@@ -581,8 +640,13 @@
                     },
                     "url": {
                       "raw": "{{baseUrl}}/auth/verify",
-                      "host": ["{{baseUrl}}"],
-                      "path": ["auth", "verify"]
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "auth",
+                        "verify"
+                      ]
                     }
                   },
                   "response": []
@@ -633,8 +697,13 @@
                     },
                     "url": {
                       "raw": "{{baseUrl}}/auth/verify",
-                      "host": ["{{baseUrl}}"],
-                      "path": ["auth", "verify"]
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "auth",
+                        "verify"
+                      ]
                     }
                   },
                   "response": []
@@ -690,8 +759,14 @@
                     },
                     "url": {
                       "raw": "{{baseUrl}}/auth/users/specialists?role=transcriber",
-                      "host": ["{{baseUrl}}"],
-                      "path": ["auth", "users", "specialists"],
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "auth",
+                        "users",
+                        "specialists"
+                      ],
                       "query": [
                         {
                           "key": "role",
@@ -796,8 +871,14 @@
                     "header": [],
                     "url": {
                       "raw": "{{baseUrl}}/auth/users/specialists?role=transcriber",
-                      "host": ["{{baseUrl}}"],
-                      "path": ["auth", "users", "specialists"],
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "auth",
+                        "users",
+                        "specialists"
+                      ],
                       "query": [
                         {
                           "key": "role",
@@ -862,8 +943,15 @@
                     },
                     "url": {
                       "raw": "{{baseUrl}}/auth/users/{{auto_user_id}}/password",
-                      "host": ["{{baseUrl}}"],
-                      "path": ["auth", "users", "{{auto_user_id}}", "password"]
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "auth",
+                        "users",
+                        "{{auto_user_id}}",
+                        "password"
+                      ]
                     }
                   },
                   "response": []
@@ -910,8 +998,15 @@
                     },
                     "url": {
                       "raw": "{{baseUrl}}/auth/users/{{auto_user_id}}/password",
-                      "host": ["{{baseUrl}}"],
-                      "path": ["auth", "users", "{{auto_user_id}}", "password"]
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "auth",
+                        "users",
+                        "{{auto_user_id}}",
+                        "password"
+                      ]
                     }
                   },
                   "response": []
@@ -958,8 +1053,15 @@
                     },
                     "url": {
                       "raw": "{{baseUrl}}/auth/users/{{auto_user_id}}/password",
-                      "host": ["{{baseUrl}}"],
-                      "path": ["auth", "users", "{{auto_user_id}}", "password"]
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "auth",
+                        "users",
+                        "{{auto_user_id}}",
+                        "password"
+                      ]
                     }
                   },
                   "response": []
@@ -1006,8 +1108,15 @@
                     },
                     "url": {
                       "raw": "{{baseUrl}}/auth/users/99999/password",
-                      "host": ["{{baseUrl}}"],
-                      "path": ["auth", "users", "99999", "password"]
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "auth",
+                        "users",
+                        "99999",
+                        "password"
+                      ]
                     }
                   },
                   "response": []
@@ -1023,7 +1132,9 @@
                     {
                       "listen": "prerequest",
                       "script": {
-                        "exec": [""],
+                        "exec": [
+                          ""
+                        ],
                         "type": "text/javascript",
                         "packages": {}
                       }
@@ -1066,8 +1177,14 @@
                     "header": [],
                     "url": {
                       "raw": "{{baseUrl}}/auth/users/{{auto_user_id}}",
-                      "host": ["{{baseUrl}}"],
-                      "path": ["auth", "users", "{{auto_user_id}}"]
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "auth",
+                        "users",
+                        "{{auto_user_id}}"
+                      ]
                     }
                   },
                   "response": []
@@ -1095,8 +1212,14 @@
                     "header": [],
                     "url": {
                       "raw": "{{baseUrl}}/auth/users/99999",
-                      "host": ["{{baseUrl}}"],
-                      "path": ["auth", "users", "99999"]
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "auth",
+                        "users",
+                        "99999"
+                      ]
                     }
                   },
                   "response": []
@@ -1130,8 +1253,14 @@
                     "header": [],
                     "url": {
                       "raw": "{{baseUrl}}/auth/users/abc",
-                      "host": ["{{baseUrl}}"],
-                      "path": ["auth", "users", "abc"]
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "auth",
+                        "users",
+                        "abc"
+                      ]
                     }
                   },
                   "response": []
@@ -1194,8 +1323,13 @@
                     },
                     "url": {
                       "raw": "{{baseUrl}}/auth/login",
-                      "host": ["{{baseUrl}}"],
-                      "path": ["auth", "login"]
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "auth",
+                        "login"
+                      ]
                     }
                   },
                   "response": []
@@ -1231,8 +1365,15 @@
                     "header": [],
                     "url": {
                       "raw": "{{baseUrl}}/auth/users/by-role/customer",
-                      "host": ["{{baseUrl}}"],
-                      "path": ["auth", "users", "by-role", "customer"]
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "auth",
+                        "users",
+                        "by-role",
+                        "customer"
+                      ]
                     }
                   },
                   "response": []
@@ -1278,8 +1419,14 @@
                     "header": [],
                     "url": {
                       "raw": "{{baseUrl}}/auth/admin/users",
-                      "host": ["{{baseUrl}}"],
-                      "path": ["auth", "admin", "users"]
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "auth",
+                        "admin",
+                        "users"
+                      ]
                     }
                   },
                   "response": []
@@ -1344,8 +1491,14 @@
                     },
                     "url": {
                       "raw": "{{baseUrl}}/auth/admin/users",
-                      "host": ["{{baseUrl}}"],
-                      "path": ["auth", "admin", "users"]
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "auth",
+                        "admin",
+                        "users"
+                      ]
                     }
                   },
                   "response": []
@@ -1396,8 +1549,15 @@
                     },
                     "url": {
                       "raw": "{{baseUrl}}/auth/admin/users/{{target_user_id}}",
-                      "host": ["{{baseUrl}}"],
-                      "path": ["auth", "admin", "users", "{{target_user_id}}"]
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "auth",
+                        "admin",
+                        "users",
+                        "{{target_user_id}}"
+                      ]
                     }
                   },
                   "response": []
@@ -1448,8 +1608,15 @@
                     },
                     "url": {
                       "raw": "{{baseUrl}}/auth/admin/users/{{admin_id}}",
-                      "host": ["{{baseUrl}}"],
-                      "path": ["auth", "admin", "users", "{{admin_id}}"]
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "auth",
+                        "admin",
+                        "users",
+                        "{{admin_id}}"
+                      ]
                     }
                   },
                   "response": []
@@ -1491,8 +1658,15 @@
                     "header": [],
                     "url": {
                       "raw": "{{baseUrl}}/auth/admin/users/{{target_user_id}}",
-                      "host": ["{{baseUrl}}"],
-                      "path": ["auth", "admin", "users", "{{target_user_id}}"]
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "auth",
+                        "admin",
+                        "users",
+                        "{{target_user_id}}"
+                      ]
                     }
                   },
                   "response": []
@@ -1534,8 +1708,15 @@
                     "header": [],
                     "url": {
                       "raw": "{{baseUrl}}/auth/admin/users/{{admin_id}}",
-                      "host": ["{{baseUrl}}"],
-                      "path": ["auth", "admin", "users", "{{admin_id}}"]
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "auth",
+                        "admin",
+                        "users",
+                        "{{admin_id}}"
+                      ]
                     }
                   },
                   "response": []
@@ -1576,8 +1757,12 @@
                     "header": [],
                     "url": {
                       "raw": "{{orderServiceUrl}}/health",
-                      "host": ["{{orderServiceUrl}}"],
-                      "path": ["health"]
+                      "host": [
+                        "{{orderServiceUrl}}"
+                      ],
+                      "path": [
+                        "health"
+                      ]
                     }
                   },
                   "response": []
@@ -1627,8 +1812,13 @@
                     },
                     "url": {
                       "raw": "{{baseUrl}}/auth/login",
-                      "host": ["{{baseUrl}}"],
-                      "path": ["auth", "login"]
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "auth",
+                        "login"
+                      ]
                     }
                   },
                   "response": []
@@ -1664,8 +1854,13 @@
                     "header": [],
                     "url": {
                       "raw": "{{baseUrl}}/orders/stats",
-                      "host": ["{{baseUrl}}"],
-                      "path": ["orders", "stats"]
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "orders",
+                        "stats"
+                      ]
                     }
                   },
                   "response": []
@@ -1701,8 +1896,12 @@
                     "header": [],
                     "url": {
                       "raw": "{{baseUrl}}/payments?page=1&limit=5",
-                      "host": ["{{baseUrl}}"],
-                      "path": ["payments"],
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "payments"
+                      ],
                       "query": [
                         {
                           "key": "page",
@@ -1753,8 +1952,15 @@
                     "header": [],
                     "url": {
                       "raw": "{{baseUrl}}/files/files/order/1",
-                      "host": ["{{baseUrl}}"],
-                      "path": ["files", "files", "order", "1"]
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "files",
+                        "files",
+                        "order",
+                        "1"
+                      ]
                     }
                   },
                   "response": []
@@ -1790,8 +1996,13 @@
                     "header": [],
                     "url": {
                       "raw": "{{baseUrl}}/analytics/stats",
-                      "host": ["{{baseUrl}}"],
-                      "path": ["analytics", "stats"]
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "analytics",
+                        "stats"
+                      ]
                     }
                   },
                   "response": []
@@ -1852,8 +2063,13 @@
                     },
                     "url": {
                       "raw": "{{baseUrl}}/auth/register",
-                      "host": ["{{baseUrl}}"],
-                      "path": ["auth", "register"]
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "auth",
+                        "register"
+                      ]
                     }
                   },
                   "response": []
@@ -1903,8 +2119,13 @@
                     },
                     "url": {
                       "raw": "{{baseUrl}}/auth/login",
-                      "host": ["{{baseUrl}}"],
-                      "path": ["auth", "login"]
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "auth",
+                        "login"
+                      ]
                     }
                   },
                   "response": []
@@ -1954,8 +2175,13 @@
                     },
                     "url": {
                       "raw": "{{baseUrl}}/auth/login",
-                      "host": ["{{baseUrl}}"],
-                      "path": ["auth", "login"]
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "auth",
+                        "login"
+                      ]
                     }
                   },
                   "response": []
@@ -2005,8 +2231,13 @@
                     },
                     "url": {
                       "raw": "{{baseUrl}}/auth/login",
-                      "host": ["{{baseUrl}}"],
-                      "path": ["auth", "login"]
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "auth",
+                        "login"
+                      ]
                     }
                   },
                   "response": []
@@ -2056,8 +2287,13 @@
                     },
                     "url": {
                       "raw": "{{baseUrl}}/auth/login",
-                      "host": ["{{baseUrl}}"],
-                      "path": ["auth", "login"]
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "auth",
+                        "login"
+                      ]
                     }
                   },
                   "response": []
@@ -2107,8 +2343,13 @@
                     },
                     "url": {
                       "raw": "{{baseUrl}}/auth/login",
-                      "host": ["{{baseUrl}}"],
-                      "path": ["auth", "login"]
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "auth",
+                        "login"
+                      ]
                     }
                   },
                   "response": []
@@ -2158,8 +2399,13 @@
                     },
                     "url": {
                       "raw": "{{baseUrl}}/auth/login",
-                      "host": ["{{baseUrl}}"],
-                      "path": ["auth", "login"]
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "auth",
+                        "login"
+                      ]
                     }
                   },
                   "response": []
@@ -2209,8 +2455,13 @@
                     },
                     "url": {
                       "raw": "{{baseUrl}}/auth/login",
-                      "host": ["{{baseUrl}}"],
-                      "path": ["auth", "login"]
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "auth",
+                        "login"
+                      ]
                     }
                   },
                   "response": []
@@ -2272,8 +2523,12 @@
                     },
                     "url": {
                       "raw": "{{baseUrl}}/orders",
-                      "host": ["{{baseUrl}}"],
-                      "path": ["orders"]
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "orders"
+                      ]
                     }
                   },
                   "response": []
@@ -2330,8 +2585,12 @@
                     },
                     "url": {
                       "raw": "{{baseUrl}}/orders",
-                      "host": ["{{baseUrl}}"],
-                      "path": ["orders"]
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "orders"
+                      ]
                     }
                   },
                   "response": []
@@ -2388,8 +2647,12 @@
                     },
                     "url": {
                       "raw": "{{baseUrl}}/orders",
-                      "host": ["{{baseUrl}}"],
-                      "path": ["orders"]
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "orders"
+                      ]
                     }
                   },
                   "response": []
@@ -2425,8 +2688,14 @@
                     "header": [],
                     "url": {
                       "raw": "{{baseUrl}}/orders/customer/{{customer_id}}",
-                      "host": ["{{baseUrl}}"],
-                      "path": ["orders", "customer", "{{customer_id}}"]
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "orders",
+                        "customer",
+                        "{{customer_id}}"
+                      ]
                     }
                   },
                   "response": []
@@ -2462,8 +2731,13 @@
                     "header": [],
                     "url": {
                       "raw": "{{baseUrl}}/orders/{{transcription_order_id}}",
-                      "host": ["{{baseUrl}}"],
-                      "path": ["orders", "{{transcription_order_id}}"]
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "orders",
+                        "{{transcription_order_id}}"
+                      ]
                     }
                   },
                   "response": []
@@ -2499,8 +2773,12 @@
                     "header": [],
                     "url": {
                       "raw": "{{baseUrl}}/orders",
-                      "host": ["{{baseUrl}}"],
-                      "path": ["orders"]
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "orders"
+                      ]
                     }
                   },
                   "response": []
@@ -2536,8 +2814,12 @@
                     "header": [],
                     "url": {
                       "raw": "{{baseUrl}}/orders",
-                      "host": ["{{baseUrl}}"],
-                      "path": ["orders"]
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "orders"
+                      ]
                     }
                   },
                   "response": []
@@ -2588,8 +2870,14 @@
                     },
                     "url": {
                       "raw": "{{baseUrl}}/orders/{{transcription_order_id}}/status",
-                      "host": ["{{baseUrl}}"],
-                      "path": ["orders", "{{transcription_order_id}}", "status"]
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "orders",
+                        "{{transcription_order_id}}",
+                        "status"
+                      ]
                     }
                   },
                   "response": []
@@ -2640,8 +2928,14 @@
                     },
                     "url": {
                       "raw": "{{baseUrl}}/orders/{{arrangement_order_id}}/status",
-                      "host": ["{{baseUrl}}"],
-                      "path": ["orders", "{{arrangement_order_id}}", "status"]
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "orders",
+                        "{{arrangement_order_id}}",
+                        "status"
+                      ]
                     }
                   },
                   "response": []
@@ -2700,8 +2994,12 @@
                         },
                         "url": {
                           "raw": "{{baseUrl}}/orders",
-                          "host": ["{{baseUrl}}"],
-                          "path": ["orders"]
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "orders"
+                          ]
                         }
                       },
                       "response": []
@@ -2752,8 +3050,12 @@
                         },
                         "url": {
                           "raw": "{{baseUrl}}/orders",
-                          "host": ["{{baseUrl}}"],
-                          "path": ["orders"]
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "orders"
+                          ]
                         }
                       },
                       "response": []
@@ -2804,8 +3106,12 @@
                         },
                         "url": {
                           "raw": "{{baseUrl}}/orders",
-                          "host": ["{{baseUrl}}"],
-                          "path": ["orders"]
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "orders"
+                          ]
                         }
                       },
                       "response": []
@@ -2861,8 +3167,12 @@
                         },
                         "url": {
                           "raw": "{{baseUrl}}/orders",
-                          "host": ["{{baseUrl}}"],
-                          "path": ["orders"]
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "orders"
+                          ]
                         }
                       },
                       "response": []
@@ -2913,8 +3223,12 @@
                         },
                         "url": {
                           "raw": "{{baseUrl}}/orders",
-                          "host": ["{{baseUrl}}"],
-                          "path": ["orders"]
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "orders"
+                          ]
                         }
                       },
                       "response": []
@@ -2952,8 +3266,13 @@
                         "header": [],
                         "url": {
                           "raw": "{{baseUrl}}/orders/0",
-                          "host": ["{{baseUrl}}"],
-                          "path": ["orders", "0"]
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "orders",
+                            "0"
+                          ]
                         }
                       },
                       "response": []
@@ -2986,8 +3305,13 @@
                         "header": [],
                         "url": {
                           "raw": "{{baseUrl}}/orders/abc",
-                          "host": ["{{baseUrl}}"],
-                          "path": ["orders", "abc"]
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "orders",
+                            "abc"
+                          ]
                         }
                       },
                       "response": []
@@ -3020,8 +3344,13 @@
                         "header": [],
                         "url": {
                           "raw": "{{baseUrl}}/orders/{{transcription_order_id}}",
-                          "host": ["{{baseUrl}}"],
-                          "path": ["orders", "{{transcription_order_id}}"]
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "orders",
+                            "{{transcription_order_id}}"
+                          ]
                         }
                       },
                       "response": []
@@ -3079,8 +3408,12 @@
                     },
                     "url": {
                       "raw": "{{baseUrl}}/orders",
-                      "host": ["{{baseUrl}}"],
-                      "path": ["orders"]
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "orders"
+                      ]
                     }
                   },
                   "response": []
@@ -3131,8 +3464,12 @@
                     },
                     "url": {
                       "raw": "{{baseUrl}}/orders",
-                      "host": ["{{baseUrl}}"],
-                      "path": ["orders"]
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "orders"
+                      ]
                     }
                   },
                   "response": []
@@ -3183,8 +3520,12 @@
                     },
                     "url": {
                       "raw": "{{baseUrl}}/orders",
-                      "host": ["{{baseUrl}}"],
-                      "path": ["orders"]
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "orders"
+                      ]
                     }
                   },
                   "response": []
@@ -3235,8 +3576,12 @@
                     },
                     "url": {
                       "raw": "{{baseUrl}}/orders",
-                      "host": ["{{baseUrl}}"],
-                      "path": ["orders"]
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "orders"
+                      ]
                     }
                   },
                   "response": []
@@ -3287,8 +3632,14 @@
                     },
                     "url": {
                       "raw": "{{baseUrl}}/orders/{{recording_order_id}}/status",
-                      "host": ["{{baseUrl}}"],
-                      "path": ["orders", "{{recording_order_id}}", "status"]
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "orders",
+                        "{{recording_order_id}}",
+                        "status"
+                      ]
                     }
                   },
                   "response": []
@@ -3339,8 +3690,14 @@
                     },
                     "url": {
                       "raw": "{{baseUrl}}/orders/{{recording_order_id}}/status",
-                      "host": ["{{baseUrl}}"],
-                      "path": ["orders", "{{recording_order_id}}", "status"]
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "orders",
+                        "{{recording_order_id}}",
+                        "status"
+                      ]
                     }
                   },
                   "response": []
@@ -3392,8 +3749,12 @@
                         },
                         "url": {
                           "raw": "{{baseUrl}}/orders",
-                          "host": ["{{baseUrl}}"],
-                          "path": ["orders"]
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "orders"
+                          ]
                         }
                       },
                       "response": []
@@ -3444,8 +3805,12 @@
                         },
                         "url": {
                           "raw": "{{baseUrl}}/orders",
-                          "host": ["{{baseUrl}}"],
-                          "path": ["orders"]
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "orders"
+                          ]
                         }
                       },
                       "response": []
@@ -3471,8 +3836,13 @@
                         "header": [],
                         "url": {
                           "raw": "{{baseUrl}}/orders/{{transcription_order_id}}",
-                          "host": ["{{baseUrl}}"],
-                          "path": ["orders", "{{transcription_order_id}}"]
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "orders",
+                            "{{transcription_order_id}}"
+                          ]
                         }
                       },
                       "response": []
@@ -3516,7 +3886,9 @@
                         },
                         "url": {
                           "raw": "{{baseUrl}}/orders/{{transcription_order_id}}/status",
-                          "host": ["{{baseUrl}}"],
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
                           "path": [
                             "orders",
                             "{{transcription_order_id}}",
@@ -3565,7 +3937,9 @@
                         },
                         "url": {
                           "raw": "{{baseUrl}}/orders/{{transcription_order_id}}/pay",
-                          "host": ["{{baseUrl}}"],
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
                           "path": [
                             "orders",
                             "{{transcription_order_id}}",
@@ -3626,8 +4000,12 @@
                         },
                         "url": {
                           "raw": "{{baseUrl}}/orders",
-                          "host": ["{{baseUrl}}"],
-                          "path": ["orders"]
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "orders"
+                          ]
                         }
                       },
                       "response": []
@@ -3678,8 +4056,12 @@
                         },
                         "url": {
                           "raw": "{{baseUrl}}/orders",
-                          "host": ["{{baseUrl}}"],
-                          "path": ["orders"]
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "orders"
+                          ]
                         }
                       },
                       "response": []
@@ -3712,8 +4094,12 @@
                         "header": [],
                         "url": {
                           "raw": "{{baseUrl}}/orders",
-                          "host": ["{{baseUrl}}"],
-                          "path": ["orders"]
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "orders"
+                          ]
                         }
                       },
                       "response": []
@@ -3746,8 +4132,12 @@
                         "header": [],
                         "url": {
                           "raw": "{{baseUrl}}/orders",
-                          "host": ["{{baseUrl}}"],
-                          "path": ["orders"]
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "orders"
+                          ]
                         }
                       },
                       "response": []
@@ -3798,8 +4188,14 @@
                         },
                         "url": {
                           "raw": "{{baseUrl}}/orders/{{recording_order_id}}/status",
-                          "host": ["{{baseUrl}}"],
-                          "path": ["orders", "{{recording_order_id}}", "status"]
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "orders",
+                            "{{recording_order_id}}",
+                            "status"
+                          ]
                         }
                       },
                       "response": []
@@ -3832,8 +4228,13 @@
                         "header": [],
                         "url": {
                           "raw": "{{baseUrl}}/orders/{{recording_order_id}}",
-                          "host": ["{{baseUrl}}"],
-                          "path": ["orders", "{{recording_order_id}}"]
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "orders",
+                            "{{recording_order_id}}"
+                          ]
                         }
                       },
                       "response": []
@@ -3887,8 +4288,13 @@
                         },
                         "url": {
                           "raw": "{{baseUrl}}/auth/register",
-                          "host": ["{{baseUrl}}"],
-                          "path": ["auth", "register"]
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "auth",
+                            "register"
+                          ]
                         }
                       },
                       "response": []
@@ -3899,7 +4305,9 @@
                         {
                           "listen": "prerequest",
                           "script": {
-                            "exec": [""],
+                            "exec": [
+                              ""
+                            ],
                             "type": "text/javascript",
                             "packages": {},
                             "requests": {}
@@ -3943,8 +4351,13 @@
                         },
                         "url": {
                           "raw": "{{baseUrl}}/auth/login",
-                          "host": ["{{baseUrl}}"],
-                          "path": ["auth", "login"]
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "auth",
+                            "login"
+                          ]
                         }
                       },
                       "response": []
@@ -3993,8 +4406,13 @@
                         },
                         "url": {
                           "raw": "{{baseUrl}}/auth/register",
-                          "host": ["{{baseUrl}}"],
-                          "path": ["auth", "register"]
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "auth",
+                            "register"
+                          ]
                         }
                       },
                       "response": []
@@ -4005,7 +4423,9 @@
                         {
                           "listen": "prerequest",
                           "script": {
-                            "exec": [""],
+                            "exec": [
+                              ""
+                            ],
                             "type": "text/javascript",
                             "packages": {},
                             "requests": {}
@@ -4049,8 +4469,13 @@
                         },
                         "url": {
                           "raw": "{{baseUrl}}/auth/login",
-                          "host": ["{{baseUrl}}"],
-                          "path": ["auth", "login"]
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "auth",
+                            "login"
+                          ]
                         }
                       },
                       "response": []
@@ -4061,7 +4486,9 @@
                         {
                           "listen": "prerequest",
                           "script": {
-                            "exec": [""],
+                            "exec": [
+                              ""
+                            ],
                             "type": "text/javascript",
                             "packages": {},
                             "requests": {}
@@ -4114,8 +4541,12 @@
                         },
                         "url": {
                           "raw": "{{baseUrl}}/orders",
-                          "host": ["{{baseUrl}}"],
-                          "path": ["orders"]
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "orders"
+                          ]
                         }
                       },
                       "response": []
@@ -4157,8 +4588,13 @@
                         "header": [],
                         "url": {
                           "raw": "{{baseUrl}}/orders/{{owner_order_id}}",
-                          "host": ["{{baseUrl}}"],
-                          "path": ["orders", "{{owner_order_id}}"]
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "orders",
+                            "{{owner_order_id}}"
+                          ]
                         }
                       },
                       "response": []
@@ -4209,8 +4645,14 @@
                         },
                         "url": {
                           "raw": "{{baseUrl}}/orders/{{owner_order_id}}/pay",
-                          "host": ["{{baseUrl}}"],
-                          "path": ["orders", "{{owner_order_id}}", "pay"]
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "orders",
+                            "{{owner_order_id}}",
+                            "pay"
+                          ]
                         }
                       },
                       "response": []
@@ -4261,8 +4703,14 @@
                         },
                         "url": {
                           "raw": "{{baseUrl}}/orders/{{owner_order_id}}/feedback",
-                          "host": ["{{baseUrl}}"],
-                          "path": ["orders", "{{owner_order_id}}", "feedback"]
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "orders",
+                            "{{owner_order_id}}",
+                            "feedback"
+                          ]
                         }
                       },
                       "response": []
@@ -4313,7 +4761,9 @@
                         },
                         "url": {
                           "raw": "{{baseUrl}}/orders/{{owner_order_id}}/request-revision",
-                          "host": ["{{baseUrl}}"],
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
                           "path": [
                             "orders",
                             "{{owner_order_id}}",
@@ -4376,8 +4826,14 @@
                     },
                     "url": {
                       "raw": "{{baseUrl}}/orders/{{recording_order_id}}/status",
-                      "host": ["{{baseUrl}}"],
-                      "path": ["orders", "{{recording_order_id}}", "status"]
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "orders",
+                        "{{recording_order_id}}",
+                        "status"
+                      ]
                     }
                   },
                   "response": []
@@ -4428,8 +4884,14 @@
                     },
                     "url": {
                       "raw": "{{baseUrl}}/orders/{{recording_order_id}}/status",
-                      "host": ["{{baseUrl}}"],
-                      "path": ["orders", "{{recording_order_id}}", "status"]
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "orders",
+                        "{{recording_order_id}}",
+                        "status"
+                      ]
                     }
                   },
                   "response": []
@@ -4480,8 +4942,14 @@
                     },
                     "url": {
                       "raw": "{{baseUrl}}/orders/{{recording_order_id}}/status",
-                      "host": ["{{baseUrl}}"],
-                      "path": ["orders", "{{recording_order_id}}", "status"]
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "orders",
+                        "{{recording_order_id}}",
+                        "status"
+                      ]
                     }
                   },
                   "response": []
@@ -4532,8 +5000,14 @@
                     },
                     "url": {
                       "raw": "{{baseUrl}}/orders/{{recording_order_id}}/status",
-                      "host": ["{{baseUrl}}"],
-                      "path": ["orders", "{{recording_order_id}}", "status"]
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "orders",
+                        "{{recording_order_id}}",
+                        "status"
+                      ]
                     }
                   },
                   "response": []
@@ -4594,8 +5068,12 @@
                     },
                     "url": {
                       "raw": "{{baseUrl}}/orders",
-                      "host": ["{{baseUrl}}"],
-                      "path": ["orders"]
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "orders"
+                      ]
                     }
                   },
                   "response": []
@@ -4646,8 +5124,14 @@
                     },
                     "url": {
                       "raw": "{{baseUrl}}/orders/{{payment_order_id}}/status",
-                      "host": ["{{baseUrl}}"],
-                      "path": ["orders", "{{payment_order_id}}", "status"]
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "orders",
+                        "{{payment_order_id}}",
+                        "status"
+                      ]
                     }
                   },
                   "response": []
@@ -4698,8 +5182,14 @@
                     },
                     "url": {
                       "raw": "{{baseUrl}}/orders/{{transcription_order_id}}/pay",
-                      "host": ["{{baseUrl}}"],
-                      "path": ["orders", "{{transcription_order_id}}", "pay"]
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "orders",
+                        "{{transcription_order_id}}",
+                        "pay"
+                      ]
                     }
                   },
                   "response": []
@@ -4750,8 +5240,14 @@
                     },
                     "url": {
                       "raw": "{{baseUrl}}/orders/{{recording_order_id}}/pay",
-                      "host": ["{{baseUrl}}"],
-                      "path": ["orders", "{{recording_order_id}}", "pay"]
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "orders",
+                        "{{recording_order_id}}",
+                        "pay"
+                      ]
                     }
                   },
                   "response": []
@@ -4807,8 +5303,12 @@
                     },
                     "url": {
                       "raw": "{{baseUrl}}/payments",
-                      "host": ["{{baseUrl}}"],
-                      "path": ["payments"]
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "payments"
+                      ]
                     }
                   },
                   "response": []
@@ -4850,8 +5350,12 @@
                     "header": [],
                     "url": {
                       "raw": "{{baseUrl}}/payments?page=1&limit=10",
-                      "host": ["{{baseUrl}}"],
-                      "path": ["payments"],
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "payments"
+                      ],
                       "query": [
                         {
                           "key": "page",
@@ -4897,8 +5401,13 @@
                     "header": [],
                     "url": {
                       "raw": "{{baseUrl}}/payments/{{payment_id}}",
-                      "host": ["{{baseUrl}}"],
-                      "path": ["payments", "{{payment_id}}"]
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "payments",
+                        "{{payment_id}}"
+                      ]
                     }
                   },
                   "response": []
@@ -4952,8 +5461,14 @@
                     },
                     "url": {
                       "raw": "{{baseUrl}}/payments/{{payment_id}}/mock-success",
-                      "host": ["{{baseUrl}}"],
-                      "path": ["payments", "{{payment_id}}", "mock-success"]
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "payments",
+                        "{{payment_id}}",
+                        "mock-success"
+                      ]
                     }
                   },
                   "response": []
@@ -5012,7 +5527,9 @@
                         },
                         "url": {
                           "raw": "{{baseUrl}}/orders/{{transcription_order_id}}/feedback",
-                          "host": ["{{baseUrl}}"],
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
                           "path": [
                             "orders",
                             "{{transcription_order_id}}",
@@ -5068,7 +5585,9 @@
                         },
                         "url": {
                           "raw": "{{baseUrl}}/orders/{{recording_order_id}}/feedback",
-                          "host": ["{{baseUrl}}"],
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
                           "path": [
                             "orders",
                             "{{recording_order_id}}",
@@ -5124,7 +5643,9 @@
                         },
                         "url": {
                           "raw": "{{baseUrl}}/orders/{{transcription_order_id}}/feedback",
-                          "host": ["{{baseUrl}}"],
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
                           "path": [
                             "orders",
                             "{{transcription_order_id}}",
@@ -5180,7 +5701,9 @@
                         },
                         "url": {
                           "raw": "{{baseUrl}}/orders/{{transcription_order_id}}/feedback",
-                          "host": ["{{baseUrl}}"],
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
                           "path": [
                             "orders",
                             "{{transcription_order_id}}",
@@ -5221,7 +5744,9 @@
                         "header": [],
                         "url": {
                           "raw": "{{baseUrl}}/orders/{{transcription_order_id}}/feedback",
-                          "host": ["{{baseUrl}}"],
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
                           "path": [
                             "orders",
                             "{{transcription_order_id}}",
@@ -5298,8 +5823,12 @@
                         },
                         "url": {
                           "raw": "{{baseUrl}}/tasks",
-                          "host": ["{{baseUrl}}"],
-                          "path": ["tasks"]
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "tasks"
+                          ]
                         }
                       },
                       "response": []
@@ -5350,7 +5879,9 @@
                         },
                         "url": {
                           "raw": "{{baseUrl}}/orders/{{recording_order_id}}/request-revision",
-                          "host": ["{{baseUrl}}"],
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
                           "path": [
                             "orders",
                             "{{recording_order_id}}",
@@ -5408,8 +5939,12 @@
                         },
                         "url": {
                           "raw": "{{baseUrl}}/orders",
-                          "host": ["{{baseUrl}}"],
-                          "path": ["orders"]
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "orders"
+                          ]
                         }
                       },
                       "response": []
@@ -5460,7 +5995,9 @@
                         },
                         "url": {
                           "raw": "{{baseUrl}}/orders/{{revision_pending_order_id}}/request-revision",
-                          "host": ["{{baseUrl}}"],
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
                           "path": [
                             "orders",
                             "{{revision_pending_order_id}}",
@@ -5516,7 +6053,9 @@
                         },
                         "url": {
                           "raw": "{{baseUrl}}/orders/{{recording_order_id}}/request-revision",
-                          "host": ["{{baseUrl}}"],
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
                           "path": [
                             "orders",
                             "{{recording_order_id}}",
@@ -5564,8 +6103,13 @@
                     "header": [],
                     "url": {
                       "raw": "{{baseUrl}}/orders/stats",
-                      "host": ["{{baseUrl}}"],
-                      "path": ["orders", "stats"]
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "orders",
+                        "stats"
+                      ]
                     }
                   },
                   "response": []
@@ -5598,8 +6142,13 @@
                     "header": [],
                     "url": {
                       "raw": "{{baseUrl}}/orders/stats",
-                      "host": ["{{baseUrl}}"],
-                      "path": ["orders", "stats"]
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "orders",
+                        "stats"
+                      ]
                     }
                   },
                   "response": []
@@ -5632,8 +6181,13 @@
                     "header": [],
                     "url": {
                       "raw": "{{baseUrl}}/orders/stats",
-                      "host": ["{{baseUrl}}"],
-                      "path": ["orders", "stats"]
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "orders",
+                        "stats"
+                      ]
                     }
                   },
                   "response": []
@@ -5659,8 +6213,13 @@
                     "header": [],
                     "url": {
                       "raw": "{{baseUrl}}/orders/stats",
-                      "host": ["{{baseUrl}}"],
-                      "path": ["orders", "stats"]
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "orders",
+                        "stats"
+                      ]
                     }
                   },
                   "response": []
@@ -5693,8 +6252,13 @@
                     "header": [],
                     "url": {
                       "raw": "{{baseUrl}}/analytics/stats",
-                      "host": ["{{baseUrl}}"],
-                      "path": ["analytics", "stats"]
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "analytics",
+                        "stats"
+                      ]
                     }
                   },
                   "response": []
@@ -5727,8 +6291,13 @@
                     "header": [],
                     "url": {
                       "raw": "{{baseUrl}}/analytics/stats",
-                      "host": ["{{baseUrl}}"],
-                      "path": ["analytics", "stats"]
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "analytics",
+                        "stats"
+                      ]
                     }
                   },
                   "response": []
@@ -5792,8 +6361,14 @@
                     },
                     "url": {
                       "raw": "{{baseUrl}}/orders/{{transcription_order_id}}/status",
-                      "host": ["{{baseUrl}}"],
-                      "path": ["orders", "{{transcription_order_id}}", "status"]
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "orders",
+                        "{{transcription_order_id}}",
+                        "status"
+                      ]
                     }
                   },
                   "response": []
@@ -5844,8 +6419,14 @@
                     },
                     "url": {
                       "raw": "{{baseUrl}}/orders/{{arrangement_order_id}}/status",
-                      "host": ["{{baseUrl}}"],
-                      "path": ["orders", "{{arrangement_order_id}}", "status"]
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "orders",
+                        "{{arrangement_order_id}}",
+                        "status"
+                      ]
                     }
                   },
                   "response": []
@@ -5896,8 +6477,14 @@
                     },
                     "url": {
                       "raw": "{{baseUrl}}/orders/{{recording_order_id}}/status",
-                      "host": ["{{baseUrl}}"],
-                      "path": ["orders", "{{recording_order_id}}", "status"]
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "orders",
+                        "{{recording_order_id}}",
+                        "status"
+                      ]
                     }
                   },
                   "response": []
@@ -5925,8 +6512,12 @@
                     "header": [],
                     "url": {
                       "raw": "{{baseUrl}}/health",
-                      "host": ["{{baseUrl}}"],
-                      "path": ["health"]
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "health"
+                      ]
                     }
                   },
                   "response": []
@@ -5939,58 +6530,23 @@
           "name": "notification-service",
           "item": [
             {
-              "name": "Health Check",
+              "name": "Set up",
               "item": [
                 {
-                  "name": "check_200",
+                  "name": "noti login",
                   "event": [
                     {
                       "listen": "test",
                       "script": {
                         "exec": [
-                          "pm.test(\"Status is 200\", () => pm.response.to.have.status(200));\r",
-                          "pm.test(\"Service name is correct\", () => {\r",
+                          "pm.test(\"NOTI-SETUP-01 login success\", () => {\r",
+                          "  pm.response.to.have.status(200);\r",
                           "  const json = pm.response.json();\r",
-                          "  pm.expect(json.service).to.eql(\"notification-service\");\r",
-                          "  pm.expect(json.status).to.eql(\"ok\");\r",
-                          "});\r",
-                          ""
-                        ],
-                        "type": "text/javascript",
-                        "packages": {},
-                        "requests": {}
-                      }
-                    }
-                  ],
-                  "request": {
-                    "method": "GET",
-                    "header": [],
-                    "url": {
-                      "raw": "{{baseUrl}}/notifications/health",
-                      "host": ["{{baseUrl}}"],
-                      "path": ["notifications", "health"]
-                    }
-                  },
-                  "response": []
-                }
-              ]
-            },
-            {
-              "name": "Authentication (helper)",
-              "item": [
-                {
-                  "name": "login_200",
-                  "event": [
-                    {
-                      "listen": "test",
-                      "script": {
-                        "exec": [
-                          "pm.test(\"Login successful (200)\", () => pm.response.to.have.status(200));\r",
-                          "\r",
-                          "const json = pm.response.json();\r",
-                          "pm.environment.set(\"accessToken\", json.token);\r",
-                          "pm.environment.set(\"userId\", json.user.id);\r",
-                          ""
+                          "  pm.expect(json).to.have.property(\"token\");\r",
+                          "  pm.expect(json.user).to.have.property(\"id\");\r",
+                          "  pm.environment.set(\"accessToken\", json.token);\r",
+                          "  pm.environment.set(\"userId\", String(json.user.id));\r",
+                          "});"
                         ],
                         "type": "text/javascript",
                         "packages": {},
@@ -6015,8 +6571,13 @@
                     },
                     "url": {
                       "raw": "{{baseUrl}}/auth/login",
-                      "host": ["{{baseUrl}}"],
-                      "path": ["auth", "login"]
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "auth",
+                        "login"
+                      ]
                     }
                   },
                   "response": []
@@ -6024,36 +6585,87 @@
               ]
             },
             {
-              "name": "Notification CRUD",
+              "name": "Health Check",
               "item": [
                 {
-                  "name": "Create Notification",
+                  "name": "noti-hc-1",
+                  "event": [
+                    {
+                      "listen": "test",
+                      "script": {
+                        "exec": [
+                          "pm.test(\"NOTI-HC-EP-01 status 200\", () => {\r",
+                          "  pm.response.to.have.status(200);\r",
+                          "});\r",
+                          "\r",
+                          "pm.test(\"NOTI-HC-EP-01 response body\", () => {\r",
+                          "  const json = pm.response.json();\r",
+                          "  pm.expect(json.service).to.eql(\"notification-service\");\r",
+                          "  pm.expect(json.status).to.eql(\"ok\");\r",
+                          "  pm.expect(json).to.have.property(\"timestamp\");\r",
+                          "});"
+                        ],
+                        "type": "text/javascript",
+                        "packages": {},
+                        "requests": {}
+                      }
+                    }
+                  ],
+                  "request": {
+                    "method": "GET",
+                    "header": [],
+                    "url": {
+                      "raw": "{{baseUrl}}/notifications/health",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "notifications",
+                        "health"
+                      ]
+                    }
+                  },
+                  "response": []
+                }
+              ]
+            },
+            {
+              "name": "Gửi thông báo",
+              "item": [
+                {
+                  "name": "EP",
                   "item": [
                     {
-                      "name": "Create_201",
+                      "name": "noti-send-ep-01",
                       "event": [
                         {
                           "listen": "test",
                           "script": {
-                            "type": "text/javascript",
                             "exec": [
-                              "pm.test('Created (201)', () => pm.response.to.have.status(201));",
-                              "const createdNotificationJson = pm.response.json();",
-                              "pm.environment.set('notificationId', String(createdNotificationJson.id));",
-                              "pm.expect(createdNotificationJson.message).to.eql('Notification saved successfully');"
-                            ]
+                              "pm.test(\"NOTI-SEND-EP-01 status 201\", () => {\r",
+                              "  pm.response.to.have.status(201);\r",
+                              "});\r",
+                              "\r",
+                              "pm.test(\"NOTI-SEND-EP-01 save notificationId\", () => {\r",
+                              "  const json = pm.response.json();\r",
+                              "  pm.expect(json).to.have.property(\"id\");\r",
+                              "  pm.expect(json.message).to.eql(\"Notification saved successfully\");\r",
+                              "\r",
+                              "  pm.environment.set(\"notificationId\", String(json.id));\r",
+                              "});"
+                            ],
+                            "type": "text/javascript",
+                            "packages": {},
+                            "requests": {}
                           }
                         }
                       ],
                       "request": {
-                        "auth": {
-                          "type": "noauth"
-                        },
                         "method": "POST",
                         "header": [],
                         "body": {
                           "mode": "raw",
-                          "raw": "{\r\n  \"user_id\": \"{{userId}}\",\r\n  \"title\": \"Demo notification\",\r\n  \"message\": \"This is a test from Postman\",\r\n  \"channel\": \"push\"\r\n}\r\n",
+                          "raw": "{\r\n  \"user_id\": \"{{userId}}\",\r\n  \"title\": \"Postman EP valid push\",\r\n  \"message\": \"Notification created by Postman automation\",\r\n  \"channel\": \"push\"\r\n}",
                           "options": {
                             "raw": {
                               "language": "json"
@@ -6062,8 +6674,200 @@
                         },
                         "url": {
                           "raw": "{{baseUrl}}/notifications/send",
-                          "host": ["{{baseUrl}}"],
-                          "path": ["notifications", "send"]
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "notifications",
+                            "send"
+                          ]
+                        }
+                      },
+                      "response": []
+                    },
+                    {
+                      "name": "noti-send-ep-02",
+                      "event": [
+                        {
+                          "listen": "test",
+                          "script": {
+                            "exec": [
+                              "pm.test(\"NOTI-SEND-EP-02 status 201\", () => {\r",
+                              "  pm.response.to.have.status(201);\r",
+                              "});\r",
+                              "\r",
+                              "pm.test(\"NOTI-SEND-EP-02 response body\", () => {\r",
+                              "  const json = pm.response.json();\r",
+                              "  pm.expect(json).to.have.property(\"id\");\r",
+                              "  pm.expect(json.message).to.eql(\"Notification saved successfully\");\r",
+                              "});"
+                            ],
+                            "type": "text/javascript",
+                            "packages": {}
+                          }
+                        }
+                      ],
+                      "request": {
+                        "method": "POST",
+                        "header": [],
+                        "body": {
+                          "mode": "raw",
+                          "raw": "{\r\n  \"user_id\": \"{{userId}}\",\r\n  \"title\": \"Postman EP valid email\",\r\n  \"message\": \"Notification email channel test\",\r\n  \"channel\": \"email\"\r\n}",
+                          "options": {
+                            "raw": {
+                              "language": "json"
+                            }
+                          }
+                        },
+                        "url": {
+                          "raw": "{{baseUrl}}/notifications/send",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "notifications",
+                            "send"
+                          ]
+                        }
+                      },
+                      "response": []
+                    },
+                    {
+                      "name": "noti-send-ep-03",
+                      "event": [
+                        {
+                          "listen": "test",
+                          "script": {
+                            "exec": [
+                              "pm.test(\"NOTI-SEND-EP-03 status 201\", () => {\r",
+                              "  pm.response.to.have.status(201);\r",
+                              "});\r",
+                              "\r",
+                              "pm.test(\"NOTI-SEND-EP-03 response body\", () => {\r",
+                              "  const json = pm.response.json();\r",
+                              "  pm.expect(json).to.have.property(\"id\");\r",
+                              "  pm.expect(json.message).to.eql(\"Notification saved successfully\");\r",
+                              "});"
+                            ],
+                            "type": "text/javascript",
+                            "packages": {}
+                          }
+                        }
+                      ],
+                      "request": {
+                        "method": "POST",
+                        "header": [],
+                        "body": {
+                          "mode": "raw",
+                          "raw": "{\r\n  \"user_id\": \"{{userId}}\",\r\n  \"title\": \"Postman EP valid sms\",\r\n  \"message\": \"Notification sms channel test\",\r\n  \"channel\": \"sms\"\r\n}",
+                          "options": {
+                            "raw": {
+                              "language": "json"
+                            }
+                          }
+                        },
+                        "url": {
+                          "raw": "{{baseUrl}}/notifications/send",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "notifications",
+                            "send"
+                          ]
+                        }
+                      },
+                      "response": []
+                    },
+                    {
+                      "name": "noti-send-ep-04",
+                      "event": [
+                        {
+                          "listen": "test",
+                          "script": {
+                            "exec": [
+                              "pm.test(\"NOTI-SEND-EP-04 status 201\", () => {\r",
+                              "  pm.response.to.have.status(201);\r",
+                              "});\r",
+                              "\r",
+                              "pm.test(\"NOTI-SEND-EP-04 response body\", () => {\r",
+                              "  const json = pm.response.json();\r",
+                              "  pm.expect(json).to.have.property(\"id\");\r",
+                              "  pm.expect(json.message).to.eql(\"Notification saved successfully\");\r",
+                              "});"
+                            ],
+                            "type": "text/javascript",
+                            "packages": {}
+                          }
+                        }
+                      ],
+                      "request": {
+                        "method": "POST",
+                        "header": [],
+                        "body": {
+                          "mode": "raw",
+                          "raw": "{\r\n  \"user_id\": \"{{userId}}\",\r\n  \"title\": \"Postman EP default channel\",\r\n  \"message\": \"Channel is omitted\"\r\n}",
+                          "options": {
+                            "raw": {
+                              "language": "json"
+                            }
+                          }
+                        },
+                        "url": {
+                          "raw": "{{baseUrl}}/notifications/send",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "notifications",
+                            "send"
+                          ]
+                        }
+                      },
+                      "response": []
+                    },
+                    {
+                      "name": "noti-send-ep-05",
+                      "event": [
+                        {
+                          "listen": "test",
+                          "script": {
+                            "exec": [
+                              "pm.test(\"NOTI-SEND-EP-05 status 400\", () => {\r",
+                              "  pm.response.to.have.status(400);\r",
+                              "});\r",
+                              "\r",
+                              "pm.test(\"NOTI-SEND-EP-05 error message\", () => {\r",
+                              "  const json = pm.response.json();\r",
+                              "  pm.expect(json.error).to.eql(\"Du lieu khong hop le: user_id bat buoc phai la so.\");\r",
+                              "});"
+                            ],
+                            "type": "text/javascript",
+                            "packages": {}
+                          }
+                        }
+                      ],
+                      "request": {
+                        "method": "POST",
+                        "header": [],
+                        "body": {
+                          "mode": "raw",
+                          "raw": "{\r\n  \"user_id\": \"abc\",\r\n  \"title\": \"Invalid user id\",\r\n  \"message\": \"user_id is not numeric\",\r\n  \"channel\": \"push\"\r\n}",
+                          "options": {
+                            "raw": {
+                              "language": "json"
+                            }
+                          }
+                        },
+                        "url": {
+                          "raw": "{{baseUrl}}/notifications/send",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "notifications",
+                            "send"
+                          ]
                         }
                       },
                       "response": []
@@ -6071,56 +6875,237 @@
                   ]
                 },
                 {
-                  "name": "List Notifications",
+                  "name": "BVA",
                   "item": [
                     {
-                      "name": "list_200",
+                      "name": "noti-send-bva-01",
                       "event": [
                         {
                           "listen": "test",
                           "script": {
                             "exec": [
-                              "pm.test(\"OK (200)\", () => pm.response.to.have.status(200));\r",
-                              "const json = pm.response.json();\r",
-                              "pm.test(\"Response schema\", () => {\r",
-                              "  pm.expect(json.success).to.be.true;\r",
-                              "  pm.expect(json.data).to.have.property(\"items\");\r",
-                              "  pm.expect(json.data).to.have.property(\"pagination\");\r",
+                              "pm.test(\"NOTI-SEND-BVA-01 current behavior status 201\", () => {\r",
+                              "  pm.response.to.have.status(201);\r",
                               "});\r",
-                              ""
+                              "\r",
+                              "pm.test(\"NOTI-SEND-BVA-01 has id\", () => {\r",
+                              "  const json = pm.response.json();\r",
+                              "  pm.expect(json).to.have.property(\"id\");\r",
+                              "});"
                             ],
                             "type": "text/javascript",
-                            "packages": {},
-                            "requests": {}
+                            "packages": {}
+                          }
+                        }
+                      ],
+                      "request": {
+                        "method": "POST",
+                        "header": [],
+                        "body": {
+                          "mode": "raw",
+                          "raw": "{\r\n  \"user_id\": \"0\",\r\n  \"title\": \"BVA user zero\",\r\n  \"message\": \"Boundary user_id 0\",\r\n  \"channel\": \"push\"\r\n}",
+                          "options": {
+                            "raw": {
+                              "language": "json"
+                            }
                           }
                         },
+                        "url": {
+                          "raw": "{{baseUrl}}/notifications/send",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "notifications",
+                            "send"
+                          ]
+                        }
+                      },
+                      "response": []
+                    },
+                    {
+                      "name": "noti-send-bva-02",
+                      "event": [
+                        {
+                          "listen": "test",
+                          "script": {
+                            "exec": [
+                              "pm.test(\"NOTI-SEND-BVA-02 current behavior status 201\", () => {\r",
+                              "  pm.response.to.have.status(201);\r",
+                              "});\r",
+                              "\r",
+                              "pm.test(\"NOTI-SEND-BVA-02 has id\", () => {\r",
+                              "  const json = pm.response.json();\r",
+                              "  pm.expect(json).to.have.property(\"id\");\r",
+                              "});"
+                            ],
+                            "type": "text/javascript",
+                            "packages": {}
+                          }
+                        }
+                      ],
+                      "request": {
+                        "method": "POST",
+                        "header": [],
+                        "body": {
+                          "mode": "raw",
+                          "raw": "{\r\n  \"user_id\": \"-1\",\r\n  \"title\": \"BVA negative user\",\r\n  \"message\": \"Boundary user_id -1\",\r\n  \"channel\": \"push\"\r\n}",
+                          "options": {
+                            "raw": {
+                              "language": "json"
+                            }
+                          }
+                        },
+                        "url": {
+                          "raw": "{{baseUrl}}/notifications/send",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "notifications",
+                            "send"
+                          ]
+                        }
+                      },
+                      "response": []
+                    },
+                    {
+                      "name": "noti-send-bva-03",
+                      "event": [
                         {
                           "listen": "prerequest",
                           "script": {
                             "exec": [
-                              "if (!pm.environment.get(\"accessToken\")) {\r",
-                              "  // Run login request automatically\r",
-                              "  pm.sendRequest({\r",
-                              "    url: pm.environment.get(\"authBaseUrl\") + \"/auth/login\",\r",
-                              "    method: \"POST\",\r",
-                              "    header: { \"Content-Type\": \"application/json\" },\r",
-                              "    body: {\r",
-                              "      mode: \"raw\",\r",
-                              "      raw: JSON.stringify({ email: \"admin@mutrapro.com\", password: \"Admin@123\" })\r",
-                              "    }\r",
-                              "  }, (err, res) => {\r",
-                              "    if (!err && res.code === 200) {\r",
-                              "      const data = res.json();\r",
-                              "      pm.environment.set(\"accessToken\", data.token);\r",
-                              "      pm.environment.set(\"userId\", data.user.id);\r",
-                              "    }\r",
-                              "  });\r",
-                              "}\r",
-                              ""
+                              "pm.environment.set(\"title_255\", \"A\".repeat(255));"
                             ],
                             "type": "text/javascript",
-                            "packages": {},
-                            "requests": {}
+                            "packages": {}
+                          }
+                        },
+                        {
+                          "listen": "test",
+                          "script": {
+                            "exec": [
+                              "pm.test(\"NOTI-SEND-BVA-03 status 201\", () => {\r",
+                              "  pm.response.to.have.status(201);\r",
+                              "});\r",
+                              "\r",
+                              "pm.test(\"NOTI-SEND-BVA-03 response has id\", () => {\r",
+                              "  const json = pm.response.json();\r",
+                              "  pm.expect(json).to.have.property(\"id\");\r",
+                              "});"
+                            ],
+                            "type": "text/javascript",
+                            "packages": {}
+                          }
+                        }
+                      ],
+                      "request": {
+                        "method": "POST",
+                        "header": [],
+                        "body": {
+                          "mode": "raw",
+                          "raw": "{\r\n  \"user_id\": \"{{userId}}\",\r\n  \"title\": \"{{title_255}}\",\r\n  \"message\": \"Title has 255 characters\",\r\n  \"channel\": \"push\"\r\n}",
+                          "options": {
+                            "raw": {
+                              "language": "json"
+                            }
+                          }
+                        },
+                        "url": {
+                          "raw": "{{baseUrl}}/notifications/send",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "notifications",
+                            "send"
+                          ]
+                        }
+                      },
+                      "response": []
+                    },
+                    {
+                      "name": "noti-send-bva-04",
+                      "event": [
+                        {
+                          "listen": "prerequest",
+                          "script": {
+                            "exec": [
+                              "pm.environment.set(\"title_256\", \"A\".repeat(256));"
+                            ],
+                            "type": "text/javascript",
+                            "packages": {}
+                          }
+                        },
+                        {
+                          "listen": "test",
+                          "script": {
+                            "exec": [
+                              "pm.test(\"NOTI-SEND-BVA-04 current behavior status 500\", () => {\r",
+                              "  pm.response.to.have.status(500);\r",
+                              "});"
+                            ],
+                            "type": "text/javascript",
+                            "packages": {}
+                          }
+                        }
+                      ],
+                      "request": {
+                        "method": "POST",
+                        "header": [],
+                        "body": {
+                          "mode": "raw",
+                          "raw": "{\r\n  \"user_id\": \"{{userId}}\",\r\n  \"title\": \"{{title_256}}\",\r\n  \"message\": \"Title has 256 characters\",\r\n  \"channel\": \"push\"\r\n}",
+                          "options": {
+                            "raw": {
+                              "language": "json"
+                            }
+                          }
+                        },
+                        "url": {
+                          "raw": "{{baseUrl}}/notifications/send",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "notifications",
+                            "send"
+                          ]
+                        }
+                      },
+                      "response": []
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "name": "Danh Sách Thông Báo",
+              "item": [
+                {
+                  "name": "EP",
+                  "item": [
+                    {
+                      "name": "noti-list-ep-01",
+                      "event": [
+                        {
+                          "listen": "test",
+                          "script": {
+                            "exec": [
+                              "pm.test(\"NOTI-LIST-EP-01 status 200\", () => {\r",
+                              "  pm.response.to.have.status(200);\r",
+                              "});\r",
+                              "\r",
+                              "pm.test(\"NOTI-LIST-EP-01 schema\", () => {\r",
+                              "  const json = pm.response.json();\r",
+                              "  pm.expect(json.success).to.eql(true);\r",
+                              "  pm.expect(json.data.items).to.be.an(\"array\");\r",
+                              "  pm.expect(json.data.pagination).to.include.keys([\"page\", \"limit\", \"total\", \"totalPages\"]);\r",
+                              "});"
+                            ],
+                            "type": "text/javascript",
+                            "packages": {}
                           }
                         }
                       ],
@@ -6150,9 +7135,132 @@
                           }
                         },
                         "url": {
-                          "raw": "{{baseUrl}}/notifications/?page=1&limit=10",
-                          "host": ["{{baseUrl}}"],
-                          "path": ["notifications", ""],
+                          "raw": "{{baseUrl}}/notifications?page=1&limit=10",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "notifications"
+                          ],
+                          "query": [
+                            {
+                              "key": "page",
+                              "value": "1"
+                            },
+                            {
+                              "key": "limit",
+                              "value": "10"
+                            }
+                          ]
+                        }
+                      },
+                      "response": []
+                    },
+                    {
+                      "name": "noti-list-ep-02",
+                      "event": [
+                        {
+                          "listen": "test",
+                          "script": {
+                            "exec": [
+                              "pm.test(\"NOTI-LIST-EP-02 status 401\", () => {\r",
+                              "  pm.response.to.have.status(401);\r",
+                              "});"
+                            ],
+                            "type": "text/javascript",
+                            "packages": {}
+                          }
+                        }
+                      ],
+                      "protocolProfileBehavior": {
+                        "disableBodyPruning": true
+                      },
+                      "request": {
+                        "auth": {
+                          "type": "noauth"
+                        },
+                        "method": "GET",
+                        "header": [],
+                        "body": {
+                          "mode": "raw",
+                          "raw": "",
+                          "options": {
+                            "raw": {
+                              "language": "json"
+                            }
+                          }
+                        },
+                        "url": {
+                          "raw": "{{baseUrl}}/notifications?page=1&limit=10",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "notifications"
+                          ],
+                          "query": [
+                            {
+                              "key": "page",
+                              "value": "1"
+                            },
+                            {
+                              "key": "limit",
+                              "value": "10"
+                            }
+                          ]
+                        }
+                      },
+                      "response": []
+                    },
+                    {
+                      "name": "noti-list-ep-03",
+                      "event": [
+                        {
+                          "listen": "test",
+                          "script": {
+                            "exec": [
+                              "pm.test(\"NOTI-LIST-EP-03 status 401\", () => {\r",
+                              "  pm.response.to.have.status(401);\r",
+                              "});"
+                            ],
+                            "type": "text/javascript",
+                            "packages": {}
+                          }
+                        }
+                      ],
+                      "protocolProfileBehavior": {
+                        "disableBodyPruning": true
+                      },
+                      "request": {
+                        "auth": {
+                          "type": "bearer",
+                          "bearer": [
+                            {
+                              "key": "token",
+                              "value": "invalid.jwt.token",
+                              "type": "string"
+                            }
+                          ]
+                        },
+                        "method": "GET",
+                        "header": [],
+                        "body": {
+                          "mode": "raw",
+                          "raw": "",
+                          "options": {
+                            "raw": {
+                              "language": "json"
+                            }
+                          }
+                        },
+                        "url": {
+                          "raw": "{{baseUrl}}/notifications?page=1&limit=10",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "notifications"
+                          ],
                           "query": [
                             {
                               "key": "page",
@@ -6170,21 +7278,262 @@
                   ]
                 },
                 {
-                  "name": "Mark As Read",
+                  "name": "BVA",
                   "item": [
                     {
-                      "name": "mar_200",
+                      "name": "noti-list-bva-01",
                       "event": [
                         {
                           "listen": "test",
                           "script": {
-                            "type": "text/javascript",
                             "exec": [
-                              "pm.test('OK (200)', () => pm.response.to.have.status(200));",
-                              "const markReadJson = pm.response.json();",
-                              "pm.expect(markReadJson.success).to.be.true;",
-                              "pm.expect(markReadJson.message).to.eql('Notification marked as read.');"
-                            ]
+                              "pm.test(\"NOTI-LIST-BVA-01 status 200\", () => {\r",
+                              "  pm.response.to.have.status(200);\r",
+                              "});\r",
+                              "\r",
+                              "pm.test(\"NOTI-LIST-BVA-01 page coerced to 1\", () => {\r",
+                              "  const json = pm.response.json();\r",
+                              "  pm.expect(json.data.pagination.page).to.eql(1);\r",
+                              "});"
+                            ],
+                            "type": "text/javascript",
+                            "packages": {}
+                          }
+                        }
+                      ],
+                      "request": {
+                        "auth": {
+                          "type": "bearer",
+                          "bearer": [
+                            {
+                              "key": "token",
+                              "value": "{{accessToken}}",
+                              "type": "string"
+                            }
+                          ]
+                        },
+                        "method": "GET",
+                        "header": [],
+                        "url": {
+                          "raw": "{{baseUrl}}/notifications?page=0&limit=10",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "notifications"
+                          ],
+                          "query": [
+                            {
+                              "key": "page",
+                              "value": "0"
+                            },
+                            {
+                              "key": "limit",
+                              "value": "10"
+                            }
+                          ]
+                        }
+                      },
+                      "response": []
+                    },
+                    {
+                      "name": "noti-list-bva-02",
+                      "event": [
+                        {
+                          "listen": "test",
+                          "script": {
+                            "exec": [
+                              "pm.test(\"NOTI-LIST-BVA-02 status 200\", () => {\r",
+                              "  pm.response.to.have.status(200);\r",
+                              "});\r",
+                              "\r",
+                              "pm.test(\"NOTI-LIST-BVA-02 limit coerced to 1\", () => {\r",
+                              "  const json = pm.response.json();\r",
+                              "  pm.expect(json.data.pagination.limit).to.eql(1);\r",
+                              "});"
+                            ],
+                            "type": "text/javascript",
+                            "packages": {}
+                          }
+                        }
+                      ],
+                      "request": {
+                        "auth": {
+                          "type": "bearer",
+                          "bearer": [
+                            {
+                              "key": "token",
+                              "value": "{{accessToken}}",
+                              "type": "string"
+                            }
+                          ]
+                        },
+                        "method": "GET",
+                        "header": [],
+                        "url": {
+                          "raw": "{{baseUrl}}/notifications?page=1&limit=0",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "notifications"
+                          ],
+                          "query": [
+                            {
+                              "key": "page",
+                              "value": "1"
+                            },
+                            {
+                              "key": "limit",
+                              "value": "0"
+                            }
+                          ]
+                        }
+                      },
+                      "response": []
+                    },
+                    {
+                      "name": "noti-list-bva-03",
+                      "event": [
+                        {
+                          "listen": "test",
+                          "script": {
+                            "exec": [
+                              "pm.test(\"NOTI-LIST-BVA-03 status 200\", () => {\r",
+                              "  pm.response.to.have.status(200);\r",
+                              "});\r",
+                              "\r",
+                              "pm.test(\"NOTI-LIST-BVA-03 limit is 100\", () => {\r",
+                              "  const json = pm.response.json();\r",
+                              "  pm.expect(json.data.pagination.limit).to.eql(100);\r",
+                              "});"
+                            ],
+                            "type": "text/javascript",
+                            "packages": {}
+                          }
+                        }
+                      ],
+                      "request": {
+                        "auth": {
+                          "type": "bearer",
+                          "bearer": [
+                            {
+                              "key": "token",
+                              "value": "{{accessToken}}",
+                              "type": "string"
+                            }
+                          ]
+                        },
+                        "method": "GET",
+                        "header": [],
+                        "url": {
+                          "raw": "{{baseUrl}}/notifications?page=1&limit=100",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "notifications"
+                          ],
+                          "query": [
+                            {
+                              "key": "page",
+                              "value": "1"
+                            },
+                            {
+                              "key": "limit",
+                              "value": "100"
+                            }
+                          ]
+                        }
+                      },
+                      "response": []
+                    },
+                    {
+                      "name": "noti-list-bva-04",
+                      "event": [
+                        {
+                          "listen": "test",
+                          "script": {
+                            "exec": [
+                              "pm.test(\"NOTI-LIST-BVA-04 status 200\", () => {\r",
+                              "  pm.response.to.have.status(200);\r",
+                              "});\r",
+                              "\r",
+                              "pm.test(\"NOTI-LIST-BVA-04 limit coerced to 100\", () => {\r",
+                              "  const json = pm.response.json();\r",
+                              "  pm.expect(json.data.pagination.limit).to.eql(100);\r",
+                              "});"
+                            ],
+                            "type": "text/javascript",
+                            "packages": {}
+                          }
+                        }
+                      ],
+                      "request": {
+                        "auth": {
+                          "type": "bearer",
+                          "bearer": [
+                            {
+                              "key": "token",
+                              "value": "{{accessToken}}",
+                              "type": "string"
+                            }
+                          ]
+                        },
+                        "method": "GET",
+                        "header": [],
+                        "url": {
+                          "raw": "{{baseUrl}}/notifications?page=1&limit=101",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "notifications"
+                          ],
+                          "query": [
+                            {
+                              "key": "page",
+                              "value": "1"
+                            },
+                            {
+                              "key": "limit",
+                              "value": "101"
+                            }
+                          ]
+                        }
+                      },
+                      "response": []
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "name": "Đánh Dấu Đã Đọc",
+              "item": [
+                {
+                  "name": "EP",
+                  "item": [
+                    {
+                      "name": "noti-read-ep-01",
+                      "event": [
+                        {
+                          "listen": "test",
+                          "script": {
+                            "exec": [
+                              "pm.test(\"NOTI-READ-EP-01 status 200\", () => {\r",
+                              "  pm.response.to.have.status(200);\r",
+                              "});\r",
+                              "\r",
+                              "pm.test(\"NOTI-READ-EP-01 response body\", () => {\r",
+                              "  const json = pm.response.json();\r",
+                              "  pm.expect(json.success).to.eql(true);\r",
+                              "  pm.expect(json.message).to.eql(\"Notification marked as read.\");\r",
+                              "  pm.expect(String(json.data.id)).to.eql(pm.environment.get(\"notificationId\"));\r",
+                              "});"
+                            ],
+                            "type": "text/javascript",
+                            "packages": {}
                           }
                         }
                       ],
@@ -6203,11 +7552,112 @@
                         "header": [],
                         "body": {
                           "mode": "raw",
-                          "raw": "{\r\n  \"user_id\": \"{{userId}}\",\r\n  \"title\": \"Demo notification\",\r\n  \"message\": \"This is a test from Postman\",\r\n  \"channel\": \"push\"\r\n}\r\n"
+                          "raw": "",
+                          "options": {
+                            "raw": {
+                              "language": "json"
+                            }
+                          }
                         },
                         "url": {
                           "raw": "{{baseUrl}}/notifications/{{notificationId}}/read",
-                          "host": ["{{baseUrl}}"],
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "notifications",
+                            "{{notificationId}}",
+                            "read"
+                          ]
+                        }
+                      },
+                      "response": []
+                    },
+                    {
+                      "name": "noti-read-ep-02",
+                      "event": [
+                        {
+                          "listen": "test",
+                          "script": {
+                            "exec": [
+                              "pm.test(\"NOTI-READ-EP-02 status 404\", () => {\r",
+                              "  pm.response.to.have.status(404);\r",
+                              "});\r",
+                              "\r",
+                              "pm.test(\"NOTI-READ-EP-02 response body\", () => {\r",
+                              "  const json = pm.response.json();\r",
+                              "  pm.expect(json.success).to.eql(false);\r",
+                              "  pm.expect(json.message).to.eql(\"Notification not found.\");\r",
+                              "});"
+                            ],
+                            "type": "text/javascript",
+                            "packages": {}
+                          }
+                        }
+                      ],
+                      "request": {
+                        "auth": {
+                          "type": "bearer",
+                          "bearer": [
+                            {
+                              "key": "token",
+                              "value": "{{accessToken}}",
+                              "type": "string"
+                            }
+                          ]
+                        },
+                        "method": "PATCH",
+                        "header": [],
+                        "url": {
+                          "raw": "{{baseUrl}}/notifications/999999/read",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "notifications",
+                            "999999",
+                            "read"
+                          ]
+                        }
+                      },
+                      "response": []
+                    },
+                    {
+                      "name": "noti-read-ep-03",
+                      "event": [
+                        {
+                          "listen": "test",
+                          "script": {
+                            "exec": [
+                              "pm.test(\"NOTI-READ-EP-03 status 401\", () => {\r",
+                              "  pm.response.to.have.status(401);\r",
+                              "});"
+                            ],
+                            "type": "text/javascript",
+                            "packages": {}
+                          }
+                        }
+                      ],
+                      "request": {
+                        "auth": {
+                          "type": "noauth"
+                        },
+                        "method": "PATCH",
+                        "header": [],
+                        "body": {
+                          "mode": "raw",
+                          "raw": "",
+                          "options": {
+                            "raw": {
+                              "language": "json"
+                            }
+                          }
+                        },
+                        "url": {
+                          "raw": "{{baseUrl}}/notifications/{{notificationId}}/read",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
                           "path": [
                             "notifications",
                             "{{notificationId}}",
@@ -6218,100 +7668,49 @@
                       "response": []
                     }
                   ]
-                }
-              ],
-              "event": [
-                {
-                  "listen": "prerequest",
-                  "script": {
-                    "type": "text/javascript",
-                    "packages": {},
-                    "requests": {},
-                    "exec": [
-                      "if (!pm.environment.get(\"accessToken\")) {\r",
-                      "  // Run login request automatically\r",
-                      "  pm.sendRequest({\r",
-                      "    url: pm.environment.get(\"authBaseUrl\") + \"/auth/login\",\r",
-                      "    method: \"POST\",\r",
-                      "    header: { \"Content-Type\": \"application/json\" },\r",
-                      "    body: {\r",
-                      "      mode: \"raw\",\r",
-                      "      raw: JSON.stringify({ email: \"admin@mutrapro.com\", password: \"Admin@123\" })\r",
-                      "    }\r",
-                      "  }, (err, res) => {\r",
-                      "    if (!err && res.code === 200) {\r",
-                      "      const data = res.json();\r",
-                      "      pm.environment.set(\"accessToken\", data.token);\r",
-                      "      pm.environment.set(\"userId\", data.user.id);\r",
-                      "    }\r",
-                      "  });\r",
-                      "}\r",
-                      ""
-                    ]
-                  }
                 },
                 {
-                  "listen": "test",
-                  "script": {
-                    "type": "text/javascript",
-                    "packages": {},
-                    "requests": {},
-                    "exec": [
-                      "// Generic status‑code check\r",
-                      "pm.test(\"Status code is 2xx\", () => pm.response.to.be.success);\r",
-                      "\r",
-                      "// If server returns an error object, surface it\r",
-                      "if (pm.response.code >= 400) {\r",
-                      "  console.warn(\"Error response:\", pm.response.json());\r",
-                      "}\r",
-                      ""
-                    ]
-                  }
-                }
-              ]
-            },
-            {
-              "name": "Device Management",
-              "item": [
-                {
-                  "name": "Register Device",
+                  "name": "BVA",
                   "item": [
                     {
-                      "name": "registerDevice_200",
+                      "name": "noti-read-bva-01",
                       "event": [
                         {
                           "listen": "test",
                           "script": {
                             "exec": [
-                              "pm.test(\"Registered (200)\", () => pm.response.to.have.status(200));\r",
-                              "pm.expect(pm.response.json().message).to.eql(\"Thiết bị đã được đăng ký thành công\");\r",
-                              ""
+                              "pm.test(\"NOTI-READ-BVA-01 status 404\", () => {\r",
+                              "  pm.response.to.have.status(404);\r",
+                              "});"
                             ],
                             "type": "text/javascript",
-                            "packages": {},
-                            "requests": {}
+                            "packages": {}
                           }
                         }
                       ],
                       "request": {
                         "auth": {
-                          "type": "noauth"
-                        },
-                        "method": "POST",
-                        "header": [],
-                        "body": {
-                          "mode": "raw",
-                          "raw": "{\r\n  \"userId\": \"{{userId}}\",\r\n  \"fcmToken\": \"FAKE_FCM_TOKEN_FOR_TESTING\"\r\n}\r\n",
-                          "options": {
-                            "raw": {
-                              "language": "json"
+                          "type": "bearer",
+                          "bearer": [
+                            {
+                              "key": "token",
+                              "value": "{{accessToken}}",
+                              "type": "string"
                             }
-                          }
+                          ]
                         },
+                        "method": "GET",
+                        "header": [],
                         "url": {
-                          "raw": "{{baseUrl}}/notifications/register-device",
-                          "host": ["{{baseUrl}}"],
-                          "path": ["notifications", "register-device"]
+                          "raw": "{{baseUrl}}/notifications/0/read",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "notifications",
+                            "0",
+                            "read"
+                          ]
                         }
                       },
                       "response": []
@@ -6321,94 +7720,8 @@
               ]
             },
             {
-              "name": "Real‑time & Push",
-              "item": [
-                {
-                  "name": "Notify (broadcast / single user)",
-                  "item": [
-                    {
-                      "name": "broadcast_200",
-                      "event": [
-                        {
-                          "listen": "test",
-                          "script": {
-                            "exec": [
-                              "pm.test(\"OK (200)\", () => pm.response.to.have.status(200));\r",
-                              "pm.expect(pm.response.json().message).to.match(/(Đã broadcast|đã gửi push notification|đã gửi realtime notification)/i);\r",
-                              ""
-                            ],
-                            "type": "text/javascript",
-                            "packages": {},
-                            "requests": {}
-                          }
-                        }
-                      ],
-                      "request": {
-                        "auth": {
-                          "type": "noauth"
-                        },
-                        "method": "POST",
-                        "header": [],
-                        "body": {
-                          "mode": "raw",
-                          "raw": "{\r\n  \"userId\": \"broadcast\",\r\n  \"eventName\": \"test-broadcast\",\r\n  \"data\": { \"message\": \"Hello everyone!\" }\r\n}\r\n",
-                          "options": {
-                            "raw": {
-                              "language": "json"
-                            }
-                          }
-                        },
-                        "url": {
-                          "raw": "{{baseUrl}}/notifications/notify",
-                          "host": ["{{baseUrl}}"],
-                          "path": ["notifications", "notify"]
-                        }
-                      },
-                      "response": []
-                    },
-                    {
-                      "name": "singleUser_200",
-                      "event": [
-                        {
-                          "listen": "test",
-                          "script": {
-                            "exec": [
-                              "pm.test(\"OK (200)\", () => pm.response.to.have.status(200));\r",
-                              "pm.expect(pm.response.json().message).to.match(/(Đã broadcast|đã gửi push notification|đã gửi realtime notification)/i);\r",
-                              ""
-                            ],
-                            "type": "text/javascript",
-                            "packages": {},
-                            "requests": {}
-                          }
-                        }
-                      ],
-                      "request": {
-                        "auth": {
-                          "type": "noauth"
-                        },
-                        "method": "POST",
-                        "header": [],
-                        "body": {
-                          "mode": "raw",
-                          "raw": "{\r\n  \"userId\": \"{{userId}}\",\r\n  \"eventName\": \"new-message\",\r\n  \"data\": { \"message\": \"You have a new alert!\" }\r\n}\r\n",
-                          "options": {
-                            "raw": {
-                              "language": "json"
-                            }
-                          }
-                        },
-                        "url": {
-                          "raw": "{{baseUrl}}/notifications/notify",
-                          "host": ["{{baseUrl}}"],
-                          "path": ["notifications", "notify"]
-                        }
-                      },
-                      "response": []
-                    }
-                  ]
-                }
-              ]
+              "name": "Đăng Ký Thiết Bị",
+              "item": []
             }
           ],
           "event": [
@@ -6418,7 +7731,9 @@
                 "type": "text/javascript",
                 "packages": {},
                 "requests": {},
-                "exec": [""]
+                "exec": [
+                  ""
+                ]
               }
             },
             {
@@ -6427,7 +7742,9 @@
                 "type": "text/javascript",
                 "packages": {},
                 "requests": {},
-                "exec": [""]
+                "exec": [
+                  ""
+                ]
               }
             }
           ]
@@ -6470,8 +7787,13 @@
                 },
                 "url": {
                   "raw": "{{baseUrl}}/auth/login",
-                  "host": ["{{baseUrl}}"],
-                  "path": ["auth", "login"]
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "auth",
+                    "login"
+                  ]
                 }
               },
               "response": []
@@ -6483,8 +7805,13 @@
                 "header": [],
                 "url": {
                   "raw": "{{baseUrl}}/analytics/stats",
-                  "host": ["{{baseUrl}}"],
-                  "path": ["analytics", "stats"]
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "analytics",
+                    "stats"
+                  ]
                 }
               },
               "response": []
@@ -6496,8 +7823,14 @@
                 "header": [],
                 "url": {
                   "raw": "{{baseUrl}}/analytics/reports/overview",
-                  "host": ["{{baseUrl}}"],
-                  "path": ["analytics", "reports", "overview"]
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "analytics",
+                    "reports",
+                    "overview"
+                  ]
                 }
               },
               "response": []
@@ -6520,7 +7853,9 @@
                 "type": "text/javascript",
                 "packages": {},
                 "requests": {},
-                "exec": [""]
+                "exec": [
+                  ""
+                ]
               }
             },
             {
@@ -6529,14 +7864,77 @@
                 "type": "text/javascript",
                 "packages": {},
                 "requests": {},
-                "exec": [""]
+                "exec": [
+                  ""
+                ]
               }
             }
           ]
         },
         {
           "name": "api-gateway",
-          "item": []
+          "item": [
+            {
+              "name": "reports overview",
+              "request": {
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwibmFtZSI6IlN5c3RlbSBBZG1pbiIsImVtYWlsIjoiYWRtaW5AbXV0cmFwcm8uY29tIiwicm9sZSI6ImFkbWluIiwiaWF0IjoxNzgxMDAzMTcwLCJleHAiOjE3ODEwODk1NzB9.mVeHvR3x62R8Ql04yxUikGauSkdDUzSL8LyZrvf1-N8",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "http://localhost:3007/api/reports/overview",
+                  "protocol": "http",
+                  "host": [
+                    "localhost"
+                  ],
+                  "port": "3007",
+                  "path": [
+                    "api",
+                    "reports",
+                    "overview"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "Reports Alias - Overview",
+              "request": {
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwibmFtZSI6IlN5c3RlbSBBZG1pbiIsImVtYWlsIjoiYWRtaW5AbXV0cmFwcm8uY29tIiwicm9sZSI6ImFkbWluIiwiaWF0IjoxNzgxMDA0NDUzLCJleHAiOjE3ODEwOTA4NTN9.rDlm7DZObQhMHx3OUN72t2JcHklqMlqp_krfzj2_cRU",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{baseUrl}}/analytics/reports/overview",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "analytics",
+                    "reports",
+                    "overview"
+                  ]
+                }
+              },
+              "response": []
+            }
+          ]
         },
         {
           "name": "file-service",
@@ -6576,8 +7974,13 @@
                 },
                 "url": {
                   "raw": "{{baseUrl}}/auth/login",
-                  "host": ["{{baseUrl}}"],
-                  "path": ["auth", "login"]
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "auth",
+                    "login"
+                  ]
                 }
               },
               "response": []
@@ -6626,8 +8029,12 @@
                 },
                 "url": {
                   "raw": "{{baseUrl}}/orders",
-                  "host": ["{{baseUrl}}"],
-                  "path": ["orders"]
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "orders"
+                  ]
                 }
               },
               "response": []
@@ -6712,8 +8119,13 @@
                 },
                 "url": {
                   "raw": "{{baseUrl}}/files/upload",
-                  "host": ["{{baseUrl}}"],
-                  "path": ["files", "upload"]
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "files",
+                    "upload"
+                  ]
                 }
               },
               "response": []
@@ -6763,8 +8175,15 @@
                 "header": [],
                 "url": {
                   "raw": "{{baseUrl}}/files/files/order/{{orderId}}",
-                  "host": ["{{baseUrl}}"],
-                  "path": ["files", "files", "order", "{{orderId}}"]
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "files",
+                    "files",
+                    "order",
+                    "{{orderId}}"
+                  ]
                 }
               },
               "response": []
@@ -6807,8 +8226,15 @@
                 "header": [],
                 "url": {
                   "raw": "{{baseUrl}}/files/files/download/{{fileId}}\n",
-                  "host": ["{{baseUrl}}"],
-                  "path": ["files", "files", "download", "{{fileId}}\n"]
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "files",
+                    "files",
+                    "download",
+                    "{{fileId}}\n"
+                  ]
                 }
               },
               "response": []
@@ -6831,7 +8257,9 @@
                 "type": "text/javascript",
                 "packages": {},
                 "requests": {},
-                "exec": [""]
+                "exec": [
+                  ""
+                ]
               }
             },
             {
@@ -6840,7 +8268,9 @@
                 "type": "text/javascript",
                 "packages": {},
                 "requests": {},
-                "exec": [""]
+                "exec": [
+                  ""
+                ]
               }
             }
           ]
@@ -6887,8 +8317,13 @@
                 },
                 "url": {
                   "raw": "{{baseUrl}}/auth/login",
-                  "host": ["{{baseUrl}}"],
-                  "path": ["auth", "login"]
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "auth",
+                    "login"
+                  ]
                 }
               },
               "response": []
@@ -6946,8 +8381,13 @@
                 },
                 "url": {
                   "raw": "{{baseUrl}}/studio/bookings",
-                  "host": ["{{baseUrl}}"],
-                  "path": ["studio", "bookings"]
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "studio",
+                    "bookings"
+                  ]
                 }
               },
               "response": []
@@ -6981,8 +8421,15 @@
                 "header": [],
                 "url": {
                   "raw": "{{baseUrl}}/studio/bookings/{{bookingId}}/confirm",
-                  "host": ["{{baseUrl}}"],
-                  "path": ["studio", "bookings", "{{bookingId}}", "confirm"]
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "studio",
+                    "bookings",
+                    "{{bookingId}}",
+                    "confirm"
+                  ]
                 }
               },
               "response": []
@@ -6994,8 +8441,13 @@
                 "header": [],
                 "url": {
                   "raw": "{{baseUrl}}/studio/studios",
-                  "host": ["{{baseUrl}}"],
-                  "path": ["studio", "studios"]
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "studio",
+                    "studios"
+                  ]
                 }
               },
               "response": []
@@ -7018,7 +8470,9 @@
                 "type": "text/javascript",
                 "packages": {},
                 "requests": {},
-                "exec": [""]
+                "exec": [
+                  ""
+                ]
               }
             },
             {
@@ -7027,7 +8481,9 @@
                 "type": "text/javascript",
                 "packages": {},
                 "requests": {},
-                "exec": [""]
+                "exec": [
+                  ""
+                ]
               }
             }
           ]
@@ -7070,8 +8526,13 @@
                 },
                 "url": {
                   "raw": "{{baseUrl}}/auth/login",
-                  "host": ["{{baseUrl}}"],
-                  "path": ["auth", "login"]
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "auth",
+                    "login"
+                  ]
                 }
               },
               "response": []
@@ -7122,8 +8583,13 @@
                 },
                 "url": {
                   "raw": "{{baseUrl}}/auth/register",
-                  "host": ["{{baseUrl}}"],
-                  "path": ["auth", "register"]
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "auth",
+                    "register"
+                  ]
                 }
               },
               "response": []
@@ -7167,8 +8633,13 @@
                 },
                 "url": {
                   "raw": "{{baseUrl}}/auth/login",
-                  "host": ["{{baseUrl}}"],
-                  "path": ["auth", "login"]
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "auth",
+                    "login"
+                  ]
                 }
               },
               "response": []
@@ -7227,8 +8698,12 @@
                 },
                 "url": {
                   "raw": "{{baseUrl}}/orders",
-                  "host": ["{{baseUrl}}"],
-                  "path": ["orders"]
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "orders"
+                  ]
                 }
               },
               "response": []
@@ -7294,8 +8769,12 @@
                 },
                 "url": {
                   "raw": "{{baseUrl}}/tasks",
-                  "host": ["{{baseUrl}}"],
-                  "path": ["tasks"]
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "tasks"
+                  ]
                 }
               },
               "response": []
@@ -7331,8 +8810,14 @@
                 "header": [],
                 "url": {
                   "raw": "{{baseUrl}}/tasks/order/{{task_order_id}}",
-                  "host": ["{{baseUrl}}"],
-                  "path": ["tasks", "order", "{{task_order_id}}"]
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "tasks",
+                    "order",
+                    "{{task_order_id}}"
+                  ]
                 }
               },
               "response": []
@@ -7353,8 +8838,14 @@
                 },
                 "url": {
                   "raw": "{{baseUrl}}/tasks/{{taskId}}/status",
-                  "host": ["{{baseUrl}}"],
-                  "path": ["tasks", "{{taskId}}", "status"]
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "tasks",
+                    "{{taskId}}",
+                    "status"
+                  ]
                 }
               },
               "response": []
@@ -7378,8 +8869,14 @@
                 },
                 "url": {
                   "raw": "{{baseUrl}}/tasks/specialist/5",
-                  "host": ["{{baseUrl}}"],
-                  "path": ["tasks", "specialist", "5"]
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "tasks",
+                    "specialist",
+                    "5"
+                  ]
                 }
               },
               "response": []
@@ -7402,7 +8899,9 @@
                 "type": "text/javascript",
                 "packages": {},
                 "requests": {},
-                "exec": [""]
+                "exec": [
+                  ""
+                ]
               }
             },
             {
@@ -7411,7 +8910,9 @@
                 "type": "text/javascript",
                 "packages": {},
                 "requests": {},
-                "exec": [""]
+                "exec": [
+                  ""
+                ]
               }
             }
           ]
@@ -7433,13 +8934,13 @@
                           "\r",
                           "const json = pm.response.json();\r",
                           "\r",
-                          "pm.test(\"Admin login success\", () => {\r",
+                          "pm.test(\"Artist login success\", () => {\r",
                           "  pm.expect(json.token).to.exist;\r",
-                          "  pm.expect(json.user.role).to.eql(\"admin\");\r",
+                          "  pm.expect(json.user.role).to.eql(\"artist\");\r",
                           "});\r",
                           "\r",
-                          "pm.environment.set(\"admin_token\", json.token);\r",
-                          "pm.environment.set(\"admin_id\", String(json.user.id));"
+                          "pm.environment.set(\"artist_token\", json.token);\r",
+                          "pm.environment.set(\"artist_id\", String(json.user.id));"
                         ],
                         "type": "text/javascript",
                         "packages": {},
@@ -7464,8 +8965,13 @@
                     },
                     "url": {
                       "raw": "{{baseUrl}}/auth/login",
-                      "host": ["{{baseUrl}}"],
-                      "path": ["auth", "login"]
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "auth",
+                        "login"
+                      ]
                     }
                   },
                   "response": []
@@ -7512,8 +9018,13 @@
                     },
                     "url": {
                       "raw": "{{baseUrl}}/auth/login",
-                      "host": ["{{baseUrl}}"],
-                      "path": ["auth", "login"]
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "auth",
+                        "login"
+                      ]
                     }
                   },
                   "response": []
@@ -7560,8 +9071,13 @@
                     },
                     "url": {
                       "raw": "{{baseUrl}}/auth/login",
-                      "host": ["{{baseUrl}}"],
-                      "path": ["auth", "login"]
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "auth",
+                        "login"
+                      ]
                     }
                   },
                   "response": []
@@ -7608,8 +9124,13 @@
                     },
                     "url": {
                       "raw": "{{baseUrl}}/auth/login",
-                      "host": ["{{baseUrl}}"],
-                      "path": ["auth", "login"]
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "auth",
+                        "login"
+                      ]
                     }
                   },
                   "response": []
@@ -7663,8 +9184,12 @@
                     "header": [],
                     "url": {
                       "raw": "{{baseUrl}}/health",
-                      "host": ["{{baseUrl}}"],
-                      "path": ["health"]
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "health"
+                      ]
                     }
                   },
                   "response": []
@@ -7705,8 +9230,12 @@
                     "header": [],
                     "url": {
                       "raw": "{{baseUrl}}/health",
-                      "host": ["{{baseUrl}}"],
-                      "path": ["health"]
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "health"
+                      ]
                     }
                   },
                   "response": []
@@ -7743,8 +9272,13 @@
                     "header": [],
                     "url": {
                       "raw": "{{baseUrl}}/health/all",
-                      "host": ["{{baseUrl}}"],
-                      "path": ["health", "all"]
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "health",
+                        "all"
+                      ]
                     }
                   },
                   "response": []
@@ -7794,8 +9328,13 @@
                     "header": [],
                     "url": {
                       "raw": "{{baseUrl}}/analytics/stats",
-                      "host": ["{{baseUrl}}"],
-                      "path": ["analytics", "stats"]
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "analytics",
+                        "stats"
+                      ]
                     }
                   },
                   "response": []
@@ -7840,14 +9379,20 @@
                     "header": [],
                     "url": {
                       "raw": "{{baseUrl}}/analytics/reports/overview",
-                      "host": ["{{baseUrl}}"],
-                      "path": ["analytics", "reports", "overview"]
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "analytics",
+                        "reports",
+                        "overview"
+                      ]
                     }
                   },
                   "response": []
                 },
                 {
-                  "name": "Reports Alias - BUG KAN-76",
+                  "name": "Reports Alias - Fixed KAN-76",
                   "event": [
                     {
                       "listen": "test",
@@ -7886,8 +9431,13 @@
                     "header": [],
                     "url": {
                       "raw": "{{baseUrl}}/reports/overview",
-                      "host": ["{{baseUrl}}"],
-                      "path": ["reports", "overview"]
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "reports",
+                        "overview"
+                      ]
                     }
                   },
                   "response": []
@@ -7931,8 +9481,13 @@
                     "header": [],
                     "url": {
                       "raw": "{{baseUrl}}/studio/studios",
-                      "host": ["{{baseUrl}}"],
-                      "path": ["studio", "studios"]
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "studio",
+                        "studios"
+                      ]
                     }
                   },
                   "response": []
@@ -7983,8 +9538,208 @@
                     },
                     "url": {
                       "raw": "{{baseUrl}}/studio/bookings",
-                      "host": ["{{baseUrl}}"],
-                      "path": ["studio", "bookings"]
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "studio",
+                        "bookings"
+                      ]
+                    }
+                  },
+                  "response": []
+                },
+                {
+                  "name": "Get All Bookings",
+                  "event": [
+                    {
+                      "listen": "test",
+                      "script": {
+                        "exec": [
+                          "pm.test(\"HTTP 200\", () => pm.response.to.have.status(200));\r",
+                          "\r",
+                          "const json = pm.response.json();\r",
+                          "\r",
+                          "pm.test(\"Bookings response is array\", () => {\r",
+                          "  pm.expect(json).to.be.an(\"array\");\r",
+                          "});"
+                        ],
+                        "type": "text/javascript",
+                        "packages": {},
+                        "requests": {}
+                      }
+                    }
+                  ],
+                  "request": {
+                    "auth": {
+                      "type": "bearer",
+                      "bearer": [
+                        {
+                          "key": "token",
+                          "value": "{{studio_admin_token}}",
+                          "type": "string"
+                        }
+                      ]
+                    },
+                    "method": "GET",
+                    "header": [],
+                    "url": {
+                      "raw": "{{baseUrl}}/studio/bookings/all",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "studio",
+                        "bookings",
+                        "all"
+                      ]
+                    }
+                  },
+                  "response": []
+                },
+                {
+                  "name": "Confirm Booking",
+                  "event": [
+                    {
+                      "listen": "test",
+                      "script": {
+                        "exec": [
+                          "pm.test(\"HTTP 200\", () => pm.response.to.have.status(200));\r",
+                          "\r",
+                          "const json = pm.response.json();\r",
+                          "\r",
+                          "pm.test(\"Booking confirmed\", () => {\r",
+                          "  pm.expect(json.success === true || json.message).to.be.ok;\r",
+                          "});"
+                        ],
+                        "type": "text/javascript",
+                        "packages": {},
+                        "requests": {}
+                      }
+                    }
+                  ],
+                  "request": {
+                    "auth": {
+                      "type": "bearer",
+                      "bearer": [
+                        {
+                          "key": "token",
+                          "value": "{{studio_admin_token}}",
+                          "type": "string"
+                        }
+                      ]
+                    },
+                    "method": "POST",
+                    "header": [],
+                    "url": {
+                      "raw": "{{baseUrl}}/studio/bookings/{{bookingId}}/confirm",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "studio",
+                        "bookings",
+                        "{{bookingId}}",
+                        "confirm"
+                      ]
+                    }
+                  },
+                  "response": []
+                },
+                {
+                  "name": "Cancel Booking",
+                  "event": [
+                    {
+                      "listen": "test",
+                      "script": {
+                        "exec": [
+                          "pm.test(\"HTTP 200\", () => pm.response.to.have.status(200));\r",
+                          "\r",
+                          "const json = pm.response.json();\r",
+                          "\r",
+                          "pm.test(\"Booking cancelled\", () => {\r",
+                          "  pm.expect(json.success === true || json.message).to.be.ok;\r",
+                          "});"
+                        ],
+                        "type": "text/javascript",
+                        "packages": {},
+                        "requests": {}
+                      }
+                    }
+                  ],
+                  "request": {
+                    "auth": {
+                      "type": "bearer",
+                      "bearer": [
+                        {
+                          "key": "token",
+                          "value": "{{artist_token}}",
+                          "type": "string"
+                        }
+                      ]
+                    },
+                    "method": "POST",
+                    "header": [],
+                    "url": {
+                      "raw": "{{baseUrl}}/studio/bookings/{{bookingId}}/cancel",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "studio",
+                        "bookings",
+                        "{{bookingId}}",
+                        "cancel"
+                      ]
+                    }
+                  },
+                  "response": []
+                },
+                {
+                  "name": "Reject Booking",
+                  "event": [
+                    {
+                      "listen": "test",
+                      "script": {
+                        "exec": [
+                          "pm.test(\"HTTP 200\", () => pm.response.to.have.status(200));\r",
+                          "\r",
+                          "const json = pm.response.json();\r",
+                          "\r",
+                          "pm.test(\"Booking rejected\", () => {\r",
+                          "  pm.expect(json.success === true || json.message).to.be.ok;\r",
+                          "});"
+                        ],
+                        "type": "text/javascript",
+                        "packages": {},
+                        "requests": {}
+                      }
+                    }
+                  ],
+                  "request": {
+                    "auth": {
+                      "type": "bearer",
+                      "bearer": [
+                        {
+                          "key": "token",
+                          "value": "{{studio_admin_token}}",
+                          "type": "string"
+                        }
+                      ]
+                    },
+                    "method": "POST",
+                    "header": [],
+                    "url": {
+                      "raw": "{{baseUrl}}/studio/bookings/{{bookingId}}/reject",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "studio",
+                        "bookings",
+                        "{{bookingId}}",
+                        "reject"
+                      ]
                     }
                   },
                   "response": []
@@ -8013,7 +9768,9 @@
         "type": "text/javascript",
         "packages": {},
         "requests": {},
-        "exec": [""]
+        "exec": [
+          ""
+        ]
       }
     },
     {
@@ -8022,7 +9779,9 @@
         "type": "text/javascript",
         "packages": {},
         "requests": {},
-        "exec": [""]
+        "exec": [
+          ""
+        ]
       }
     }
   ],
