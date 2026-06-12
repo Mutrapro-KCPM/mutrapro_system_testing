@@ -3,7 +3,7 @@
     "_postman_id": "2f51f312-bda3-4ebf-b3f4-fd846ab016e7",
     "name": "Presentation",
     "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
-    "_exporter_id": "48989832"
+    "_exporter_id": "55039415"
   },
   "item": [
     {
@@ -74,8 +74,13 @@
                         },
                         "url": {
                           "raw": "{{baseUrl}}/auth/register",
-                          "host": ["{{baseUrl}}"],
-                          "path": ["auth", "register"]
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "auth",
+                            "register"
+                          ]
                         }
                       },
                       "response": []
@@ -86,7 +91,9 @@
                         {
                           "listen": "prerequest",
                           "script": {
-                            "exec": [""],
+                            "exec": [
+                              ""
+                            ],
                             "type": "text/javascript",
                             "packages": {},
                             "requests": {}
@@ -130,8 +137,13 @@
                         },
                         "url": {
                           "raw": "{{baseUrl}}/auth/register",
-                          "host": ["{{baseUrl}}"],
-                          "path": ["auth", "register"]
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "auth",
+                            "register"
+                          ]
                         }
                       },
                       "response": []
@@ -142,7 +154,9 @@
                         {
                           "listen": "prerequest",
                           "script": {
-                            "exec": [""],
+                            "exec": [
+                              ""
+                            ],
                             "type": "text/javascript",
                             "packages": {},
                             "requests": {}
@@ -190,8 +204,13 @@
                         },
                         "url": {
                           "raw": "{{baseUrl}}/auth/register",
-                          "host": ["{{baseUrl}}"],
-                          "path": ["auth", "register"]
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "auth",
+                            "register"
+                          ]
                         }
                       },
                       "response": []
@@ -202,7 +221,9 @@
                         {
                           "listen": "prerequest",
                           "script": {
-                            "exec": [""],
+                            "exec": [
+                              ""
+                            ],
                             "type": "text/javascript",
                             "packages": {},
                             "requests": {}
@@ -247,8 +268,13 @@
                         },
                         "url": {
                           "raw": "{{baseUrl}}/auth/register",
-                          "host": ["{{baseUrl}}"],
-                          "path": ["auth", "register"]
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "auth",
+                            "register"
+                          ]
                         }
                       },
                       "response": []
@@ -311,8 +337,13 @@
                         },
                         "url": {
                           "raw": "{{baseUrl}}/auth/login",
-                          "host": ["{{baseUrl}}"],
-                          "path": ["auth", "login"]
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "auth",
+                            "login"
+                          ]
                         }
                       },
                       "response": []
@@ -343,7 +374,9 @@
                         {
                           "listen": "prerequest",
                           "script": {
-                            "exec": [""],
+                            "exec": [
+                              ""
+                            ],
                             "type": "text/javascript",
                             "packages": {},
                             "requests": {}
@@ -364,8 +397,13 @@
                         },
                         "url": {
                           "raw": "{{baseUrl}}/auth/login",
-                          "host": ["{{baseUrl}}"],
-                          "path": ["auth", "login"]
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "auth",
+                            "login"
+                          ]
                         }
                       },
                       "response": []
@@ -376,7 +414,9 @@
                         {
                           "listen": "prerequest",
                           "script": {
-                            "exec": [""],
+                            "exec": [
+                              ""
+                            ],
                             "type": "text/javascript",
                             "packages": {}
                           }
@@ -415,8 +455,13 @@
                         },
                         "url": {
                           "raw": "{{baseUrl}}/auth/login",
-                          "host": ["{{baseUrl}}"],
-                          "path": ["auth", "login"]
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "auth",
+                            "login"
+                          ]
                         }
                       },
                       "response": []
@@ -427,7 +472,9 @@
                         {
                           "listen": "prerequest",
                           "script": {
-                            "exec": [""],
+                            "exec": [
+                              ""
+                            ],
                             "type": "text/javascript",
                             "packages": {}
                           }
@@ -469,8 +516,13 @@
                         },
                         "url": {
                           "raw": "{{baseUrl}}/auth/login",
-                          "host": ["{{baseUrl}}"],
-                          "path": ["auth", "login"]
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "auth",
+                            "login"
+                          ]
                         }
                       },
                       "response": []
@@ -481,7 +533,9 @@
                         {
                           "listen": "prerequest",
                           "script": {
-                            "exec": [""],
+                            "exec": [
+                              ""
+                            ],
                             "type": "text/javascript",
                             "packages": {}
                           }
@@ -523,8 +577,13 @@
                         },
                         "url": {
                           "raw": "{{baseUrl}}/auth/login",
-                          "host": ["{{baseUrl}}"],
-                          "path": ["auth", "login"]
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "auth",
+                            "login"
+                          ]
                         }
                       },
                       "response": []
@@ -581,8 +640,13 @@
                     },
                     "url": {
                       "raw": "{{baseUrl}}/auth/verify",
-                      "host": ["{{baseUrl}}"],
-                      "path": ["auth", "verify"]
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "auth",
+                        "verify"
+                      ]
                     }
                   },
                   "response": []
@@ -633,8 +697,13 @@
                     },
                     "url": {
                       "raw": "{{baseUrl}}/auth/verify",
-                      "host": ["{{baseUrl}}"],
-                      "path": ["auth", "verify"]
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "auth",
+                        "verify"
+                      ]
                     }
                   },
                   "response": []
@@ -690,8 +759,14 @@
                     },
                     "url": {
                       "raw": "{{baseUrl}}/auth/users/specialists?role=transcriber",
-                      "host": ["{{baseUrl}}"],
-                      "path": ["auth", "users", "specialists"],
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "auth",
+                        "users",
+                        "specialists"
+                      ],
                       "query": [
                         {
                           "key": "role",
@@ -796,8 +871,14 @@
                     "header": [],
                     "url": {
                       "raw": "{{baseUrl}}/auth/users/specialists?role=transcriber",
-                      "host": ["{{baseUrl}}"],
-                      "path": ["auth", "users", "specialists"],
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "auth",
+                        "users",
+                        "specialists"
+                      ],
                       "query": [
                         {
                           "key": "role",
@@ -862,8 +943,15 @@
                     },
                     "url": {
                       "raw": "{{baseUrl}}/auth/users/{{auto_user_id}}/password",
-                      "host": ["{{baseUrl}}"],
-                      "path": ["auth", "users", "{{auto_user_id}}", "password"]
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "auth",
+                        "users",
+                        "{{auto_user_id}}",
+                        "password"
+                      ]
                     }
                   },
                   "response": []
@@ -910,8 +998,15 @@
                     },
                     "url": {
                       "raw": "{{baseUrl}}/auth/users/{{auto_user_id}}/password",
-                      "host": ["{{baseUrl}}"],
-                      "path": ["auth", "users", "{{auto_user_id}}", "password"]
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "auth",
+                        "users",
+                        "{{auto_user_id}}",
+                        "password"
+                      ]
                     }
                   },
                   "response": []
@@ -958,8 +1053,15 @@
                     },
                     "url": {
                       "raw": "{{baseUrl}}/auth/users/{{auto_user_id}}/password",
-                      "host": ["{{baseUrl}}"],
-                      "path": ["auth", "users", "{{auto_user_id}}", "password"]
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "auth",
+                        "users",
+                        "{{auto_user_id}}",
+                        "password"
+                      ]
                     }
                   },
                   "response": []
@@ -1006,8 +1108,15 @@
                     },
                     "url": {
                       "raw": "{{baseUrl}}/auth/users/99999/password",
-                      "host": ["{{baseUrl}}"],
-                      "path": ["auth", "users", "99999", "password"]
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "auth",
+                        "users",
+                        "99999",
+                        "password"
+                      ]
                     }
                   },
                   "response": []
@@ -1023,7 +1132,9 @@
                     {
                       "listen": "prerequest",
                       "script": {
-                        "exec": [""],
+                        "exec": [
+                          ""
+                        ],
                         "type": "text/javascript",
                         "packages": {}
                       }
@@ -1066,8 +1177,14 @@
                     "header": [],
                     "url": {
                       "raw": "{{baseUrl}}/auth/users/{{auto_user_id}}",
-                      "host": ["{{baseUrl}}"],
-                      "path": ["auth", "users", "{{auto_user_id}}"]
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "auth",
+                        "users",
+                        "{{auto_user_id}}"
+                      ]
                     }
                   },
                   "response": []
@@ -1095,8 +1212,14 @@
                     "header": [],
                     "url": {
                       "raw": "{{baseUrl}}/auth/users/99999",
-                      "host": ["{{baseUrl}}"],
-                      "path": ["auth", "users", "99999"]
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "auth",
+                        "users",
+                        "99999"
+                      ]
                     }
                   },
                   "response": []
@@ -1130,8 +1253,14 @@
                     "header": [],
                     "url": {
                       "raw": "{{baseUrl}}/auth/users/abc",
-                      "host": ["{{baseUrl}}"],
-                      "path": ["auth", "users", "abc"]
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "auth",
+                        "users",
+                        "abc"
+                      ]
                     }
                   },
                   "response": []
@@ -1194,8 +1323,13 @@
                     },
                     "url": {
                       "raw": "{{baseUrl}}/auth/login",
-                      "host": ["{{baseUrl}}"],
-                      "path": ["auth", "login"]
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "auth",
+                        "login"
+                      ]
                     }
                   },
                   "response": []
@@ -1231,8 +1365,15 @@
                     "header": [],
                     "url": {
                       "raw": "{{baseUrl}}/auth/users/by-role/customer",
-                      "host": ["{{baseUrl}}"],
-                      "path": ["auth", "users", "by-role", "customer"]
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "auth",
+                        "users",
+                        "by-role",
+                        "customer"
+                      ]
                     }
                   },
                   "response": []
@@ -1278,8 +1419,14 @@
                     "header": [],
                     "url": {
                       "raw": "{{baseUrl}}/auth/admin/users",
-                      "host": ["{{baseUrl}}"],
-                      "path": ["auth", "admin", "users"]
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "auth",
+                        "admin",
+                        "users"
+                      ]
                     }
                   },
                   "response": []
@@ -1344,8 +1491,14 @@
                     },
                     "url": {
                       "raw": "{{baseUrl}}/auth/admin/users",
-                      "host": ["{{baseUrl}}"],
-                      "path": ["auth", "admin", "users"]
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "auth",
+                        "admin",
+                        "users"
+                      ]
                     }
                   },
                   "response": []
@@ -1396,8 +1549,15 @@
                     },
                     "url": {
                       "raw": "{{baseUrl}}/auth/admin/users/{{target_user_id}}",
-                      "host": ["{{baseUrl}}"],
-                      "path": ["auth", "admin", "users", "{{target_user_id}}"]
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "auth",
+                        "admin",
+                        "users",
+                        "{{target_user_id}}"
+                      ]
                     }
                   },
                   "response": []
@@ -1448,8 +1608,15 @@
                     },
                     "url": {
                       "raw": "{{baseUrl}}/auth/admin/users/{{admin_id}}",
-                      "host": ["{{baseUrl}}"],
-                      "path": ["auth", "admin", "users", "{{admin_id}}"]
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "auth",
+                        "admin",
+                        "users",
+                        "{{admin_id}}"
+                      ]
                     }
                   },
                   "response": []
@@ -1491,8 +1658,15 @@
                     "header": [],
                     "url": {
                       "raw": "{{baseUrl}}/auth/admin/users/{{target_user_id}}",
-                      "host": ["{{baseUrl}}"],
-                      "path": ["auth", "admin", "users", "{{target_user_id}}"]
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "auth",
+                        "admin",
+                        "users",
+                        "{{target_user_id}}"
+                      ]
                     }
                   },
                   "response": []
@@ -1534,8 +1708,15 @@
                     "header": [],
                     "url": {
                       "raw": "{{baseUrl}}/auth/admin/users/{{admin_id}}",
-                      "host": ["{{baseUrl}}"],
-                      "path": ["auth", "admin", "users", "{{admin_id}}"]
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "auth",
+                        "admin",
+                        "users",
+                        "{{admin_id}}"
+                      ]
                     }
                   },
                   "response": []
@@ -1576,8 +1757,12 @@
                     "header": [],
                     "url": {
                       "raw": "{{orderServiceUrl}}/health",
-                      "host": ["{{orderServiceUrl}}"],
-                      "path": ["health"]
+                      "host": [
+                        "{{orderServiceUrl}}"
+                      ],
+                      "path": [
+                        "health"
+                      ]
                     }
                   },
                   "response": []
@@ -1627,8 +1812,13 @@
                     },
                     "url": {
                       "raw": "{{baseUrl}}/auth/login",
-                      "host": ["{{baseUrl}}"],
-                      "path": ["auth", "login"]
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "auth",
+                        "login"
+                      ]
                     }
                   },
                   "response": []
@@ -1664,8 +1854,13 @@
                     "header": [],
                     "url": {
                       "raw": "{{baseUrl}}/orders/stats",
-                      "host": ["{{baseUrl}}"],
-                      "path": ["orders", "stats"]
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "orders",
+                        "stats"
+                      ]
                     }
                   },
                   "response": []
@@ -1701,8 +1896,12 @@
                     "header": [],
                     "url": {
                       "raw": "{{baseUrl}}/payments?page=1&limit=5",
-                      "host": ["{{baseUrl}}"],
-                      "path": ["payments"],
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "payments"
+                      ],
                       "query": [
                         {
                           "key": "page",
@@ -1753,8 +1952,15 @@
                     "header": [],
                     "url": {
                       "raw": "{{baseUrl}}/files/files/order/1",
-                      "host": ["{{baseUrl}}"],
-                      "path": ["files", "files", "order", "1"]
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "files",
+                        "files",
+                        "order",
+                        "1"
+                      ]
                     }
                   },
                   "response": []
@@ -1790,8 +1996,13 @@
                     "header": [],
                     "url": {
                       "raw": "{{baseUrl}}/analytics/stats",
-                      "host": ["{{baseUrl}}"],
-                      "path": ["analytics", "stats"]
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "analytics",
+                        "stats"
+                      ]
                     }
                   },
                   "response": []
@@ -1852,8 +2063,13 @@
                     },
                     "url": {
                       "raw": "{{baseUrl}}/auth/register",
-                      "host": ["{{baseUrl}}"],
-                      "path": ["auth", "register"]
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "auth",
+                        "register"
+                      ]
                     }
                   },
                   "response": []
@@ -1903,8 +2119,13 @@
                     },
                     "url": {
                       "raw": "{{baseUrl}}/auth/login",
-                      "host": ["{{baseUrl}}"],
-                      "path": ["auth", "login"]
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "auth",
+                        "login"
+                      ]
                     }
                   },
                   "response": []
@@ -1954,8 +2175,13 @@
                     },
                     "url": {
                       "raw": "{{baseUrl}}/auth/login",
-                      "host": ["{{baseUrl}}"],
-                      "path": ["auth", "login"]
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "auth",
+                        "login"
+                      ]
                     }
                   },
                   "response": []
@@ -2005,8 +2231,13 @@
                     },
                     "url": {
                       "raw": "{{baseUrl}}/auth/login",
-                      "host": ["{{baseUrl}}"],
-                      "path": ["auth", "login"]
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "auth",
+                        "login"
+                      ]
                     }
                   },
                   "response": []
@@ -2056,8 +2287,13 @@
                     },
                     "url": {
                       "raw": "{{baseUrl}}/auth/login",
-                      "host": ["{{baseUrl}}"],
-                      "path": ["auth", "login"]
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "auth",
+                        "login"
+                      ]
                     }
                   },
                   "response": []
@@ -2107,8 +2343,13 @@
                     },
                     "url": {
                       "raw": "{{baseUrl}}/auth/login",
-                      "host": ["{{baseUrl}}"],
-                      "path": ["auth", "login"]
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "auth",
+                        "login"
+                      ]
                     }
                   },
                   "response": []
@@ -2158,8 +2399,13 @@
                     },
                     "url": {
                       "raw": "{{baseUrl}}/auth/login",
-                      "host": ["{{baseUrl}}"],
-                      "path": ["auth", "login"]
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "auth",
+                        "login"
+                      ]
                     }
                   },
                   "response": []
@@ -2209,8 +2455,13 @@
                     },
                     "url": {
                       "raw": "{{baseUrl}}/auth/login",
-                      "host": ["{{baseUrl}}"],
-                      "path": ["auth", "login"]
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "auth",
+                        "login"
+                      ]
                     }
                   },
                   "response": []
@@ -2272,8 +2523,12 @@
                     },
                     "url": {
                       "raw": "{{baseUrl}}/orders",
-                      "host": ["{{baseUrl}}"],
-                      "path": ["orders"]
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "orders"
+                      ]
                     }
                   },
                   "response": []
@@ -2330,8 +2585,12 @@
                     },
                     "url": {
                       "raw": "{{baseUrl}}/orders",
-                      "host": ["{{baseUrl}}"],
-                      "path": ["orders"]
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "orders"
+                      ]
                     }
                   },
                   "response": []
@@ -2388,8 +2647,12 @@
                     },
                     "url": {
                       "raw": "{{baseUrl}}/orders",
-                      "host": ["{{baseUrl}}"],
-                      "path": ["orders"]
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "orders"
+                      ]
                     }
                   },
                   "response": []
@@ -2425,8 +2688,14 @@
                     "header": [],
                     "url": {
                       "raw": "{{baseUrl}}/orders/customer/{{customer_id}}",
-                      "host": ["{{baseUrl}}"],
-                      "path": ["orders", "customer", "{{customer_id}}"]
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "orders",
+                        "customer",
+                        "{{customer_id}}"
+                      ]
                     }
                   },
                   "response": []
@@ -2462,8 +2731,13 @@
                     "header": [],
                     "url": {
                       "raw": "{{baseUrl}}/orders/{{transcription_order_id}}",
-                      "host": ["{{baseUrl}}"],
-                      "path": ["orders", "{{transcription_order_id}}"]
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "orders",
+                        "{{transcription_order_id}}"
+                      ]
                     }
                   },
                   "response": []
@@ -2499,8 +2773,12 @@
                     "header": [],
                     "url": {
                       "raw": "{{baseUrl}}/orders",
-                      "host": ["{{baseUrl}}"],
-                      "path": ["orders"]
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "orders"
+                      ]
                     }
                   },
                   "response": []
@@ -2536,8 +2814,12 @@
                     "header": [],
                     "url": {
                       "raw": "{{baseUrl}}/orders",
-                      "host": ["{{baseUrl}}"],
-                      "path": ["orders"]
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "orders"
+                      ]
                     }
                   },
                   "response": []
@@ -2588,8 +2870,14 @@
                     },
                     "url": {
                       "raw": "{{baseUrl}}/orders/{{transcription_order_id}}/status",
-                      "host": ["{{baseUrl}}"],
-                      "path": ["orders", "{{transcription_order_id}}", "status"]
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "orders",
+                        "{{transcription_order_id}}",
+                        "status"
+                      ]
                     }
                   },
                   "response": []
@@ -2640,8 +2928,14 @@
                     },
                     "url": {
                       "raw": "{{baseUrl}}/orders/{{arrangement_order_id}}/status",
-                      "host": ["{{baseUrl}}"],
-                      "path": ["orders", "{{arrangement_order_id}}", "status"]
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "orders",
+                        "{{arrangement_order_id}}",
+                        "status"
+                      ]
                     }
                   },
                   "response": []
@@ -2700,8 +2994,12 @@
                         },
                         "url": {
                           "raw": "{{baseUrl}}/orders",
-                          "host": ["{{baseUrl}}"],
-                          "path": ["orders"]
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "orders"
+                          ]
                         }
                       },
                       "response": []
@@ -2752,8 +3050,12 @@
                         },
                         "url": {
                           "raw": "{{baseUrl}}/orders",
-                          "host": ["{{baseUrl}}"],
-                          "path": ["orders"]
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "orders"
+                          ]
                         }
                       },
                       "response": []
@@ -2804,8 +3106,12 @@
                         },
                         "url": {
                           "raw": "{{baseUrl}}/orders",
-                          "host": ["{{baseUrl}}"],
-                          "path": ["orders"]
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "orders"
+                          ]
                         }
                       },
                       "response": []
@@ -2861,8 +3167,12 @@
                         },
                         "url": {
                           "raw": "{{baseUrl}}/orders",
-                          "host": ["{{baseUrl}}"],
-                          "path": ["orders"]
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "orders"
+                          ]
                         }
                       },
                       "response": []
@@ -2913,8 +3223,12 @@
                         },
                         "url": {
                           "raw": "{{baseUrl}}/orders",
-                          "host": ["{{baseUrl}}"],
-                          "path": ["orders"]
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "orders"
+                          ]
                         }
                       },
                       "response": []
@@ -2952,8 +3266,13 @@
                         "header": [],
                         "url": {
                           "raw": "{{baseUrl}}/orders/0",
-                          "host": ["{{baseUrl}}"],
-                          "path": ["orders", "0"]
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "orders",
+                            "0"
+                          ]
                         }
                       },
                       "response": []
@@ -2986,8 +3305,13 @@
                         "header": [],
                         "url": {
                           "raw": "{{baseUrl}}/orders/abc",
-                          "host": ["{{baseUrl}}"],
-                          "path": ["orders", "abc"]
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "orders",
+                            "abc"
+                          ]
                         }
                       },
                       "response": []
@@ -3020,8 +3344,13 @@
                         "header": [],
                         "url": {
                           "raw": "{{baseUrl}}/orders/{{transcription_order_id}}",
-                          "host": ["{{baseUrl}}"],
-                          "path": ["orders", "{{transcription_order_id}}"]
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "orders",
+                            "{{transcription_order_id}}"
+                          ]
                         }
                       },
                       "response": []
@@ -3079,8 +3408,12 @@
                     },
                     "url": {
                       "raw": "{{baseUrl}}/orders",
-                      "host": ["{{baseUrl}}"],
-                      "path": ["orders"]
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "orders"
+                      ]
                     }
                   },
                   "response": []
@@ -3131,8 +3464,12 @@
                     },
                     "url": {
                       "raw": "{{baseUrl}}/orders",
-                      "host": ["{{baseUrl}}"],
-                      "path": ["orders"]
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "orders"
+                      ]
                     }
                   },
                   "response": []
@@ -3183,8 +3520,12 @@
                     },
                     "url": {
                       "raw": "{{baseUrl}}/orders",
-                      "host": ["{{baseUrl}}"],
-                      "path": ["orders"]
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "orders"
+                      ]
                     }
                   },
                   "response": []
@@ -3235,8 +3576,12 @@
                     },
                     "url": {
                       "raw": "{{baseUrl}}/orders",
-                      "host": ["{{baseUrl}}"],
-                      "path": ["orders"]
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "orders"
+                      ]
                     }
                   },
                   "response": []
@@ -3287,8 +3632,14 @@
                     },
                     "url": {
                       "raw": "{{baseUrl}}/orders/{{recording_order_id}}/status",
-                      "host": ["{{baseUrl}}"],
-                      "path": ["orders", "{{recording_order_id}}", "status"]
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "orders",
+                        "{{recording_order_id}}",
+                        "status"
+                      ]
                     }
                   },
                   "response": []
@@ -3339,8 +3690,14 @@
                     },
                     "url": {
                       "raw": "{{baseUrl}}/orders/{{recording_order_id}}/status",
-                      "host": ["{{baseUrl}}"],
-                      "path": ["orders", "{{recording_order_id}}", "status"]
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "orders",
+                        "{{recording_order_id}}",
+                        "status"
+                      ]
                     }
                   },
                   "response": []
@@ -3392,8 +3749,12 @@
                         },
                         "url": {
                           "raw": "{{baseUrl}}/orders",
-                          "host": ["{{baseUrl}}"],
-                          "path": ["orders"]
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "orders"
+                          ]
                         }
                       },
                       "response": []
@@ -3444,8 +3805,12 @@
                         },
                         "url": {
                           "raw": "{{baseUrl}}/orders",
-                          "host": ["{{baseUrl}}"],
-                          "path": ["orders"]
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "orders"
+                          ]
                         }
                       },
                       "response": []
@@ -3471,8 +3836,13 @@
                         "header": [],
                         "url": {
                           "raw": "{{baseUrl}}/orders/{{transcription_order_id}}",
-                          "host": ["{{baseUrl}}"],
-                          "path": ["orders", "{{transcription_order_id}}"]
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "orders",
+                            "{{transcription_order_id}}"
+                          ]
                         }
                       },
                       "response": []
@@ -3516,7 +3886,9 @@
                         },
                         "url": {
                           "raw": "{{baseUrl}}/orders/{{transcription_order_id}}/status",
-                          "host": ["{{baseUrl}}"],
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
                           "path": [
                             "orders",
                             "{{transcription_order_id}}",
@@ -3565,7 +3937,9 @@
                         },
                         "url": {
                           "raw": "{{baseUrl}}/orders/{{transcription_order_id}}/pay",
-                          "host": ["{{baseUrl}}"],
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
                           "path": [
                             "orders",
                             "{{transcription_order_id}}",
@@ -3626,8 +4000,12 @@
                         },
                         "url": {
                           "raw": "{{baseUrl}}/orders",
-                          "host": ["{{baseUrl}}"],
-                          "path": ["orders"]
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "orders"
+                          ]
                         }
                       },
                       "response": []
@@ -3678,8 +4056,12 @@
                         },
                         "url": {
                           "raw": "{{baseUrl}}/orders",
-                          "host": ["{{baseUrl}}"],
-                          "path": ["orders"]
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "orders"
+                          ]
                         }
                       },
                       "response": []
@@ -3712,8 +4094,12 @@
                         "header": [],
                         "url": {
                           "raw": "{{baseUrl}}/orders",
-                          "host": ["{{baseUrl}}"],
-                          "path": ["orders"]
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "orders"
+                          ]
                         }
                       },
                       "response": []
@@ -3746,8 +4132,12 @@
                         "header": [],
                         "url": {
                           "raw": "{{baseUrl}}/orders",
-                          "host": ["{{baseUrl}}"],
-                          "path": ["orders"]
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "orders"
+                          ]
                         }
                       },
                       "response": []
@@ -3798,8 +4188,14 @@
                         },
                         "url": {
                           "raw": "{{baseUrl}}/orders/{{recording_order_id}}/status",
-                          "host": ["{{baseUrl}}"],
-                          "path": ["orders", "{{recording_order_id}}", "status"]
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "orders",
+                            "{{recording_order_id}}",
+                            "status"
+                          ]
                         }
                       },
                       "response": []
@@ -3832,8 +4228,13 @@
                         "header": [],
                         "url": {
                           "raw": "{{baseUrl}}/orders/{{recording_order_id}}",
-                          "host": ["{{baseUrl}}"],
-                          "path": ["orders", "{{recording_order_id}}"]
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "orders",
+                            "{{recording_order_id}}"
+                          ]
                         }
                       },
                       "response": []
@@ -3887,8 +4288,13 @@
                         },
                         "url": {
                           "raw": "{{baseUrl}}/auth/register",
-                          "host": ["{{baseUrl}}"],
-                          "path": ["auth", "register"]
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "auth",
+                            "register"
+                          ]
                         }
                       },
                       "response": []
@@ -3899,7 +4305,9 @@
                         {
                           "listen": "prerequest",
                           "script": {
-                            "exec": [""],
+                            "exec": [
+                              ""
+                            ],
                             "type": "text/javascript",
                             "packages": {},
                             "requests": {}
@@ -3943,8 +4351,13 @@
                         },
                         "url": {
                           "raw": "{{baseUrl}}/auth/login",
-                          "host": ["{{baseUrl}}"],
-                          "path": ["auth", "login"]
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "auth",
+                            "login"
+                          ]
                         }
                       },
                       "response": []
@@ -3993,8 +4406,13 @@
                         },
                         "url": {
                           "raw": "{{baseUrl}}/auth/register",
-                          "host": ["{{baseUrl}}"],
-                          "path": ["auth", "register"]
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "auth",
+                            "register"
+                          ]
                         }
                       },
                       "response": []
@@ -4005,7 +4423,9 @@
                         {
                           "listen": "prerequest",
                           "script": {
-                            "exec": [""],
+                            "exec": [
+                              ""
+                            ],
                             "type": "text/javascript",
                             "packages": {},
                             "requests": {}
@@ -4049,8 +4469,13 @@
                         },
                         "url": {
                           "raw": "{{baseUrl}}/auth/login",
-                          "host": ["{{baseUrl}}"],
-                          "path": ["auth", "login"]
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "auth",
+                            "login"
+                          ]
                         }
                       },
                       "response": []
@@ -4061,7 +4486,9 @@
                         {
                           "listen": "prerequest",
                           "script": {
-                            "exec": [""],
+                            "exec": [
+                              ""
+                            ],
                             "type": "text/javascript",
                             "packages": {},
                             "requests": {}
@@ -4114,8 +4541,12 @@
                         },
                         "url": {
                           "raw": "{{baseUrl}}/orders",
-                          "host": ["{{baseUrl}}"],
-                          "path": ["orders"]
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "orders"
+                          ]
                         }
                       },
                       "response": []
@@ -4157,8 +4588,13 @@
                         "header": [],
                         "url": {
                           "raw": "{{baseUrl}}/orders/{{owner_order_id}}",
-                          "host": ["{{baseUrl}}"],
-                          "path": ["orders", "{{owner_order_id}}"]
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "orders",
+                            "{{owner_order_id}}"
+                          ]
                         }
                       },
                       "response": []
@@ -4209,8 +4645,14 @@
                         },
                         "url": {
                           "raw": "{{baseUrl}}/orders/{{owner_order_id}}/pay",
-                          "host": ["{{baseUrl}}"],
-                          "path": ["orders", "{{owner_order_id}}", "pay"]
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "orders",
+                            "{{owner_order_id}}",
+                            "pay"
+                          ]
                         }
                       },
                       "response": []
@@ -4261,8 +4703,14 @@
                         },
                         "url": {
                           "raw": "{{baseUrl}}/orders/{{owner_order_id}}/feedback",
-                          "host": ["{{baseUrl}}"],
-                          "path": ["orders", "{{owner_order_id}}", "feedback"]
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "orders",
+                            "{{owner_order_id}}",
+                            "feedback"
+                          ]
                         }
                       },
                       "response": []
@@ -4313,7 +4761,9 @@
                         },
                         "url": {
                           "raw": "{{baseUrl}}/orders/{{owner_order_id}}/request-revision",
-                          "host": ["{{baseUrl}}"],
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
                           "path": [
                             "orders",
                             "{{owner_order_id}}",
@@ -4376,8 +4826,14 @@
                     },
                     "url": {
                       "raw": "{{baseUrl}}/orders/{{recording_order_id}}/status",
-                      "host": ["{{baseUrl}}"],
-                      "path": ["orders", "{{recording_order_id}}", "status"]
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "orders",
+                        "{{recording_order_id}}",
+                        "status"
+                      ]
                     }
                   },
                   "response": []
@@ -4428,8 +4884,14 @@
                     },
                     "url": {
                       "raw": "{{baseUrl}}/orders/{{recording_order_id}}/status",
-                      "host": ["{{baseUrl}}"],
-                      "path": ["orders", "{{recording_order_id}}", "status"]
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "orders",
+                        "{{recording_order_id}}",
+                        "status"
+                      ]
                     }
                   },
                   "response": []
@@ -4480,8 +4942,14 @@
                     },
                     "url": {
                       "raw": "{{baseUrl}}/orders/{{recording_order_id}}/status",
-                      "host": ["{{baseUrl}}"],
-                      "path": ["orders", "{{recording_order_id}}", "status"]
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "orders",
+                        "{{recording_order_id}}",
+                        "status"
+                      ]
                     }
                   },
                   "response": []
@@ -4532,8 +5000,14 @@
                     },
                     "url": {
                       "raw": "{{baseUrl}}/orders/{{recording_order_id}}/status",
-                      "host": ["{{baseUrl}}"],
-                      "path": ["orders", "{{recording_order_id}}", "status"]
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "orders",
+                        "{{recording_order_id}}",
+                        "status"
+                      ]
                     }
                   },
                   "response": []
@@ -4544,419 +5018,960 @@
               "name": "07 - Kiểm thử thanh toán",
               "item": [
                 {
-                  "name": "ORD-PAY-00A - Tạo order riêng để test payment",
-                  "event": [
+                  "name": "00 - Setup dữ liệu payment",
+                  "item": [
                     {
-                      "listen": "test",
-                      "script": {
-                        "type": "text/javascript",
-                        "exec": [
-                          "pm.test(\"HTTP 201\", function () { pm.expect([201]).to.include(pm.response.code); });",
-                          "function bodyJson(){try{return pm.response.json();}catch(e){return {};}}",
-                          "function payload(){const j=bodyJson();return j.data||j;}",
-                          "const p=payload();",
-                          "pm.test(\"payment test order id returned\",()=>pm.expect(p.id).to.exist);",
-                          "if(p.id) pm.environment.set(\"payment_order_id\", String(p.id));"
-                        ]
-                      }
-                    }
-                  ],
-                  "request": {
-                    "auth": {
-                      "type": "bearer",
-                      "bearer": [
+                      "name": "ORD-PAY-02-SETUP - Tạo order pending để test thanh toán lỗi",
+                      "event": [
                         {
-                          "key": "token",
-                          "value": "{{customer_token}}",
-                          "type": "string"
+                          "listen": "test",
+                          "script": {
+                            "type": "text/javascript",
+                            "exec": [
+                              "{",
+                              "  const responseJson = pm.response.json();",
+                              "  const pendingOrderPayload = responseJson.data || responseJson;",
+                              "  pm.test(\"Create pending order for payment tests\", () => {",
+                              "    pm.response.to.have.status(201);",
+                              "    pm.expect(pendingOrderPayload.id).to.exist;",
+                              "  });",
+                              "  pm.environment.set(\"payment_pending_order_id\", String(pendingOrderPayload.id));",
+                              "}"
+                            ]
+                          }
                         }
-                      ]
-                    },
-                    "method": "POST",
-                    "header": [
-                      {
-                        "key": "Content-Type",
-                        "value": "application/json"
-                      },
-                      {
-                        "key": "Accept",
-                        "value": "application/json"
-                      }
-                    ],
-                    "body": {
-                      "mode": "raw",
-                      "raw": "{\n  \"service_type\": \"arrangement\",\n  \"description\": \"Payment flow dedicated order\"\n}",
-                      "options": {
-                        "raw": {
-                          "language": "json"
-                        }
-                      }
-                    },
-                    "url": {
-                      "raw": "{{baseUrl}}/orders",
-                      "host": ["{{baseUrl}}"],
-                      "path": ["orders"]
-                    }
-                  },
-                  "response": []
-                },
-                {
-                  "name": "ORD-PAY-00B - Admin cập nhật payment order sang completed",
-                  "event": [
-                    {
-                      "listen": "test",
-                      "script": {
-                        "type": "text/javascript",
-                        "exec": [
-                          "pm.test(\"HTTP 200\", function () { pm.expect([200]).to.include(pm.response.code); });"
-                        ]
-                      }
-                    }
-                  ],
-                  "request": {
-                    "auth": {
-                      "type": "bearer",
-                      "bearer": [
-                        {
-                          "key": "token",
-                          "value": "{{admin_token}}",
-                          "type": "string"
-                        }
-                      ]
-                    },
-                    "method": "PUT",
-                    "header": [
-                      {
-                        "key": "Content-Type",
-                        "value": "application/json"
-                      },
-                      {
-                        "key": "Accept",
-                        "value": "application/json"
-                      }
-                    ],
-                    "body": {
-                      "mode": "raw",
-                      "raw": "{\n  \"status\": \"completed\"\n}",
-                      "options": {
-                        "raw": {
-                          "language": "json"
-                        }
-                      }
-                    },
-                    "url": {
-                      "raw": "{{baseUrl}}/orders/{{payment_order_id}}/status",
-                      "host": ["{{baseUrl}}"],
-                      "path": ["orders", "{{payment_order_id}}", "status"]
-                    }
-                  },
-                  "response": []
-                },
-                {
-                  "name": "ORD-PAY-01 - Thanh toán order completed đúng amount",
-                  "event": [
-                    {
-                      "listen": "test",
-                      "script": {
-                        "type": "text/javascript",
-                        "exec": [
-                          "pm.test(\"HTTP 200 or 400\", function () { pm.expect([200,400]).to.include(pm.response.code); });"
-                        ]
-                      }
-                    }
-                  ],
-                  "request": {
-                    "auth": {
-                      "type": "bearer",
-                      "bearer": [
-                        {
-                          "key": "token",
-                          "value": "{{customer_token}}",
-                          "type": "string"
-                        }
-                      ]
-                    },
-                    "method": "POST",
-                    "header": [
-                      {
-                        "key": "Content-Type",
-                        "value": "application/json"
-                      },
-                      {
-                        "key": "Accept",
-                        "value": "application/json"
-                      }
-                    ],
-                    "body": {
-                      "mode": "raw",
-                      "raw": "{\n  \"amount\": 300000,\n  \"method\": \"bank_transfer\"\n}",
-                      "options": {
-                        "raw": {
-                          "language": "json"
-                        }
-                      }
-                    },
-                    "url": {
-                      "raw": "{{baseUrl}}/orders/{{transcription_order_id}}/pay",
-                      "host": ["{{baseUrl}}"],
-                      "path": ["orders", "{{transcription_order_id}}", "pay"]
-                    }
-                  },
-                  "response": []
-                },
-                {
-                  "name": "ORD-PAY-04 - Thanh toán sai amount",
-                  "event": [
-                    {
-                      "listen": "test",
-                      "script": {
-                        "type": "text/javascript",
-                        "exec": [
-                          "pm.test(\"HTTP 400\", function () { pm.expect([400]).to.include(pm.response.code); });"
-                        ]
-                      }
-                    }
-                  ],
-                  "request": {
-                    "auth": {
-                      "type": "bearer",
-                      "bearer": [
-                        {
-                          "key": "token",
-                          "value": "{{customer_token}}",
-                          "type": "string"
-                        }
-                      ]
-                    },
-                    "method": "POST",
-                    "header": [
-                      {
-                        "key": "Content-Type",
-                        "value": "application/json"
-                      },
-                      {
-                        "key": "Accept",
-                        "value": "application/json"
-                      }
-                    ],
-                    "body": {
-                      "mode": "raw",
-                      "raw": "{\n  \"amount\": 1,\n  \"method\": \"bank_transfer\"\n}",
-                      "options": {
-                        "raw": {
-                          "language": "json"
-                        }
-                      }
-                    },
-                    "url": {
-                      "raw": "{{baseUrl}}/orders/{{recording_order_id}}/pay",
-                      "host": ["{{baseUrl}}"],
-                      "path": ["orders", "{{recording_order_id}}", "pay"]
-                    }
-                  },
-                  "response": []
-                },
-                {
-                  "name": "ORD-PAY-07 - Tạo payment pending cho order completed",
-                  "event": [
-                    {
-                      "listen": "test",
-                      "script": {
-                        "type": "text/javascript",
-                        "exec": [
-                          "pm.test(\"HTTP 201\", function () { pm.expect([201]).to.include(pm.response.code); });",
-                          "function bodyJson(){try{return pm.response.json();}catch(e){return {};}}",
-                          "function payload(){const j=bodyJson();return j.data||j;}",
-                          "const p=payload();",
-                          "pm.test(\"payment id returned\",()=>pm.expect(p.id).to.exist);",
-                          "if(p.id) pm.environment.set(\"payment_id\", String(p.id));"
-                        ]
-                      }
-                    }
-                  ],
-                  "request": {
-                    "auth": {
-                      "type": "bearer",
-                      "bearer": [
-                        {
-                          "key": "token",
-                          "value": "{{customer_token}}",
-                          "type": "string"
-                        }
-                      ]
-                    },
-                    "method": "POST",
-                    "header": [
-                      {
-                        "key": "Content-Type",
-                        "value": "application/json"
-                      },
-                      {
-                        "key": "Accept",
-                        "value": "application/json"
-                      }
-                    ],
-                    "body": {
-                      "mode": "raw",
-                      "raw": "{\n  \"order_id\": \"{{payment_order_id}}\",\n  \"method\": \"bank_transfer\"\n}",
-                      "options": {
-                        "raw": {
-                          "language": "json"
-                        }
-                      }
-                    },
-                    "url": {
-                      "raw": "{{baseUrl}}/payments",
-                      "host": ["{{baseUrl}}"],
-                      "path": ["payments"]
-                    }
-                  },
-                  "response": []
-                },
-                {
-                  "name": "ORD-PAY-11 - Admin xem danh sách payment",
-                  "event": [
-                    {
-                      "listen": "test",
-                      "script": {
-                        "type": "text/javascript",
-                        "exec": [
-                          "{",
-                          "  pm.test('HTTP 200', function () { pm.expect([200]).to.include(pm.response.code); });",
-                          "  function bodyJson(){try{return pm.response.json();}catch(e){return {};}}",
-                          "  const responseJson = bodyJson();",
-                          "  const paymentPayload = responseJson.data || responseJson;",
-                          "  const paymentList = Array.isArray(paymentPayload) ? paymentPayload : (Array.isArray(paymentPayload.items) ? paymentPayload.items : []);",
-                          "  pm.test('payment list payload exists',()=>pm.expect(Array.isArray(paymentList)).to.eql(true));",
-                          "  pm.test('pagination exists when endpoint is paginated',()=>{ if (!Array.isArray(paymentPayload)) pm.expect(paymentPayload.pagination).to.exist; else pm.expect(true).to.eql(true); });",
-                          "  if (!pm.environment.get('payment_id') && paymentList.length && paymentList[0].id) pm.environment.set('payment_id', String(paymentList[0].id));",
-                          "}"
-                        ]
-                      }
-                    }
-                  ],
-                  "request": {
-                    "auth": {
-                      "type": "bearer",
-                      "bearer": [
-                        {
-                          "key": "token",
-                          "value": "{{admin_token}}",
-                          "type": "string"
-                        }
-                      ]
-                    },
-                    "method": "GET",
-                    "header": [],
-                    "url": {
-                      "raw": "{{baseUrl}}/payments?page=1&limit=10",
-                      "host": ["{{baseUrl}}"],
-                      "path": ["payments"],
-                      "query": [
-                        {
-                          "key": "page",
-                          "value": "1"
+                      ],
+                      "request": {
+                        "auth": {
+                          "type": "bearer",
+                          "bearer": [
+                            {
+                              "key": "token",
+                              "value": "{{customer_token}}",
+                              "type": "string"
+                            }
+                          ]
                         },
-                        {
-                          "key": "limit",
-                          "value": "10"
+                        "method": "POST",
+                        "header": [
+                          {
+                            "key": "Content-Type",
+                            "value": "application/json"
+                          },
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          }
+                        ],
+                        "body": {
+                          "mode": "raw",
+                          "raw": "{\n  \"service_type\": \"arrangement\",\n  \"description\": \"Payment pending order for negative tests\"\n}",
+                          "options": {
+                            "raw": {
+                              "language": "json"
+                            }
+                          }
+                        },
+                        "url": {
+                          "raw": "{{baseUrl}}/orders",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "orders"
+                          ]
                         }
-                      ]
-                    }
-                  },
-                  "response": []
-                },
-                {
-                  "name": "ORD-PAY-14 - Xem chi tiết payment theo id",
-                  "event": [
-                    {
-                      "listen": "test",
-                      "script": {
-                        "type": "text/javascript",
-                        "exec": [
-                          "pm.test(\"HTTP 200\", function () { pm.expect([200]).to.include(pm.response.code); });",
-                          "function bodyJson(){try{return pm.response.json();}catch(e){return {};}}",
-                          "function payload(){const j=bodyJson();return j.data||j;}",
-                          "pm.test(\"payment id matches\",()=>pm.expect(String(payload().id)).to.eql(pm.environment.get('payment_id')));"
-                        ]
-                      }
-                    }
-                  ],
-                  "request": {
-                    "auth": {
-                      "type": "bearer",
-                      "bearer": [
-                        {
-                          "key": "token",
-                          "value": "{{customer_token}}",
-                          "type": "string"
-                        }
-                      ]
-                    },
-                    "method": "GET",
-                    "header": [],
-                    "url": {
-                      "raw": "{{baseUrl}}/payments/{{payment_id}}",
-                      "host": ["{{baseUrl}}"],
-                      "path": ["payments", "{{payment_id}}"]
-                    }
-                  },
-                  "response": []
-                },
-                {
-                  "name": "ORD-PAY-15 - Mock payment success",
-                  "event": [
-                    {
-                      "listen": "test",
-                      "script": {
-                        "type": "text/javascript",
-                        "exec": [
-                          "pm.test(\"HTTP 200\", function () { pm.expect([200]).to.include(pm.response.code); });",
-                          "function bodyJson(){try{return pm.response.json();}catch(e){return {};}}",
-                          "function payload(){const j=bodyJson();return j.data||j;}",
-                          "pm.test(\"transaction id exists\",()=>pm.expect(payload().transaction_id).to.exist);"
-                        ]
-                      }
-                    }
-                  ],
-                  "request": {
-                    "auth": {
-                      "type": "bearer",
-                      "bearer": [
-                        {
-                          "key": "token",
-                          "value": "{{admin_token}}",
-                          "type": "string"
-                        }
-                      ]
-                    },
-                    "method": "POST",
-                    "header": [
-                      {
-                        "key": "Content-Type",
-                        "value": "application/json"
                       },
-                      {
-                        "key": "Accept",
-                        "value": "application/json"
-                      }
-                    ],
-                    "body": {
-                      "mode": "raw",
-                      "raw": "{}",
-                      "options": {
-                        "raw": {
-                          "language": "json"
-                        }
-                      }
+                      "response": []
                     },
-                    "url": {
-                      "raw": "{{baseUrl}}/payments/{{payment_id}}/mock-success",
-                      "host": ["{{baseUrl}}"],
-                      "path": ["payments", "{{payment_id}}", "mock-success"]
+                    {
+                      "name": "ORD-PAY-00A - Tạo order riêng để test payment",
+                      "event": [
+                        {
+                          "listen": "test",
+                          "script": {
+                            "type": "text/javascript",
+                            "exec": [
+                              "{",
+                              "  const responseJson = pm.response.json();",
+                              "  const paymentOrderPayload = responseJson.data || responseJson;",
+                              "  pm.test(\"Create dedicated payment order\", () => {",
+                              "    pm.response.to.have.status(201);",
+                              "    pm.expect(paymentOrderPayload.id).to.exist;",
+                              "  });",
+                              "  pm.environment.set(\"payment_order_id\", String(paymentOrderPayload.id));",
+                              "}"
+                            ]
+                          }
+                        }
+                      ],
+                      "request": {
+                        "auth": {
+                          "type": "bearer",
+                          "bearer": [
+                            {
+                              "key": "token",
+                              "value": "{{customer_token}}",
+                              "type": "string"
+                            }
+                          ]
+                        },
+                        "method": "POST",
+                        "header": [
+                          {
+                            "key": "Content-Type",
+                            "value": "application/json"
+                          },
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          }
+                        ],
+                        "body": {
+                          "mode": "raw",
+                          "raw": "{\r\n  \"service_type\": \"arrangement\",\r\n  \"description\": \"Payment flow dedicated order\"\r\n}",
+                          "options": {
+                            "raw": {
+                              "language": "json"
+                            }
+                          }
+                        },
+                        "url": {
+                          "raw": "{{baseUrl}}/orders",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "orders"
+                          ]
+                        }
+                      },
+                      "response": []
+                    },
+                    {
+                      "name": "ORD-PAY-00B - Admin cập nhật payment order sang completed",
+                      "event": [
+                        {
+                          "listen": "test",
+                          "script": {
+                            "type": "text/javascript",
+                            "exec": [
+                              "pm.test(\"Update payment order to completed\", function () {",
+                              "  pm.response.to.have.status(200);",
+                              "});"
+                            ]
+                          }
+                        }
+                      ],
+                      "request": {
+                        "auth": {
+                          "type": "bearer",
+                          "bearer": [
+                            {
+                              "key": "token",
+                              "value": "{{admin_token}}",
+                              "type": "string"
+                            }
+                          ]
+                        },
+                        "method": "PUT",
+                        "header": [
+                          {
+                            "key": "Content-Type",
+                            "value": "application/json"
+                          },
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          }
+                        ],
+                        "body": {
+                          "mode": "raw",
+                          "raw": "{\n  \"status\": \"completed\"\n}",
+                          "options": {
+                            "raw": {
+                              "language": "json"
+                            }
+                          }
+                        },
+                        "url": {
+                          "raw": "{{baseUrl}}/orders/{{payment_order_id}}/status",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "orders",
+                            "{{payment_order_id}}",
+                            "status"
+                          ]
+                        }
+                      },
+                      "response": []
                     }
-                  },
-                  "response": []
+                  ]
+                },
+                {
+                  "name": "01 - Kiểm thử order pending",
+                  "item": [
+                    {
+                      "name": "ORD-PAY-02 - Không cho thanh toán order đang pending",
+                      "event": [
+                        {
+                          "listen": "test",
+                          "script": {
+                            "type": "text/javascript",
+                            "exec": [
+                              "{",
+                              "  const json = pm.response.json();",
+                              "  pm.test(\"Reject pay request for pending order\", () => {",
+                              "    pm.response.to.have.status(400);",
+                              "    pm.expect(json.success).to.eql(false);",
+                              "    pm.expect(json.message || json.error).to.exist;",
+                              "  });",
+                              "}"
+                            ]
+                          }
+                        }
+                      ],
+                      "request": {
+                        "method": "POST",
+                        "header": [
+                          {
+                            "key": "Content-Type",
+                            "value": "application/json"
+                          },
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          }
+                        ],
+                        "body": {
+                          "mode": "raw",
+                          "raw": "{\n  \"amount\": 800000,\n  \"method\": \"bank_transfer\"\n}",
+                          "options": {
+                            "raw": {
+                              "language": "json"
+                            }
+                          }
+                        },
+                        "url": {
+                          "raw": "{{baseUrl}}/orders/{{payment_pending_order_id}}/pay",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "orders",
+                            "{{payment_pending_order_id}}",
+                            "pay"
+                          ]
+                        },
+                        "auth": {
+                          "type": "bearer",
+                          "bearer": [
+                            {
+                              "key": "token",
+                              "value": "{{customer_token}}",
+                              "type": "string"
+                            }
+                          ]
+                        }
+                      },
+                      "response": []
+                    },
+                    {
+                      "name": "ORD-PAY-05 - Không cho tạo payment cho order đang pending",
+                      "request": {
+                        "method": "POST",
+                        "header": [
+                          {
+                            "key": "Content-Type",
+                            "value": "application/json"
+                          },
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          }
+                        ],
+                        "body": {
+                          "mode": "raw",
+                          "raw": "{\r\n  \"order_id\": \"{{payment_pending_order_id}}\",\r\n  \"method\": \"bank_transfer\"\r\n}",
+                          "options": {
+                            "raw": {
+                              "language": "json"
+                            }
+                          }
+                        },
+                        "url": {
+                          "raw": "{{baseUrl}}/payments",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "payments"
+                          ]
+                        },
+                        "auth": {
+                          "type": "bearer",
+                          "bearer": [
+                            {
+                              "key": "token",
+                              "value": "{{customer_token}}",
+                              "type": "string"
+                            }
+                          ]
+                        }
+                      },
+                      "response": [],
+                      "event": [
+                        {
+                          "listen": "test",
+                          "script": {
+                            "type": "text/javascript",
+                            "exec": [
+                              "{",
+                              "  const json = pm.response.json();",
+                              "  pm.test(\"Reject creating payment for pending order\", () => {",
+                              "    pm.response.to.have.status(400);",
+                              "    pm.expect(json.success).to.eql(false);",
+                              "    pm.expect(json.message || json.error).to.exist;",
+                              "  });",
+                              "}"
+                            ]
+                          }
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "name": "02 - Luồng payment hợp lệ",
+                  "item": [
+                    {
+                      "name": "ORD-PAY-07 - Tạo payment pending cho order completed",
+                      "event": [
+                        {
+                          "listen": "test",
+                          "script": {
+                            "type": "text/javascript",
+                            "exec": [
+                              "{",
+                              "  const responseJson = pm.response.json();",
+                              "  const paymentPayload = responseJson.data || responseJson;",
+                              "  pm.test(\"Create pending payment for completed order\", function () {",
+                              "    pm.response.to.have.status(201);",
+                              "    pm.expect(paymentPayload.id).to.exist;",
+                              "    pm.expect(paymentPayload.status).to.eql(\"pending\");",
+                              "    pm.expect(Number(paymentPayload.amount)).to.eql(800000);",
+                              "  });",
+                              "  pm.environment.set(\"payment_id\", String(paymentPayload.id));",
+                              "}"
+                            ]
+                          }
+                        }
+                      ],
+                      "request": {
+                        "auth": {
+                          "type": "bearer",
+                          "bearer": [
+                            {
+                              "key": "token",
+                              "value": "{{customer_token}}",
+                              "type": "string"
+                            }
+                          ]
+                        },
+                        "method": "POST",
+                        "header": [
+                          {
+                            "key": "Content-Type",
+                            "value": "application/json"
+                          },
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          }
+                        ],
+                        "body": {
+                          "mode": "raw",
+                          "raw": "{\n  \"order_id\": \"{{payment_order_id}}\",\n  \"method\": \"bank_transfer\"\n}",
+                          "options": {
+                            "raw": {
+                              "language": "json"
+                            }
+                          }
+                        },
+                        "url": {
+                          "raw": "{{baseUrl}}/payments",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "payments"
+                          ]
+                        }
+                      },
+                      "response": []
+                    },
+                    {
+                      "name": "ORD-PAY-14 - Xem chi tiết payment theo id",
+                      "event": [
+                        {
+                          "listen": "test",
+                          "script": {
+                            "type": "text/javascript",
+                            "exec": [
+                              "{",
+                              "  const responseJson = pm.response.json();",
+                              "  const paymentPayload = responseJson.data || responseJson;",
+                              "  pm.test(\"Load the payment created in this run\", () => {",
+                              "    pm.response.to.have.status(200);",
+                              "    pm.expect(String(paymentPayload.id)).to.eql(pm.environment.get(\"payment_id\"));",
+                              "    pm.expect(String(paymentPayload.order_id)).to.eql(pm.environment.get(\"payment_order_id\"));",
+                              "  });",
+                              "}"
+                            ]
+                          }
+                        }
+                      ],
+                      "request": {
+                        "auth": {
+                          "type": "bearer",
+                          "bearer": [
+                            {
+                              "key": "token",
+                              "value": "{{customer_token}}",
+                              "type": "string"
+                            }
+                          ]
+                        },
+                        "method": "GET",
+                        "header": [],
+                        "url": {
+                          "raw": "{{baseUrl}}/payments/{{payment_id}}",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "payments",
+                            "{{payment_id}}"
+                          ]
+                        }
+                      },
+                      "response": []
+                    },
+                    {
+                      "name": "ORD-PAY-15 - Mock payment success",
+                      "event": [
+                        {
+                          "listen": "test",
+                          "script": {
+                            "type": "text/javascript",
+                            "exec": [
+                              "{",
+                              "  const responseJson = pm.response.json();",
+                              "  const paymentPayload = responseJson.data || responseJson;",
+                              "  pm.test(\"Mock payment success\", () => {",
+                              "    pm.response.to.have.status(200);",
+                              "    pm.expect(paymentPayload.transaction_id).to.exist;",
+                              "  });",
+                              "}"
+                            ]
+                          }
+                        }
+                      ],
+                      "request": {
+                        "auth": {
+                          "type": "bearer",
+                          "bearer": [
+                            {
+                              "key": "token",
+                              "value": "{{admin_token}}",
+                              "type": "string"
+                            }
+                          ]
+                        },
+                        "method": "POST",
+                        "header": [
+                          {
+                            "key": "Content-Type",
+                            "value": "application/json"
+                          },
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          }
+                        ],
+                        "body": {
+                          "mode": "raw",
+                          "raw": "{}",
+                          "options": {
+                            "raw": {
+                              "language": "json"
+                            }
+                          }
+                        },
+                        "url": {
+                          "raw": "{{baseUrl}}/payments/{{payment_id}}/mock-success",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "payments",
+                            "{{payment_id}}",
+                            "mock-success"
+                          ]
+                        }
+                      },
+                      "response": []
+                    }
+                  ]
+                },
+                {
+                  "name": "03 - Edge case sau khi payment đã paid",
+                  "item": [
+                    {
+                      "name": "ORD-PAY-06 - Không cho tạo payment trùng cho order đã thanh toán",
+                      "event": [
+                        {
+                          "listen": "test",
+                          "script": {
+                            "type": "text/javascript",
+                            "exec": [
+                              "{",
+                              "  const json = pm.response.json();",
+                              "  pm.test(\"Reject creating another payment after order is paid\", () => {",
+                              "    pm.response.to.have.status(400);",
+                              "    pm.expect(json.success).to.eql(false);",
+                              "    pm.expect(json.message || json.error).to.exist;",
+                              "  });",
+                              "}"
+                            ]
+                          }
+                        }
+                      ],
+                      "request": {
+                        "method": "POST",
+                        "header": [
+                          {
+                            "key": "Content-Type",
+                            "value": "application/json"
+                          },
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          }
+                        ],
+                        "body": {
+                          "mode": "raw",
+                          "raw": "{\r\n  \"order_id\": \"{{payment_order_id}}\",\r\n  \"method\": \"bank_transfer\"\r\n}",
+                          "options": {
+                            "raw": {
+                              "language": "json"
+                            }
+                          }
+                        },
+                        "url": {
+                          "raw": "{{baseUrl}}/payments",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "payments"
+                          ]
+                        },
+                        "auth": {
+                          "type": "bearer",
+                          "bearer": [
+                            {
+                              "key": "token",
+                              "value": "{{customer_token}}",
+                              "type": "string"
+                            }
+                          ]
+                        }
+                      },
+                      "response": []
+                    },
+                    {
+                      "name": "ORD-PAY-09 - Không cho mock success payment đã paid",
+                      "event": [
+                        {
+                          "listen": "test",
+                          "script": {
+                            "type": "text/javascript",
+                            "exec": [
+                              "{",
+                              "  const json = pm.response.json();",
+                              "  pm.test(\"Reject mock success for already paid payment\", () => {",
+                              "    pm.response.to.have.status(409);",
+                              "    pm.expect(json.success).to.eql(false);",
+                              "    pm.expect(json.message || json.error).to.exist;",
+                              "  });",
+                              "}"
+                            ]
+                          }
+                        }
+                      ],
+                      "request": {
+                        "method": "POST",
+                        "header": [
+                          {
+                            "key": "Content-Type",
+                            "value": "application/json"
+                          },
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          }
+                        ],
+                        "url": {
+                          "raw": "{{baseUrl}}/payments/{{payment_id}}/mock-success",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "payments",
+                            "{{payment_id}}",
+                            "mock-success"
+                          ]
+                        },
+                        "auth": {
+                          "type": "bearer",
+                          "bearer": [
+                            {
+                              "key": "token",
+                              "value": "{{admin_token}}",
+                              "type": "string"
+                            }
+                          ]
+                        },
+                        "body": {
+                          "mode": "raw",
+                          "raw": "{}",
+                          "options": {
+                            "raw": {
+                              "language": "json"
+                            }
+                          }
+                        }
+                      },
+                      "response": []
+                    },
+                    {
+                      "name": "ORD-PAY-10 - Không cho mock fail payment đã paid",
+                      "event": [
+                        {
+                          "listen": "test",
+                          "script": {
+                            "type": "text/javascript",
+                            "exec": [
+                              "{",
+                              "  const json = pm.response.json();",
+                              "  pm.test(\"Reject mock fail for already paid payment\", () => {",
+                              "    pm.response.to.have.status(409);",
+                              "    pm.expect(json.success).to.eql(false);",
+                              "    pm.expect(json.message || json.error).to.exist;",
+                              "  });",
+                              "}"
+                            ]
+                          }
+                        }
+                      ],
+                      "request": {
+                        "method": "POST",
+                        "header": [
+                          {
+                            "key": "Content-Type",
+                            "value": "application/json"
+                          },
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          }
+                        ],
+                        "url": {
+                          "raw": "{{baseUrl}}/payments/{{payment_id}}/mock-fail",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "payments",
+                            "{{payment_id}}",
+                            "mock-fail"
+                          ]
+                        },
+                        "auth": {
+                          "type": "bearer",
+                          "bearer": [
+                            {
+                              "key": "token",
+                              "value": "{{admin_token}}",
+                              "type": "string"
+                            }
+                          ]
+                        },
+                        "body": {
+                          "mode": "raw",
+                          "raw": "{}",
+                          "options": {
+                            "raw": {
+                              "language": "json"
+                            }
+                          }
+                        }
+                      },
+                      "response": []
+                    }
+                  ]
+                },
+                {
+                  "name": "04 - Truy vấn payment",
+                  "item": [
+                    {
+                      "name": "ORD-PAY-08 - Không cho lọc payment với status không hợp lệ",
+                      "event": [
+                        {
+                          "listen": "test",
+                          "script": {
+                            "type": "text/javascript",
+                            "exec": [
+                              "{",
+                              "  const json = pm.response.json();",
+                              "  pm.test(\"Reject invalid payment status filter\", () => {",
+                              "    pm.response.to.have.status(400);",
+                              "    pm.expect(json.success).to.eql(false);",
+                              "    pm.expect(json.message || json.error).to.include(\"Payment status is invalid\");",
+                              "  });",
+                              "}"
+                            ]
+                          }
+                        }
+                      ],
+                      "request": {
+                        "method": "GET",
+                        "header": [],
+                        "url": {
+                          "raw": "{{baseUrl}}/payments?status=invalid",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "payments"
+                          ],
+                          "query": [
+                            {
+                              "key": "status",
+                              "value": "invalid"
+                            }
+                          ]
+                        },
+                        "auth": {
+                          "type": "bearer",
+                          "bearer": [
+                            {
+                              "key": "token",
+                              "value": "{{admin_token}}",
+                              "type": "string"
+                            }
+                          ]
+                        }
+                      },
+                      "response": []
+                    },
+                    {
+                      "name": "ORD-PAY-11 - Admin xem danh sách payment",
+                      "event": [
+                        {
+                          "listen": "test",
+                          "script": {
+                            "type": "text/javascript",
+                            "exec": [
+                              "{",
+                              "  pm.test(\"Admin can list payments\", function () { pm.response.to.have.status(200); });",
+                              "  function bodyJson(){try{return pm.response.json();}catch(e){return {};}}",
+                              "  const responseJson = bodyJson();",
+                              "  const paymentPayload = responseJson.data || responseJson;",
+                              "  const paymentList = Array.isArray(paymentPayload) ? paymentPayload : (Array.isArray(paymentPayload.items) ? paymentPayload.items : []);",
+                              "  pm.test(\"Payment list is an array\", () => pm.expect(Array.isArray(paymentList)).to.eql(true));",
+                              "  pm.test(\"Pagination exists when endpoint is paginated\", () => {",
+                              "    if (!Array.isArray(paymentPayload)) pm.expect(paymentPayload.pagination).to.exist;",
+                              "    else pm.expect(true).to.eql(true);",
+                              "  });",
+                              "}"
+                            ]
+                          }
+                        }
+                      ],
+                      "request": {
+                        "auth": {
+                          "type": "bearer",
+                          "bearer": [
+                            {
+                              "key": "token",
+                              "value": "{{admin_token}}",
+                              "type": "string"
+                            }
+                          ]
+                        },
+                        "method": "GET",
+                        "header": [],
+                        "url": {
+                          "raw": "{{baseUrl}}/payments?page=1&limit=10",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "payments"
+                          ],
+                          "query": [
+                            {
+                              "key": "page",
+                              "value": "1"
+                            },
+                            {
+                              "key": "limit",
+                              "value": "10"
+                            }
+                          ]
+                        }
+                      },
+                      "response": []
+                    }
+                  ]
+                },
+                {
+                  "name": "05 - Direct /orders/:id/pay hiện có",
+                  "item": [
+                    {
+                      "name": "ORD-PAY-01 - Thanh toán order completed đúng amount",
+                      "event": [
+                        {
+                          "listen": "test",
+                          "script": {
+                            "type": "text/javascript",
+                            "exec": [
+                              "{",
+                              "  const json = pm.response.json();",
+                              "  pm.test(\"Pay completed order with exact amount\", function () {",
+                              "    pm.response.to.have.status(200);",
+                              "    pm.expect(json.message).to.exist;",
+                              "  });",
+                              "}"
+                            ]
+                          }
+                        }
+                      ],
+                      "request": {
+                        "auth": {
+                          "type": "bearer",
+                          "bearer": [
+                            {
+                              "key": "token",
+                              "value": "{{customer_token}}",
+                              "type": "string"
+                            }
+                          ]
+                        },
+                        "method": "POST",
+                        "header": [
+                          {
+                            "key": "Content-Type",
+                            "value": "application/json"
+                          },
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          }
+                        ],
+                        "body": {
+                          "mode": "raw",
+                          "raw": "{\n  \"amount\": 300000,\n  \"method\": \"bank_transfer\"\n}",
+                          "options": {
+                            "raw": {
+                              "language": "json"
+                            }
+                          }
+                        },
+                        "url": {
+                          "raw": "{{baseUrl}}/orders/{{transcription_order_id}}/pay",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "orders",
+                            "{{transcription_order_id}}",
+                            "pay"
+                          ]
+                        }
+                      },
+                      "response": []
+                    },
+                    {
+                      "name": "ORD-PAY-04 - Thanh toán sai amount",
+                      "event": [
+                        {
+                          "listen": "test",
+                          "script": {
+                            "type": "text/javascript",
+                            "exec": [
+                              "{",
+                              "  const json = pm.response.json();",
+                              "  pm.test(\"Reject wrong payment amount\", function () {",
+                              "    pm.response.to.have.status(400);",
+                              "    pm.expect(json.success).to.eql(false);",
+                              "    pm.expect(json.message || json.error).to.exist;",
+                              "  });",
+                              "}"
+                            ]
+                          }
+                        }
+                      ],
+                      "request": {
+                        "auth": {
+                          "type": "bearer",
+                          "bearer": [
+                            {
+                              "key": "token",
+                              "value": "{{customer_token}}",
+                              "type": "string"
+                            }
+                          ]
+                        },
+                        "method": "POST",
+                        "header": [
+                          {
+                            "key": "Content-Type",
+                            "value": "application/json"
+                          },
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          }
+                        ],
+                        "body": {
+                          "mode": "raw",
+                          "raw": "{\n  \"amount\": 1,\n  \"method\": \"bank_transfer\"\n}",
+                          "options": {
+                            "raw": {
+                              "language": "json"
+                            }
+                          }
+                        },
+                        "url": {
+                          "raw": "{{baseUrl}}/orders/{{recording_order_id}}/pay",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "orders",
+                            "{{recording_order_id}}",
+                            "pay"
+                          ]
+                        }
+                      },
+                      "response": []
+                    }
+                  ]
                 }
               ]
             },
@@ -5012,7 +6027,9 @@
                         },
                         "url": {
                           "raw": "{{baseUrl}}/orders/{{transcription_order_id}}/feedback",
-                          "host": ["{{baseUrl}}"],
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
                           "path": [
                             "orders",
                             "{{transcription_order_id}}",
@@ -5068,7 +6085,9 @@
                         },
                         "url": {
                           "raw": "{{baseUrl}}/orders/{{recording_order_id}}/feedback",
-                          "host": ["{{baseUrl}}"],
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
                           "path": [
                             "orders",
                             "{{recording_order_id}}",
@@ -5124,7 +6143,9 @@
                         },
                         "url": {
                           "raw": "{{baseUrl}}/orders/{{transcription_order_id}}/feedback",
-                          "host": ["{{baseUrl}}"],
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
                           "path": [
                             "orders",
                             "{{transcription_order_id}}",
@@ -5180,7 +6201,9 @@
                         },
                         "url": {
                           "raw": "{{baseUrl}}/orders/{{transcription_order_id}}/feedback",
-                          "host": ["{{baseUrl}}"],
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
                           "path": [
                             "orders",
                             "{{transcription_order_id}}",
@@ -5221,7 +6244,9 @@
                         "header": [],
                         "url": {
                           "raw": "{{baseUrl}}/orders/{{transcription_order_id}}/feedback",
-                          "host": ["{{baseUrl}}"],
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
                           "path": [
                             "orders",
                             "{{transcription_order_id}}",
@@ -5298,8 +6323,12 @@
                         },
                         "url": {
                           "raw": "{{baseUrl}}/tasks",
-                          "host": ["{{baseUrl}}"],
-                          "path": ["tasks"]
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "tasks"
+                          ]
                         }
                       },
                       "response": []
@@ -5350,7 +6379,9 @@
                         },
                         "url": {
                           "raw": "{{baseUrl}}/orders/{{recording_order_id}}/request-revision",
-                          "host": ["{{baseUrl}}"],
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
                           "path": [
                             "orders",
                             "{{recording_order_id}}",
@@ -5408,8 +6439,12 @@
                         },
                         "url": {
                           "raw": "{{baseUrl}}/orders",
-                          "host": ["{{baseUrl}}"],
-                          "path": ["orders"]
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "orders"
+                          ]
                         }
                       },
                       "response": []
@@ -5460,7 +6495,9 @@
                         },
                         "url": {
                           "raw": "{{baseUrl}}/orders/{{revision_pending_order_id}}/request-revision",
-                          "host": ["{{baseUrl}}"],
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
                           "path": [
                             "orders",
                             "{{revision_pending_order_id}}",
@@ -5516,7 +6553,9 @@
                         },
                         "url": {
                           "raw": "{{baseUrl}}/orders/{{recording_order_id}}/request-revision",
-                          "host": ["{{baseUrl}}"],
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
                           "path": [
                             "orders",
                             "{{recording_order_id}}",
@@ -5564,8 +6603,13 @@
                     "header": [],
                     "url": {
                       "raw": "{{baseUrl}}/orders/stats",
-                      "host": ["{{baseUrl}}"],
-                      "path": ["orders", "stats"]
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "orders",
+                        "stats"
+                      ]
                     }
                   },
                   "response": []
@@ -5598,8 +6642,13 @@
                     "header": [],
                     "url": {
                       "raw": "{{baseUrl}}/orders/stats",
-                      "host": ["{{baseUrl}}"],
-                      "path": ["orders", "stats"]
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "orders",
+                        "stats"
+                      ]
                     }
                   },
                   "response": []
@@ -5632,8 +6681,13 @@
                     "header": [],
                     "url": {
                       "raw": "{{baseUrl}}/orders/stats",
-                      "host": ["{{baseUrl}}"],
-                      "path": ["orders", "stats"]
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "orders",
+                        "stats"
+                      ]
                     }
                   },
                   "response": []
@@ -5659,8 +6713,13 @@
                     "header": [],
                     "url": {
                       "raw": "{{baseUrl}}/orders/stats",
-                      "host": ["{{baseUrl}}"],
-                      "path": ["orders", "stats"]
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "orders",
+                        "stats"
+                      ]
                     }
                   },
                   "response": []
@@ -5693,8 +6752,13 @@
                     "header": [],
                     "url": {
                       "raw": "{{baseUrl}}/analytics/stats",
-                      "host": ["{{baseUrl}}"],
-                      "path": ["analytics", "stats"]
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "analytics",
+                        "stats"
+                      ]
                     }
                   },
                   "response": []
@@ -5727,8 +6791,13 @@
                     "header": [],
                     "url": {
                       "raw": "{{baseUrl}}/analytics/stats",
-                      "host": ["{{baseUrl}}"],
-                      "path": ["analytics", "stats"]
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "analytics",
+                        "stats"
+                      ]
                     }
                   },
                   "response": []
@@ -5792,8 +6861,14 @@
                     },
                     "url": {
                       "raw": "{{baseUrl}}/orders/{{transcription_order_id}}/status",
-                      "host": ["{{baseUrl}}"],
-                      "path": ["orders", "{{transcription_order_id}}", "status"]
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "orders",
+                        "{{transcription_order_id}}",
+                        "status"
+                      ]
                     }
                   },
                   "response": []
@@ -5844,8 +6919,14 @@
                     },
                     "url": {
                       "raw": "{{baseUrl}}/orders/{{arrangement_order_id}}/status",
-                      "host": ["{{baseUrl}}"],
-                      "path": ["orders", "{{arrangement_order_id}}", "status"]
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "orders",
+                        "{{arrangement_order_id}}",
+                        "status"
+                      ]
                     }
                   },
                   "response": []
@@ -5896,8 +6977,14 @@
                     },
                     "url": {
                       "raw": "{{baseUrl}}/orders/{{recording_order_id}}/status",
-                      "host": ["{{baseUrl}}"],
-                      "path": ["orders", "{{recording_order_id}}", "status"]
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "orders",
+                        "{{recording_order_id}}",
+                        "status"
+                      ]
                     }
                   },
                   "response": []
@@ -5925,8 +7012,12 @@
                     "header": [],
                     "url": {
                       "raw": "{{baseUrl}}/health",
-                      "host": ["{{baseUrl}}"],
-                      "path": ["health"]
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "health"
+                      ]
                     }
                   },
                   "response": []
@@ -5980,8 +7071,13 @@
                     },
                     "url": {
                       "raw": "{{baseUrl}}/auth/login",
-                      "host": ["{{baseUrl}}"],
-                      "path": ["auth", "login"]
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "auth",
+                        "login"
+                      ]
                     }
                   },
                   "response": []
@@ -6020,8 +7116,13 @@
                     "header": [],
                     "url": {
                       "raw": "{{baseUrl}}/notifications/health",
-                      "host": ["{{baseUrl}}"],
-                      "path": ["notifications", "health"]
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "notifications",
+                        "health"
+                      ]
                     }
                   },
                   "response": []
@@ -6073,8 +7174,13 @@
                         },
                         "url": {
                           "raw": "{{baseUrl}}/notifications/send",
-                          "host": ["{{baseUrl}}"],
-                          "path": ["notifications", "send"]
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "notifications",
+                            "send"
+                          ]
                         }
                       },
                       "response": []
@@ -6115,8 +7221,13 @@
                         },
                         "url": {
                           "raw": "{{baseUrl}}/notifications/send",
-                          "host": ["{{baseUrl}}"],
-                          "path": ["notifications", "send"]
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "notifications",
+                            "send"
+                          ]
                         }
                       },
                       "response": []
@@ -6157,8 +7268,13 @@
                         },
                         "url": {
                           "raw": "{{baseUrl}}/notifications/send",
-                          "host": ["{{baseUrl}}"],
-                          "path": ["notifications", "send"]
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "notifications",
+                            "send"
+                          ]
                         }
                       },
                       "response": []
@@ -6199,8 +7315,13 @@
                         },
                         "url": {
                           "raw": "{{baseUrl}}/notifications/send",
-                          "host": ["{{baseUrl}}"],
-                          "path": ["notifications", "send"]
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "notifications",
+                            "send"
+                          ]
                         }
                       },
                       "response": []
@@ -6240,8 +7361,13 @@
                         },
                         "url": {
                           "raw": "{{baseUrl}}/notifications/send",
-                          "host": ["{{baseUrl}}"],
-                          "path": ["notifications", "send"]
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "notifications",
+                            "send"
+                          ]
                         }
                       },
                       "response": []
@@ -6286,8 +7412,13 @@
                         },
                         "url": {
                           "raw": "{{baseUrl}}/notifications/send",
-                          "host": ["{{baseUrl}}"],
-                          "path": ["notifications", "send"]
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "notifications",
+                            "send"
+                          ]
                         }
                       },
                       "response": []
@@ -6327,8 +7458,13 @@
                         },
                         "url": {
                           "raw": "{{baseUrl}}/notifications/send",
-                          "host": ["{{baseUrl}}"],
-                          "path": ["notifications", "send"]
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "notifications",
+                            "send"
+                          ]
                         }
                       },
                       "response": []
@@ -6378,8 +7514,13 @@
                         },
                         "url": {
                           "raw": "{{baseUrl}}/notifications/send",
-                          "host": ["{{baseUrl}}"],
-                          "path": ["notifications", "send"]
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "notifications",
+                            "send"
+                          ]
                         }
                       },
                       "response": []
@@ -6424,8 +7565,13 @@
                         },
                         "url": {
                           "raw": "{{baseUrl}}/notifications/send",
-                          "host": ["{{baseUrl}}"],
-                          "path": ["notifications", "send"]
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "notifications",
+                            "send"
+                          ]
                         }
                       },
                       "response": []
@@ -6490,8 +7636,12 @@
                         },
                         "url": {
                           "raw": "{{baseUrl}}/notifications?page=1&limit=10",
-                          "host": ["{{baseUrl}}"],
-                          "path": ["notifications"],
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "notifications"
+                          ],
                           "query": [
                             {
                               "key": "page",
@@ -6542,8 +7692,12 @@
                         },
                         "url": {
                           "raw": "{{baseUrl}}/notifications?page=1&limit=10",
-                          "host": ["{{baseUrl}}"],
-                          "path": ["notifications"],
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "notifications"
+                          ],
                           "query": [
                             {
                               "key": "page",
@@ -6601,8 +7755,12 @@
                         },
                         "url": {
                           "raw": "{{baseUrl}}/notifications?page=1&limit=10",
-                          "host": ["{{baseUrl}}"],
-                          "path": ["notifications"],
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "notifications"
+                          ],
                           "query": [
                             {
                               "key": "page",
@@ -6658,8 +7816,12 @@
                         "header": [],
                         "url": {
                           "raw": "{{baseUrl}}/notifications?page=0&limit=10",
-                          "host": ["{{baseUrl}}"],
-                          "path": ["notifications"],
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "notifications"
+                          ],
                           "query": [
                             {
                               "key": "page",
@@ -6710,8 +7872,12 @@
                         "header": [],
                         "url": {
                           "raw": "{{baseUrl}}/notifications?page=1&limit=0",
-                          "host": ["{{baseUrl}}"],
-                          "path": ["notifications"],
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "notifications"
+                          ],
                           "query": [
                             {
                               "key": "page",
@@ -6762,8 +7928,12 @@
                         "header": [],
                         "url": {
                           "raw": "{{baseUrl}}/notifications?page=1&limit=100",
-                          "host": ["{{baseUrl}}"],
-                          "path": ["notifications"],
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "notifications"
+                          ],
                           "query": [
                             {
                               "key": "page",
@@ -6814,8 +7984,12 @@
                         "header": [],
                         "url": {
                           "raw": "{{baseUrl}}/notifications?page=1&limit=101",
-                          "host": ["{{baseUrl}}"],
-                          "path": ["notifications"],
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "notifications"
+                          ],
                           "query": [
                             {
                               "key": "page",
@@ -6887,7 +8061,9 @@
                         },
                         "url": {
                           "raw": "{{baseUrl}}/notifications/{{notificationId}}/read",
-                          "host": ["{{baseUrl}}"],
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
                           "path": [
                             "notifications",
                             "{{notificationId}}",
@@ -6934,8 +8110,14 @@
                         "header": [],
                         "url": {
                           "raw": "{{baseUrl}}/notifications/999999/read",
-                          "host": ["{{baseUrl}}"],
-                          "path": ["notifications", "999999", "read"]
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "notifications",
+                            "999999",
+                            "read"
+                          ]
                         }
                       },
                       "response": []
@@ -6973,7 +8155,9 @@
                         },
                         "url": {
                           "raw": "{{baseUrl}}/notifications/{{notificationId}}/read",
-                          "host": ["{{baseUrl}}"],
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
                           "path": [
                             "notifications",
                             "{{notificationId}}",
@@ -7019,8 +8203,14 @@
                         "header": [],
                         "url": {
                           "raw": "{{baseUrl}}/notifications/0/read",
-                          "host": ["{{baseUrl}}"],
-                          "path": ["notifications", "0", "read"]
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "notifications",
+                            "0",
+                            "read"
+                          ]
                         }
                       },
                       "response": []
@@ -7041,7 +8231,9 @@
                 "type": "text/javascript",
                 "packages": {},
                 "requests": {},
-                "exec": [""]
+                "exec": [
+                  ""
+                ]
               }
             },
             {
@@ -7050,7 +8242,9 @@
                 "type": "text/javascript",
                 "packages": {},
                 "requests": {},
-                "exec": [""]
+                "exec": [
+                  ""
+                ]
               }
             }
           ]
@@ -7093,8 +8287,13 @@
                 },
                 "url": {
                   "raw": "{{baseUrl}}/auth/login",
-                  "host": ["{{baseUrl}}"],
-                  "path": ["auth", "login"]
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "auth",
+                    "login"
+                  ]
                 }
               },
               "response": []
@@ -7106,8 +8305,13 @@
                 "header": [],
                 "url": {
                   "raw": "{{baseUrl}}/analytics/stats",
-                  "host": ["{{baseUrl}}"],
-                  "path": ["analytics", "stats"]
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "analytics",
+                    "stats"
+                  ]
                 }
               },
               "response": []
@@ -7119,8 +8323,14 @@
                 "header": [],
                 "url": {
                   "raw": "{{baseUrl}}/analytics/reports/overview",
-                  "host": ["{{baseUrl}}"],
-                  "path": ["analytics", "reports", "overview"]
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "analytics",
+                    "reports",
+                    "overview"
+                  ]
                 }
               },
               "response": []
@@ -7143,7 +8353,9 @@
                 "type": "text/javascript",
                 "packages": {},
                 "requests": {},
-                "exec": [""]
+                "exec": [
+                  ""
+                ]
               }
             },
             {
@@ -7152,7 +8364,9 @@
                 "type": "text/javascript",
                 "packages": {},
                 "requests": {},
-                "exec": [""]
+                "exec": [
+                  ""
+                ]
               }
             }
           ]
@@ -7178,9 +8392,15 @@
                 "url": {
                   "raw": "http://localhost:3007/api/reports/overview",
                   "protocol": "http",
-                  "host": ["localhost"],
+                  "host": [
+                    "localhost"
+                  ],
                   "port": "3007",
-                  "path": ["api", "reports", "overview"]
+                  "path": [
+                    "api",
+                    "reports",
+                    "overview"
+                  ]
                 }
               },
               "response": []
@@ -7202,8 +8422,14 @@
                 "header": [],
                 "url": {
                   "raw": "{{baseUrl}}/analytics/reports/overview",
-                  "host": ["{{baseUrl}}"],
-                  "path": ["analytics", "reports", "overview"]
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "analytics",
+                    "reports",
+                    "overview"
+                  ]
                 }
               },
               "response": []
@@ -7248,8 +8474,13 @@
                 },
                 "url": {
                   "raw": "{{baseUrl}}/auth/login",
-                  "host": ["{{baseUrl}}"],
-                  "path": ["auth", "login"]
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "auth",
+                    "login"
+                  ]
                 }
               },
               "response": []
@@ -7298,8 +8529,12 @@
                 },
                 "url": {
                   "raw": "{{baseUrl}}/orders",
-                  "host": ["{{baseUrl}}"],
-                  "path": ["orders"]
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "orders"
+                  ]
                 }
               },
               "response": []
@@ -7384,8 +8619,13 @@
                 },
                 "url": {
                   "raw": "{{baseUrl}}/files/upload",
-                  "host": ["{{baseUrl}}"],
-                  "path": ["files", "upload"]
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "files",
+                    "upload"
+                  ]
                 }
               },
               "response": []
@@ -7435,8 +8675,15 @@
                 "header": [],
                 "url": {
                   "raw": "{{baseUrl}}/files/files/order/{{orderId}}",
-                  "host": ["{{baseUrl}}"],
-                  "path": ["files", "files", "order", "{{orderId}}"]
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "files",
+                    "files",
+                    "order",
+                    "{{orderId}}"
+                  ]
                 }
               },
               "response": []
@@ -7479,8 +8726,15 @@
                 "header": [],
                 "url": {
                   "raw": "{{baseUrl}}/files/files/download/{{fileId}}\n",
-                  "host": ["{{baseUrl}}"],
-                  "path": ["files", "files", "download", "{{fileId}}\n"]
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "files",
+                    "files",
+                    "download",
+                    "{{fileId}}\n"
+                  ]
                 }
               },
               "response": []
@@ -7503,7 +8757,9 @@
                 "type": "text/javascript",
                 "packages": {},
                 "requests": {},
-                "exec": [""]
+                "exec": [
+                  ""
+                ]
               }
             },
             {
@@ -7512,7 +8768,9 @@
                 "type": "text/javascript",
                 "packages": {},
                 "requests": {},
-                "exec": [""]
+                "exec": [
+                  ""
+                ]
               }
             }
           ]
@@ -7559,8 +8817,13 @@
                 },
                 "url": {
                   "raw": "{{baseUrl}}/auth/login",
-                  "host": ["{{baseUrl}}"],
-                  "path": ["auth", "login"]
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "auth",
+                    "login"
+                  ]
                 }
               },
               "response": []
@@ -7618,8 +8881,13 @@
                 },
                 "url": {
                   "raw": "{{baseUrl}}/studio/bookings",
-                  "host": ["{{baseUrl}}"],
-                  "path": ["studio", "bookings"]
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "studio",
+                    "bookings"
+                  ]
                 }
               },
               "response": []
@@ -7653,8 +8921,15 @@
                 "header": [],
                 "url": {
                   "raw": "{{baseUrl}}/studio/bookings/{{bookingId}}/confirm",
-                  "host": ["{{baseUrl}}"],
-                  "path": ["studio", "bookings", "{{bookingId}}", "confirm"]
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "studio",
+                    "bookings",
+                    "{{bookingId}}",
+                    "confirm"
+                  ]
                 }
               },
               "response": []
@@ -7666,8 +8941,13 @@
                 "header": [],
                 "url": {
                   "raw": "{{baseUrl}}/studio/studios",
-                  "host": ["{{baseUrl}}"],
-                  "path": ["studio", "studios"]
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "studio",
+                    "studios"
+                  ]
                 }
               },
               "response": []
@@ -7690,7 +8970,9 @@
                 "type": "text/javascript",
                 "packages": {},
                 "requests": {},
-                "exec": [""]
+                "exec": [
+                  ""
+                ]
               }
             },
             {
@@ -7699,7 +8981,9 @@
                 "type": "text/javascript",
                 "packages": {},
                 "requests": {},
-                "exec": [""]
+                "exec": [
+                  ""
+                ]
               }
             }
           ]
@@ -7742,8 +9026,13 @@
                 },
                 "url": {
                   "raw": "{{baseUrl}}/auth/login",
-                  "host": ["{{baseUrl}}"],
-                  "path": ["auth", "login"]
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "auth",
+                    "login"
+                  ]
                 }
               },
               "response": []
@@ -7794,8 +9083,13 @@
                 },
                 "url": {
                   "raw": "{{baseUrl}}/auth/register",
-                  "host": ["{{baseUrl}}"],
-                  "path": ["auth", "register"]
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "auth",
+                    "register"
+                  ]
                 }
               },
               "response": []
@@ -7839,8 +9133,13 @@
                 },
                 "url": {
                   "raw": "{{baseUrl}}/auth/login",
-                  "host": ["{{baseUrl}}"],
-                  "path": ["auth", "login"]
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "auth",
+                    "login"
+                  ]
                 }
               },
               "response": []
@@ -7899,8 +9198,12 @@
                 },
                 "url": {
                   "raw": "{{baseUrl}}/orders",
-                  "host": ["{{baseUrl}}"],
-                  "path": ["orders"]
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "orders"
+                  ]
                 }
               },
               "response": []
@@ -7966,8 +9269,12 @@
                 },
                 "url": {
                   "raw": "{{baseUrl}}/tasks",
-                  "host": ["{{baseUrl}}"],
-                  "path": ["tasks"]
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "tasks"
+                  ]
                 }
               },
               "response": []
@@ -8003,8 +9310,14 @@
                 "header": [],
                 "url": {
                   "raw": "{{baseUrl}}/tasks/order/{{task_order_id}}",
-                  "host": ["{{baseUrl}}"],
-                  "path": ["tasks", "order", "{{task_order_id}}"]
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "tasks",
+                    "order",
+                    "{{task_order_id}}"
+                  ]
                 }
               },
               "response": []
@@ -8025,8 +9338,14 @@
                 },
                 "url": {
                   "raw": "{{baseUrl}}/tasks/{{taskId}}/status",
-                  "host": ["{{baseUrl}}"],
-                  "path": ["tasks", "{{taskId}}", "status"]
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "tasks",
+                    "{{taskId}}",
+                    "status"
+                  ]
                 }
               },
               "response": []
@@ -8050,8 +9369,14 @@
                 },
                 "url": {
                   "raw": "{{baseUrl}}/tasks/specialist/5",
-                  "host": ["{{baseUrl}}"],
-                  "path": ["tasks", "specialist", "5"]
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "tasks",
+                    "specialist",
+                    "5"
+                  ]
                 }
               },
               "response": []
@@ -8074,7 +9399,9 @@
                 "type": "text/javascript",
                 "packages": {},
                 "requests": {},
-                "exec": [""]
+                "exec": [
+                  ""
+                ]
               }
             },
             {
@@ -8083,7 +9410,9 @@
                 "type": "text/javascript",
                 "packages": {},
                 "requests": {},
-                "exec": [""]
+                "exec": [
+                  ""
+                ]
               }
             }
           ]
@@ -8105,13 +9434,13 @@
                           "\r",
                           "const json = pm.response.json();\r",
                           "\r",
-                          "pm.test(\"Admin login success\", () => {\r",
+                          "pm.test(\"Artist login success\", () => {\r",
                           "  pm.expect(json.token).to.exist;\r",
-                          "  pm.expect(json.user.role).to.eql(\"admin\");\r",
+                          "  pm.expect(json.user.role).to.eql(\"artist\");\r",
                           "});\r",
                           "\r",
-                          "pm.environment.set(\"admin_token\", json.token);\r",
-                          "pm.environment.set(\"admin_id\", String(json.user.id));"
+                          "pm.environment.set(\"artist_token\", json.token);\r",
+                          "pm.environment.set(\"artist_id\", String(json.user.id));"
                         ],
                         "type": "text/javascript",
                         "packages": {},
@@ -8136,8 +9465,13 @@
                     },
                     "url": {
                       "raw": "{{baseUrl}}/auth/login",
-                      "host": ["{{baseUrl}}"],
-                      "path": ["auth", "login"]
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "auth",
+                        "login"
+                      ]
                     }
                   },
                   "response": []
@@ -8184,8 +9518,13 @@
                     },
                     "url": {
                       "raw": "{{baseUrl}}/auth/login",
-                      "host": ["{{baseUrl}}"],
-                      "path": ["auth", "login"]
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "auth",
+                        "login"
+                      ]
                     }
                   },
                   "response": []
@@ -8232,8 +9571,13 @@
                     },
                     "url": {
                       "raw": "{{baseUrl}}/auth/login",
-                      "host": ["{{baseUrl}}"],
-                      "path": ["auth", "login"]
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "auth",
+                        "login"
+                      ]
                     }
                   },
                   "response": []
@@ -8280,8 +9624,13 @@
                     },
                     "url": {
                       "raw": "{{baseUrl}}/auth/login",
-                      "host": ["{{baseUrl}}"],
-                      "path": ["auth", "login"]
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "auth",
+                        "login"
+                      ]
                     }
                   },
                   "response": []
@@ -8335,8 +9684,12 @@
                     "header": [],
                     "url": {
                       "raw": "{{baseUrl}}/health",
-                      "host": ["{{baseUrl}}"],
-                      "path": ["health"]
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "health"
+                      ]
                     }
                   },
                   "response": []
@@ -8377,8 +9730,12 @@
                     "header": [],
                     "url": {
                       "raw": "{{baseUrl}}/health",
-                      "host": ["{{baseUrl}}"],
-                      "path": ["health"]
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "health"
+                      ]
                     }
                   },
                   "response": []
@@ -8415,8 +9772,13 @@
                     "header": [],
                     "url": {
                       "raw": "{{baseUrl}}/health/all",
-                      "host": ["{{baseUrl}}"],
-                      "path": ["health", "all"]
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "health",
+                        "all"
+                      ]
                     }
                   },
                   "response": []
@@ -8466,8 +9828,13 @@
                     "header": [],
                     "url": {
                       "raw": "{{baseUrl}}/analytics/stats",
-                      "host": ["{{baseUrl}}"],
-                      "path": ["analytics", "stats"]
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "analytics",
+                        "stats"
+                      ]
                     }
                   },
                   "response": []
@@ -8512,8 +9879,14 @@
                     "header": [],
                     "url": {
                       "raw": "{{baseUrl}}/analytics/reports/overview",
-                      "host": ["{{baseUrl}}"],
-                      "path": ["analytics", "reports", "overview"]
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "analytics",
+                        "reports",
+                        "overview"
+                      ]
                     }
                   },
                   "response": []
@@ -8558,8 +9931,13 @@
                     "header": [],
                     "url": {
                       "raw": "{{baseUrl}}/reports/overview",
-                      "host": ["{{baseUrl}}"],
-                      "path": ["reports", "overview"]
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "reports",
+                        "overview"
+                      ]
                     }
                   },
                   "response": []
@@ -8603,8 +9981,13 @@
                     "header": [],
                     "url": {
                       "raw": "{{baseUrl}}/studio/studios",
-                      "host": ["{{baseUrl}}"],
-                      "path": ["studio", "studios"]
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "studio",
+                        "studios"
+                      ]
                     }
                   },
                   "response": []
@@ -8655,8 +10038,13 @@
                     },
                     "url": {
                       "raw": "{{baseUrl}}/studio/bookings",
-                      "host": ["{{baseUrl}}"],
-                      "path": ["studio", "bookings"]
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "studio",
+                        "bookings"
+                      ]
                     }
                   },
                   "response": []
@@ -8697,8 +10085,14 @@
                     "header": [],
                     "url": {
                       "raw": "{{baseUrl}}/studio/bookings/all",
-                      "host": ["{{baseUrl}}"],
-                      "path": ["studio", "bookings", "all"]
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "studio",
+                        "bookings",
+                        "all"
+                      ]
                     }
                   },
                   "response": []
@@ -8739,8 +10133,15 @@
                     "header": [],
                     "url": {
                       "raw": "{{baseUrl}}/studio/bookings/{{bookingId}}/confirm",
-                      "host": ["{{baseUrl}}"],
-                      "path": ["studio", "bookings", "{{bookingId}}", "confirm"]
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "studio",
+                        "bookings",
+                        "{{bookingId}}",
+                        "confirm"
+                      ]
                     }
                   },
                   "response": []
@@ -8781,8 +10182,15 @@
                     "header": [],
                     "url": {
                       "raw": "{{baseUrl}}/studio/bookings/{{bookingId}}/cancel",
-                      "host": ["{{baseUrl}}"],
-                      "path": ["studio", "bookings", "{{bookingId}}", "cancel"]
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "studio",
+                        "bookings",
+                        "{{bookingId}}",
+                        "cancel"
+                      ]
                     }
                   },
                   "response": []
@@ -8823,8 +10231,15 @@
                     "header": [],
                     "url": {
                       "raw": "{{baseUrl}}/studio/bookings/{{bookingId}}/reject",
-                      "host": ["{{baseUrl}}"],
-                      "path": ["studio", "bookings", "{{bookingId}}", "reject"]
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "studio",
+                        "bookings",
+                        "{{bookingId}}",
+                        "reject"
+                      ]
                     }
                   },
                   "response": []
@@ -8853,7 +10268,9 @@
         "type": "text/javascript",
         "packages": {},
         "requests": {},
-        "exec": [""]
+        "exec": [
+          ""
+        ]
       }
     },
     {
@@ -8862,7 +10279,9 @@
         "type": "text/javascript",
         "packages": {},
         "requests": {},
-        "exec": [""]
+        "exec": [
+          ""
+        ]
       }
     }
   ],
