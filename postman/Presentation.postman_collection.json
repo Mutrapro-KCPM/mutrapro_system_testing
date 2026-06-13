@@ -8684,7 +8684,7 @@
                           "bearer": [
                             {
                               "key": "token",
-                              "value": "{{accessToken}}",
+                              "value": "{{auth_token}}",
                               "type": "string"
                             }
                           ]
