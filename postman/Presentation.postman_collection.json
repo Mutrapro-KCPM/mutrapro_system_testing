@@ -1,9 +1,9 @@
 {
   "info": {
-    "_postman_id": "2f51f312-bda3-4ebf-b3f4-fd846ab016e7",
+    "_postman_id": "b324a045-52c9-4f11-8007-6e5516337b25",
     "name": "Presentation",
     "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
-    "_exporter_id": "55039415"
+    "_exporter_id": "48989832"
   },
   "item": [
     {
@@ -5234,6 +5234,16 @@
                         }
                       ],
                       "request": {
+                        "auth": {
+                          "type": "bearer",
+                          "bearer": [
+                            {
+                              "key": "token",
+                              "value": "{{customer_token}}",
+                              "type": "string"
+                            }
+                          ]
+                        },
                         "method": "POST",
                         "header": [
                           {
@@ -5264,7 +5274,31 @@
                             "{{payment_pending_order_id}}",
                             "pay"
                           ]
-                        },
+                        }
+                      },
+                      "response": []
+                    },
+                    {
+                      "name": "ORD-PAY-05 - Không cho tạo payment cho order đang pending",
+                      "event": [
+                        {
+                          "listen": "test",
+                          "script": {
+                            "type": "text/javascript",
+                            "exec": [
+                              "{",
+                              "  const json = pm.response.json();",
+                              "  pm.test(\"Reject creating payment for pending order\", () => {",
+                              "    pm.response.to.have.status(400);",
+                              "    pm.expect(json.success).to.eql(false);",
+                              "    pm.expect(json.message || json.error).to.exist;",
+                              "  });",
+                              "}"
+                            ]
+                          }
+                        }
+                      ],
+                      "request": {
                         "auth": {
                           "type": "bearer",
                           "bearer": [
@@ -5274,13 +5308,7 @@
                               "type": "string"
                             }
                           ]
-                        }
-                      },
-                      "response": []
-                    },
-                    {
-                      "name": "ORD-PAY-05 - Không cho tạo payment cho order đang pending",
-                      "request": {
+                        },
                         "method": "POST",
                         "header": [
                           {
@@ -5309,37 +5337,9 @@
                           "path": [
                             "payments"
                           ]
-                        },
-                        "auth": {
-                          "type": "bearer",
-                          "bearer": [
-                            {
-                              "key": "token",
-                              "value": "{{customer_token}}",
-                              "type": "string"
-                            }
-                          ]
                         }
                       },
-                      "response": [],
-                      "event": [
-                        {
-                          "listen": "test",
-                          "script": {
-                            "type": "text/javascript",
-                            "exec": [
-                              "{",
-                              "  const json = pm.response.json();",
-                              "  pm.test(\"Reject creating payment for pending order\", () => {",
-                              "    pm.response.to.have.status(400);",
-                              "    pm.expect(json.success).to.eql(false);",
-                              "    pm.expect(json.message || json.error).to.exist;",
-                              "  });",
-                              "}"
-                            ]
-                          }
-                        }
-                      ]
+                      "response": []
                     }
                   ]
                 },
@@ -5550,6 +5550,16 @@
                         }
                       ],
                       "request": {
+                        "auth": {
+                          "type": "bearer",
+                          "bearer": [
+                            {
+                              "key": "token",
+                              "value": "{{customer_token}}",
+                              "type": "string"
+                            }
+                          ]
+                        },
                         "method": "POST",
                         "header": [
                           {
@@ -5578,16 +5588,6 @@
                           "path": [
                             "payments"
                           ]
-                        },
-                        "auth": {
-                          "type": "bearer",
-                          "bearer": [
-                            {
-                              "key": "token",
-                              "value": "{{customer_token}}",
-                              "type": "string"
-                            }
-                          ]
                         }
                       },
                       "response": []
@@ -5613,6 +5613,16 @@
                         }
                       ],
                       "request": {
+                        "auth": {
+                          "type": "bearer",
+                          "bearer": [
+                            {
+                              "key": "token",
+                              "value": "{{admin_token}}",
+                              "type": "string"
+                            }
+                          ]
+                        },
                         "method": "POST",
                         "header": [
                           {
@@ -5624,6 +5634,15 @@
                             "value": "application/json"
                           }
                         ],
+                        "body": {
+                          "mode": "raw",
+                          "raw": "{}",
+                          "options": {
+                            "raw": {
+                              "language": "json"
+                            }
+                          }
+                        },
                         "url": {
                           "raw": "{{baseUrl}}/payments/{{payment_id}}/mock-success",
                           "host": [
@@ -5634,25 +5653,6 @@
                             "{{payment_id}}",
                             "mock-success"
                           ]
-                        },
-                        "auth": {
-                          "type": "bearer",
-                          "bearer": [
-                            {
-                              "key": "token",
-                              "value": "{{admin_token}}",
-                              "type": "string"
-                            }
-                          ]
-                        },
-                        "body": {
-                          "mode": "raw",
-                          "raw": "{}",
-                          "options": {
-                            "raw": {
-                              "language": "json"
-                            }
-                          }
                         }
                       },
                       "response": []
@@ -5678,6 +5678,16 @@
                         }
                       ],
                       "request": {
+                        "auth": {
+                          "type": "bearer",
+                          "bearer": [
+                            {
+                              "key": "token",
+                              "value": "{{admin_token}}",
+                              "type": "string"
+                            }
+                          ]
+                        },
                         "method": "POST",
                         "header": [
                           {
@@ -5689,6 +5699,15 @@
                             "value": "application/json"
                           }
                         ],
+                        "body": {
+                          "mode": "raw",
+                          "raw": "{}",
+                          "options": {
+                            "raw": {
+                              "language": "json"
+                            }
+                          }
+                        },
                         "url": {
                           "raw": "{{baseUrl}}/payments/{{payment_id}}/mock-fail",
                           "host": [
@@ -5699,25 +5718,6 @@
                             "{{payment_id}}",
                             "mock-fail"
                           ]
-                        },
-                        "auth": {
-                          "type": "bearer",
-                          "bearer": [
-                            {
-                              "key": "token",
-                              "value": "{{admin_token}}",
-                              "type": "string"
-                            }
-                          ]
-                        },
-                        "body": {
-                          "mode": "raw",
-                          "raw": "{}",
-                          "options": {
-                            "raw": {
-                              "language": "json"
-                            }
-                          }
                         }
                       },
                       "response": []
@@ -5748,6 +5748,16 @@
                         }
                       ],
                       "request": {
+                        "auth": {
+                          "type": "bearer",
+                          "bearer": [
+                            {
+                              "key": "token",
+                              "value": "{{admin_token}}",
+                              "type": "string"
+                            }
+                          ]
+                        },
                         "method": "GET",
                         "header": [],
                         "url": {
@@ -5762,16 +5772,6 @@
                             {
                               "key": "status",
                               "value": "invalid"
-                            }
-                          ]
-                        },
-                        "auth": {
-                          "type": "bearer",
-                          "bearer": [
-                            {
-                              "key": "token",
-                              "value": "{{admin_token}}",
-                              "type": "string"
                             }
                           ]
                         }
@@ -8221,7 +8221,307 @@
             },
             {
               "name": "Đăng Ký Thiết Bị",
-              "item": []
+              "item": [
+                {
+                  "name": "EP",
+                  "item": [
+                    {
+                      "name": "noti-device-ep-01",
+                      "event": [
+                        {
+                          "listen": "test",
+                          "script": {
+                            "exec": [
+                              "pm.test(\"NOTI-DEVICE-EP-01 status 200\", () => {\r",
+                              "  pm.response.to.have.status(200);\r",
+                              "});\r",
+                              "\r",
+                              "pm.test(\"NOTI-DEVICE-EP-01 response has message\", () => {\r",
+                              "  const json = pm.response.json();\r",
+                              "  pm.expect(json).to.have.property(\"message\");\r",
+                              "});"
+                            ],
+                            "type": "text/javascript",
+                            "packages": {},
+                            "requests": {}
+                          }
+                        }
+                      ],
+                      "request": {
+                        "method": "POST",
+                        "header": [],
+                        "body": {
+                          "mode": "raw",
+                          "raw": "{\r\n  \"userId\": \"{{userId}}\",\r\n  \"fcmToken\": \"FAKE_FCM_TOKEN_FOR_POSTMAN\"\r\n}",
+                          "options": {
+                            "raw": {
+                              "language": "json"
+                            }
+                          }
+                        },
+                        "url": {
+                          "raw": "{{baseUrl}}/notifications/register-device",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "notifications",
+                            "register-device"
+                          ]
+                        }
+                      },
+                      "response": []
+                    },
+                    {
+                      "name": "noti-device-ep-02",
+                      "event": [
+                        {
+                          "listen": "test",
+                          "script": {
+                            "exec": [
+                              "pm.test(\"NOTI-DEVICE-EP-02 status 400\", () => {\r",
+                              "  pm.response.to.have.status(400);\r",
+                              "});\r",
+                              "\r",
+                              "pm.test(\"NOTI-DEVICE-EP-02 response has error\", () => {\r",
+                              "  const json = pm.response.json();\r",
+                              "  pm.expect(json).to.have.property(\"error\");\r",
+                              "});"
+                            ],
+                            "type": "text/javascript",
+                            "packages": {},
+                            "requests": {}
+                          }
+                        }
+                      ],
+                      "request": {
+                        "method": "POST",
+                        "header": [],
+                        "body": {
+                          "mode": "raw",
+                          "raw": "{\r\n  \"fcmToken\": \"FAKE_FCM_TOKEN_FOR_POSTMAN\"\r\n}",
+                          "options": {
+                            "raw": {
+                              "language": "json"
+                            }
+                          }
+                        },
+                        "url": {
+                          "raw": "{{baseUrl}}/notifications/register-device",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "notifications",
+                            "register-device"
+                          ]
+                        }
+                      },
+                      "response": []
+                    },
+                    {
+                      "name": "noti-device-ep-03",
+                      "event": [
+                        {
+                          "listen": "test",
+                          "script": {
+                            "exec": [
+                              "pm.test(\"NOTI-DEVICE-EP-03 status 400\", () => {\r",
+                              "  pm.response.to.have.status(400);\r",
+                              "});\r",
+                              "\r",
+                              "pm.test(\"NOTI-DEVICE-EP-03 response has error\", () => {\r",
+                              "  const json = pm.response.json();\r",
+                              "  pm.expect(json).to.have.property(\"error\");\r",
+                              "});"
+                            ],
+                            "type": "text/javascript",
+                            "packages": {},
+                            "requests": {}
+                          }
+                        }
+                      ],
+                      "request": {
+                        "method": "POST",
+                        "header": [],
+                        "body": {
+                          "mode": "raw",
+                          "raw": "{\r\n  \"userId\": \"{{userId}}\"\r\n}",
+                          "options": {
+                            "raw": {
+                              "language": "json"
+                            }
+                          }
+                        },
+                        "url": {
+                          "raw": "{{baseUrl}}/notifications/register-device",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "notifications",
+                            "register-device"
+                          ]
+                        }
+                      },
+                      "response": []
+                    }
+                  ]
+                },
+                {
+                  "name": "BVA",
+                  "item": [
+                    {
+                      "name": "noti-device-bva-01",
+                      "event": [
+                        {
+                          "listen": "test",
+                          "script": {
+                            "exec": [
+                              "pm.test(\"NOTI-DEVICE-BVA-01 status 400\", () => {\r",
+                              "  pm.response.to.have.status(400);\r",
+                              "});"
+                            ],
+                            "type": "text/javascript",
+                            "packages": {},
+                            "requests": {}
+                          }
+                        }
+                      ],
+                      "request": {
+                        "method": "POST",
+                        "header": [],
+                        "body": {
+                          "mode": "raw",
+                          "raw": "{\r\n  \"userId\": \"{{userId}}\",\r\n  \"fcmToken\": \"\"\r\n}",
+                          "options": {
+                            "raw": {
+                              "language": "json"
+                            }
+                          }
+                        },
+                        "url": {
+                          "raw": "{{baseUrl}}/notifications/register-device",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "notifications",
+                            "register-device"
+                          ]
+                        }
+                      },
+                      "response": []
+                    },
+                    {
+                      "name": "noti-device-bva-02",
+                      "event": [
+                        {
+                          "listen": "test",
+                          "script": {
+                            "exec": [
+                              "pm.test(\"NOTI-DEVICE-BVA-02 status 200\", () => {\r",
+                              "  pm.response.to.have.status(200);\r",
+                              "});"
+                            ],
+                            "type": "text/javascript",
+                            "packages": {},
+                            "requests": {}
+                          }
+                        },
+                        {
+                          "listen": "prerequest",
+                          "script": {
+                            "exec": [
+                              "pm.environment.set(\"fcm_255\", \"F\".repeat(255));"
+                            ],
+                            "type": "text/javascript",
+                            "packages": {},
+                            "requests": {}
+                          }
+                        }
+                      ],
+                      "request": {
+                        "method": "POST",
+                        "header": [],
+                        "body": {
+                          "mode": "raw",
+                          "raw": "{\r\n  \"userId\": \"{{userId}}\",\r\n  \"fcmToken\": \"{{fcm_255}}\"\r\n}",
+                          "options": {
+                            "raw": {
+                              "language": "json"
+                            }
+                          }
+                        },
+                        "url": {
+                          "raw": "{{baseUrl}}/notifications/register-device",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "notifications",
+                            "register-device"
+                          ]
+                        }
+                      },
+                      "response": []
+                    },
+                    {
+                      "name": "noti-device-bva-03",
+                      "event": [
+                        {
+                          "listen": "test",
+                          "script": {
+                            "exec": [
+                              "pm.test(\"NOTI-DEVICE-BVA-03 current behavior status 500\", () => {\r",
+                              "  pm.response.to.have.status(500);\r",
+                              "});;"
+                            ],
+                            "type": "text/javascript",
+                            "packages": {},
+                            "requests": {}
+                          }
+                        },
+                        {
+                          "listen": "prerequest",
+                          "script": {
+                            "exec": [
+                              "pm.environment.set(\"fcm_255\", \"F\".repeat(256));"
+                            ],
+                            "type": "text/javascript",
+                            "packages": {},
+                            "requests": {}
+                          }
+                        }
+                      ],
+                      "request": {
+                        "method": "POST",
+                        "header": [],
+                        "body": {
+                          "mode": "raw",
+                          "raw": "{\r\n  \"userId\": \"{{userId}}\",\r\n  \"fcmToken\": \"{{fcm_256}}\"\r\n}",
+                          "options": {
+                            "raw": {
+                              "language": "json"
+                            }
+                          }
+                        },
+                        "url": {
+                          "raw": "{{baseUrl}}/notifications/register-device",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "notifications",
+                            "register-device"
+                          ]
+                        }
+                      },
+                      "response": []
+                    }
+                  ]
+                }
+              ]
             }
           ],
           "event": [
