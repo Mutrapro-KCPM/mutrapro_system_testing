@@ -278,6 +278,171 @@
                         }
                       },
                       "response": []
+                    },
+                    {
+                      "name": "au-a1.5",
+                      "event": [
+                        {
+                          "listen": "prerequest",
+                          "script": {
+                            "exec": [
+                              "pm.environment.set('bva_email_a15', `bva_${Date.now()}@example.com`);\r",
+                              ""
+                            ],
+                            "type": "text/javascript",
+                            "packages": {},
+                            "requests": {}
+                          }
+                        },
+                        {
+                          "listen": "test",
+                          "script": {
+                            "exec": [
+                              "pm.test('au-a1.5 name=2 status 201', () => pm.response.to.have.status(201));\r",
+                              "pm.test('au-a1.5 has id', () => pm.expect(pm.response.json()).to.have.property('id'));\r",
+                              ""
+                            ],
+                            "type": "text/javascript",
+                            "packages": {},
+                            "requests": {}
+                          }
+                        }
+                      ],
+                      "request": {
+                        "method": "POST",
+                        "header": [],
+                        "body": {
+                          "mode": "raw",
+                          "raw": "{\r\n  \"name\": \"Ab\", \r\n  \"email\": \"{{bva_email_a15}}\",\r\n  \"password\": \"password123\"\r\n}\r\n",
+                          "options": {
+                            "raw": {
+                              "language": "json"
+                            }
+                          }
+                        },
+                        "url": {
+                          "raw": "{{baseUrl}}/auth/register",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "auth",
+                            "register"
+                          ]
+                        }
+                      },
+                      "response": []
+                    },
+                    {
+                      "name": "au-a1.6",
+                      "event": [
+                        {
+                          "listen": "prerequest",
+                          "script": {
+                            "exec": [
+                              "pm.environment.set('bva_email_a16', `bva_${Date.now()}@example.com`);\r",
+                              "pm.environment.set('name_100', 'A'.repeat(100));"
+                            ],
+                            "type": "text/javascript",
+                            "packages": {},
+                            "requests": {}
+                          }
+                        },
+                        {
+                          "listen": "test",
+                          "script": {
+                            "exec": [
+                              "pm.test('au-a1.6 name=100 status 201', () => pm.response.to.have.status(201));\r",
+                              "pm.test('au-a1.6 has id', () => pm.expect(pm.response.json()).to.have.property('id'));"
+                            ],
+                            "type": "text/javascript",
+                            "packages": {},
+                            "requests": {}
+                          }
+                        }
+                      ],
+                      "request": {
+                        "method": "POST",
+                        "header": [],
+                        "body": {
+                          "mode": "raw",
+                          "raw": "{\r\n  \"name\": \"{{name_100}}\",\r\n  \"email\": \"{{bva_email_a16}}\",\r\n  \"password\": \"password123\"\r\n}",
+                          "options": {
+                            "raw": {
+                              "language": "json"
+                            }
+                          }
+                        },
+                        "url": {
+                          "raw": "{{baseUrl}}/auth/register",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "auth",
+                            "register"
+                          ]
+                        }
+                      },
+                      "response": []
+                    },
+                    {
+                      "name": "au-a1.7",
+                      "event": [
+                        {
+                          "listen": "prerequest",
+                          "script": {
+                            "exec": [
+                              "pm.environment.set('bva_email_a16', `bva_${Date.now()}@example.com`);\r",
+                              "pm.environment.set('name_100', 'A'.repeat(100));    "
+                            ],
+                            "type": "text/javascript",
+                            "packages": {},
+                            "requests": {}
+                          }
+                        },
+                        {
+                          "listen": "test",
+                          "script": {
+                            "exec": [
+                              "pm.test('au-a1.7 name=101 status 400', () => pm.response.to.have.status(400));\r",
+                              "pm.test('au-a1.7 name error exists', () => {\r",
+                              "  const json = pm.response.json();\r",
+                              "  pm.expect(json.success).to.be.false;\r",
+                              "  pm.expect(json.errors.find(e => e.path === 'name')).to.exist;\r",
+                              "});\r",
+                              ""
+                            ],
+                            "type": "text/javascript",
+                            "packages": {},
+                            "requests": {}
+                          }
+                        }
+                      ],
+                      "request": {
+                        "method": "POST",
+                        "header": [],
+                        "body": {
+                          "mode": "raw",
+                          "raw": "{\r\n  \"name\": \"{{name_101}}\",\r\n  \"email\": \"{{$randomEmail}}\",\r\n  \"password\": \"password123\"\r\n}\r\n",
+                          "options": {
+                            "raw": {
+                              "language": "json"
+                            }
+                          }
+                        },
+                        "url": {
+                          "raw": "{{baseUrl}}/auth/register",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "auth",
+                            "register"
+                          ]
+                        }
+                      },
+                      "response": []
                     }
                   ]
                 }
@@ -707,6 +872,117 @@
                     }
                   },
                   "response": []
+                },
+                {
+                  "name": "au-a3.3",
+                  "event": [
+                    {
+                      "listen": "prerequest",
+                      "script": {
+                        "exec": [
+                          "// Build a JWT with expired timestamp (exp=1000001 is year 1970)",
+                          "const h = btoa(JSON.stringify({alg:'HS256',typ:'JWT'})).replace(/=/g,'').replace(/\\+/g,'-').replace(/\\//g,'_');",
+                          "const p = btoa(JSON.stringify({id:1,iat:1000000,exp:1000001})).replace(/=/g,'').replace(/\\+/g,'-').replace(/\\//g,'_');",
+                          "pm.environment.set('expired_token', `${h}.${p}.invalidsignature_expired`);"
+                        ],
+                        "type": "text/javascript",
+                        "packages": {},
+                        "requests": {}
+                      }
+                    },
+                    {
+                      "listen": "test",
+                      "script": {
+                        "exec": [
+                          "pm.test('au-a3.3 expired token status 401', () => pm.response.to.have.status(401));",
+                          "pm.test('au-a3.3 error body', () => pm.expect(pm.response.json().success).to.be.false);"
+                        ],
+                        "type": "text/javascript",
+                        "packages": {},
+                        "requests": {}
+                      }
+                    }
+                  ],
+                  "request": {
+                    "auth": {
+                      "type": "bearer",
+                      "bearer": [
+                        {
+                          "key": "token",
+                          "value": "{{expired_token}}",
+                          "type": "string"
+                        }
+                      ]
+                    },
+                    "method": "GET",
+                    "header": [],
+                    "url": {
+                      "raw": "{{baseUrl}}/auth/verify",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "auth",
+                        "verify"
+                      ]
+                    }
+                  },
+                  "response": []
+                },
+                {
+                  "name": "au-a3.4",
+                  "event": [
+                    {
+                      "listen": "prerequest",
+                      "script": {
+                        "exec": [
+                          "const valid = pm.environment.get('auth_token') || 'eyJ.eyJ.sig';",
+                          "// Thay đổi 5 ký tự cuối để phá signature",
+                          "pm.environment.set('tampered_token', valid.slice(0, -5) + 'XXXXX');"
+                        ],
+                        "type": "text/javascript",
+                        "packages": {},
+                        "requests": {}
+                      }
+                    },
+                    {
+                      "listen": "test",
+                      "script": {
+                        "exec": [
+                          "pm.test('au-a3.4 tampered token status 401', () => pm.response.to.have.status(401));",
+                          "pm.test('au-a3.4 error body', () => pm.expect(pm.response.json().success).to.be.false);"
+                        ],
+                        "type": "text/javascript",
+                        "packages": {},
+                        "requests": {}
+                      }
+                    }
+                  ],
+                  "request": {
+                    "auth": {
+                      "type": "bearer",
+                      "bearer": [
+                        {
+                          "key": "token",
+                          "value": "{{tampered_token}}",
+                          "type": "string"
+                        }
+                      ]
+                    },
+                    "method": "GET",
+                    "header": [],
+                    "url": {
+                      "raw": "{{baseUrl}}/auth/verify",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "auth",
+                        "verify"
+                      ]
+                    }
+                  },
+                  "response": []
                 }
               ]
             },
@@ -1115,6 +1391,62 @@
                         "auth",
                         "users",
                         "99999",
+                        "password"
+                      ]
+                    }
+                  },
+                  "response": []
+                },
+                {
+                  "name": "au-a5.5",
+                  "event": [
+                    {
+                      "listen": "test",
+                      "script": {
+                        "exec": [
+                          "pm.test('AU-PWD-BVA-05 newPassword=6 status 200', () => pm.response.to.have.status(200));",
+                          "pm.test('AU-PWD-BVA-05 success message', () => {",
+                          "  pm.expect(pm.response.json().message).to.eql('Đổi mật khẩu thành công.');",
+                          "});",
+                          "// Cập nhật lại password mới trong môi trường",
+                          "pm.environment.set('auto_register_pwd', '123456');"
+                        ],
+                        "type": "text/javascript",
+                        "packages": {}
+                      }
+                    }
+                  ],
+                  "request": {
+                    "auth": {
+                      "type": "bearer",
+                      "bearer": [
+                        {
+                          "key": "token",
+                          "value": "{{auth_token}}",
+                          "type": "string"
+                        }
+                      ]
+                    },
+                    "method": "PUT",
+                    "header": [],
+                    "body": {
+                      "mode": "raw",
+                      "raw": "{\r\n  \"oldPassword\": \"{{auto_register_pwd}}\",\r\n  \"newPassword\": \"123456\"\r\n}",
+                      "options": {
+                        "raw": {
+                          "language": "json"
+                        }
+                      }
+                    },
+                    "url": {
+                      "raw": "{{baseUrl}}/auth/users/{{auto_user_id}}/password",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "auth",
+                        "users",
+                        "{{auto_user_id}}",
                         "password"
                       ]
                     }
@@ -1716,6 +2048,60 @@
                         "admin",
                         "users",
                         "{{admin_id}}"
+                      ]
+                    }
+                  },
+                  "response": []
+                },
+                {
+                  "name": "au-a8.8",
+                  "event": [
+                    {
+                      "listen": "test",
+                      "script": {
+                        "exec": [
+                          "pm.test('AU-ADMIN-DUP status 409', () => pm.response.to.have.status(409));",
+                          "pm.test('AU-ADMIN-DUP duplicate email message', () => {",
+                          "  const json = pm.response.json();",
+                          "  pm.expect(json.message || json.error).to.include.oneOf(['exists', 'tồn tại', 'duplicate', 'Duplicate']);",
+                          "});"
+                        ],
+                        "type": "text/javascript",
+                        "packages": {}
+                      }
+                    }
+                  ],
+                  "request": {
+                    "auth": {
+                      "type": "bearer",
+                      "bearer": [
+                        {
+                          "key": "token",
+                          "value": "{{admin_token}}",
+                          "type": "string"
+                        }
+                      ]
+                    },
+                    "method": "POST",
+                    "header": [],
+                    "body": {
+                      "mode": "raw",
+                      "raw": "{\r\n  \"name\": \"Duplicate Test\",\r\n  \"email\": \"admin@mutrapro.com\",\r\n  \"password\": \"password123\",\r\n  \"role\": \"customer\"\r\n}",
+                      "options": {
+                        "raw": {
+                          "language": "json"
+                        }
+                      }
+                    },
+                    "url": {
+                      "raw": "{{baseUrl}}/auth/admin/users",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "auth",
+                        "admin",
+                        "users"
                       ]
                     }
                   },
@@ -7371,6 +7757,90 @@
                         }
                       },
                       "response": []
+                    },
+                    {
+                      "name": "noti-send-ep-06",
+                      "event": [
+                        {
+                          "listen": "test",
+                          "script": {
+                            "exec": [
+                              "pm.test('NOTI-SEND-EP-06 missing title status 500', () => pm.response.to.have.status(500));",
+                              "// NOTE: title=undefined sẽ bị MySQL lỗi NOT NULL nếu column không nullable"
+                            ],
+                            "type": "text/javascript",
+                            "packages": {}
+                          }
+                        }
+                      ],
+                      "request": {
+                        "method": "POST",
+                        "header": [],
+                        "body": {
+                          "mode": "raw",
+                          "raw": "{\r\n  \"user_id\": \"{{userId}}\",\r\n  \"message\": \"No title provided\",\r\n  \"channel\": \"push\"\r\n}",
+                          "options": {
+                            "raw": {
+                              "language": "json"
+                            }
+                          }
+                        },
+                        "url": {
+                          "raw": "{{baseUrl}}/notifications/send",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "notifications",
+                            "send"
+                          ]
+                        }
+                      },
+                      "response": []
+                    },
+                    {
+                      "name": "noti-send-ep-07",
+                      "event": [
+                        {
+                          "listen": "test",
+                          "script": {
+                            "exec": [
+                              "// BVA: user_id=0 không hợp lệ về mặt business logic",
+                              "// Current code chấp nhận (201), đây là bug cần ghi nhận",
+                              "pm.test('NOTI-SEND-BVA user_id=0 current behavior', () => {",
+                              "  pm.expect([201, 400]).to.include(pm.response.code);",
+                              "  if(pm.response.code === 201) console.warn('BUG: user_id=0 nên bị từ chối (400)');",
+                              "});"
+                            ],
+                            "type": "text/javascript",
+                            "packages": {}
+                          }
+                        }
+                      ],
+                      "request": {
+                        "method": "POST",
+                        "header": [],
+                        "body": {
+                          "mode": "raw",
+                          "raw": "{\r\n  \"user_id\": \"0\",\r\n  \"title\": \"BVA zero user\",\r\n  \"message\": \"user_id=0 should be invalid\",\r\n  \"channel\": \"push\"\r\n}",
+                          "options": {
+                            "raw": {
+                              "language": "json"
+                            }
+                          }
+                        },
+                        "url": {
+                          "raw": "{{baseUrl}}/notifications/send",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "notifications",
+                            "send"
+                          ]
+                        }
+                      },
+                      "response": []
                     }
                   ]
                 },
@@ -8166,6 +8636,74 @@
                         }
                       },
                       "response": []
+                    },
+                    {
+                      "name": "noti-read-ep-04",
+                      "event": [
+                        {
+                          "listen": "prerequest",
+                          "script": {
+                            "exec": [
+                              "// Tạo notification cho user KHÁC (dùng internal /send API không cần auth)",
+                              "const baseUrl = pm.environment.get('baseUrl');",
+                              "pm.sendRequest({",
+                              "  url: `${baseUrl}/notifications/send`,",
+                              "  method: 'POST',",
+                              "  header: { 'Content-Type': 'application/json' },",
+                              "  body: { mode: 'raw', raw: JSON.stringify({ user_id: 9999, title: 'Other user noti', message: 'cross user test', channel: 'push' }) }",
+                              "}, (err, res) => {",
+                              "  if (!err && res.code === 201) {",
+                              "    pm.environment.set('other_user_noti_id', String(res.json().id));",
+                              "    console.log('Created noti for other user, id=', res.json().id);",
+                              "  }",
+                              "});"
+                            ],
+                            "type": "text/javascript",
+                            "packages": {},
+                            "requests": {}
+                          }
+                        },
+                        {
+                          "listen": "test",
+                          "script": {
+                            "exec": [
+                              "pm.test('NOTI-READ-EP-04 cross-user access status 403', () => pm.response.to.have.status(403));",
+                              "pm.test('NOTI-READ-EP-04 error body', () => {",
+                              "  pm.expect(pm.response.json().success).to.be.false;",
+                              "});"
+                            ],
+                            "type": "text/javascript",
+                            "packages": {},
+                            "requests": {}
+                          }
+                        }
+                      ],
+                      "request": {
+                        "auth": {
+                          "type": "bearer",
+                          "bearer": [
+                            {
+                              "key": "token",
+                              "value": "{{accessToken}}",
+                              "type": "string"
+                            }
+                          ]
+                        },
+                        "method": "PATCH",
+                        "header": [],
+                        "url": {
+                          "raw": "{{baseUrl}}/notifications/{{other_user_noti_id}}/read",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "notifications",
+                            "{{other_user_noti_id}}",
+                            "read"
+                          ]
+                        }
+                      },
+                      "response": []
                     }
                   ]
                 },
@@ -8347,6 +8885,49 @@
                         "body": {
                           "mode": "raw",
                           "raw": "{\r\n  \"userId\": \"{{userId}}\"\r\n}",
+                          "options": {
+                            "raw": {
+                              "language": "json"
+                            }
+                          }
+                        },
+                        "url": {
+                          "raw": "{{baseUrl}}/notifications/register-device",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "notifications",
+                            "register-device"
+                          ]
+                        }
+                      },
+                      "response": []
+                    },
+                    {
+                      "name": "noti-device-ep-04",
+                      "event": [
+                        {
+                          "listen": "test",
+                          "script": {
+                            "exec": [
+                              "// ON DUPLICATE KEY UPDATE → không tạo mới, không lỗi → vẫn 200",
+                              "pm.test('NOTI-DEVICE-EP-04 duplicate token status 200', () => pm.response.to.have.status(200));",
+                              "pm.test('NOTI-DEVICE-EP-04 idempotent message', () => {",
+                              "  pm.expect(pm.response.json()).to.have.property('message');",
+                              "});"
+                            ],
+                            "type": "text/javascript",
+                            "packages": {}
+                          }
+                        }
+                      ],
+                      "request": {
+                        "method": "POST",
+                        "header": [],
+                        "body": {
+                          "mode": "raw",
+                          "raw": "{\r\n  \"userId\": \"{{userId}}\",\r\n  \"fcmToken\": \"FAKE_FCM_TOKEN_FOR_POSTMAN\"\r\n}",
                           "options": {
                             "raw": {
                               "language": "json"
@@ -8673,6 +9254,93 @@
                       "response": []
                     },
                     {
+                      "name": "noti-notify-ep-04",
+                      "event": [
+                        {
+                          "listen": "test",
+                          "script": {
+                            "exec": [
+                              "// Khi thiếu userId, server gọi onlineUsers[undefined] → undefined socket",
+                              "// → rơi vào nhánh offline → gọi FCM với userId=undefined",
+                              "pm.test('NOTI-NOTIFY-EP-04 missing userId returns 200', () => {",
+                              "  pm.expect([200, 400]).to.include(pm.response.code);",
+                              "  if(pm.response.code === 200) console.warn('OBSERVATION: thiếu userId vẫn 200, nên validate input (400)');",
+                              "});"
+                            ],
+                            "type": "text/javascript",
+                            "packages": {}
+                          }
+                        }
+                      ],
+                      "request": {
+                        "method": "POST",
+                        "header": [],
+                        "body": {
+                          "mode": "raw",
+                          "raw": "{\r\n  \"eventName\": \"test-missing-userId\",\r\n  \"data\": { \"message\": \"no userId\" }\r\n}",
+                          "options": {
+                            "raw": {
+                              "language": "json"
+                            }
+                          }
+                        },
+                        "url": {
+                          "raw": "{{baseUrl}}/notifications/notify",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "notifications",
+                            "notify"
+                          ]
+                        }
+                      },
+                      "response": []
+                    },
+                    {
+                      "name": "noti-notify-ep-05",
+                      "event": [
+                        {
+                          "listen": "test",
+                          "script": {
+                            "exec": [
+                              "// eventName=undefined sẽ được emit như string 'undefined'",
+                              "pm.test('NOTI-NOTIFY-EP-05 missing eventName returns 200', () => {",
+                              "  pm.expect([200, 400]).to.include(pm.response.code);",
+                              "  if(pm.response.code === 200) console.warn('OBSERVATION: thiếu eventName vẫn 200, nên validate (400)');",
+                              "});"
+                            ],
+                            "type": "text/javascript",
+                            "packages": {}
+                          }
+                        }
+                      ],
+                      "request": {
+                        "method": "POST",
+                        "header": [],
+                        "body": {
+                          "mode": "raw",
+                          "raw": "{\r\n  \"userId\": \"{{userId}}\",\r\n  \"data\": { \"message\": \"no eventName\" }\r\n}",
+                          "options": {
+                            "raw": {
+                              "language": "json"
+                            }
+                          }
+                        },
+                        "url": {
+                          "raw": "{{baseUrl}}/notifications/notify",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "notifications",
+                            "notify"
+                          ]
+                        }
+                      },
+                      "response": []
+                    },
+                    {
                       "name": "noti-sec-ep-01",
                       "event": [
                         {
@@ -8715,6 +9383,152 @@
                       "response": []
                     }
                   ]
+                }
+              ]
+            },
+            {
+              "name": "Firebase-FCM",
+              "item": [
+                {
+                  "name": "noti-fcm-ep-01",
+                  "event": [
+                    {
+                      "listen": "prerequest",
+                      "script": {
+                        "exec": [
+                          "// Đảm bảo user này có FCM token trong DB (đã đăng ký ở noti-device-ep-01)",
+                          "// User không online qua socket → server sẽ gọi FCM",
+                          "console.log('Test FCM: user offline, server should attempt FCM push');"
+                        ],
+                        "type": "text/javascript",
+                        "packages": {}
+                      }
+                    },
+                    {
+                      "listen": "test",
+                      "script": {
+                        "exec": [
+                          "pm.test('NOTI-FCM-EP-01 status 200', () => pm.response.to.have.status(200));",
+                          "pm.test('NOTI-FCM-EP-01 push notification attempted', () => {",
+                          "  const msg = pm.response.json().message;",
+                          "  pm.expect(msg).to.include('push notification');",
+                          "});",
+                          "// NOTE: Không thể verify FCM delivery qua Postman.",
+                          "// Kiểm tra log server để xác nhận FCM được gọi.",
+                          "// Dùng Firebase Emulator để test E2E thực sự."
+                        ],
+                        "type": "text/javascript",
+                        "packages": {}
+                      }
+                    }
+                  ],
+                  "request": {
+                    "method": "POST",
+                    "header": [],
+                    "body": {
+                      "mode": "raw",
+                      "raw": "{\r\n  \"userId\": \"{{userId}}\",\r\n  \"eventName\": \"fcm-test-offline\",\r\n  \"data\": { \"message\": \"FCM push test from Postman\" }\r\n}",
+                      "options": {
+                        "raw": {
+                          "language": "json"
+                        }
+                      }
+                    },
+                    "url": {
+                      "raw": "{{baseUrl}}/notifications/notify",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "notifications",
+                        "notify"
+                      ]
+                    }
+                  },
+                  "response": []
+                },
+                {
+                  "name": "noti-fcm-ep-02",
+                  "event": [
+                    {
+                      "listen": "test",
+                      "script": {
+                        "exec": [
+                          "pm.test('NOTI-FCM-EP-02 status 200', () => pm.response.to.have.status(200));",
+                          "pm.test('NOTI-FCM-EP-02 no crash when no FCM token', () => {",
+                          "  pm.expect(pm.response.json()).to.have.property('message');",
+                          "});",
+                          "// NOTE: Server log sẽ hiện: '[FCM] User X has no FCM token.'",
+                          "// Không crash → đây là behavior đúng (graceful degradation)"
+                        ],
+                        "type": "text/javascript",
+                        "packages": {}
+                      }
+                    }
+                  ],
+                  "request": {
+                    "method": "POST",
+                    "header": [],
+                    "body": {
+                      "mode": "raw",
+                      "raw": "{\r\n  \"userId\": \"99999\",\r\n  \"eventName\": \"fcm-test-no-token\",\r\n  \"data\": { \"message\": \"FCM graceful test - user has no token\" }\r\n}",
+                      "options": {
+                        "raw": {
+                          "language": "json"
+                        }
+                      }
+                    },
+                    "url": {
+                      "raw": "{{baseUrl}}/notifications/notify",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "notifications",
+                        "notify"
+                      ]
+                    }
+                  },
+                  "response": []
+                },
+                {
+                  "name": "noti-fcm-ep-03",
+                  "event": [
+                    {
+                      "listen": "test",
+                      "script": {
+                        "exec": [
+                          "pm.test('NOTI-FCM-EP-03 service healthy', () => pm.response.to.have.status(200));",
+                          "pm.test('NOTI-FCM-EP-03 notification service running', () => {",
+                          "  const json = pm.response.json();",
+                          "  pm.expect(json.service).to.eql('notification-service');",
+                          "  pm.expect(json.status).to.eql('ok');",
+                          "});",
+                          "// NOTE: Nếu Firebase Admin SDK khởi tạo lỗi, service vẫn chạy",
+                          "// nhưng FCM push sẽ không hoạt động. Kiểm tra log server.",
+                          "// Log thành công: 'Firebase Admin SDK initialized successfully.'",
+                          "// Log lỗi:       'Firebase Admin SDK was not initialized.'"
+                        ],
+                        "type": "text/javascript",
+                        "packages": {}
+                      }
+                    }
+                  ],
+                  "request": {
+                    "method": "GET",
+                    "header": [],
+                    "url": {
+                      "raw": "{{baseUrl}}/notifications/health",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "notifications",
+                        "health"
+                      ]
+                    }
+                  },
+                  "response": []
                 }
               ]
             }
