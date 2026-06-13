@@ -8486,7 +8486,7 @@
                           "listen": "prerequest",
                           "script": {
                             "exec": [
-                              "pm.environment.set(\"fcm_255\", \"F\".repeat(256));"
+                              "pm.environment.set(\"fcm_256\", \"F\".repeat(256));"
                             ],
                             "type": "text/javascript",
                             "packages": {},
@@ -8514,6 +8514,201 @@
                           "path": [
                             "notifications",
                             "register-device"
+                          ]
+                        }
+                      },
+                      "response": []
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "name": "Notify Realtime & Push",
+              "item": [
+                {
+                  "name": "EP",
+                  "item": [
+                    {
+                      "name": "noti-notify-ep-01",
+                      "event": [
+                        {
+                          "listen": "test",
+                          "script": {
+                            "exec": [
+                              "pm.test(\"NOTI-NOTIFY-EP-01 status 200\", () => {\r",
+                              "  pm.response.to.have.status(200);\r",
+                              "});\r",
+                              "\r",
+                              "pm.test(\"NOTI-NOTIFY-EP-01 response has message\", () => {\r",
+                              "  const json = pm.response.json();\r",
+                              "  pm.expect(json).to.have.property(\"message\");\r",
+                              "  pm.expect(json.message).to.be.a(\"string\").and.not.empty;\r",
+                              "});"
+                            ],
+                            "type": "text/javascript",
+                            "packages": {},
+                            "requests": {}
+                          }
+                        }
+                      ],
+                      "request": {
+                        "method": "POST",
+                        "header": [],
+                        "body": {
+                          "mode": "raw",
+                          "raw": "{\r\n  \"userId\": \"broadcast\",\r\n  \"eventName\": \"postman-broadcast\",\r\n  \"data\": {\r\n    \"message\": \"Broadcast test from Postman\"\r\n  }\r\n}",
+                          "options": {
+                            "raw": {
+                              "language": "json"
+                            }
+                          }
+                        },
+                        "url": {
+                          "raw": "{{baseUrl}}/notifications/notify",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "notifications",
+                            "notify"
+                          ]
+                        }
+                      },
+                      "response": []
+                    },
+                    {
+                      "name": "noti-notify-ep-02",
+                      "event": [
+                        {
+                          "listen": "test",
+                          "script": {
+                            "exec": [
+                              "pm.test(\"NOTI-NOTIFY-EP-02 status 200\", () => {\r",
+                              "  pm.response.to.have.status(200);\r",
+                              "});\r",
+                              "\r",
+                              "pm.test(\"NOTI-NOTIFY-EP-02 response has message\", () => {\r",
+                              "  const json = pm.response.json();\r",
+                              "  pm.expect(json).to.have.property(\"message\");\r",
+                              "  pm.expect(json.message).to.be.a(\"string\").and.not.empty;\r",
+                              "});"
+                            ],
+                            "type": "text/javascript",
+                            "packages": {},
+                            "requests": {}
+                          }
+                        }
+                      ],
+                      "request": {
+                        "method": "POST",
+                        "header": [],
+                        "body": {
+                          "mode": "raw",
+                          "raw": "{\r\n  \"userId\": \"{{userId}}\",\r\n  \"eventName\": \"postman-single-user\",\r\n  \"data\": {\r\n    \"message\": \"Single user notification from Postman\"\r\n  }\r\n}",
+                          "options": {
+                            "raw": {
+                              "language": "json"
+                            }
+                          }
+                        },
+                        "url": {
+                          "raw": "{{baseUrl}}/notifications/notify",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "notifications",
+                            "notify"
+                          ]
+                        }
+                      },
+                      "response": []
+                    },
+                    {
+                      "name": "noti-notify-ep-03",
+                      "event": [
+                        {
+                          "listen": "test",
+                          "script": {
+                            "exec": [
+                              "pm.test(\"NOTI-NOTIFY-EP-03 status 200\", () => {\r",
+                              "  pm.response.to.have.status(200);\r",
+                              "});\r",
+                              "\r",
+                              "pm.test(\"NOTI-NOTIFY-EP-03 response has message\", () => {\r",
+                              "  const json = pm.response.json();\r",
+                              "  pm.expect(json).to.have.property(\"message\");\r",
+                              "});"
+                            ],
+                            "type": "text/javascript",
+                            "packages": {},
+                            "requests": {}
+                          }
+                        }
+                      ],
+                      "request": {
+                        "method": "POST",
+                        "header": [],
+                        "body": {
+                          "mode": "raw",
+                          "raw": "{\r\n  \"userId\": \"{{userId}}\",\r\n  \"eventName\": \"postman-no-data\"\r\n}",
+                          "options": {
+                            "raw": {
+                              "language": "json"
+                            }
+                          }
+                        },
+                        "url": {
+                          "raw": "{{baseUrl}}/notifications/notify",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "notifications",
+                            "notify"
+                          ]
+                        }
+                      },
+                      "response": []
+                    },
+                    {
+                      "name": "noti-sec-ep-01",
+                      "event": [
+                        {
+                          "listen": "test",
+                          "script": {
+                            "exec": [
+                              "pm.test(\"NOTI-SEC-EP-01 current behavior status 200\", () => {\r",
+                              "  pm.response.to.have.status(200);\r",
+                              "});"
+                            ],
+                            "type": "text/javascript",
+                            "packages": {},
+                            "requests": {}
+                          }
+                        }
+                      ],
+                      "request": {
+                        "method": "POST",
+                        "header": [],
+                        "body": {
+                          "mode": "raw",
+                          "raw": "{\r\n  \"userId\": \"broadcast\",\r\n  \"eventName\": \"security-observation\",\r\n  \"data\": {\r\n    \"message\": \"Current implementation allows notify without internal token\"\r\n  }\r\n}",
+                          "options": {
+                            "raw": {
+                              "language": "json"
+                            }
+                          }
+                        },
+                        "url": {
+                          "raw": "{{baseUrl}}/notifications/notify",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "notifications",
+                            "notify"
                           ]
                         }
                       },
