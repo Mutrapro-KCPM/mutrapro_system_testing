@@ -7268,6 +7268,324 @@
                         }
                       },
                       "response": []
+                    },
+                    {
+                      "name": "ORD-REV-SETUP-02 - Đổi trạng thái order sang fixed",
+                      "event": [
+                        {
+                          "listen": "test",
+                          "script": {
+                            "exec": [
+                              "pm.test(\"HTTP 200 OK - Chuyển sang fixed thành công\", function () {\r",
+                              "    pm.response.to.have.status(200);\r",
+                              "});"
+                            ],
+                            "type": "text/javascript",
+                            "packages": {},
+                            "requests": {}
+                          }
+                        }
+                      ],
+                      "request": {
+                        "auth": {
+                          "type": "bearer",
+                          "bearer": [
+                            {
+                              "key": "token",
+                              "value": "{{coordinator_token}}",
+                              "type": "string"
+                            }
+                          ]
+                        },
+                        "method": "PUT",
+                        "header": [],
+                        "body": {
+                          "mode": "raw",
+                          "raw": "{\r\n  \"status\": \"fixed\"\r\n}",
+                          "options": {
+                            "raw": {
+                              "language": "json"
+                            }
+                          }
+                        },
+                        "url": {
+                          "raw": "{{baseUrl}}/orders/{{recording_order_id}}/status",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "orders",
+                            "{{recording_order_id}}",
+                            "status"
+                          ]
+                        }
+                      },
+                      "response": []
+                    },
+                    {
+                      "name": "ORD-REV-02 - Request revision order fixed",
+                      "event": [
+                        {
+                          "listen": "test",
+                          "script": {
+                            "exec": [
+                              "pm.test(\"HTTP 200 OK - Order fixed được phép revision\", function () {\r",
+                              "    pm.response.to.have.status(200);\r",
+                              "});"
+                            ],
+                            "type": "text/javascript",
+                            "packages": {},
+                            "requests": {}
+                          }
+                        }
+                      ],
+                      "request": {
+                        "auth": {
+                          "type": "bearer",
+                          "bearer": [
+                            {
+                              "key": "token",
+                              "value": "{{customer_token}}",
+                              "type": "string"
+                            }
+                          ]
+                        },
+                        "method": "POST",
+                        "header": [],
+                        "body": {
+                          "mode": "raw",
+                          "raw": "{\r\n  \"comment\": \"Tôi muốn sửa lại tone nhạc một chút sau bản fixed này.\",\r\n  \"coordinatorId\": \"{{coordinator_id}}\"\r\n}",
+                          "options": {
+                            "raw": {
+                              "language": "json"
+                            }
+                          }
+                        },
+                        "url": {
+                          "raw": "{{baseUrl}}/orders/{{recording_order_id}}/request-revision",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "orders",
+                            "{{recording_order_id}}",
+                            "request-revision"
+                          ]
+                        }
+                      },
+                      "response": []
+                    },
+                    {
+                      "name": "ORD-REV-04 - Request revision order paid",
+                      "event": [
+                        {
+                          "listen": "test",
+                          "script": {
+                            "exec": [
+                              "pm.test(\"HTTP 400 Bad Request - Không cho sửa order đã paid\", function () {\r",
+                              "    pm.response.to.have.status(400);\r",
+                              "});"
+                            ],
+                            "type": "text/javascript",
+                            "packages": {},
+                            "requests": {}
+                          }
+                        }
+                      ],
+                      "request": {
+                        "auth": {
+                          "type": "bearer",
+                          "bearer": [
+                            {
+                              "key": "token",
+                              "value": "{{customer_token}}",
+                              "type": "string"
+                            }
+                          ]
+                        },
+                        "method": "POST",
+                        "header": [],
+                        "body": {
+                          "mode": "raw",
+                          "raw": "{\r\n  \"comment\": \"Cố tình xin sửa lại sau khi đã trả tiền.\",\r\n  \"coordinatorId\": \"{{coordinator_id}}\"\r\n}",
+                          "options": {
+                            "raw": {
+                              "language": "json"
+                            }
+                          }
+                        },
+                        "url": {
+                          "raw": "{{baseUrl}}/orders/{{transcription_order_id}}/request-revision",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "orders",
+                            "{{transcription_order_id}}",
+                            "request-revision"
+                          ]
+                        }
+                      },
+                      "response": []
+                    },
+                    {
+                      "name": "ORD-REV-06 - Comment toan space",
+                      "event": [
+                        {
+                          "listen": "test",
+                          "script": {
+                            "exec": [
+                              "pm.test(\"HTTP 400 Bad Request - Comment không hợp lệ\", function () {\r",
+                              "    pm.response.to.have.status(400);\r",
+                              "});"
+                            ],
+                            "type": "text/javascript",
+                            "packages": {},
+                            "requests": {}
+                          }
+                        }
+                      ],
+                      "request": {
+                        "auth": {
+                          "type": "bearer",
+                          "bearer": [
+                            {
+                              "key": "token",
+                              "value": "{{customer_token}}",
+                              "type": "string"
+                            }
+                          ]
+                        },
+                        "method": "POST",
+                        "header": [],
+                        "body": {
+                          "mode": "raw",
+                          "raw": "{\r\n  \"comment\": \"     \",\r\n  \"coordinatorId\": \"{{coordinator_id}}\"\r\n}",
+                          "options": {
+                            "raw": {
+                              "language": "json"
+                            }
+                          }
+                        },
+                        "url": {
+                          "raw": "{{baseUrl}}/orders/{{recording_order_id}}/request-revision",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "orders",
+                            "{{recording_order_id}}",
+                            "request-revision"
+                          ]
+                        }
+                      },
+                      "response": []
+                    },
+                    {
+                      "name": "ORD-REV-07 - Customer khac request revision",
+                      "event": [
+                        {
+                          "listen": "test",
+                          "script": {
+                            "exec": [
+                              "pm.test(\"HTTP 403 Forbidden - Sai owner\", function () {\r",
+                              "    pm.response.to.have.status(403);\r",
+                              "});"
+                            ],
+                            "type": "text/javascript",
+                            "packages": {},
+                            "requests": {}
+                          }
+                        }
+                      ],
+                      "request": {
+                        "auth": {
+                          "type": "bearer",
+                          "bearer": [
+                            {
+                              "key": "token",
+                              "value": "{{owner_customer_b_token}}",
+                              "type": "string"
+                            }
+                          ]
+                        },
+                        "method": "POST",
+                        "header": [],
+                        "body": {
+                          "mode": "raw",
+                          "raw": "{\r\n  \"comment\": \"Customer B cố gắng xin sửa order của Customer A.\",\r\n  \"coordinatorId\": \"{{coordinator_id}}\"\r\n}",
+                          "options": {
+                            "raw": {
+                              "language": "json"
+                            }
+                          }
+                        },
+                        "url": {
+                          "raw": "{{baseUrl}}/orders/{{transcription_order_id}}/request-revision",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "orders",
+                            "{{transcription_order_id}}",
+                            "request-revision"
+                          ]
+                        }
+                      },
+                      "response": []
+                    },
+                    {
+                      "name": "ORD-REV-08 - Order khong ton tai",
+                      "event": [
+                        {
+                          "listen": "test",
+                          "script": {
+                            "exec": [
+                              "pm.test(\"HTTP 404 Not Found - Sai Order ID\", function () {\r",
+                              "    pm.response.to.have.status(404);\r",
+                              "});"
+                            ],
+                            "type": "text/javascript",
+                            "packages": {},
+                            "requests": {}
+                          }
+                        }
+                      ],
+                      "request": {
+                        "auth": {
+                          "type": "bearer",
+                          "bearer": [
+                            {
+                              "key": "token",
+                              "value": "{{customer_token}}",
+                              "type": "string"
+                            }
+                          ]
+                        },
+                        "method": "POST",
+                        "header": [],
+                        "body": {
+                          "mode": "raw",
+                          "raw": "{\r\n  \"comment\": \"Test order ID không tồn tại.\",\r\n  \"coordinatorId\": \"{{coordinator_id}}\"\r\n}",
+                          "options": {
+                            "raw": {
+                              "language": "json"
+                            }
+                          }
+                        },
+                        "url": {
+                          "raw": "{{baseUrl}}/orders/99999999/request-revision",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "orders",
+                            "99999999",
+                            "request-revision"
+                          ]
+                        }
+                      },
+                      "response": []
                     }
                   ]
                 }
