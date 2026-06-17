@@ -1,4 +1,4 @@
-﻿// services/order-service/index.js (ĐÃ CẬP NHẬT HOÀN CHỈNH VỚI RABBITMQ)
+// services/order-service/index.js (ĐÃ CẬP NHẬT HOÀN CHỈNH VỚI RABBITMQ)
 const express = require('express');
 const mysql = require('mysql2/promise');
 const cors = require('cors');
@@ -99,10 +99,12 @@ app.post('/', authMiddleware, checkRole('customer'), asyncHandler(async (req, re
     const price = PRICING_CONFIG[service_type];
 
     if (price === undefined) {
+        logger.error(`app.post(/): price is undefined. service_type=${service_type}, req.body=${JSON.stringify(req.body)}`);
         throw new AppError('Loại dịch vụ không hợp lệ.', 400);
     }
 
     if (typeof description !== 'string' || !description.trim()) {
+        logger.error(`app.post(/): description is invalid. description=${description}`);
         throw new AppError('Mô tả không được để trống.', 400);
     }
 
@@ -488,9 +490,35 @@ app.put('/:id/status', authMiddleware, checkRole('coordinator', 'admin', 'transc
         throw new AppError('Trạng thái đơn hàng không hợp lệ.', 400);
     }
     
-    const [orderRows] = await pool.execute('SELECT customer_id FROM orders WHERE id = ?', [id]);
+    const [orderRows] = await pool.execute('SELECT customer_id, status FROM orders WHERE id = ?', [id]);
     if (orderRows.length === 0) {
         throw new AppError('Không tìm thấy đơn hàng.', 404);
+    }
+    
+    const currentStatus = orderRows[0].status;
+    
+    if (status === 'paid') {
+        throw new AppError('Không được phép cập nhật trạng thái paid qua API này.', 400);
+    }
+    
+    if (currentStatus === 'cancelled') {
+        throw new AppError('Không thể cập nhật đơn hàng đã hủy.', 400);
+    }
+
+    if (status !== currentStatus) {
+        const allowedTransitions = {
+            'pending': ['assigned', 'in_progress', 'completed', 'revision_requested', 'fixed', 'cancelled'],
+            'assigned': ['in_progress', 'completed', 'revision_requested', 'fixed', 'cancelled'],
+            'in_progress': ['completed', 'revision_requested', 'fixed', 'cancelled'],
+            'completed': ['revision_requested', 'fixed', 'cancelled'],
+            'revision_requested': ['fixed', 'cancelled'],
+            'fixed': ['revision_requested', 'cancelled'],
+            'paid': ['cancelled']
+        };
+        
+        if (!allowedTransitions[currentStatus] || !allowedTransitions[currentStatus].includes(status)) {
+            throw new AppError(`Không thể chuyển trạng thái từ ${currentStatus} sang ${status}.`, 400);
+        }
     }
     
     const customerId = orderRows[0].customer_id;
