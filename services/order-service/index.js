@@ -334,8 +334,8 @@ app.post('/payments', authMiddleware, checkRole('customer'), asyncHandler(async 
 }));
 
 app.get('/payments', authMiddleware, checkRole('admin', 'coordinator'), asyncHandler(async (req, res) => {
-    const page = Math.max(parseInt(req.query.page || '1', 10), 1);
-    const limit = Math.min(Math.max(parseInt(req.query.limit || '10', 10), 1), 100);
+    const page = Math.max(parseInt(req.query.page, 10) || 1, 1);
+    const limit = Math.min(Math.max(parseInt(req.query.limit, 10) || 10, 1), 100);
     const offset = (page - 1) * limit;
     const status = req.query.status;
     const allowedStatuses = ['pending', 'paid', 'failed'];
