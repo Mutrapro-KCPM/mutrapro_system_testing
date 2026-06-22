@@ -55,24 +55,30 @@ const notify = async (userId, eventName, data) => {
 const handleReOpenTask = async (orderId, comment) => {
   // Tìm task mới nhất của order này
   const [taskRows] = await pool.execute(
-    'SELECT id, assigned_to FROM task WHERE order_id = ? ORDER BY assigned_at DESC LIMIT 1',
+    'SELECT id, assigned_to, status FROM task WHERE order_id = ? ORDER BY assigned_at DESC LIMIT 1',
     [orderId]
   );
 
   if (taskRows.length === 0) {
-    logger.error(`[RabbitMQ] No task found for order ${orderId} to reopen.`);
-    throw new Error(`Không tìm thấy task cho order ${orderId}`);
+    logger.warn(`[RabbitMQ] No task found for order ${orderId} to reopen; message acknowledged without retry.`);
+    return false;
   }
 
   const task = taskRows[0];
+
+  if (task.status === 'revision_requested') {
+    logger.info(`[RabbitMQ] Task ${task.id} for order ${orderId} is already marked as revision_requested.`);
+    return true;
+  }
+
   const [updateResult] = await pool.execute(
-    "UPDATE task SET status = 'revision_requested', revision_comment = ? WHERE id = ? AND (status = 'done' OR status = 'assigned')", // Cho phép re-open cả task "done" hoặc "assigned" (nếu khách hàng sửa ngay)
+    "UPDATE task SET status = 'revision_requested', revision_comment = ? WHERE id = ? AND status IN ('done', 'assigned', 'in_progress')",
     [comment, task.id]
   );
 
   if (updateResult.affectedRows === 0) {
-    logger.warn(`[RabbitMQ] Task ${task.id} is not in a valid state to reopen.`);
-    throw new Error(`Task ${task.id} không ở trạng thái hợp lệ`);
+    logger.warn(`[RabbitMQ] Task ${task.id} is not in a valid state to reopen.`, { status: task.status });
+    return false;
   }
 
   // Gửi thông báo cho chuyên viên

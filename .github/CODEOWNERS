@@ -1,0 +1,15 @@
+# Service owners
+/api-gateway/ @Mintrong1802
+/auth-service/ @brian05042005
+/notification-service/ @brian05042005
+/order-service/ @nguyen-tri-Cyber
+/file-service/ @Mintrong1802
+/task-service/ @dattt456
+/web-app/ @dattt456
+/analytics-service/ @lehoangmiucon
+/studio-service/ @lehoangmiucon
+
+# CI and testing files
+/.github/workflows/ @Mintrong1802 @nguyen-tri-Cyber
+/postman/ @nguyen-tri-Cyber
+/ci/ @Mintrong1802 @nguyen-tri-Cyber

@@ -1,6 +1,6 @@
 # ----- Giai đoạn 1: Build ứng dụng React -----
 # Sử dụng một image Node.js để build code
-FROM node:18-alpine AS build
+FROM node:20-alpine AS build
 
 # Đặt thư mục làm việc bên trong container
 WORKDIR /app

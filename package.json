@@ -1,4 +1,9 @@
 {
+  "type": "module",
+  "scripts": {
+    "test:e2e": "codeceptjs run --steps",
+    "test:e2e:debug": "codeceptjs run --steps --debug"
+  },
   "dependencies": {
     "bcrypt": "^6.0.0",
     "node-fetch": "^2.7.0"
