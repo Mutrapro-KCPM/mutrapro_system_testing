@@ -3,7 +3,7 @@
     "_postman_id": "3f2843fc-6875-4ec8-beed-a5c7cf9da2d6",
     "name": "Presentation",
     "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
-    "_exporter_id": "55039422",
+    "_exporter_id": "48989832",
     "_collection_link": "https://go.postman.co/collection/55039415-3f2843fc-6875-4ec8-beed-a5c7cf9da2d6?source=collection_link"
   },
   "item": [
@@ -2107,6 +2107,846 @@
                     }
                   },
                   "response": []
+                }
+              ]
+            },
+            {
+              "name": "FlowTests -Auth",
+              "item": [
+                {
+                  "name": "Flow1 - User",
+                  "item": [
+                    {
+                      "name": "register",
+                      "event": [
+                        {
+                          "listen": "prerequest",
+                          "script": {
+                            "exec": [
+                              "pm.environment.set(\"flow_email\", `flow_${Date.now()}@mutrapro.com`);\r",
+                              "pm.environment.set(\"flow_password\", \"password123\");\r",
+                              "pm.environment.set(\"flow_new_password\", \"newpassword123\");"
+                            ],
+                            "type": "text/javascript",
+                            "packages": {},
+                            "requests": {}
+                          }
+                        },
+                        {
+                          "listen": "test",
+                          "script": {
+                            "exec": [
+                              "pm.test(\"Register success\", () => pm.response.to.have.status(201));\r",
+                              "pm.environment.set(\"flow_user_id\", String(pm.response.json().id));"
+                            ],
+                            "type": "text/javascript",
+                            "packages": {},
+                            "requests": {}
+                          }
+                        }
+                      ],
+                      "request": {
+                        "method": "POST",
+                        "header": [],
+                        "body": {
+                          "mode": "raw",
+                          "raw": "{\r\n  \"name\": \"Flow User\",\r\n  \"email\": \"{{flow_email}}\",\r\n  \"password\": \"{{flow_password}}\"\r\n}",
+                          "options": {
+                            "raw": {
+                              "language": "json"
+                            }
+                          }
+                        },
+                        "url": {
+                          "raw": "{{baseUrl}}/auth/register",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "auth",
+                            "register"
+                          ]
+                        }
+                      },
+                      "response": []
+                    },
+                    {
+                      "name": "login",
+                      "event": [
+                        {
+                          "listen": "test",
+                          "script": {
+                            "exec": [
+                              "const json = pm.response.json();\r",
+                              "pm.test(\"Login success\", () => pm.response.to.have.status(200));\r",
+                              "pm.expect(json.token).to.exist;\r",
+                              "pm.environment.set(\"flow_token\", json.token);\r",
+                              "pm.environment.set(\"flow_user_id\", String(json.user.id));"
+                            ],
+                            "type": "text/javascript",
+                            "packages": {},
+                            "requests": {}
+                          }
+                        }
+                      ],
+                      "request": {
+                        "method": "POST",
+                        "header": [],
+                        "body": {
+                          "mode": "raw",
+                          "raw": "{\r\n  \"email\": \"{{flow_email}}\",\r\n  \"password\": \"{{flow_password}}\"\r\n}",
+                          "options": {
+                            "raw": {
+                              "language": "json"
+                            }
+                          }
+                        },
+                        "url": {
+                          "raw": "{{baseUrl}}/auth/login",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "auth",
+                            "login"
+                          ]
+                        }
+                      },
+                      "response": []
+                    },
+                    {
+                      "name": "verify",
+                      "event": [
+                        {
+                          "listen": "test",
+                          "script": {
+                            "exec": [
+                              "const json = pm.response.json();\r",
+                              "pm.test(\"Token is valid\", () => pm.response.to.have.status(200));\r",
+                              "pm.expect(json.user.email).to.eql(pm.environment.get(\"flow_email\"));"
+                            ],
+                            "type": "text/javascript",
+                            "packages": {},
+                            "requests": {}
+                          }
+                        }
+                      ],
+                      "protocolProfileBehavior": {
+                        "disableBodyPruning": true
+                      },
+                      "request": {
+                        "auth": {
+                          "type": "bearer",
+                          "bearer": [
+                            {
+                              "key": "token",
+                              "value": "{{flow_token}}",
+                              "type": "string"
+                            }
+                          ]
+                        },
+                        "method": "GET",
+                        "header": [],
+                        "body": {
+                          "mode": "raw",
+                          "raw": ""
+                        },
+                        "url": {
+                          "raw": "{{baseUrl}}/auth/verify",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "auth",
+                            "verify"
+                          ]
+                        }
+                      },
+                      "response": []
+                    },
+                    {
+                      "name": "change password",
+                      "event": [
+                        {
+                          "listen": "test",
+                          "script": {
+                            "exec": [
+                              "pm.test(\"Password changed\", () => pm.response.to.have.status(200));"
+                            ],
+                            "type": "text/javascript",
+                            "packages": {},
+                            "requests": {}
+                          }
+                        }
+                      ],
+                      "request": {
+                        "auth": {
+                          "type": "bearer",
+                          "bearer": [
+                            {
+                              "key": "token",
+                              "value": "{{flow_token}}",
+                              "type": "string"
+                            }
+                          ]
+                        },
+                        "method": "PUT",
+                        "header": [],
+                        "body": {
+                          "mode": "raw",
+                          "raw": "{\r\n  \"oldPassword\": \"{{flow_password}}\",\r\n  \"newPassword\": \"{{flow_new_password}}\"\r\n}",
+                          "options": {
+                            "raw": {
+                              "language": "json"
+                            }
+                          }
+                        },
+                        "url": {
+                          "raw": "{{baseUrl}}/auth/users/{{flow_user_id}}/password",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "auth",
+                            "users",
+                            "{{flow_user_id}}",
+                            "password"
+                          ]
+                        }
+                      },
+                      "response": []
+                    }
+                  ]
+                },
+                {
+                  "name": "Flow2 - Admin",
+                  "item": [
+                    {
+                      "name": "login admin",
+                      "event": [
+                        {
+                          "listen": "test",
+                          "script": {
+                            "exec": [
+                              "const json = pm.response.json();\r",
+                              "\r",
+                              "pm.test(\"Admin login success\", function () {\r",
+                              "  pm.response.to.have.status(200);\r",
+                              "  pm.expect(json).to.have.property(\"token\");\r",
+                              "  pm.expect(json.user.role).to.eql(\"admin\");\r",
+                              "});\r",
+                              "\r",
+                              "pm.environment.set(\"flow_admin_token\", json.token);\r",
+                              "pm.environment.set(\"flow_admin_id\", String(json.user.id));"
+                            ],
+                            "type": "text/javascript",
+                            "packages": {},
+                            "requests": {}
+                          }
+                        }
+                      ],
+                      "request": {
+                        "auth": {
+                          "type": "noauth"
+                        },
+                        "method": "POST",
+                        "header": [
+                          {
+                            "key": "Content-Type",
+                            "value": "application/json"
+                          },
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          }
+                        ],
+                        "body": {
+                          "mode": "raw",
+                          "raw": "{\n  \"email\": \"{{admin_email}}\",\n  \"password\": \"{{default_password}}\"\n}"
+                        },
+                        "url": {
+                          "raw": "{{baseUrl}}/auth/login",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "auth",
+                            "login"
+                          ]
+                        }
+                      },
+                      "response": []
+                    },
+                    {
+                      "name": "create user",
+                      "event": [
+                        {
+                          "listen": "prerequest",
+                          "script": {
+                            "exec": [
+                              "const email = `flow_specialist_${Date.now()}@mutrapro.com`;\r",
+                              "\r",
+                              "pm.environment.set(\"flow_specialist_email\", email);\r",
+                              "pm.environment.set(\"flow_specialist_password\", \"password123\");"
+                            ],
+                            "type": "text/javascript",
+                            "packages": {},
+                            "requests": {}
+                          }
+                        },
+                        {
+                          "listen": "test",
+                          "script": {
+                            "exec": [
+                              "const json = pm.response.json();\r",
+                              "\r",
+                              "pm.test(\"Admin creates user successfully\", function () {\r",
+                              "  pm.response.to.have.status(201);\r",
+                              "  pm.expect(json).to.have.property(\"id\");\r",
+                              "});\r",
+                              "\r",
+                              "pm.environment.set(\"flow_specialist_id\", String(json.id));"
+                            ],
+                            "type": "text/javascript",
+                            "packages": {},
+                            "requests": {}
+                          }
+                        }
+                      ],
+                      "request": {
+                        "auth": {
+                          "type": "bearer",
+                          "bearer": [
+                            {
+                              "key": "token",
+                              "value": "{{flow_admin_token}}",
+                              "type": "string"
+                            }
+                          ]
+                        },
+                        "method": "POST",
+                        "header": [
+                          {
+                            "key": "Content-Type",
+                            "value": "application/json"
+                          },
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          }
+                        ],
+                        "body": {
+                          "mode": "raw",
+                          "raw": "{\n  \"name\": \"Flow Specialist\",\n  \"email\": \"{{flow_specialist_email}}\",\n  \"password\": \"{{flow_specialist_password}}\",\n  \"role\": \"transcriber\"\n}"
+                        },
+                        "url": {
+                          "raw": "{{baseUrl}}/auth/admin/users",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "auth",
+                            "admin",
+                            "users"
+                          ]
+                        }
+                      },
+                      "response": []
+                    },
+                    {
+                      "name": "login user created",
+                      "event": [
+                        {
+                          "listen": "test",
+                          "script": {
+                            "exec": [
+                              "const json = pm.response.json();\r",
+                              "\r",
+                              "pm.test(\"Created user can login\", function () {\r",
+                              "  pm.response.to.have.status(200);\r",
+                              "  pm.expect(json).to.have.property(\"token\");\r",
+                              "  pm.expect(json.user.email).to.eql(pm.environment.get(\"flow_specialist_email\"));\r",
+                              "  pm.expect(json.user.role).to.eql(\"transcriber\");\r",
+                              "});\r",
+                              "\r",
+                              "pm.environment.set(\"flow_specialist_token\", json.token);"
+                            ],
+                            "type": "text/javascript",
+                            "packages": {},
+                            "requests": {}
+                          }
+                        }
+                      ],
+                      "request": {
+                        "auth": {
+                          "type": "noauth"
+                        },
+                        "method": "POST",
+                        "header": [
+                          {
+                            "key": "Content-Type",
+                            "value": "application/json"
+                          },
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          }
+                        ],
+                        "body": {
+                          "mode": "raw",
+                          "raw": "{\n  \"email\": \"{{flow_specialist_email}}\",\n  \"password\": \"{{flow_specialist_password}}\"\n}"
+                        },
+                        "url": {
+                          "raw": "{{baseUrl}}/auth/login",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "auth",
+                            "login"
+                          ]
+                        }
+                      },
+                      "response": []
+                    },
+                    {
+                      "name": "update users role",
+                      "event": [
+                        {
+                          "listen": "test",
+                          "script": {
+                            "exec": [
+                              "const json = pm.response.json();\r",
+                              "\r",
+                              "pm.test(\"Admin updates user role successfully\", function () {\r",
+                              "  pm.response.to.have.status(200);\r",
+                              "  pm.expect(json.message).to.exist;\r",
+                              "});"
+                            ],
+                            "type": "text/javascript",
+                            "packages": {},
+                            "requests": {}
+                          }
+                        }
+                      ],
+                      "request": {
+                        "auth": {
+                          "type": "bearer",
+                          "bearer": [
+                            {
+                              "key": "token",
+                              "value": "{{flow_admin_token}}",
+                              "type": "string"
+                            }
+                          ]
+                        },
+                        "method": "PUT",
+                        "header": [
+                          {
+                            "key": "Content-Type",
+                            "value": "application/json"
+                          },
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          }
+                        ],
+                        "body": {
+                          "mode": "raw",
+                          "raw": "{\n  \"name\": \"Flow Specialist Updated\",\n  \"email\": \"{{flow_specialist_email}}\",\n  \"role\": \"arranger\"\n}"
+                        },
+                        "url": {
+                          "raw": "{{baseUrl}}/auth/admin/users/{{flow_specialist_id}}",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "auth",
+                            "admin",
+                            "users",
+                            "{{flow_specialist_id}}"
+                          ]
+                        }
+                      },
+                      "response": []
+                    },
+                    {
+                      "name": "login user updated",
+                      "event": [
+                        {
+                          "listen": "test",
+                          "script": {
+                            "exec": [
+                              "const json = pm.response.json();\r",
+                              "\r",
+                              "pm.test(\"Updated user can login with new role\", function () {\r",
+                              "  pm.response.to.have.status(200);\r",
+                              "  pm.expect(json.user.role).to.eql(\"arranger\");\r",
+                              "});\r",
+                              "\r",
+                              "pm.environment.set(\"flow_specialist_token_updated\", json.token);"
+                            ],
+                            "type": "text/javascript",
+                            "packages": {},
+                            "requests": {}
+                          }
+                        }
+                      ],
+                      "request": {
+                        "auth": {
+                          "type": "noauth"
+                        },
+                        "method": "POST",
+                        "header": [
+                          {
+                            "key": "Content-Type",
+                            "value": "application/json"
+                          },
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          }
+                        ],
+                        "body": {
+                          "mode": "raw",
+                          "raw": "{\n  \"email\": \"{{flow_specialist_email}}\",\n  \"password\": \"{{flow_specialist_password}}\"\n}"
+                        },
+                        "url": {
+                          "raw": "{{baseUrl}}/auth/login",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "auth",
+                            "login"
+                          ]
+                        }
+                      },
+                      "response": []
+                    },
+                    {
+                      "name": "delete user",
+                      "event": [
+                        {
+                          "listen": "test",
+                          "script": {
+                            "exec": [
+                              "const json = pm.response.json();\r",
+                              "\r",
+                              "pm.test(\"Admin deletes user successfully\", function () {\r",
+                              "  pm.response.to.have.status(200);\r",
+                              "  pm.expect(json.message).to.exist;\r",
+                              "});"
+                            ],
+                            "type": "text/javascript",
+                            "packages": {},
+                            "requests": {}
+                          }
+                        }
+                      ],
+                      "request": {
+                        "auth": {
+                          "type": "bearer",
+                          "bearer": [
+                            {
+                              "key": "token",
+                              "value": "{{flow_admin_token}}",
+                              "type": "string"
+                            }
+                          ]
+                        },
+                        "method": "DELETE",
+                        "header": [
+                          {
+                            "key": "Content-Type",
+                            "value": "application/json"
+                          },
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          }
+                        ],
+                        "body": {
+                          "mode": "raw",
+                          "raw": "{\n  \"email\": \"{{flow_specialist_email}}\",\n  \"password\": \"{{flow_specialist_password}}\"\n}"
+                        },
+                        "url": {
+                          "raw": "{{baseUrl}}/auth/admin/users/{{flow_specialist_id}}",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "auth",
+                            "admin",
+                            "users",
+                            "{{flow_specialist_id}}"
+                          ]
+                        }
+                      },
+                      "response": []
+                    },
+                    {
+                      "name": "login deleted user",
+                      "event": [
+                        {
+                          "listen": "test",
+                          "script": {
+                            "exec": [
+                              "pm.test(\"Deleted user cannot login\", function () {\r",
+                              "  pm.response.to.have.status(401);\r",
+                              "});"
+                            ],
+                            "type": "text/javascript",
+                            "packages": {},
+                            "requests": {}
+                          }
+                        }
+                      ],
+                      "request": {
+                        "auth": {
+                          "type": "noauth"
+                        },
+                        "method": "POST",
+                        "header": [
+                          {
+                            "key": "Content-Type",
+                            "value": "application/json"
+                          },
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          }
+                        ],
+                        "body": {
+                          "mode": "raw",
+                          "raw": "{\n  \"email\": \"{{flow_specialist_email}}\",\n  \"password\": \"{{flow_specialist_password}}\"\n}"
+                        },
+                        "url": {
+                          "raw": "{{baseUrl}}/auth/login",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "auth",
+                            "login"
+                          ]
+                        }
+                      },
+                      "response": []
+                    }
+                  ]
+                },
+                {
+                  "name": "Flow3 - Coordinator",
+                  "item": [
+                    {
+                      "name": "Coordinator Login",
+                      "event": [
+                        {
+                          "listen": "test",
+                          "script": {
+                            "exec": [
+                              "const json = pm.response.json();\r",
+                              "\r",
+                              "pm.test(\"Coordinator login success\", function () {\r",
+                              "  pm.response.to.have.status(200);\r",
+                              "  pm.expect(json.user.role).to.eql(\"coordinator\");\r",
+                              "});\r",
+                              "\r",
+                              "pm.environment.set(\"flow_coordinator_token\", json.token);"
+                            ],
+                            "type": "text/javascript",
+                            "packages": {},
+                            "requests": {}
+                          }
+                        }
+                      ],
+                      "request": {
+                        "auth": {
+                          "type": "noauth"
+                        },
+                        "method": "POST",
+                        "header": [
+                          {
+                            "key": "Content-Type",
+                            "value": "application/json"
+                          },
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          }
+                        ],
+                        "body": {
+                          "mode": "raw",
+                          "raw": "{\n  \"email\": \"{{coordinator_email}}\",\n  \"password\": \"{{default_password}}\"\n}"
+                        },
+                        "url": {
+                          "raw": "{{baseUrl}}/auth/login",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "auth",
+                            "login"
+                          ]
+                        }
+                      },
+                      "response": []
+                    },
+                    {
+                      "name": "Get Transcribers",
+                      "event": [
+                        {
+                          "listen": "test",
+                          "script": {
+                            "exec": [
+                              "const json = pm.response.json();\r",
+                              "\r",
+                              "pm.test(\"Coordinator can get specialists\", function () {\r",
+                              "  pm.response.to.have.status(200);\r",
+                              "  pm.expect(json).to.be.an(\"array\");\r",
+                              "});"
+                            ],
+                            "type": "text/javascript",
+                            "packages": {},
+                            "requests": {}
+                          }
+                        }
+                      ],
+                      "request": {
+                        "auth": {
+                          "type": "bearer",
+                          "bearer": [
+                            {
+                              "key": "token",
+                              "value": "{{flow_coordinator_token}}",
+                              "type": "string"
+                            }
+                          ]
+                        },
+                        "method": "GET",
+                        "header": [],
+                        "url": {
+                          "raw": "{{baseUrl}}/auth/users/specialists?role=transcriber",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "auth",
+                            "users",
+                            "specialists"
+                          ],
+                          "query": [
+                            {
+                              "key": "role",
+                              "value": "transcriber"
+                            }
+                          ]
+                        }
+                      },
+                      "response": []
+                    },
+                    {
+                      "name": "Customer Cant Get Specialist",
+                      "event": [
+                        {
+                          "listen": "test",
+                          "script": {
+                            "exec": [
+                              "pm.test(\"Customer cannot get specialists\", function () {\r",
+                              "  pm.response.to.have.status(403);\r",
+                              "});"
+                            ],
+                            "type": "text/javascript",
+                            "packages": {},
+                            "requests": {}
+                          }
+                        }
+                      ],
+                      "request": {
+                        "auth": {
+                          "type": "bearer",
+                          "bearer": [
+                            {
+                              "key": "token",
+                              "value": "{{flow_token}}",
+                              "type": "string"
+                            }
+                          ]
+                        },
+                        "method": "GET",
+                        "header": [],
+                        "url": {
+                          "raw": "{{baseUrl}}/auth/users/specialists?role=transcriber",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "auth",
+                            "users",
+                            "specialists"
+                          ],
+                          "query": [
+                            {
+                              "key": "role",
+                              "value": "transcriber"
+                            }
+                          ]
+                        }
+                      },
+                      "response": []
+                    },
+                    {
+                      "name": "Invalid Specialist Role",
+                      "event": [
+                        {
+                          "listen": "test",
+                          "script": {
+                            "exec": [
+                              "pm.test(\"Invalid specialist role returns 400\", function () {\r",
+                              "  pm.response.to.have.status(400);\r",
+                              "});"
+                            ],
+                            "type": "text/javascript",
+                            "packages": {},
+                            "requests": {}
+                          }
+                        }
+                      ],
+                      "request": {
+                        "auth": {
+                          "type": "bearer",
+                          "bearer": [
+                            {
+                              "key": "token",
+                              "value": "{{flow_coordinator_token}}",
+                              "type": "string"
+                            }
+                          ]
+                        },
+                        "method": "GET",
+                        "header": [],
+                        "url": {
+                          "raw": "{{baseUrl}}/auth/users/specialists?role=customer",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "auth",
+                            "users",
+                            "specialists"
+                          ],
+                          "query": [
+                            {
+                              "key": "role",
+                              "value": "customer"
+                            }
+                          ]
+                        }
+                      },
+                      "response": []
+                    }
+                  ]
                 }
               ]
             }
@@ -10843,6 +11683,525 @@
                   "response": []
                 }
               ]
+            },
+            {
+              "name": "FlowTests - Noti",
+              "item": [
+                {
+                  "name": "Flow1 - Noti Owner",
+                  "item": [
+                    {
+                      "name": "Create Notification",
+                      "event": [
+                        {
+                          "listen": "test",
+                          "script": {
+                            "exec": [
+                              "const json = pm.response.json();\r",
+                              "\r",
+                              "pm.test(\"Notification created\", function () {\r",
+                              "  pm.response.to.have.status(201);\r",
+                              "  pm.expect(json).to.have.property(\"id\");\r",
+                              "});\r",
+                              "\r",
+                              "pm.environment.set(\"flow_notification_id\", String(json.id));"
+                            ],
+                            "type": "text/javascript",
+                            "packages": {},
+                            "requests": {}
+                          }
+                        }
+                      ],
+                      "request": {
+                        "method": "POST",
+                        "header": [],
+                        "body": {
+                          "mode": "raw",
+                          "raw": "{\r\n  \"user_id\": \"{{flow_user_id}}\",\r\n  \"title\": \"Flow notification\",\r\n  \"message\": \"Notification created by flow test\",\r\n  \"channel\": \"push\"\r\n}",
+                          "options": {
+                            "raw": {
+                              "language": "json"
+                            }
+                          }
+                        },
+                        "url": {
+                          "raw": "{{baseUrl}}/notifications/send",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "notifications",
+                            "send"
+                          ]
+                        }
+                      },
+                      "response": []
+                    },
+                    {
+                      "name": "User List Own Notification",
+                      "event": [
+                        {
+                          "listen": "test",
+                          "script": {
+                            "exec": [
+                              "const json = pm.response.json();\r",
+                              "\r",
+                              "pm.test(\"List notifications success\", function () {\r",
+                              "  pm.response.to.have.status(200);\r",
+                              "  pm.expect(json.success).to.eql(true);\r",
+                              "  pm.expect(json.data.items).to.be.an(\"array\");\r",
+                              "});\r",
+                              "\r",
+                              "pm.test(\"Created notification exists in list\", function () {\r",
+                              "  const ids = json.data.items.map(item => String(item.id));\r",
+                              "  pm.expect(ids).to.include(pm.environment.get(\"flow_notification_id\"));\r",
+                              "});"
+                            ],
+                            "type": "text/javascript",
+                            "packages": {},
+                            "requests": {}
+                          }
+                        }
+                      ],
+                      "request": {
+                        "auth": {
+                          "type": "bearer",
+                          "bearer": [
+                            {
+                              "key": "token",
+                              "value": "{{flow_token}}",
+                              "type": "string"
+                            }
+                          ]
+                        },
+                        "method": "GET",
+                        "header": [],
+                        "url": {
+                          "raw": "{{baseUrl}}/notifications?page=1&limit=10",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "notifications"
+                          ],
+                          "query": [
+                            {
+                              "key": "page",
+                              "value": "1"
+                            },
+                            {
+                              "key": "limit",
+                              "value": "10"
+                            }
+                          ]
+                        }
+                      },
+                      "response": []
+                    },
+                    {
+                      "name": "User Mark Notification as Read",
+                      "event": [
+                        {
+                          "listen": "test",
+                          "script": {
+                            "exec": [
+                              "const json = pm.response.json();\r",
+                              "\r",
+                              "pm.test(\"Mark notification as read success\", function () {\r",
+                              "  pm.response.to.have.status(200);\r",
+                              "  pm.expect(json.success).to.eql(true);\r",
+                              "  pm.expect(json.message).to.eql(\"Notification marked as read.\");\r",
+                              "  pm.expect(String(json.data.id)).to.eql(pm.environment.get(\"flow_notification_id\"));\r",
+                              "});"
+                            ],
+                            "type": "text/javascript",
+                            "packages": {},
+                            "requests": {}
+                          }
+                        }
+                      ],
+                      "request": {
+                        "auth": {
+                          "type": "bearer",
+                          "bearer": [
+                            {
+                              "key": "token",
+                              "value": "{{flow_token}}",
+                              "type": "string"
+                            }
+                          ]
+                        },
+                        "method": "PATCH",
+                        "header": [],
+                        "url": {
+                          "raw": "{{baseUrl}}/notifications/{{flow_notification_id}}/read",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "notifications",
+                            "{{flow_notification_id}}",
+                            "read"
+                          ]
+                        }
+                      },
+                      "response": []
+                    },
+                    {
+                      "name": "Verify Noti Status",
+                      "event": [
+                        {
+                          "listen": "test",
+                          "script": {
+                            "exec": [
+                              "const json = pm.response.json();\r",
+                              "const notificationId = pm.environment.get(\"flow_notification_id\");\r",
+                              "\r",
+                              "const notification = json.data.items.find(item => String(item.id) === notificationId);\r",
+                              "\r",
+                              "pm.test(\"Notification status is sent\", function () {\r",
+                              "  pm.response.to.have.status(200);\r",
+                              "  pm.expect(notification).to.exist;\r",
+                              "  pm.expect(notification.status).to.eql(\"sent\");\r",
+                              "  pm.expect(notification.sent_at).to.not.eql(null);\r",
+                              "});"
+                            ],
+                            "type": "text/javascript",
+                            "packages": {},
+                            "requests": {}
+                          }
+                        }
+                      ],
+                      "request": {
+                        "auth": {
+                          "type": "bearer",
+                          "bearer": [
+                            {
+                              "key": "token",
+                              "value": "{{flow_token}}",
+                              "type": "string"
+                            }
+                          ]
+                        },
+                        "method": "GET",
+                        "header": [],
+                        "url": {
+                          "raw": "{{baseUrl}}/notifications?page=1&limit=10",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "notifications"
+                          ],
+                          "query": [
+                            {
+                              "key": "page",
+                              "value": "1"
+                            },
+                            {
+                              "key": "limit",
+                              "value": "10"
+                            }
+                          ]
+                        }
+                      },
+                      "response": []
+                    }
+                  ]
+                },
+                {
+                  "name": "Flow2 - Notification Cross-User Security",
+                  "item": [
+                    {
+                      "name": "Register NewUser",
+                      "event": [
+                        {
+                          "listen": "prerequest",
+                          "script": {
+                            "exec": [
+                              "pm.environment.set(\"flow_user_b_email\", `flow_user_b_${Date.now()}@mutrapro.com`);\r",
+                              "pm.environment.set(\"flow_user_b_password\", \"password123\");"
+                            ],
+                            "type": "text/javascript",
+                            "packages": {},
+                            "requests": {}
+                          }
+                        },
+                        {
+                          "listen": "test",
+                          "script": {
+                            "exec": [
+                              "const json = pm.response.json();\r",
+                              "\r",
+                              "pm.test(\"User B registered\", function () {\r",
+                              "  pm.response.to.have.status(201);\r",
+                              "});\r",
+                              "\r",
+                              "pm.environment.set(\"flow_user_b_id\", String(json.id));"
+                            ],
+                            "type": "text/javascript",
+                            "packages": {},
+                            "requests": {}
+                          }
+                        }
+                      ],
+                      "request": {
+                        "method": "POST",
+                        "header": [],
+                        "body": {
+                          "mode": "raw",
+                          "raw": "{\r\n  \"name\": \"Flow User B\",\r\n  \"email\": \"{{flow_user_b_email}}\",\r\n  \"password\": \"{{flow_user_b_password}}\"\r\n}",
+                          "options": {
+                            "raw": {
+                              "language": "json"
+                            }
+                          }
+                        },
+                        "url": {
+                          "raw": "{{baseUrl}}/auth/register",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "auth",
+                            "register"
+                          ]
+                        }
+                      },
+                      "response": []
+                    },
+                    {
+                      "name": "Create Notification For NewUser",
+                      "event": [
+                        {
+                          "listen": "test",
+                          "script": {
+                            "exec": [
+                              "const json = pm.response.json();\r",
+                              "\r",
+                              "pm.test(\"Private notification created\", function () {\r",
+                              "  pm.response.to.have.status(201);\r",
+                              "});\r",
+                              "\r",
+                              "pm.environment.set(\"flow_private_notification_id\", String(json.id));"
+                            ],
+                            "type": "text/javascript",
+                            "packages": {},
+                            "requests": {}
+                          }
+                        }
+                      ],
+                      "request": {
+                        "method": "POST",
+                        "header": [],
+                        "body": {
+                          "mode": "raw",
+                          "raw": "{\r\n  \"user_id\": \"{{flow_user_b_id}}\",\r\n  \"title\": \"Private notification\",\r\n  \"message\": \"This notification belongs to user B\",\r\n  \"channel\": \"push\"\r\n}",
+                          "options": {
+                            "raw": {
+                              "language": "json"
+                            }
+                          }
+                        },
+                        "url": {
+                          "raw": "{{baseUrl}}/notifications/send",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "notifications",
+                            "send"
+                          ]
+                        }
+                      },
+                      "response": []
+                    },
+                    {
+                      "name": "User A Cannot Mark User B Notification",
+                      "event": [
+                        {
+                          "listen": "test",
+                          "script": {
+                            "exec": [
+                              "pm.test(\"User A cannot mark User B notification\", function () {\r",
+                              "  pm.response.to.have.status(403);\r",
+                              "});"
+                            ],
+                            "type": "text/javascript",
+                            "packages": {},
+                            "requests": {}
+                          }
+                        }
+                      ],
+                      "request": {
+                        "auth": {
+                          "type": "bearer",
+                          "bearer": [
+                            {
+                              "key": "token",
+                              "value": "{{flow_token}}",
+                              "type": "string"
+                            }
+                          ]
+                        },
+                        "method": "PATCH",
+                        "header": [],
+                        "url": {
+                          "raw": "{{baseUrl}}/notifications/{{flow_private_notification_id}}/read",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "notifications",
+                            "{{flow_private_notification_id}}",
+                            "read"
+                          ]
+                        }
+                      },
+                      "response": []
+                    },
+                    {
+                      "name": "Admin Can Mark User B Notification",
+                      "event": [
+                        {
+                          "listen": "test",
+                          "script": {
+                            "exec": [
+                              "pm.test(\"Admin can mark any notification\", function () {\r",
+                              "  pm.response.to.have.status(200);\r",
+                              "});"
+                            ],
+                            "type": "text/javascript",
+                            "packages": {},
+                            "requests": {}
+                          }
+                        }
+                      ],
+                      "request": {
+                        "auth": {
+                          "type": "bearer",
+                          "bearer": [
+                            {
+                              "key": "token",
+                              "value": "{{flow_admin_token}}",
+                              "type": "string"
+                            }
+                          ]
+                        },
+                        "method": "PATCH",
+                        "header": [],
+                        "url": {
+                          "raw": "{{baseUrl}}/notifications/{{flow_private_notification_id}}/read",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "notifications",
+                            "{{flow_private_notification_id}}",
+                            "read"
+                          ]
+                        }
+                      },
+                      "response": []
+                    }
+                  ]
+                },
+                {
+                  "name": "Flow3 - Device + Offline Notify Flow",
+                  "item": [
+                    {
+                      "name": "Register New Device",
+                      "event": [
+                        {
+                          "listen": "test",
+                          "script": {
+                            "exec": [
+                              "const json = pm.response.json();\r",
+                              "\r",
+                              "pm.test(\"Device registered\", function () {\r",
+                              "  pm.response.to.have.status(200);\r",
+                              "  pm.expect(json.message).to.exist;\r",
+                              "});"
+                            ],
+                            "type": "text/javascript",
+                            "packages": {},
+                            "requests": {}
+                          }
+                        }
+                      ],
+                      "request": {
+                        "method": "POST",
+                        "header": [],
+                        "body": {
+                          "mode": "raw",
+                          "raw": "{\r\n  \"userId\": \"{{flow_user_id}}\",\r\n  \"fcmToken\": \"FAKE_FCM_TOKEN_FOR_FLOW_TEST\"\r\n}",
+                          "options": {
+                            "raw": {
+                              "language": "json"
+                            }
+                          }
+                        },
+                        "url": {
+                          "raw": "{{baseUrl}}/notifications/register-device",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "notifications",
+                            "register-device"
+                          ]
+                        }
+                      },
+                      "response": []
+                    },
+                    {
+                      "name": "Notify Offline User",
+                      "event": [
+                        {
+                          "listen": "test",
+                          "script": {
+                            "exec": [
+                              "const json = pm.response.json();\r",
+                              "\r",
+                              "pm.test(\"Notify offline user returns success\", function () {\r",
+                              "  pm.response.to.have.status(200);\r",
+                              "  pm.expect(json.message).to.exist;\r",
+                              "});"
+                            ],
+                            "type": "text/javascript",
+                            "packages": {},
+                            "requests": {}
+                          }
+                        }
+                      ],
+                      "request": {
+                        "method": "POST",
+                        "header": [],
+                        "body": {
+                          "mode": "raw",
+                          "raw": "{\r\n  \"userId\": \"{{flow_user_id}}\",\r\n  \"eventName\": \"flow-offline-test\",\r\n  \"data\": {\r\n    \"message\": \"Offline notification test\"\r\n  }\r\n}",
+                          "options": {
+                            "raw": {
+                              "language": "json"
+                            }
+                          }
+                        },
+                        "url": {
+                          "raw": "{{baseUrl}}/notifications/notify",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "notifications",
+                            "notify"
+                          ]
+                        }
+                      },
+                      "response": []
+                    }
+                  ]
+                }
+              ]
             }
           ],
           "event": [
@@ -11217,65 +12576,6 @@
           "name": "file-service",
           "item": [
             {
-              "name": "Register Customer For File Order",
-              "event": [
-                {
-                  "listen": "test",
-                  "script": {
-                    "exec": [
-                      "pm.test(\"HTTP 201\", () => pm.response.to.have.status(201));\r",
-                      "\r",
-                      "pm.test(\"File customer email prepared\", () => {\r",
-                      "  pm.expect(pm.environment.get(\"file_customer_email\")).to.not.be.empty;\r",
-                      "});"
-                    ],
-                    "type": "text/javascript",
-                    "packages": {},
-                    "requests": {}
-                  }
-                },
-                {
-                  "listen": "prerequest",
-                  "script": {
-                    "exec": [
-                      "const email = `file.customer.${Date.now()}@mutrapro.test`;\r",
-                      "pm.environment.set(\"file_customer_email\", email);"
-                    ],
-                    "type": "text/javascript",
-                    "packages": {},
-                    "requests": {}
-                  }
-                }
-              ],
-              "request": {
-                "auth": {
-                  "type": "noauth"
-                },
-                "method": "POST",
-                "header": [],
-                "body": {
-                  "mode": "raw",
-                  "raw": "{\r\n  \"name\": \"File Customer\",\r\n  \"email\": \"{{file_customer_email}}\",\r\n  \"password\": \"{{default_password}}\"\r\n}",
-                  "options": {
-                    "raw": {
-                      "language": "json"
-                    }
-                  }
-                },
-                "url": {
-                  "raw": "{{baseUrl}}/auth/register",
-                  "host": [
-                    "{{baseUrl}}"
-                  ],
-                  "path": [
-                    "auth",
-                    "register"
-                  ]
-                }
-              },
-              "response": []
-            },
-            {
               "name": "Login Customer",
               "event": [
                 {
@@ -11482,7 +12782,7 @@
                       "key": "file",
                       "type": "file",
                       "uuid": "12a6d5bb-440f-4fcb-a7b1-101da27c364c",
-                      "src": "tests/fixtures/upload-test.mp3"
+                      "src": "postman-cloud:///1f1567e0-e082-4980-9f15-7d7802ac178d"
                     }
                   ]
                 },
@@ -11637,6 +12937,65 @@
                     "files",
                     "download",
                     "{{file_id}}"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "Register Customer For File Order",
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "exec": [
+                      "pm.test(\"HTTP 201\", () => pm.response.to.have.status(201));\r",
+                      "\r",
+                      "pm.test(\"File customer email prepared\", () => {\r",
+                      "  pm.expect(pm.environment.get(\"file_customer_email\")).to.not.be.empty;\r",
+                      "});"
+                    ],
+                    "type": "text/javascript",
+                    "packages": {},
+                    "requests": {}
+                  }
+                },
+                {
+                  "listen": "prerequest",
+                  "script": {
+                    "exec": [
+                      "const email = `file.customer.${Date.now()}@mutrapro.test`;\r",
+                      "pm.environment.set(\"file_customer_email\", email);"
+                    ],
+                    "type": "text/javascript",
+                    "packages": {},
+                    "requests": {}
+                  }
+                }
+              ],
+              "request": {
+                "auth": {
+                  "type": "noauth"
+                },
+                "method": "POST",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\r\n  \"name\": \"File Customer\",\r\n  \"email\": \"{{file_customer_email}}\",\r\n  \"password\": \"{{default_password}}\"\r\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/auth/register",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "auth",
+                    "register"
                   ]
                 }
               },
@@ -13653,16 +15012,16 @@
                   "name": "Create Booking",
                   "event": [
                     {
-                      "listen": "prerequest",
+                      "listen": "test",
                       "script": {
                         "exec": [
                           "pm.environment.unset(\"bookingId\");\r",
                           "pm.collectionVariables.unset(\"bookingId\");\r",
                           "\r",
                           "const start = new Date();\r",
-                          "const daysAhead = 365 + Math.floor(Math.random() * 3650);\r",
+                          "const daysAhead = 7 + Math.floor(Math.random() * 30);\r",
                           "start.setDate(start.getDate() + daysAhead);\r",
-                          "start.setHours(8 + Math.floor(Math.random() * 10), Math.floor(Math.random() * 60), 0, 0);\r",
+                          "start.setHours(9 + Math.floor(Math.random() * 6), 0, 0, 0);\r",
                           "\r",
                           "const end = new Date(start);\r",
                           "end.setHours(start.getHours() + 1);\r",
@@ -13671,30 +15030,6 @@
                           "\r",
                           "pm.environment.set(\"studio_booking_start_time\", format(start));\r",
                           "pm.environment.set(\"studio_booking_end_time\", format(end));"
-                        ],
-                        "type": "text/javascript",
-                        "packages": {},
-                        "requests": {}
-                      }
-                    },
-                    {
-                      "listen": "test",
-                      "script": {
-                        "exec": [
-                          "pm.test(\"HTTP 201\", () => pm.response.to.have.status(201));\r",
-                          "\r",
-                          "const json = pm.response.json();\r",
-                          "const payload = json.data || json;\r",
-                          "const bookingId = payload.id || payload.bookingId;\r",
-                          "\r",
-                          "pm.test(\"Booking created and id saved\", () => {\r",
-                          "  pm.expect(bookingId).to.exist;\r",
-                          "});\r",
-                          "\r",
-                          "if (bookingId) {\r",
-                          "  pm.environment.set(\"bookingId\", String(bookingId));\r",
-                          "  pm.collectionVariables.set(\"bookingId\", String(bookingId));\r",
-                          "}"
                         ],
                         "type": "text/javascript",
                         "packages": {},
