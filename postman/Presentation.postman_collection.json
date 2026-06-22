@@ -3,7 +3,7 @@
     "_postman_id": "3f2843fc-6875-4ec8-beed-a5c7cf9da2d6",
     "name": "Presentation",
     "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
-    "_exporter_id": "55039415",
+    "_exporter_id": "55039422",
     "_collection_link": "https://go.postman.co/collection/55039415-3f2843fc-6875-4ec8-beed-a5c7cf9da2d6?source=collection_link"
   },
   "item": [
@@ -10942,6 +10942,7 @@
                       "  pm.expect(payload).to.have.property(\"totalRevenue\");\r",
                       "  pm.expect(payload).to.have.property(\"totalOrders\");\r",
                       "  pm.expect(payload).to.have.property(\"orderStats\");\r",
+                      "  pm.expect(payload.orderStats).to.be.an(\"array\");\r",
                       "});"
                     ],
                     "type": "text/javascript",
@@ -10978,6 +10979,29 @@
             },
             {
               "name": "Reports Overview",
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "exec": [
+                      "pm.test(\"HTTP 200\", () => pm.response.to.have.status(200));\r",
+                      "\r",
+                      "const json = pm.response.json();\r",
+                      "const payload = json.data?.data || json.data || json;\r",
+                      "\r",
+                      "pm.test(\"Reports overview shape is valid\", () => {\r",
+                      "  pm.expect(payload).to.have.property(\"totalRevenue\");\r",
+                      "  pm.expect(payload).to.have.property(\"totalOrders\");\r",
+                      "  pm.expect(payload).to.have.property(\"orderStats\");\r",
+                      "  pm.expect(payload.orderStats).to.be.an(\"array\");\r",
+                      "});"
+                    ],
+                    "type": "text/javascript",
+                    "packages": {},
+                    "requests": {}
+                  }
+                }
+              ],
               "request": {
                 "auth": {
                   "type": "bearer",
@@ -10998,75 +11022,6 @@
                   ],
                   "path": [
                     "analytics",
-                    "reports",
-                    "overview"
-                  ]
-                }
-              },
-              "response": []
-            },
-            {
-              "name": "Gateway Health",
-              "request": {
-                "auth": {
-                  "type": "noauth"
-                },
-                "method": "GET",
-                "header": [],
-                "url": {
-                  "raw": "{{baseUrl}}/health",
-                  "host": [
-                    "{{baseUrl}}"
-                  ],
-                  "path": [
-                    "health"
-                  ]
-                }
-              },
-              "response": []
-            },
-            {
-              "name": "All Services Health",
-              "request": {
-                "auth": {
-                  "type": "noauth"
-                },
-                "method": "GET",
-                "header": [],
-                "url": {
-                  "raw": "{{baseUrl}}/health/all",
-                  "host": [
-                    "{{baseUrl}}"
-                  ],
-                  "path": [
-                    "health",
-                    "all"
-                  ]
-                }
-              },
-              "response": []
-            },
-            {
-              "name": "Reports Alias - Fixed KAN-76",
-              "request": {
-                "auth": {
-                  "type": "bearer",
-                  "bearer": [
-                    {
-                      "key": "token",
-                      "value": "{{admin_token}}",
-                      "type": "string"
-                    }
-                  ]
-                },
-                "method": "GET",
-                "header": [],
-                "url": {
-                  "raw": "{{baseUrl}}/reports/overview",
-                  "host": [
-                    "{{baseUrl}}"
-                  ],
-                  "path": [
                     "reports",
                     "overview"
                   ]
@@ -11113,6 +11068,27 @@
         {
           "name": "api-gateway",
           "item": [
+            {
+              "name": "All Services Health",
+              "request": {
+                "auth": {
+                  "type": "noauth"
+                },
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{baseUrl}}/health/all",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "health",
+                    "all"
+                  ]
+                }
+              },
+              "response": []
+            },
             {
               "name": "Reports Alias - Fixed KAN-76",
               "event": [
@@ -11165,6 +11141,29 @@
             },
             {
               "name": "Proxy Analytics Reports Overview",
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "exec": [
+                      "pm.test(\"HTTP 200\", () => pm.response.to.have.status(200));\r",
+                      "\r",
+                      "const json = pm.response.json();\r",
+                      "const payload = json.data?.data || json.data || json;\r",
+                      "\r",
+                      "pm.test(\"Reports overview shape is valid\", () => {\r",
+                      "  pm.expect(payload).to.have.property(\"totalRevenue\");\r",
+                      "  pm.expect(payload).to.have.property(\"totalOrders\");\r",
+                      "  pm.expect(payload).to.have.property(\"orderStats\");\r",
+                      "  pm.expect(payload.orderStats).to.be.an(\"array\");\r",
+                      "});"
+                    ],
+                    "type": "text/javascript",
+                    "packages": {},
+                    "requests": {}
+                  }
+                }
+              ],
               "request": {
                 "auth": {
                   "type": "bearer",
@@ -11191,12 +11190,91 @@
                 }
               },
               "response": []
+            },
+            {
+              "name": "Gateway Health",
+              "request": {
+                "auth": {
+                  "type": "noauth"
+                },
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{baseUrl}}/health",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "health"
+                  ]
+                }
+              },
+              "response": []
             }
           ]
         },
         {
           "name": "file-service",
           "item": [
+            {
+              "name": "Register Customer For File Order",
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "exec": [
+                      "pm.test(\"HTTP 201\", () => pm.response.to.have.status(201));\r",
+                      "\r",
+                      "pm.test(\"File customer email prepared\", () => {\r",
+                      "  pm.expect(pm.environment.get(\"file_customer_email\")).to.not.be.empty;\r",
+                      "});"
+                    ],
+                    "type": "text/javascript",
+                    "packages": {},
+                    "requests": {}
+                  }
+                },
+                {
+                  "listen": "prerequest",
+                  "script": {
+                    "exec": [
+                      "const email = `file.customer.${Date.now()}@mutrapro.test`;\r",
+                      "pm.environment.set(\"file_customer_email\", email);"
+                    ],
+                    "type": "text/javascript",
+                    "packages": {},
+                    "requests": {}
+                  }
+                }
+              ],
+              "request": {
+                "auth": {
+                  "type": "noauth"
+                },
+                "method": "POST",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\r\n  \"name\": \"File Customer\",\r\n  \"email\": \"{{file_customer_email}}\",\r\n  \"password\": \"{{default_password}}\"\r\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/auth/register",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "auth",
+                    "register"
+                  ]
+                }
+              },
+              "response": []
+            },
             {
               "name": "Login Customer",
               "event": [
@@ -11404,7 +11482,7 @@
                       "key": "file",
                       "type": "file",
                       "uuid": "12a6d5bb-440f-4fcb-a7b1-101da27c364c",
-                      "src": "postman-cloud:///1f1567e0-e082-4980-9f15-7d7802ac178d"
+                      "src": "tests/fixtures/upload-test.mp3"
                     }
                   ]
                 },
@@ -11563,65 +11641,6 @@
                 }
               },
               "response": []
-            },
-            {
-              "name": "Register Customer For File Order",
-              "event": [
-                {
-                  "listen": "test",
-                  "script": {
-                    "exec": [
-                      "pm.test(\"HTTP 201\", () => pm.response.to.have.status(201));\r",
-                      "\r",
-                      "pm.test(\"File customer email prepared\", () => {\r",
-                      "  pm.expect(pm.environment.get(\"file_customer_email\")).to.not.be.empty;\r",
-                      "});"
-                    ],
-                    "type": "text/javascript",
-                    "packages": {},
-                    "requests": {}
-                  }
-                },
-                {
-                  "listen": "prerequest",
-                  "script": {
-                    "exec": [
-                      "const email = `file.customer.${Date.now()}@mutrapro.test`;\r",
-                      "pm.environment.set(\"file_customer_email\", email);"
-                    ],
-                    "type": "text/javascript",
-                    "packages": {},
-                    "requests": {}
-                  }
-                }
-              ],
-              "request": {
-                "auth": {
-                  "type": "noauth"
-                },
-                "method": "POST",
-                "header": [],
-                "body": {
-                  "mode": "raw",
-                  "raw": "{\r\n  \"name\": \"File Customer\",\r\n  \"email\": \"{{file_customer_email}}\",\r\n  \"password\": \"{{default_password}}\"\r\n}",
-                  "options": {
-                    "raw": {
-                      "language": "json"
-                    }
-                  }
-                },
-                "url": {
-                  "raw": "{{baseUrl}}/auth/register",
-                  "host": [
-                    "{{baseUrl}}"
-                  ],
-                  "path": [
-                    "auth",
-                    "register"
-                  ]
-                }
-              },
-              "response": []
             }
           ],
           "auth": {
@@ -11769,6 +11788,283 @@
               "response": []
             },
             {
+              "name": "Get Studios",
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "exec": [
+                      "pm.test(\"HTTP 200\", () => pm.response.to.have.status(200));\r",
+                      "\r",
+                      "const json = pm.response.json();\r",
+                      "\r",
+                      "pm.test(\"Studio list is valid\", () => {\r",
+                      "  pm.expect(json).to.be.an(\"array\");\r",
+                      "  pm.expect(json.length).to.be.above(0);\r",
+                      "});"
+                    ],
+                    "type": "text/javascript",
+                    "packages": {},
+                    "requests": {}
+                  }
+                }
+              ],
+              "request": {
+                "auth": {
+                  "type": "noauth"
+                },
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{baseUrl}}/studio/studios",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "studio",
+                    "studios"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "Update Studio Status - Available",
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "exec": [
+                      "pm.test(\"HTTP 200\", () => pm.response.to.have.status(200));\r",
+                      "\r",
+                      "const json = pm.response.json();\r",
+                      "\r",
+                      "pm.test(\"Studio status updated\", () => {\r",
+                      "  pm.expect(json.message).to.be.a(\"string\").and.not.empty;\r",
+                      "});"
+                    ],
+                    "type": "text/javascript",
+                    "packages": {},
+                    "requests": {}
+                  }
+                }
+              ],
+              "request": {
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "{{studio_admin_token}}",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "method": "PUT",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{ \"status\": \"available\" }",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/studio/studios/{{studioId}}/status",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "studio",
+                    "studios",
+                    "{{studioId}}",
+                    "status"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "Update Studio Status - Maintenance",
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "exec": [
+                      "pm.test(\"HTTP 200\", () => pm.response.to.have.status(200));\r",
+                      "\r",
+                      "const json = pm.response.json();\r",
+                      "\r",
+                      "pm.test(\"Studio status updated\", () => {\r",
+                      "  pm.expect(json.message).to.be.a(\"string\").and.not.empty;\r",
+                      "});"
+                    ],
+                    "type": "text/javascript",
+                    "packages": {},
+                    "requests": {}
+                  }
+                }
+              ],
+              "request": {
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "{{studio_admin_token}}",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "method": "PUT",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{ \"status\": \"maintenance\" }",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/studio/studios/{{studioId}}/status",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "studio",
+                    "studios",
+                    "{{studioId}}",
+                    "status"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "Update Studio Status - Reset Available",
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "exec": [
+                      "pm.test(\"HTTP 200\", () => pm.response.to.have.status(200));\r",
+                      "\r",
+                      "const json = pm.response.json();\r",
+                      "\r",
+                      "pm.test(\"Studio status updated\", () => {\r",
+                      "  pm.expect(json.message).to.be.a(\"string\").and.not.empty;\r",
+                      "});"
+                    ],
+                    "type": "text/javascript",
+                    "packages": {},
+                    "requests": {}
+                  }
+                }
+              ],
+              "request": {
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "{{studio_admin_token}}",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "method": "PUT",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\r\n  \"status\": \"available\"\r\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/studio/studios/{{studioId}}/status",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "studio",
+                    "studios",
+                    "{{studioId}}",
+                    "status"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "Prepare Booking Time",
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "exec": [
+                      "pm.test(\"HTTP 200\", () => pm.response.to.have.status(200));\r",
+                      "\r",
+                      "pm.test(\"Booking time variables saved\", () => {\r",
+                      "  pm.expect(pm.environment.get(\"studio_booking_start_time\")).to.not.be.empty;\r",
+                      "  pm.expect(pm.environment.get(\"studio_booking_end_time\")).to.not.be.empty;\r",
+                      "});"
+                    ],
+                    "type": "text/javascript",
+                    "packages": {},
+                    "requests": {}
+                  }
+                },
+                {
+                  "listen": "prerequest",
+                  "script": {
+                    "exec": [
+                      "const start = new Date();\r",
+                      "const daysAhead = 7 + Math.floor(Math.random() * 30);\r",
+                      "const hour = 9 + Math.floor(Math.random() * 6);\r",
+                      "\r",
+                      "start.setDate(start.getDate() + daysAhead);\r",
+                      "start.setHours(hour, 0, 0, 0);\r",
+                      "\r",
+                      "const end = new Date(start);\r",
+                      "end.setHours(hour + 1, 0, 0, 0);\r",
+                      "\r",
+                      "const format = d => d.toISOString().slice(0, 19).replace(\"T\", \" \");\r",
+                      "\r",
+                      "pm.environment.set(\"studio_booking_start_time\", format(start));\r",
+                      "pm.environment.set(\"studio_booking_end_time\", format(end));"
+                    ],
+                    "type": "text/javascript",
+                    "packages": {},
+                    "requests": {}
+                  }
+                }
+              ],
+              "request": {
+                "auth": {
+                  "type": "noauth"
+                },
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{baseUrl}}/health",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "health"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
               "name": "Create Booking",
               "event": [
                 {
@@ -11837,15 +12133,69 @@
               "response": []
             },
             {
+              "name": "Get All Bookings",
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "exec": [
+                      "pm.test(\"HTTP 200\", () => pm.response.to.have.status(200));\r",
+                      "\r",
+                      "const json = pm.response.json();\r",
+                      "\r",
+                      "pm.test(\"Bookings payload is an array\", () => {\r",
+                      "  pm.expect(json.data || json).to.be.an(\"array\");\r",
+                      "});"
+                    ],
+                    "type": "text/javascript",
+                    "packages": {},
+                    "requests": {}
+                  }
+                }
+              ],
+              "request": {
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "{{studio_admin_token}}",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{baseUrl}}/studio/bookings/all",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "studio",
+                    "bookings",
+                    "all"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
               "name": "Confirm Booking",
               "event": [
                 {
                   "listen": "prerequest",
                   "script": {
                     "exec": [
-                      "const bookingId = pm.environment.get('bookingId') || pm.collectionVariables.get('bookingId');",
-                      "if (!bookingId) { throw new Error('Missing bookingId: run Create Booking before Confirm Booking.'); }",
-                      "pm.environment.set('bookingId', String(bookingId));"
+                      "const bookingId =",
+                      "  pm.environment.get(\"bookingId\") ||",
+                      "  pm.collectionVariables.get(\"bookingId\");",
+                      "",
+                      "if (!bookingId) {",
+                      "  throw new Error(\"Missing bookingId: run Create Booking first.\");",
+                      "}",
+                      "",
+                      "pm.environment.set(\"bookingId\", String(bookingId));"
                     ],
                     "type": "text/javascript",
                     "packages": {},
@@ -11899,125 +12249,6 @@
               "response": []
             },
             {
-              "name": "Get Studios",
-              "event": [
-                {
-                  "listen": "test",
-                  "script": {
-                    "exec": [
-                      "pm.test(\"HTTP 200\", () => pm.response.to.have.status(200));\r",
-                      "\r",
-                      "const json = pm.response.json();\r",
-                      "\r",
-                      "pm.test(\"Studio list is valid\", () => {\r",
-                      "  pm.expect(json).to.be.an(\"array\");\r",
-                      "  pm.expect(json.length).to.be.above(0);\r",
-                      "});"
-                    ],
-                    "type": "text/javascript",
-                    "packages": {},
-                    "requests": {}
-                  }
-                }
-              ],
-              "request": {
-                "auth": {
-                  "type": "noauth"
-                },
-                "method": "GET",
-                "header": [],
-                "url": {
-                  "raw": "{{baseUrl}}/studio/studios",
-                  "host": [
-                    "{{baseUrl}}"
-                  ],
-                  "path": [
-                    "studio",
-                    "studios"
-                  ]
-                }
-              },
-              "response": []
-            },
-            {
-              "name": "Get All Bookings",
-              "request": {
-                "auth": {
-                  "type": "bearer",
-                  "bearer": [
-                    {
-                      "key": "token",
-                      "value": "{{studio_admin_token}}",
-                      "type": "string"
-                    }
-                  ]
-                },
-                "method": "GET",
-                "header": [],
-                "url": {
-                  "raw": "{{baseUrl}}/studio/bookings/all",
-                  "host": [
-                    "{{baseUrl}}"
-                  ],
-                  "path": [
-                    "studio",
-                    "bookings",
-                    "all"
-                  ]
-                }
-              },
-              "response": []
-            },
-            {
-              "name": "Cancel Booking",
-              "event": [
-                {
-                  "listen": "test",
-                  "script": {
-                    "exec": [
-                      "pm.test(\"HTTP 200\", () => pm.response.to.have.status(200));\r",
-                      "\r",
-                      "const json = pm.response.json();\r",
-                      "\r",
-                      "pm.test(\"Booking cancelled\", () => {\r",
-                      "  pm.expect(json.success).to.eql(true);\r",
-                      "});"
-                    ],
-                    "type": "text/javascript",
-                    "packages": {},
-                    "requests": {}
-                  }
-                }
-              ],
-              "request": {
-                "auth": {
-                  "type": "bearer",
-                  "bearer": [
-                    {
-                      "key": "token",
-                      "value": "{{artist_token}}",
-                      "type": "string"
-                    }
-                  ]
-                },
-                "method": "POST",
-                "header": [],
-                "url": {
-                  "raw": "{{baseUrl}}/studio/bookings/{{bookingId}}/cancel",
-                  "host": [
-                    "{{baseUrl}}"
-                  ],
-                  "path": [
-                    "studio",
-                    "bookings",
-                    "{{bookingId}}",
-                    "cancel"
-                  ]
-                }
-              },
-              "response": []
-            },
-            {
               "name": "Reject Booking",
               "event": [
                 {
@@ -12031,6 +12262,25 @@
                       "pm.test(\"Booking rejected\", () => {\r",
                       "  pm.expect(json.success).to.eql(true);\r",
                       "});"
+                    ],
+                    "type": "text/javascript",
+                    "packages": {},
+                    "requests": {}
+                  }
+                },
+                {
+                  "listen": "prerequest",
+                  "script": {
+                    "exec": [
+                      "const bookingId =\r",
+                      "  pm.environment.get(\"bookingId\") ||\r",
+                      "  pm.collectionVariables.get(\"bookingId\");\r",
+                      "\r",
+                      "if (!bookingId) {\r",
+                      "  throw new Error(\"Missing bookingId: run Create Booking first.\");\r",
+                      "}\r",
+                      "\r",
+                      "pm.environment.set(\"bookingId\", String(bookingId));"
                     ],
                     "type": "text/javascript",
                     "packages": {},
@@ -12067,91 +12317,38 @@
               "response": []
             },
             {
-              "name": "Update Studio Status - Available",
-              "request": {
-                "auth": {
-                  "type": "bearer",
-                  "bearer": [
-                    {
-                      "key": "token",
-                      "value": "{{studio_admin_token}}",
-                      "type": "string"
-                    }
-                  ]
-                },
-                "method": "PUT",
-                "header": [],
-                "body": {
-                  "mode": "raw",
-                  "raw": "{ \"status\": \"available\" }",
-                  "options": {
-                    "raw": {
-                      "language": "json"
-                    }
-                  }
-                },
-                "url": {
-                  "raw": "{{baseUrl}}/studio/studios/{{studioId}}/status",
-                  "host": [
-                    "{{baseUrl}}"
-                  ],
-                  "path": [
-                    "studio",
-                    "studios",
-                    "{{studioId}}",
-                    "status"
-                  ]
-                }
-              },
-              "response": []
-            },
-            {
-              "name": "Update Studio Status - Maintenance",
-              "request": {
-                "auth": {
-                  "type": "bearer",
-                  "bearer": [
-                    {
-                      "key": "token",
-                      "value": "{{studio_admin_token}}",
-                      "type": "string"
-                    }
-                  ]
-                },
-                "method": "PUT",
-                "header": [],
-                "body": {
-                  "mode": "raw",
-                  "raw": "{ \"status\": \"maintenance\" }",
-                  "options": {
-                    "raw": {
-                      "language": "json"
-                    }
-                  }
-                },
-                "url": {
-                  "raw": "{{baseUrl}}/studio/studios/{{studioId}}/status",
-                  "host": [
-                    "{{baseUrl}}"
-                  ],
-                  "path": [
-                    "studio",
-                    "studios",
-                    "{{studioId}}",
-                    "status"
-                  ]
-                }
-              },
-              "response": []
-            },
-            {
-              "name": "Update Studio Status - Reset Available",
+              "name": "Cancel Booking",
               "event": [
                 {
                   "listen": "test",
                   "script": {
                     "exec": [
-                      "pm.test(\"HTTP 200\", () => pm.response.to.have.status(200));"
+                      "pm.test(\"HTTP 200\", () => pm.response.to.have.status(200));\r",
+                      "\r",
+                      "const json = pm.response.json();\r",
+                      "\r",
+                      "pm.test(\"Booking cancelled\", () => {\r",
+                      "  pm.expect(json.success).to.eql(true);\r",
+                      "});"
+                    ],
+                    "type": "text/javascript",
+                    "packages": {},
+                    "requests": {}
+                  }
+                },
+                {
+                  "listen": "prerequest",
+                  "script": {
+                    "exec": [
+                      "const bookingId =\r",
+                      "  pm.environment.get(\"bookingId\") ||\r",
+                      "  pm.collectionVariables.get(\"bookingId\");\r",
+                      "\r",
+                      "if (!bookingId) {\r",
+                      "  throw new Error(\"Missing bookingId: run Create Booking first.\");\r",
+                      "}\r",
+                      "\r",
+                      "pm.environment.set(\"bookingId\", String(bookingId));"
                     ],
                     "type": "text/javascript",
                     "packages": {},
@@ -12165,32 +12362,23 @@
                   "bearer": [
                     {
                       "key": "token",
-                      "value": "{{studio_admin_token}}",
+                      "value": "{{artist_token}}",
                       "type": "string"
                     }
                   ]
                 },
-                "method": "PUT",
+                "method": "POST",
                 "header": [],
-                "body": {
-                  "mode": "raw",
-                  "raw": "{\r\n  \"status\": \"available\"\r\n}",
-                  "options": {
-                    "raw": {
-                      "language": "json"
-                    }
-                  }
-                },
                 "url": {
-                  "raw": "{{baseUrl}}/studio/studios/{{studioId}}/status",
+                  "raw": "{{baseUrl}}/studio/bookings/{{bookingId}}/cancel",
                   "host": [
                     "{{baseUrl}}"
                   ],
                   "path": [
                     "studio",
-                    "studios",
-                    "{{studioId}}",
-                    "status"
+                    "bookings",
+                    "{{bookingId}}",
+                    "cancel"
                   ]
                 }
               },
@@ -13465,16 +13653,16 @@
                   "name": "Create Booking",
                   "event": [
                     {
-                      "listen": "test",
+                      "listen": "prerequest",
                       "script": {
                         "exec": [
                           "pm.environment.unset(\"bookingId\");\r",
                           "pm.collectionVariables.unset(\"bookingId\");\r",
                           "\r",
                           "const start = new Date();\r",
-                          "const daysAhead = 7 + Math.floor(Math.random() * 30);\r",
+                          "const daysAhead = 365 + Math.floor(Math.random() * 3650);\r",
                           "start.setDate(start.getDate() + daysAhead);\r",
-                          "start.setHours(9 + Math.floor(Math.random() * 6), 0, 0, 0);\r",
+                          "start.setHours(8 + Math.floor(Math.random() * 10), Math.floor(Math.random() * 60), 0, 0);\r",
                           "\r",
                           "const end = new Date(start);\r",
                           "end.setHours(start.getHours() + 1);\r",
@@ -13483,6 +13671,30 @@
                           "\r",
                           "pm.environment.set(\"studio_booking_start_time\", format(start));\r",
                           "pm.environment.set(\"studio_booking_end_time\", format(end));"
+                        ],
+                        "type": "text/javascript",
+                        "packages": {},
+                        "requests": {}
+                      }
+                    },
+                    {
+                      "listen": "test",
+                      "script": {
+                        "exec": [
+                          "pm.test(\"HTTP 201\", () => pm.response.to.have.status(201));\r",
+                          "\r",
+                          "const json = pm.response.json();\r",
+                          "const payload = json.data || json;\r",
+                          "const bookingId = payload.id || payload.bookingId;\r",
+                          "\r",
+                          "pm.test(\"Booking created and id saved\", () => {\r",
+                          "  pm.expect(bookingId).to.exist;\r",
+                          "});\r",
+                          "\r",
+                          "if (bookingId) {\r",
+                          "  pm.environment.set(\"bookingId\", String(bookingId));\r",
+                          "  pm.collectionVariables.set(\"bookingId\", String(bookingId));\r",
+                          "}"
                         ],
                         "type": "text/javascript",
                         "packages": {},
@@ -13640,72 +13852,6 @@
                   "response": []
                 },
                 {
-                  "name": "Cancel Booking",
-                  "event": [
-                    {
-                      "listen": "test",
-                      "script": {
-                        "exec": [
-                          "pm.test(\"HTTP 200\", () => pm.response.to.have.status(200));\r",
-                          "\r",
-                          "const json = pm.response.json();\r",
-                          "\r",
-                          "pm.test(\"Booking cancelled\", () => {\r",
-                          "  pm.expect(json.success).to.eql(true);\r",
-                          "});"
-                        ],
-                        "type": "text/javascript",
-                        "packages": {},
-                        "requests": {}
-                      }
-                    },
-                    {
-                      "listen": "prerequest",
-                      "script": {
-                        "exec": [
-                          "const bookingId = pm.environment.get(\"bookingId\") || pm.collectionVariables.get(\"bookingId\");\r",
-                          "\r",
-                          "if (!bookingId) {\r",
-                          "  throw new Error(\"Missing bookingId: run Create Booking before this request.\");\r",
-                          "}\r",
-                          "\r",
-                          "pm.environment.set(\"bookingId\", String(bookingId));"
-                        ],
-                        "type": "text/javascript",
-                        "packages": {},
-                        "requests": {}
-                      }
-                    }
-                  ],
-                  "request": {
-                    "auth": {
-                      "type": "bearer",
-                      "bearer": [
-                        {
-                          "key": "token",
-                          "value": "{{artist_token}}",
-                          "type": "string"
-                        }
-                      ]
-                    },
-                    "method": "POST",
-                    "header": [],
-                    "url": {
-                      "raw": "{{baseUrl}}/studio/bookings/{{bookingId}}/cancel",
-                      "host": [
-                        "{{baseUrl}}"
-                      ],
-                      "path": [
-                        "studio",
-                        "bookings",
-                        "{{bookingId}}",
-                        "cancel"
-                      ]
-                    }
-                  },
-                  "response": []
-                },
-                {
                   "name": "Reject Booking",
                   "event": [
                     {
@@ -13766,6 +13912,72 @@
                         "bookings",
                         "{{bookingId}}",
                         "reject"
+                      ]
+                    }
+                  },
+                  "response": []
+                },
+                {
+                  "name": "Cancel Booking",
+                  "event": [
+                    {
+                      "listen": "test",
+                      "script": {
+                        "exec": [
+                          "pm.test(\"HTTP 200\", () => pm.response.to.have.status(200));\r",
+                          "\r",
+                          "const json = pm.response.json();\r",
+                          "\r",
+                          "pm.test(\"Booking cancelled\", () => {\r",
+                          "  pm.expect(json.success).to.eql(true);\r",
+                          "});"
+                        ],
+                        "type": "text/javascript",
+                        "packages": {},
+                        "requests": {}
+                      }
+                    },
+                    {
+                      "listen": "prerequest",
+                      "script": {
+                        "exec": [
+                          "const bookingId = pm.environment.get(\"bookingId\") || pm.collectionVariables.get(\"bookingId\");\r",
+                          "\r",
+                          "if (!bookingId) {\r",
+                          "  throw new Error(\"Missing bookingId: run Create Booking before this request.\");\r",
+                          "}\r",
+                          "\r",
+                          "pm.environment.set(\"bookingId\", String(bookingId));"
+                        ],
+                        "type": "text/javascript",
+                        "packages": {},
+                        "requests": {}
+                      }
+                    }
+                  ],
+                  "request": {
+                    "auth": {
+                      "type": "bearer",
+                      "bearer": [
+                        {
+                          "key": "token",
+                          "value": "{{artist_token}}",
+                          "type": "string"
+                        }
+                      ]
+                    },
+                    "method": "POST",
+                    "header": [],
+                    "url": {
+                      "raw": "{{baseUrl}}/studio/bookings/{{bookingId}}/cancel",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "studio",
+                        "bookings",
+                        "{{bookingId}}",
+                        "cancel"
                       ]
                     }
                   },
@@ -13942,7 +14154,15 @@
                           "listen": "test",
                           "script": {
                             "exec": [
-                              "pm.test(\"HTTP 401\", () => pm.response.to.have.status(401));"
+                              "pm.test(\"HTTP 401\", () => {\r",
+                              "  pm.response.to.have.status(401);\r",
+                              "});\r",
+                              "\r",
+                              "const json = pm.response.json();\r",
+                              "\r",
+                              "pm.test(\"Request is unauthorized\", () => {\r",
+                              "  pm.expect(json.success).to.eql(false);\r",
+                              "});"
                             ],
                             "type": "text/javascript",
                             "packages": {},
@@ -13952,14 +14172,7 @@
                       ],
                       "request": {
                         "auth": {
-                          "type": "bearer",
-                          "bearer": [
-                            {
-                              "key": "token",
-                              "value": "{{invalid_token}}",
-                              "type": "string"
-                            }
-                          ]
+                          "type": "noauth"
                         },
                         "method": "GET",
                         "header": [],
@@ -14382,7 +14595,15 @@
                           "listen": "test",
                           "script": {
                             "exec": [
-                              "pm.test(\"HTTP 404\", () => pm.response.to.have.status(404));"
+                              "pm.test(\"HTTP 404\", () => {\r",
+                              "  pm.response.to.have.status(404);\r",
+                              "});\r",
+                              "\r",
+                              "const json = pm.response.json();\r",
+                              "\r",
+                              "pm.test(\"Booking not found\", () => {\r",
+                              "  pm.expect(json.success).to.eql(false);\r",
+                              "});"
                             ],
                             "type": "text/javascript",
                             "packages": {},
@@ -14401,7 +14622,7 @@
                             }
                           ]
                         },
-                        "method": "PUT",
+                        "method": "POST",
                         "header": [],
                         "url": {
                           "raw": "{{baseUrl}}/studio/bookings/999999/confirm",
