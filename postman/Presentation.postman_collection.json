@@ -12576,6 +12576,65 @@
           "name": "file-service",
           "item": [
             {
+              "name": "Register Customer For File Order",
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "exec": [
+                      "pm.test(\"HTTP 201\", () => pm.response.to.have.status(201));\r",
+                      "\r",
+                      "pm.test(\"File customer email prepared\", () => {\r",
+                      "  pm.expect(pm.environment.get(\"file_customer_email\")).to.not.be.empty;\r",
+                      "});"
+                    ],
+                    "type": "text/javascript",
+                    "packages": {},
+                    "requests": {}
+                  }
+                },
+                {
+                  "listen": "prerequest",
+                  "script": {
+                    "exec": [
+                      "const email = `file.customer.${Date.now()}@mutrapro.test`;\r",
+                      "pm.environment.set(\"file_customer_email\", email);"
+                    ],
+                    "type": "text/javascript",
+                    "packages": {},
+                    "requests": {}
+                  }
+                }
+              ],
+              "request": {
+                "auth": {
+                  "type": "noauth"
+                },
+                "method": "POST",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\r\n  \"name\": \"File Customer\",\r\n  \"email\": \"{{file_customer_email}}\",\r\n  \"password\": \"{{default_password}}\"\r\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/auth/register",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "auth",
+                    "register"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
               "name": "Login Customer",
               "event": [
                 {
@@ -12782,7 +12841,7 @@
                       "key": "file",
                       "type": "file",
                       "uuid": "12a6d5bb-440f-4fcb-a7b1-101da27c364c",
-                      "src": "postman-cloud:///1f1567e0-e082-4980-9f15-7d7802ac178d"
+                      "src": "tests/fixtures/upload-test.mp3"
                     }
                   ]
                 },
@@ -12937,65 +12996,6 @@
                     "files",
                     "download",
                     "{{file_id}}"
-                  ]
-                }
-              },
-              "response": []
-            },
-            {
-              "name": "Register Customer For File Order",
-              "event": [
-                {
-                  "listen": "test",
-                  "script": {
-                    "exec": [
-                      "pm.test(\"HTTP 201\", () => pm.response.to.have.status(201));\r",
-                      "\r",
-                      "pm.test(\"File customer email prepared\", () => {\r",
-                      "  pm.expect(pm.environment.get(\"file_customer_email\")).to.not.be.empty;\r",
-                      "});"
-                    ],
-                    "type": "text/javascript",
-                    "packages": {},
-                    "requests": {}
-                  }
-                },
-                {
-                  "listen": "prerequest",
-                  "script": {
-                    "exec": [
-                      "const email = `file.customer.${Date.now()}@mutrapro.test`;\r",
-                      "pm.environment.set(\"file_customer_email\", email);"
-                    ],
-                    "type": "text/javascript",
-                    "packages": {},
-                    "requests": {}
-                  }
-                }
-              ],
-              "request": {
-                "auth": {
-                  "type": "noauth"
-                },
-                "method": "POST",
-                "header": [],
-                "body": {
-                  "mode": "raw",
-                  "raw": "{\r\n  \"name\": \"File Customer\",\r\n  \"email\": \"{{file_customer_email}}\",\r\n  \"password\": \"{{default_password}}\"\r\n}",
-                  "options": {
-                    "raw": {
-                      "language": "json"
-                    }
-                  }
-                },
-                "url": {
-                  "raw": "{{baseUrl}}/auth/register",
-                  "host": [
-                    "{{baseUrl}}"
-                  ],
-                  "path": [
-                    "auth",
-                    "register"
                   ]
                 }
               },
@@ -15012,16 +15012,16 @@
                   "name": "Create Booking",
                   "event": [
                     {
-                      "listen": "test",
+                      "listen": "prerequest",
                       "script": {
                         "exec": [
                           "pm.environment.unset(\"bookingId\");\r",
                           "pm.collectionVariables.unset(\"bookingId\");\r",
                           "\r",
                           "const start = new Date();\r",
-                          "const daysAhead = 7 + Math.floor(Math.random() * 30);\r",
+                          "const daysAhead = 365 + Math.floor(Math.random() * 3650);\r",
                           "start.setDate(start.getDate() + daysAhead);\r",
-                          "start.setHours(9 + Math.floor(Math.random() * 6), 0, 0, 0);\r",
+                          "start.setHours(8 + Math.floor(Math.random() * 10), Math.floor(Math.random() * 60), 0, 0);\r",
                           "\r",
                           "const end = new Date(start);\r",
                           "end.setHours(start.getHours() + 1);\r",
@@ -15030,6 +15030,30 @@
                           "\r",
                           "pm.environment.set(\"studio_booking_start_time\", format(start));\r",
                           "pm.environment.set(\"studio_booking_end_time\", format(end));"
+                        ],
+                        "type": "text/javascript",
+                        "packages": {},
+                        "requests": {}
+                      }
+                    },
+                    {
+                      "listen": "test",
+                      "script": {
+                        "exec": [
+                          "pm.test(\"HTTP 201\", () => pm.response.to.have.status(201));\r",
+                          "\r",
+                          "const json = pm.response.json();\r",
+                          "const payload = json.data || json;\r",
+                          "const bookingId = payload.id || payload.bookingId;\r",
+                          "\r",
+                          "pm.test(\"Booking created and id saved\", () => {\r",
+                          "  pm.expect(bookingId).to.exist;\r",
+                          "});\r",
+                          "\r",
+                          "if (bookingId) {\r",
+                          "  pm.environment.set(\"bookingId\", String(bookingId));\r",
+                          "  pm.collectionVariables.set(\"bookingId\", String(bookingId));\r",
+                          "}"
                         ],
                         "type": "text/javascript",
                         "packages": {},
