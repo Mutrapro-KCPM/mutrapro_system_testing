@@ -10,7 +10,7 @@ services:
       MYSQL_ROOT_PASSWORD: ${DB_PASSWORD}
       MYSQL_APP_PASSWORD: ${DB_PASSWORD}
     ports:
-      - "3307:3306"
+      - "${MYSQL_PORT:-3307}:3306"
     volumes:
       - mysql_data:/var/lib/mysql
     command:
@@ -53,8 +53,8 @@ services:
     restart: always
     mem_limit: 1G
     ports:
-      # Ní sẽ truy cập giao diện NiFi qua cổng 9090
-      - "9090:8080"
+      # Ní sẽ truy cập giao diện NiFi qua cổng động
+      - "${NIFI_PORT:-9090}:8080"
     environment:
       - NIFI_WEB_HTTP_PORT=8080
       # Một key bí mật, ní có thể đổi thành gì cũng được
@@ -214,7 +214,7 @@ services:
       context: .
       dockerfile: ./services/notification-service/Dockerfile
     ports:
-      - "3006:3006"
+      - "${NOTIFY_PORT:-3006}:3006"
     restart: always
     environment:
       - DB_HOST=mysql_db
@@ -274,7 +274,7 @@ services:
       dockerfile: Dockerfile
     restart: always
     ports:
-      - "3007:3007"
+      - "${API_PORT:-3007}:3007"
     environment:
       - CORS_ORIGIN=${CORS_ORIGIN}
     depends_on:
@@ -306,7 +306,7 @@ services:
     container_name: mutrapro_system_testing-sonarqube-1
     restart: always
     ports:
-      - "9000:9000"
+      - "${SONAR_PORT:-9000}:9000"
     networks:
       - mutrapro-network
     volumes:
@@ -320,7 +320,7 @@ services:
     build: ./web-app
     restart: always
     ports:
-      - "3000:80" # Đã sửa port 3000 -> 80 cho đúng với Nginx
+      - "${WEB_PORT:-3000}:80" # Đã sửa port cho đúng với Nginx
     environment:
       - REACT_APP_API_GATEWAY_URL=http://api-gateway:3007
     networks:

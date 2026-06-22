@@ -3,10 +3,16 @@ pipeline {
 
     environment {
         // Tên project dùng cho docker-compose
-        COMPOSE_PROJECT_NAME = 'mutrapro_system_testing'
+        COMPOSE_PROJECT_NAME = "mutrapro_${env.BRANCH_NAME == 'main' ? 'main' : 'dev'}"
+        MYSQL_PORT = "${env.BRANCH_NAME == 'main' ? '3307' : '3308'}"
+        NIFI_PORT = "${env.BRANCH_NAME == 'main' ? '9090' : '9091'}"
+        NOTIFY_PORT = "${env.BRANCH_NAME == 'main' ? '3006' : '3008'}"
+        API_PORT = "${env.BRANCH_NAME == 'main' ? '3007' : '3009'}"
+        SONAR_PORT = "${env.BRANCH_NAME == 'main' ? '9000' : '9001'}"
+        WEB_PORT = "${env.BRANCH_NAME == 'main' ? '80' : '3000'}"
         DB_PASSWORD = '123456'
         JWT_SECRET = '9f7c2d1e4a8b6c5d3e7f1a9b2c4d6e8f0a1b3c5d7e9f2a4b6c8d1e3f5a7b9c2d'
-        CORS_ORIGIN = 'http://localhost:3000'
+        CORS_ORIGIN = "${env.BRANCH_NAME == 'main' ? 'http://localhost' : 'http://localhost:3000'}"
         RABBITMQ_DEFAULT_USER = 'user'
         RABBITMQ_DEFAULT_PASS = 'password'
         NIFI_SENSITIVE_PROPS_KEY = 'change_me_for_demo'
@@ -30,7 +36,13 @@ pipeline {
         stage('Stop Old System') {
             steps {
                 sh 'docker compose down --remove-orphans'
-                sh 'docker volume rm mutrapro_system_testing_mysql_data || true'
+                script {
+                    if (env.BRANCH_NAME != 'main') {
+                        sh "docker volume rm ${COMPOSE_PROJECT_NAME}_mysql_data || true"
+                    } else {
+                        echo "Skipping database wipe for main branch to protect data."
+                    }
+                }
             }
         }
 

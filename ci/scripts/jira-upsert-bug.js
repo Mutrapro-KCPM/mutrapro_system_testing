@@ -249,7 +249,10 @@ async function main() {
 
     for (const [service, serviceFailures] of Object.entries(grouped)) {
       const errorType = classifyError(serviceFailures[0]);
-      const priority = determinePriority(service, errorType, serviceFailures[0].error?.message);
+      let priority = determinePriority(service, errorType, serviceFailures[0].error?.message);
+      if (GITHUB_BRANCH === 'main') {
+        priority = 'Highest'; // Elevate priority for main branch
+      }
       const signature = buildBugSignature(service, serviceFailures[0], errorType);
       
       currentSignatures.add(signature); // Track this signature
