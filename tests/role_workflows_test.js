@@ -1,7 +1,7 @@
 const runId = Date.now();
 const customer = {
-  name: 'cus123',
-  email: 'cus123@gmail.com',
+  name: `cus${runId}`,
+  email: `cus${runId}@gmail.com`,
   password: '123456'
 };
 
@@ -21,7 +21,8 @@ Scenario('2. Customer tạo đơn, coordinator giao việc, transcriber bắt đ
   I.fillField('.form-card input[type="email"]', customer.email);
   I.fillField('.form-card input[type="password"]', customer.password);
   I.click('.form-card button[type="submit"]');
-  I.wait(2);
+  // Đã bỏ I.wait(2) cứng, thay bằng việc chờ URL thay đổi sang login
+  I.waitInUrl('/login', 10);
 
   const registrationUrl = await I.grabCurrentUrl();
   if (!registrationUrl.includes('/login')) {
@@ -102,4 +103,19 @@ Scenario('6. Studio admin xem và khôi phục trạng thái phòng thu', ({ I }
   I.selectOption(firstStatus, 'available');
   I.wait(1);
   I.see('Lịch Đặt Phòng');
+});
+
+Scenario('7. [Ngoại lệ] - Đăng nhập sai tài khoản & Kiểm tra phân quyền', ({ I }) => {
+  I.amOnPage('/login');
+  I.waitForElement('.form-card input[type="email"]', 10);
+  I.fillField('.form-card input[type="email"]', 'wrong_email@mutrapro.com');
+  I.fillField('.form-card input[type="password"]', 'WrongPassword123!');
+  I.click('.form-card button[type="submit"]');
+  
+  // Đảm bảo vẫn bị giữ lại ở trang login
+  I.waitInUrl('/login', 5);
+  
+  // Kiểm tra phân quyền (Security): Chưa đăng nhập mà cố vào dashboard sẽ bị đẩy về login
+  I.amOnPage('/dashboard');
+  I.waitInUrl('/login', 5);
 });

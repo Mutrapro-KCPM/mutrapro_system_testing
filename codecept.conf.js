@@ -8,6 +8,7 @@ export const config = {
   helpers: {
     Playwright: {
       browser: 'chromium',
+      channel: process.env.PLAYWRIGHT_CHANNEL || undefined,
       url: 'http://localhost:3000',
       show: process.env.CODECEPT_SHOW === 'true',
       slowMo: Number(process.env.CODECEPT_SLOW_MO || 0),
