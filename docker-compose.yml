@@ -303,7 +303,6 @@ services:
   # ================== START: THÊM MỚI SONARQUBE ==================
   sonarqube:
     image: sonarqube:lts-community
-    container_name: mutrapro_system_testing-sonarqube-1
     restart: always
     ports:
       - "${SONAR_PORT:-9000}:9000"

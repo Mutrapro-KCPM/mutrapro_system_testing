@@ -36,6 +36,8 @@ pipeline {
         stage('Stop Old System') {
             steps {
                 sh 'docker compose down --remove-orphans'
+                sh 'docker rm -f mutrapro_system_testing-sonarqube-1 || true'
+                sh 'docker container prune -f || true'
                 script {
                     if (env.BRANCH_NAME != 'main') {
                         sh "docker volume rm ${COMPOSE_PROJECT_NAME}_mysql_data || true"
@@ -67,10 +69,15 @@ pipeline {
         stage('Health Check') {
             steps {
                 sh '''
-                    echo "Waiting for services to become healthy..."
+                    echo "Chờ services khởi động..."
                     sleep 30
+
+                    echo "=== Kiểm tra API Gateway ==="
+                    curl -f http://localhost:3009/api/health || exit 1
+                    echo "✅ API Gateway OK"
+
+                    echo "=== Danh sách containers đang chạy ==="
                     docker compose ps
-                    docker compose exec -T api-gateway node -e "fetch('http://localhost:3007/api/health').then(r=>process.exit(r.ok?0:1)).catch(()=>process.exit(1))"
                 '''
             }
         }
