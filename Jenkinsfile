@@ -46,26 +46,26 @@ pipeline {
                     docker container prune -f || true
 
                     echo "=== Bước 4: Xóa cứng từng container theo tên ==="
-                    docker rm -f mutrapro_dev-web-app-1 || true
-                    docker rm -f mutrapro_dev-api-gateway-1 || true
-                    docker rm -f mutrapro_dev-auth-service-1 || true
-                    docker rm -f mutrapro_dev-order-service-1 || true
-                    docker rm -f mutrapro_dev-task-service-1 || true
-                    docker rm -f mutrapro_dev-studio-service-1 || true
-                    docker rm -f mutrapro_dev-file-service-1 || true
-                    docker rm -f mutrapro_dev-notification-service-1 || true
-                    docker rm -f mutrapro_dev-analytics-service-1 || true
-                    docker rm -f mutrapro_dev-mysql_db-1 || true
-                    docker rm -f mutrapro_dev-rabbitmq-1 || true
-                    docker rm -f mutrapro_dev-redis_cache-1 || true
-                    docker rm -f mutrapro_dev-sonarqube-1 || true
-                    docker rm -f mutrapro_dev-nifi-1 || true
+                    docker rm -f ${COMPOSE_PROJECT_NAME}-web-app-1 || true
+                    docker rm -f ${COMPOSE_PROJECT_NAME}-api-gateway-1 || true
+                    docker rm -f ${COMPOSE_PROJECT_NAME}-auth-service-1 || true
+                    docker rm -f ${COMPOSE_PROJECT_NAME}-order-service-1 || true
+                    docker rm -f ${COMPOSE_PROJECT_NAME}-task-service-1 || true
+                    docker rm -f ${COMPOSE_PROJECT_NAME}-studio-service-1 || true
+                    docker rm -f ${COMPOSE_PROJECT_NAME}-file-service-1 || true
+                    docker rm -f ${COMPOSE_PROJECT_NAME}-notification-service-1 || true
+                    docker rm -f ${COMPOSE_PROJECT_NAME}-analytics-service-1 || true
+                    docker rm -f ${COMPOSE_PROJECT_NAME}-mysql_db-1 || true
+                    docker rm -f ${COMPOSE_PROJECT_NAME}-rabbitmq-1 || true
+                    docker rm -f ${COMPOSE_PROJECT_NAME}-redis_cache-1 || true
+                    docker rm -f ${COMPOSE_PROJECT_NAME}-sonarqube-1 || true
+                    docker rm -f ${COMPOSE_PROJECT_NAME}-nifi-1 || true
 
                     echo "=== Xác nhận kết quả ==="
-                    docker ps -a | grep mutrapro_dev || echo "✅ Không còn container nào"
+                    docker ps -a | grep ${COMPOSE_PROJECT_NAME} || echo "✅ Không còn container nào"
                 '''
                 script {
-                    sh 'docker volume rm mutrapro_dev_mysql_data || true'
+                    sh "docker volume rm ${COMPOSE_PROJECT_NAME}_mysql_data || true"
                 }
             }
         }
@@ -94,13 +94,14 @@ pipeline {
                     echo "=== Chờ API Gateway khởi động ==="
                     i=1
                     while [ $i -le 20 ]; do
-                        if curl -s -f http://localhost:3009/api/health > /dev/null; then
+                        STATUS=$(docker inspect --format='{{json .State.Health.Status}}' $COMPOSE_PROJECT_NAME-api-gateway-1 2>/dev/null || echo '"unknown"')
+                        if [ "$STATUS" = '"healthy"' ]; then
                             echo "✅ API Gateway OK"
                             echo "=== Danh sách containers đang chạy ==="
                             docker compose ps
                             exit 0
                         fi
-                        echo "Đang chờ API Gateway (lần $i/20, đợi 5s)..."
+                        echo "Đang chờ API Gateway (trạng thái: $STATUS, lần $i/20)..."
                         sleep 5
                         i=$((i + 1))
                     done
