@@ -15,7 +15,7 @@ RUN npm install
 COPY . .
 
 # Chạy lệnh build để tạo ra các file tĩnh
-RUN npm run build
+RUN CI=false npm run build
 
 # ----- Giai đoạn 2: Serve ứng dụng với Nginx -----
 # Sử dụng một image Nginx siêu nhẹ để chạy web server
