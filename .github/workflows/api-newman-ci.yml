@@ -1,0 +1,316 @@
+name: API CI with Newman
+
+on:
+  push:
+    branches:
+      - main
+      - dev
+      - "feature/**"
+      - "bugfix/**"
+      - "test/**"
+  pull_request:
+    branches:
+      - main
+      - dev
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  checks: write
+
+env:
+  COMPOSE_PROJECT_NAME: mutrapro_system_testing_ci
+  DOCKER_BUILDKIT: "1"
+  COMPOSE_DOCKER_CLI_BUILD: "1"
+  BUILDKIT_PROGRESS: plain
+  DB_PASSWORD: ${{ secrets.DB_PASSWORD }}
+  JWT_SECRET: ${{ secrets.JWT_SECRET }}
+  CORS_ORIGIN: "http://localhost:3000"
+  RABBITMQ_DEFAULT_USER: "user"
+  RABBITMQ_DEFAULT_PASS: ${{ secrets.RABBITMQ_DEFAULT_PASS }}
+  NIFI_SENSITIVE_PROPS_KEY: ${{ secrets.NIFI_SENSITIVE_PROPS_KEY }}
+  INTERNAL_SERVICE_TOKEN: ${{ secrets.INTERNAL_SERVICE_TOKEN }}
+  CI_BUILD_SERVICES: "mysql_db auth-service order-service task-service file-service studio-service notification-service analytics-service api-gateway"
+  CI_LOG_SERVICES: "mysql_db redis_cache rabbitmq auth-service order-service task-service file-service studio-service notification-service analytics-service api-gateway"
+
+jobs:
+  api-newman:
+    name: Docker Compose API + Newman
+    runs-on: ubuntu-latest
+    timeout-minutes: 35
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Validate required CI secrets
+        shell: bash
+        run: |
+          set -e
+          missing=()
+          for name in DB_PASSWORD JWT_SECRET RABBITMQ_DEFAULT_PASS NIFI_SENSITIVE_PROPS_KEY INTERNAL_SERVICE_TOKEN; do
+            if [ -z "${!name}" ]; then
+              missing+=("$name")
+            fi
+          done
+
+          if [ "${#missing[@]}" -gt 0 ]; then
+            echo "Missing required GitHub Secrets: ${missing[*]}"
+            exit 1
+          fi
+
+      - name: Validate Docker Compose
+        run: docker compose config
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Build API stack
+        shell: bash
+        run: |
+          set -e
+          for i in 1 2 3; do
+            if docker compose build $CI_BUILD_SERVICES; then
+              exit 0
+            fi
+            echo "Docker compose build failed; retrying ($i/3)..."
+            sleep 15
+          done
+          docker compose build $CI_BUILD_SERVICES
+
+      - name: Start API stack
+        shell: bash
+        run: |
+          set -e
+
+          docker compose up -d --no-build mysql_db redis_cache rabbitmq
+
+          for i in {1..45}; do
+            if docker compose exec -T -e MYSQL_PWD="$DB_PASSWORD" mysql_db mysql -h localhost -umutrapro_app -e "SELECT 1"; then
+              echo "MySQL app user is ready"
+              break
+            fi
+
+            if [ "$i" -eq 45 ]; then
+              echo "MySQL app user did not become ready in time"
+              docker compose ps --all || true
+              docker compose logs --tail=200 mysql_db || true
+              exit 1
+            fi
+
+            echo "Waiting for MySQL app user... attempt $i/45"
+            sleep 5
+          done
+
+          docker compose up -d --no-build api-gateway
+
+      - name: Show container status
+        shell: bash
+        run: |
+          docker compose ps --all
+          echo
+          echo "Service health summary:"
+          for service in $CI_LOG_SERVICES; do
+            container_id="$(docker compose ps -q "$service" || true)"
+            if [ -z "$container_id" ]; then
+              echo "- $service: not created"
+              continue
+            fi
+
+            status="$(docker inspect --format '{{.State.Status}}' "$container_id" 2>/dev/null || echo unknown)"
+            health="$(docker inspect --format '{{if .State.Health}}{{.State.Health.Status}}{{else}}no-healthcheck{{end}}' "$container_id" 2>/dev/null || echo unknown)"
+            exit_code="$(docker inspect --format '{{.State.ExitCode}}' "$container_id" 2>/dev/null || echo unknown)"
+            echo "- $service: status=$status health=$health exit_code=$exit_code"
+          done
+
+      - name: Wait for API Gateway health
+        shell: bash
+        run: |
+          set -e
+
+          print_status() {
+            docker compose ps --all || true
+            echo
+            echo "Service health summary:"
+            for service in $CI_LOG_SERVICES; do
+              container_id="$(docker compose ps -q "$service" || true)"
+              if [ -z "$container_id" ]; then
+                echo "- $service: not created"
+                continue
+              fi
+
+              status="$(docker inspect --format '{{.State.Status}}' "$container_id" 2>/dev/null || echo unknown)"
+              health="$(docker inspect --format '{{if .State.Health}}{{.State.Health.Status}}{{else}}no-healthcheck{{end}}' "$container_id" 2>/dev/null || echo unknown)"
+              exit_code="$(docker inspect --format '{{.State.ExitCode}}' "$container_id" 2>/dev/null || echo unknown)"
+              echo "- $service: status=$status health=$health exit_code=$exit_code"
+            done
+          }
+
+          print_problem_logs() {
+            for service in $CI_LOG_SERVICES; do
+              container_id="$(docker compose ps -q "$service" || true)"
+              if [ -z "$container_id" ]; then
+                continue
+              fi
+
+              status="$(docker inspect --format '{{.State.Status}}' "$container_id" 2>/dev/null || echo unknown)"
+              health="$(docker inspect --format '{{if .State.Health}}{{.State.Health.Status}}{{else}}no-healthcheck{{end}}' "$container_id" 2>/dev/null || echo unknown)"
+              if [ "$status" = "exited" ] || [ "$status" = "dead" ] || [ "$health" = "unhealthy" ]; then
+                echo
+                echo "Logs for problem service: $service"
+                docker compose logs --tail=160 "$service" || true
+              fi
+            done
+          }
+
+          for i in {1..30}; do
+            if curl -fsS http://localhost:3007/api/health; then
+              echo "API Gateway is healthy"
+              exit 0
+            fi
+
+            echo "Waiting for API Gateway health... attempt $i/30"
+            if [ $((i % 5)) -eq 0 ]; then
+              print_status
+              print_problem_logs
+            fi
+            sleep 10
+          done
+
+          echo "API Gateway did not become healthy in time"
+          print_status
+          echo
+          echo "Recent logs for API stack:"
+          for service in $CI_LOG_SERVICES; do
+            docker compose logs --tail=200 "$service" || true
+          done
+          exit 1
+
+      - name: Build Newman Docker image
+        uses: docker/build-push-action@v6
+        env:
+          DOCKER_BUILD_RECORD_UPLOAD: false
+        with:
+          context: .
+          file: .github/newman/Dockerfile
+          tags: mutrapro-newman-ci:latest
+          load: true
+          cache-from: type=gha,scope=newman-ci
+          cache-to: type=gha,mode=max,scope=newman-ci
+
+      - name: Run Postman collection with Newman Docker
+        run: |
+          mkdir -p newman-results
+          test -f tests/fixtures/upload-test.mp3
+          docker run --rm \
+            --network host \
+            -v "${{ github.workspace }}:/etc/newman" \
+            -w /etc/newman \
+            mutrapro-newman-ci:latest \
+            run "postman/Presentation.postman_collection.json" \
+            --environment "postman/MutraPro Local.postman_environment.json" \
+            --env-var "baseUrl=http://localhost:3007/api" \
+            --working-dir "/etc/newman" \
+            --reporters cli,junit,json,htmlextra \
+            --reporter-junit-export newman-results/newman-report.xml \
+            --reporter-json-export newman-results/newman-report.json \
+            --reporter-htmlextra-export newman-results/newman-report.html
+
+      - name: Upload Newman reports
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: newman-results
+          path: newman-results/
+          if-no-files-found: ignore
+
+      - name: Publish Newman test annotations
+        if: always() && hashFiles('newman-results/newman-report.xml') != ''
+        uses: dorny/test-reporter@v1
+        with:
+          name: Newman API Tests
+          path: newman-results/newman-report.xml
+          reporter: java-junit
+
+      - name: Print failure logs
+        if: failure()
+        shell: bash
+        run: |
+          docker compose ps --all || true
+          echo
+          echo "Service health summary:"
+          for service in $CI_LOG_SERVICES; do
+            container_id="$(docker compose ps -q "$service" || true)"
+            if [ -z "$container_id" ]; then
+              echo "- $service: not created"
+              continue
+            fi
+
+            status="$(docker inspect --format '{{.State.Status}}' "$container_id" 2>/dev/null || echo unknown)"
+            health="$(docker inspect --format '{{if .State.Health}}{{.State.Health.Status}}{{else}}no-healthcheck{{end}}' "$container_id" 2>/dev/null || echo unknown)"
+            exit_code="$(docker inspect --format '{{.State.ExitCode}}' "$container_id" 2>/dev/null || echo unknown)"
+            echo "- $service: status=$status health=$health exit_code=$exit_code"
+          done
+
+          echo
+          echo "Recent logs for API stack:"
+          for service in $CI_LOG_SERVICES; do
+            docker compose logs --tail=200 "$service" || true
+          done
+
+      - name: Stop containers
+        if: always()
+        run: docker compose down --remove-orphans -v
+
+      - name: Extract Jira issue key
+        if: always()
+        id: jira
+        shell: bash
+        env:
+          BRANCH_NAME: ${{ github.head_ref || github.ref_name }}
+          COMMIT_MESSAGE: ${{ github.event.head_commit.message }}
+          PR_TITLE: ${{ github.event.pull_request.title }}
+        run: |
+          ISSUE_KEY=$(printf '%s\n' "$PR_TITLE" "$BRANCH_NAME" "$COMMIT_MESSAGE" | grep -oE '[A-Z][A-Z0-9]+-[0-9]+' | head -n 1 || true)
+          echo "issue_key=$ISSUE_KEY" >> "$GITHUB_OUTPUT"
+          if [ -n "$ISSUE_KEY" ]; then
+            echo "Detected Jira issue key: $ISSUE_KEY"
+          else
+            echo "No Jira issue key found in PR title, branch name, or commit message."
+          fi
+
+      - name: Check Jira credentials
+        if: always()
+        id: jira_credentials
+        shell: bash
+        env:
+          JIRA_BASE_URL: ${{ secrets.JIRA_BASE_URL }}
+          JIRA_EMAIL: ${{ secrets.JIRA_EMAIL }}
+          JIRA_API_TOKEN: ${{ secrets.JIRA_API_TOKEN }}
+        run: |
+          if [ -n "$JIRA_BASE_URL" ] && [ -n "$JIRA_EMAIL" ] && [ -n "$JIRA_API_TOKEN" ]; then
+            echo "available=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "available=false" >> "$GITHUB_OUTPUT"
+            echo "Jira secrets are not fully configured; Jira feedback will be skipped."
+          fi
+
+      - name: Install CI helper dependencies
+        if: always() && steps.jira_credentials.outputs.available == 'true'
+        run: npm install js-yaml
+
+      - name: Analyze CI result and sync Jira
+        if: always() && steps.jira_credentials.outputs.available == 'true'
+        continue-on-error: true
+        env:
+          JIRA_BASE_URL: ${{ secrets.JIRA_BASE_URL }}
+          JIRA_EMAIL: ${{ secrets.JIRA_EMAIL }}
+          JIRA_API_TOKEN: ${{ secrets.JIRA_API_TOKEN }}
+          JIRA_PROJECT_KEY: ${{ secrets.JIRA_PROJECT_KEY }}
+          ISSUE_KEY: ${{ steps.jira.outputs.issue_key }}
+          GITHUB_RUN_URL: https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}
+          GITHUB_ACTOR: ${{ github.actor }}
+          GITHUB_BRANCH: ${{ github.head_ref || github.ref_name }}
+          GITHUB_SHA: ${{ github.sha }}
+          EVENT_NAME: ${{ github.event_name }}
+        run: node ci/scripts/jira-upsert-bug.js

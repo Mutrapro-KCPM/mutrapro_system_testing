@@ -3,10 +3,16 @@ pipeline {
 
     environment {
         // Tên project dùng cho docker-compose
-        COMPOSE_PROJECT_NAME = 'mutrapro_system'
-        DB_PASSWORD = 'change_me'
-        JWT_SECRET = 'change_me_to_a_long_random_secret_at_least_32_chars'
-        CORS_ORIGIN = 'http://localhost:3000'
+        COMPOSE_PROJECT_NAME = "mutrapro_${env.BRANCH_NAME == 'main' ? 'main' : 'dev'}"
+        MYSQL_PORT = "${env.BRANCH_NAME == 'main' ? '3307' : '3308'}"
+        NIFI_PORT = "${env.BRANCH_NAME == 'main' ? '9090' : '9091'}"
+        NOTIFY_PORT = "${env.BRANCH_NAME == 'main' ? '3006' : '3008'}"
+        API_PORT = "${env.BRANCH_NAME == 'main' ? '3007' : '3009'}"
+        SONAR_PORT = "${env.BRANCH_NAME == 'main' ? '9000' : '9001'}"
+        WEB_PORT = "${env.BRANCH_NAME == 'main' ? '80' : '3000'}"
+        DB_PASSWORD = '123456'
+        JWT_SECRET = '9f7c2d1e4a8b6c5d3e7f1a9b2c4d6e8f0a1b3c5d7e9f2a4b6c8d1e3f5a7b9c2d'
+        CORS_ORIGIN = "${env.BRANCH_NAME == 'main' ? 'http://localhost' : 'http://localhost:3000'}"
         RABBITMQ_DEFAULT_USER = 'user'
         RABBITMQ_DEFAULT_PASS = 'password'
         NIFI_SENSITIVE_PROPS_KEY = 'change_me_for_demo'
@@ -14,70 +20,111 @@ pipeline {
     }
 
     stages {
-        stage('Checkout Code') {
+        stage('Debug') {
             steps {
-                // Bước này tự động clone code từ repository về Workspace của Jenkins
                 checkout scm
-                echo "Code đã được kéo về máy chủ Jenkins thành công!"
+                echo 'Code đã được kéo về máy chủ Jenkins thành công!'
             }
         }
 
-        stage('Dừng hệ thống cũ') {
+        stage('Validate Docker Compose') {
             steps {
-                // Dừng và xóa các container cũ nếu có để dọn đường build mới
-                sh 'docker compose down || true'
+                sh 'docker compose config'
             }
         }
 
-        stage('Build System Images') {
+        stage('Stop Old System') {
             steps {
-                echo "Bắt đầu build các Docker Image cho toàn bộ Microservices..."
-                // Build lại toàn bộ image, không dùng cache để đảm bảo code mới nhất
+                sh '''
+                    echo "=== Bước 1: Dừng containers qua compose ==="
+                    docker compose down --remove-orphans || true
+
+                    echo "=== Bước 2: Xóa SonarQube cũ nếu còn sót ==="
+                    docker rm -f mutrapro_system_testing-sonarqube-1 || true
+
+                    echo "=== Bước 3: Dọn container dừng/lỗi ==="
+                    docker container prune -f || true
+
+                    echo "=== Bước 4: Xóa cứng từng container theo tên ==="
+                    docker rm -f ${COMPOSE_PROJECT_NAME}-web-app-1 || true
+                    docker rm -f ${COMPOSE_PROJECT_NAME}-api-gateway-1 || true
+                    docker rm -f ${COMPOSE_PROJECT_NAME}-auth-service-1 || true
+                    docker rm -f ${COMPOSE_PROJECT_NAME}-order-service-1 || true
+                    docker rm -f ${COMPOSE_PROJECT_NAME}-task-service-1 || true
+                    docker rm -f ${COMPOSE_PROJECT_NAME}-studio-service-1 || true
+                    docker rm -f ${COMPOSE_PROJECT_NAME}-file-service-1 || true
+                    docker rm -f ${COMPOSE_PROJECT_NAME}-notification-service-1 || true
+                    docker rm -f ${COMPOSE_PROJECT_NAME}-analytics-service-1 || true
+                    docker rm -f ${COMPOSE_PROJECT_NAME}-mysql_db-1 || true
+                    docker rm -f ${COMPOSE_PROJECT_NAME}-rabbitmq-1 || true
+                    docker rm -f ${COMPOSE_PROJECT_NAME}-redis_cache-1 || true
+                    docker rm -f ${COMPOSE_PROJECT_NAME}-sonarqube-1 || true
+                    docker rm -f ${COMPOSE_PROJECT_NAME}-nifi-1 || true
+
+                    echo "=== Xác nhận kết quả ==="
+                    docker ps -a | grep ${COMPOSE_PROJECT_NAME} || echo "✅ Không còn container nào"
+                '''
+                script {
+                    sh "docker volume rm ${COMPOSE_PROJECT_NAME}_mysql_data || true"
+                }
+            }
+        }
+
+        stage('Build Images') {
+            steps {
                 sh 'docker compose build --no-cache'
             }
         }
 
-        stage('Triển khai (Deploy)') {
+        stage('Deploy') {
             steps {
-                echo "Đang khởi động hệ thống Mutrapro..."
-                // Chạy ngầm toàn bộ các dịch vụ
                 sh 'docker compose up -d'
             }
         }
 
-        stage('Kiểm tra sức khỏe (Health Check)') {
+        stage('Show Container Status') {
             steps {
-                echo "Chờ các dịch vụ khởi động hoàn tất..."
-                // Sleep một chút để đợi DB và các service sẵn sàng
-                sleep time: 30, unit: 'SECONDS'
-                
-                // Kiểm tra trạng thái của các container
                 sh 'docker compose ps'
             }
         }
 
-        /* 
-        // Bỏ comment khối này nếu bạn muốn chạy tự động Postman Test bằng Newman 
-        stage('Automated API Testing') {
+        stage('Health Check') {
             steps {
-                echo "Chạy Postman Collection để test API..."
-                // Yêu cầu máy chủ Jenkins đã cài newman (npm install -g newman)
-                // Hoặc chạy newman qua docker container
-                sh 'docker run --network mutrapro-network -v ${PWD}/postman:/etc/newman -t postman/newman run /etc/newman/Presentation.postman_collection.json'
+                sh '''
+                    echo "=== Chờ API Gateway khởi động ==="
+                    i=1
+                    while [ $i -le 20 ]; do
+                        STATUS=$(docker inspect --format='{{json .State.Health.Status}}' $COMPOSE_PROJECT_NAME-api-gateway-1 2>/dev/null || echo '"unknown"')
+                        if [ "$STATUS" = '"healthy"' ]; then
+                            echo "✅ API Gateway OK"
+                            echo "=== Danh sách containers đang chạy ==="
+                            docker compose ps
+                            exit 0
+                        fi
+                        echo "Đang chờ API Gateway (trạng thái: $STATUS, lần $i/20)..."
+                        sleep 5
+                        i=$((i + 1))
+                    done
+                    echo "❌ API Gateway không phản hồi sau 100s"
+                    docker compose ps
+                    exit 1
+                '''
             }
         }
-        */
     }
 
     post {
-        success {
-            echo "🎉 Hệ thống đã được Build và Deploy THÀNH CÔNG!"
-            // Ở đây bạn có thể thêm lệnh gửi Email hoặc Slack thông báo
-        }
         failure {
-            echo "❌ Quá trình Build/Deploy THẤT BẠI. Vui lòng kiểm tra lại log."
-            // Tự động tắt hệ thống nếu deploy lỗi để tránh lỗi lan truyền
-            // sh 'docker-compose down'
+            echo 'Pipeline thất bại. In log để debug...'
+            sh '''
+                docker compose ps || true
+                docker compose logs --tail=200 auth-service || true
+                docker compose logs --tail=200 api-gateway || true
+                docker compose logs --tail=200 mysql_db || true
+            '''
+        }
+        success {
+            echo 'Build/Deploy thành công!'
         }
     }
 }

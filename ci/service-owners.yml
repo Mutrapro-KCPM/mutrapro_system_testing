@@ -1,0 +1,44 @@
+api-gateway:
+  owner_name: MinhTrong
+  github_username: Mintrong1802
+  jira_account_id: "712020:9eadad2e-a86e-4be4-892c-4a00db9f8726"
+
+auth-service:
+  owner_name: GiaBao
+  github_username: brian05042005
+  jira_account_id: "712020:4b3bc0ee-c23c-4ffc-8b56-1b9ab55022bf"
+
+notification-service:
+  owner_name: GiaBao
+  github_username: brian05042005
+  jira_account_id: "712020:4b3bc0ee-c23c-4ffc-8b56-1b9ab55022bf"
+
+order-service:
+  owner_name: ThanhTri
+  github_username: nguyen-tri-Cyber
+  jira_account_id: "712020:19e5bf37-e2da-425a-a714-c592d847a4dd"
+
+file-service:
+  owner_name: MinhTrong
+  github_username: Mintrong1802
+  jira_account_id: "712020:9eadad2e-a86e-4be4-892c-4a00db9f8726"
+
+task-service:
+  owner_name: PhatDat
+  github_username: dattt456
+  jira_account_id: "712020:ae29b537-ea99-4701-aafc-dd11a75d2c66"
+
+web-app:
+  owner_name: PhatDat
+  github_username: dattt456
+  jira_account_id: "712020:ae29b537-ea99-4701-aafc-dd11a75d2c66"
+
+analytics-service:
+  owner_name: HoangTrong
+  github_username: lehoangmiucon
+  jira_account_id: "712020:da1941ae-388e-4060-9f3b-39f42d5afd18"
+
+studio-service:
+  owner_name: HoangTrong
+  github_username: lehoangmiucon
+  jira_account_id: "712020:da1941ae-388e-4060-9f3b-39f42d5afd18"

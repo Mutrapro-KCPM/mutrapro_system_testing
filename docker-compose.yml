@@ -2,15 +2,16 @@ services:
   # Dịch vụ Cơ sở dữ liệu MySQL
   mysql_db:
     build:
-      context: ./init-scripts
-      dockerfile: Dockerfile
-    image: mutrapro-mysql:8.0
+      context: .
+      dockerfile: ./services/mysql_db/Dockerfile
     restart: always
     mem_limit: 1G
     environment:
       MYSQL_ROOT_PASSWORD: ${DB_PASSWORD}
+      MYSQL_APP_PASSWORD: ${DB_PASSWORD}
+      MYSQL_ONETIME_PASSWORD: ""
     ports:
-      - "3307:3306"
+      - "${MYSQL_PORT:-3307}:3306"
     volumes:
       - mysql_data:/var/lib/mysql
     command:
@@ -18,9 +19,11 @@ services:
       - --character-set-server=utf8mb4
       - --collation-server=utf8mb4_unicode_ci 
     healthcheck:
-      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
-      timeout: 20s
+      test: ["CMD-SHELL", "MYSQL_PWD=\"$$MYSQL_ROOT_PASSWORD\" mysqladmin ping -h localhost -uroot --silent || exit 1"]
+      interval: 10s
+      timeout: 5s
       retries: 10
+      start_period: 40s
     networks:
       - mutrapro-network
 
@@ -47,13 +50,12 @@ services:
   nifi:
     build:
       context: .
-      dockerfile: Dockerfile.nifi
-    image: mutrapro-nifi:1.23.2
+      dockerfile: ./services/nifi/Dockerfile
     restart: always
     mem_limit: 1G
     ports:
-      # Ní sẽ truy cập giao diện NiFi qua cổng 9090
-      - "9090:8080"
+      # Ní sẽ truy cập giao diện NiFi qua cổng động
+      - "${NIFI_PORT:-9090}:8080"
     environment:
       - NIFI_WEB_HTTP_PORT=8080
       # Một key bí mật, ní có thể đổi thành gì cũng được
@@ -76,7 +78,7 @@ services:
     restart: always
     environment:
       - DB_HOST=mysql_db
-      - DB_USER=root
+      - DB_USER=mutrapro_app
       - DB_PASSWORD=${DB_PASSWORD}
       - DB_AUTH_NAME=mutrapro_auth
       - JWT_SECRET=${JWT_SECRET}
@@ -88,13 +90,16 @@ services:
     depends_on:
       mysql_db:
         condition: service_healthy
+      redis_cache:
+        condition: service_started
     networks:
       - mutrapro-network
     healthcheck:
-      test: ["CMD", "node", "-e", "fetch('http://localhost:3001/health').then(r=>process.exit(r.ok?0:1)).catch(()=>process.exit(1))"]
-      interval: 30s
-      timeout: 10s
-      retries: 3
+      test: ["CMD-SHELL", "wget -qO- http://localhost:3001/health || exit 1"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+      start_period: 40s
 
   order-service:
     build:
@@ -103,7 +108,7 @@ services:
     restart: always
     environment:
       - DB_HOST=mysql_db
-      - DB_USER=root
+      - DB_USER=mutrapro_app
       - DB_PASSWORD=${DB_PASSWORD}
       - DB_ORDER_NAME=mutrapro_order
       - JWT_SECRET=${JWT_SECRET}
@@ -130,7 +135,7 @@ services:
     restart: always
     environment:
       - DB_HOST=mysql_db
-      - DB_USER=root
+      - DB_USER=mutrapro_app
       - DB_PASSWORD=${DB_PASSWORD}
       - DB_TASK_NAME=mutrapro_task
       - JWT_SECRET=${JWT_SECRET}
@@ -157,7 +162,7 @@ services:
     restart: always
     environment:
       - DB_HOST=mysql_db
-      - DB_USER=root
+      - DB_USER=mutrapro_app
       - DB_PASSWORD=${DB_PASSWORD}
       - DB_FILE_NAME=mutrapro_file
       - JWT_SECRET=${JWT_SECRET}
@@ -185,7 +190,7 @@ services:
     restart: always
     environment:
       - DB_HOST=mysql_db
-      - DB_USER=root
+      - DB_USER=mutrapro_app
       - DB_PASSWORD=${DB_PASSWORD}
       - DB_STUDIO_NAME=mutrapro_studio
       - JWT_SECRET=${JWT_SECRET}
@@ -210,11 +215,11 @@ services:
       context: .
       dockerfile: ./services/notification-service/Dockerfile
     ports:
-      - "3006:3006"
+      - "${NOTIFY_PORT:-3006}:3006"
     restart: always
     environment:
       - DB_HOST=mysql_db
-      - DB_USER=root
+      - DB_USER=mutrapro_app
       - DB_PASSWORD=${DB_PASSWORD}
       - JWT_SECRET=${JWT_SECRET}
       - INTERNAL_SERVICE_TOKEN=${INTERNAL_SERVICE_TOKEN}
@@ -242,7 +247,7 @@ services:
     restart: always
     environment:
       - DB_HOST=mysql_db
-      - DB_USER=root
+      - DB_USER=mutrapro_app
       - DB_PASSWORD=${DB_PASSWORD}
       # Nó sẽ kết nối vào CSDL báo cáo MỚI
       - DB_ANALYTICS_NAME=mutrapro_analytics
@@ -270,7 +275,7 @@ services:
       dockerfile: Dockerfile
     restart: always
     ports:
-      - "3007:3007"
+      - "${API_PORT:-3007}:3007"
     environment:
       - CORS_ORIGIN=${CORS_ORIGIN}
     depends_on:
@@ -299,10 +304,9 @@ services:
   # ================== START: THÊM MỚI SONARQUBE ==================
   sonarqube:
     image: sonarqube:lts-community
-    container_name: mutrapro_system_testing-sonarqube-1
     restart: always
     ports:
-      - "9000:9000"
+      - "${SONAR_PORT:-9000}:9000"
     networks:
       - mutrapro-network
     volumes:
@@ -316,7 +320,7 @@ services:
     build: ./web-app
     restart: always
     ports:
-      - "3000:80" # Đã sửa port 3000 -> 80 cho đúng với Nginx
+      - "${WEB_PORT:-3000}:80" # Đã sửa port cho đúng với Nginx
     environment:
       - REACT_APP_API_GATEWAY_URL=http://api-gateway:3007
     networks:

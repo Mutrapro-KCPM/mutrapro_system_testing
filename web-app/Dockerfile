@@ -1,6 +1,6 @@
 # ----- Giai đoạn 1: Build ứng dụng React -----
 # Sử dụng một image Node.js để build code
-FROM node:18-alpine AS build
+FROM node:20-alpine AS build
 
 # Đặt thư mục làm việc bên trong container
 WORKDIR /app
@@ -15,7 +15,7 @@ RUN npm install
 COPY . .
 
 # Chạy lệnh build để tạo ra các file tĩnh
-RUN npm run build
+RUN CI=false npm run build
 
 # ----- Giai đoạn 2: Serve ứng dụng với Nginx -----
 # Sử dụng một image Nginx siêu nhẹ để chạy web server

@@ -1,10 +1,15 @@
 {
+  "type": "module",
+  "scripts": {
+    "test:e2e": "codeceptjs run --steps",
+    "test:e2e:debug": "codeceptjs run --steps --debug"
+  },
   "dependencies": {
     "bcrypt": "^6.0.0",
     "node-fetch": "^2.7.0"
   },
   "devDependencies": {
-    "codeceptjs": "^4.0.3",
+    "codeceptjs": "^4.0.8",
     "playwright": "^1.60.0"
   }
 }

@@ -205,3 +205,10 @@ CREATE TABLE IF NOT EXISTS report_dashboard (
 */
 INSERT IGNORE INTO report_dashboard (report_name, json_value) VALUES
 ('dashboard_stats', '{"totalRevenue": 0, "totalOrders": 0, "orderStats": []}');
+
+/*
+================================================================
+(MỚI) DATABASE: TẠO USER ỨNG DỤNG
+================================================================
+*/
+-- User mutrapro_app is created by zz-create-app-user.sh so its password can come from environment variables.
