@@ -35,22 +35,29 @@ pipeline {
 
         stage('Stop Old System') {
             steps {
-                sh 'docker compose down --remove-orphans'
-                sh 'docker rm -f mutrapro_system_testing-sonarqube-1 || true'
-                sh 'docker container prune -f || true'
-                sh '''
-                    CONTAINER=$(docker ps -q --filter "publish=3000")
-                    if [ -n "$CONTAINER" ]; then
-                        echo "Phát hiện container chiếm port 3000, tiến hành xóa..."
-                        docker rm -f $CONTAINER || true
-                    fi
-                '''
+                sh """
+                    echo "=== Bước 1: Dừng và xóa containers qua compose ==="
+                    docker compose down --remove-orphans || true
+
+                    echo "=== Bước 2: Xóa cứng SonarQube cũ nếu còn sót ==="
+                    docker rm -f mutrapro_system_testing-sonarqube-1 || true
+
+                    echo "=== Bước 3: Dọn toàn bộ container dừng/lỗi ==="
+                    docker container prune -f || true
+
+                    echo "=== Bước 4: Xóa cứng từng container theo tên project ==="
+                    for name in web-app api-gateway auth-service order-service \\
+                                task-service studio-service file-service \\
+                                notification-service analytics-service \\
+                                mysql_db rabbitmq redis_cache sonarqube nifi; do
+                        docker rm -f mutrapro_dev-\\${name}-1 2>/dev/null || true
+                    done
+
+                    echo "=== Xác nhận kết quả ==="
+                    docker ps -a | grep mutrapro_dev || echo "✅ Không còn container nào"
+                """
                 script {
-                    if (env.BRANCH_NAME != 'main') {
-                        sh "docker volume rm ${COMPOSE_PROJECT_NAME}_mysql_data || true"
-                    } else {
-                        echo "Skipping database wipe for main branch to protect data."
-                    }
+                    sh 'docker volume rm mutrapro_dev_mysql_data || true'
                 }
             }
         }
