@@ -92,7 +92,8 @@ pipeline {
             steps {
                 sh '''
                     echo "=== Chờ API Gateway khởi động ==="
-                    for i in {1..20}; do
+                    i=1
+                    while [ $i -le 20 ]; do
                         if curl -s -f http://localhost:3009/api/health > /dev/null; then
                             echo "✅ API Gateway OK"
                             echo "=== Danh sách containers đang chạy ==="
@@ -101,6 +102,7 @@ pipeline {
                         fi
                         echo "Đang chờ API Gateway (lần $i/20, đợi 5s)..."
                         sleep 5
+                        i=$((i + 1))
                     done
                     echo "❌ API Gateway không phản hồi sau 100s"
                     docker compose ps
