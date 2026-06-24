@@ -38,6 +38,13 @@ pipeline {
                 sh 'docker compose down --remove-orphans'
                 sh 'docker rm -f mutrapro_system_testing-sonarqube-1 || true'
                 sh 'docker container prune -f || true'
+                sh '''
+                    CONTAINER=$(docker ps -q --filter "publish=3000")
+                    if [ -n "$CONTAINER" ]; then
+                        echo "Phát hiện container chiếm port 3000, tiến hành xóa..."
+                        docker rm -f $CONTAINER || true
+                    fi
+                '''
                 script {
                     if (env.BRANCH_NAME != 'main') {
                         sh "docker volume rm ${COMPOSE_PROJECT_NAME}_mysql_data || true"
