@@ -15,6 +15,7 @@ RUN apt-get update \
     && apt-get install -y --no-install-recommends \
         docker-ce-cli \
         docker-compose-plugin \
+        docker-buildx-plugin \
     && rm -rf /var/lib/apt/lists/*
 
 # Cài đặt tự động các plugin cần thiết cho Job hiện tại
