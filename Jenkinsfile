@@ -35,27 +35,35 @@ pipeline {
 
         stage('Stop Old System') {
             steps {
-                sh """
-                    echo "=== Bước 1: Dừng và xóa containers qua compose ==="
+                sh '''
+                    echo "=== Bước 1: Dừng containers qua compose ==="
                     docker compose down --remove-orphans || true
 
-                    echo "=== Bước 2: Xóa cứng SonarQube cũ nếu còn sót ==="
+                    echo "=== Bước 2: Xóa SonarQube cũ nếu còn sót ==="
                     docker rm -f mutrapro_system_testing-sonarqube-1 || true
 
-                    echo "=== Bước 3: Dọn toàn bộ container dừng/lỗi ==="
+                    echo "=== Bước 3: Dọn container dừng/lỗi ==="
                     docker container prune -f || true
 
-                    echo "=== Bước 4: Xóa cứng từng container theo tên project ==="
-                    for name in web-app api-gateway auth-service order-service \\
-                                task-service studio-service file-service \\
-                                notification-service analytics-service \\
-                                mysql_db rabbitmq redis_cache sonarqube nifi; do
-                        docker rm -f mutrapro_dev-\\${name}-1 2>/dev/null || true
-                    done
+                    echo "=== Bước 4: Xóa cứng từng container theo tên ==="
+                    docker rm -f mutrapro_dev-web-app-1 || true
+                    docker rm -f mutrapro_dev-api-gateway-1 || true
+                    docker rm -f mutrapro_dev-auth-service-1 || true
+                    docker rm -f mutrapro_dev-order-service-1 || true
+                    docker rm -f mutrapro_dev-task-service-1 || true
+                    docker rm -f mutrapro_dev-studio-service-1 || true
+                    docker rm -f mutrapro_dev-file-service-1 || true
+                    docker rm -f mutrapro_dev-notification-service-1 || true
+                    docker rm -f mutrapro_dev-analytics-service-1 || true
+                    docker rm -f mutrapro_dev-mysql_db-1 || true
+                    docker rm -f mutrapro_dev-rabbitmq-1 || true
+                    docker rm -f mutrapro_dev-redis_cache-1 || true
+                    docker rm -f mutrapro_dev-sonarqube-1 || true
+                    docker rm -f mutrapro_dev-nifi-1 || true
 
                     echo "=== Xác nhận kết quả ==="
                     docker ps -a | grep mutrapro_dev || echo "✅ Không còn container nào"
-                """
+                '''
                 script {
                     sh 'docker volume rm mutrapro_dev_mysql_data || true'
                 }
