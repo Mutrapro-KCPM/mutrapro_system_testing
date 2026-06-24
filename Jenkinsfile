@@ -91,15 +91,20 @@ pipeline {
         stage('Health Check') {
             steps {
                 sh '''
-                    echo "Chờ services khởi động..."
-                    sleep 30
-
-                    echo "=== Kiểm tra API Gateway ==="
-                    curl -f http://localhost:3009/api/health || exit 1
-                    echo "✅ API Gateway OK"
-
-                    echo "=== Danh sách containers đang chạy ==="
+                    echo "=== Chờ API Gateway khởi động ==="
+                    for i in {1..20}; do
+                        if curl -s -f http://localhost:3009/api/health > /dev/null; then
+                            echo "✅ API Gateway OK"
+                            echo "=== Danh sách containers đang chạy ==="
+                            docker compose ps
+                            exit 0
+                        fi
+                        echo "Đang chờ API Gateway (lần $i/20, đợi 5s)..."
+                        sleep 5
+                    done
+                    echo "❌ API Gateway không phản hồi sau 100s"
                     docker compose ps
+                    exit 1
                 '''
             }
         }
