@@ -40,7 +40,8 @@ const loginValidation = [
     .isEmail().withMessage('Email không hợp lệ')
     .normalizeEmail(),
   body('password')
-    .notEmpty().withMessage('Mật khẩu không được để trống'),
+    .notEmpty().withMessage('Mật khẩu không được để trống')
+  .isLength({ min: 6 }).withMessage('Mật khẩu phải có ít nhất 6 ký tự'),
   validate
 ];
 
