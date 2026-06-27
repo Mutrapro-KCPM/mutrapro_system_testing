@@ -96,6 +96,10 @@ const publishMessage = async (routingKey, message) => {
 app.post('/', authMiddleware, checkRole('customer'), asyncHandler(async (req, res) => {
     const { service_type, description } = req.body;
     const customer_id = req.user.id;
+    
+    if (typeof service_type !== 'string') {
+        throw new AppError('Loại dịch vụ không hợp lệ.', 400);
+    }
     const price = PRICING_CONFIG[service_type];
 
     if (price === undefined) {
@@ -106,6 +110,10 @@ app.post('/', authMiddleware, checkRole('customer'), asyncHandler(async (req, re
     if (typeof description !== 'string' || !description.trim()) {
         logger.error(`app.post(/): description is invalid. description=${description}`);
         throw new AppError('Mô tả không được để trống.', 400);
+    }
+
+    if (description.length > 2000) {
+        throw new AppError('Mô tả không được vượt quá 2000 ký tự.', 400);
     }
 
     const [result] = await pool.execute(
@@ -507,9 +515,9 @@ app.put('/:id/status', authMiddleware, checkRole('coordinator', 'admin', 'transc
 
     if (status !== currentStatus) {
         const allowedTransitions = {
-            'pending': ['assigned', 'in_progress', 'completed', 'revision_requested', 'fixed', 'cancelled'],
-            'assigned': ['in_progress', 'completed', 'revision_requested', 'fixed', 'cancelled'],
-            'in_progress': ['completed', 'revision_requested', 'fixed', 'cancelled'],
+            'pending': ['assigned', 'cancelled'],
+            'assigned': ['in_progress', 'cancelled'],
+            'in_progress': ['completed', 'cancelled'],
             'completed': ['revision_requested', 'fixed', 'cancelled'],
             'revision_requested': ['fixed', 'cancelled'],
             'fixed': ['revision_requested', 'cancelled'],
@@ -620,6 +628,10 @@ app.post('/:id/request-revision', authMiddleware, checkRole('customer'), idParam
     
     if (!comment || !comment.trim()) {
         throw new AppError('Vui lòng nhập nội dung yêu cầu chỉnh sửa.', 400);
+    }
+    
+    if (comment.length > 1000) {
+        throw new AppError('Nội dung bình luận không được vượt quá 1000 ký tự.', 400);
     }
     
     const [orderOwnerRows] = await pool.execute('SELECT customer_id FROM orders WHERE id = ?', [id]);
