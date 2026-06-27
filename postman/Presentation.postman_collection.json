@@ -1,6 +1,6 @@
 {
   "info": {
-    "_postman_id": "ec766ada-8269-4690-81fe-f5da615fc023",
+    "_postman_id": "dce0afec-67c3-4127-8568-b7739fc48e71",
     "name": "Presentation",
     "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
     "_exporter_id": "48989832"
@@ -760,8 +760,8 @@
                           "listen": "test",
                           "script": {
                             "exec": [
-                              "pm.test(\"Status code must be 401 Unauthorized\", function () {\r",
-                              "    pm.response.to.have.status(401);\r",
+                              "pm.test(\"Status code must be 400 Bad Request\", function () {\r",
+                              "    pm.response.to.have.status(400);\r",
                               "});\r",
                               "\r",
                               "\r",
