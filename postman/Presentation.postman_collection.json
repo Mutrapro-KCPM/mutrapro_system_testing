@@ -4810,6 +4810,55 @@
                                                         }
                                                     },
                                                     "response": []
+                                                },
+                                                {
+                                                    "name": "[SEC] ORD-UPD-09 - Lỗi bảo mật: Token customer cập nhật trạng thái (403)",
+                                                    "event": [
+                                                        {
+                                                            "listen": "test",
+                                                            "script": {
+                                                                "exec": [
+                                                                    "pm.test(\"HTTP 403\", ()=>pm.expect([403]).to.include(pm.response.code));"
+                                                                ],
+                                                                "type": "text/javascript"
+                                                            }
+                                                        }
+                                                    ],
+                                                    "request": {
+                                                        "auth": {
+                                                            "type": "bearer",
+                                                            "bearer": [
+                                                                {
+                                                                    "key": "token",
+                                                                    "value": "{{customer_token}}",
+                                                                    "type": "string"
+                                                                }
+                                                            ]
+                                                        },
+                                                        "method": "PUT",
+                                                        "header": [],
+                                                        "body": {
+                                                            "mode": "raw",
+                                                            "raw": "{\n    \"status\": \"assigned\"\n}",
+                                                            "options": {
+                                                                "raw": {
+                                                                    "language": "json"
+                                                                }
+                                                            }
+                                                        },
+                                                        "url": {
+                                                            "raw": "{{baseUrl}}/orders/{{test_order_id}}/status",
+                                                            "host": [
+                                                                "{{baseUrl}}"
+                                                            ],
+                                                            "path": [
+                                                                "orders",
+                                                                "{{test_order_id}}",
+                                                                "status"
+                                                            ]
+                                                        }
+                                                    },
+                                                    "response": []
                                                 }
                                             ]
                                         }
@@ -5545,6 +5594,104 @@
                                                         }
                                                     },
                                                     "response": []
+                                                },
+                                                {
+                                                    "name": "[SEC] ORD-PAY-09 - Lỗi bảo mật: Token khách hàng khác thanh toán (403)",
+                                                    "event": [
+                                                        {
+                                                            "listen": "test",
+                                                            "script": {
+                                                                "exec": [
+                                                                    "pm.test(\"HTTP 403\", ()=>pm.expect([403]).to.include(pm.response.code));"
+                                                                ],
+                                                                "type": "text/javascript"
+                                                            }
+                                                        }
+                                                    ],
+                                                    "request": {
+                                                        "auth": {
+                                                            "type": "bearer",
+                                                            "bearer": [
+                                                                {
+                                                                    "key": "token",
+                                                                    "value": "{{arranger_token}}",
+                                                                    "type": "string"
+                                                                }
+                                                            ]
+                                                        },
+                                                        "method": "POST",
+                                                        "header": [],
+                                                        "body": {
+                                                            "mode": "raw",
+                                                            "raw": "{\n    \"amount\": 300000,\n    \"method\": \"credit_card\"\n}",
+                                                            "options": {
+                                                                "raw": {
+                                                                    "language": "json"
+                                                                }
+                                                            }
+                                                        },
+                                                        "url": {
+                                                            "raw": "{{baseUrl}}/orders/{{test_order_id}}/pay",
+                                                            "host": [
+                                                                "{{baseUrl}}"
+                                                            ],
+                                                            "path": [
+                                                                "orders",
+                                                                "{{test_order_id}}",
+                                                                "pay"
+                                                            ]
+                                                        }
+                                                    },
+                                                    "response": []
+                                                },
+                                                {
+                                                    "name": "[EP] ORD-PAY-10 - Lỗi amount dạng chuỗi (String)",
+                                                    "event": [
+                                                        {
+                                                            "listen": "test",
+                                                            "script": {
+                                                                "exec": [
+                                                                    "pm.test(\"HTTP 400\", ()=>pm.expect([400]).to.include(pm.response.code));"
+                                                                ],
+                                                                "type": "text/javascript"
+                                                            }
+                                                        }
+                                                    ],
+                                                    "request": {
+                                                        "auth": {
+                                                            "type": "bearer",
+                                                            "bearer": [
+                                                                {
+                                                                    "key": "token",
+                                                                    "value": "{{customer_token}}",
+                                                                    "type": "string"
+                                                                }
+                                                            ]
+                                                        },
+                                                        "method": "POST",
+                                                        "header": [],
+                                                        "body": {
+                                                            "mode": "raw",
+                                                            "raw": "{\n    \"amount\": \"abc\"\n}",
+                                                            "options": {
+                                                                "raw": {
+                                                                    "language": "json"
+                                                                }
+                                                            }
+                                                        },
+                                                        "url": {
+                                                            "raw": "{{baseUrl}}/orders/{{test_order_id}}/pay",
+                                                            "host": [
+                                                                "{{baseUrl}}"
+                                                            ],
+                                                            "path": [
+                                                                "orders",
+                                                                "{{test_order_id}}",
+                                                                "pay"
+                                                            ]
+                                                        }
+                                                    },
+                                                    "response": []
                                                 }
                                             ]
                                         },
@@ -5974,7 +6121,12 @@
                                                             "listen": "test",
                                                             "script": {
                                                                 "exec": [
-                                                                    "pm.test(\"HTTP 200\", ()=>pm.expect([200]).to.include(pm.response.code));"
+                                                                    "pm.test(\"HTTP 200\", ()=>pm.expect([200]).to.include(pm.response.code));",
+                                                                    "",
+                                                                    "pm.test(\"Verify limit fallback to 1\", function () {",
+                                                                    "    var jsonData = pm.response.json();",
+                                                                    "    pm.expect(jsonData.data.pagination.limit).to.eql(1);",
+                                                                    "});"
                                                                 ],
                                                                 "type": "text/javascript"
                                                             }
@@ -6018,7 +6170,12 @@
                                                             "listen": "test",
                                                             "script": {
                                                                 "exec": [
-                                                                    "pm.test(\"HTTP 200\", ()=>pm.expect([200]).to.include(pm.response.code));"
+                                                                    "pm.test(\"HTTP 200\", ()=>pm.expect([200]).to.include(pm.response.code));",
+                                                                    "",
+                                                                    "pm.test(\"Verify limit fallback to 100\", function () {",
+                                                                    "    var jsonData = pm.response.json();",
+                                                                    "    pm.expect(jsonData.data.pagination.limit).to.eql(100);",
+                                                                    "});"
                                                                 ],
                                                                 "type": "text/javascript"
                                                             }
@@ -6062,7 +6219,12 @@
                                                             "listen": "test",
                                                             "script": {
                                                                 "exec": [
-                                                                    "pm.test(\"HTTP 200\", ()=>pm.expect([200]).to.include(pm.response.code));"
+                                                                    "pm.test(\"HTTP 200\", ()=>pm.expect([200]).to.include(pm.response.code));",
+                                                                    "",
+                                                                    "pm.test(\"Verify limit fallback to 10\", function () {",
+                                                                    "    var jsonData = pm.response.json();",
+                                                                    "    pm.expect(jsonData.data.pagination.limit).to.eql(10);",
+                                                                    "});"
                                                                 ],
                                                                 "type": "text/javascript"
                                                             }
@@ -6093,6 +6255,55 @@
                                                                 {
                                                                     "key": "limit",
                                                                     "value": "abc"
+                                                                }
+                                                            ]
+                                                        }
+                                                    },
+                                                    "response": []
+                                                },
+                                                {
+                                                    "name": "[EP] ORD-PAG-09 - Lấy danh sách bỏ trống tham số limit",
+                                                    "event": [
+                                                        {
+                                                            "listen": "test",
+                                                            "script": {
+                                                                "exec": [
+                                                                    "pm.test(\"HTTP 200\", ()=>pm.expect([200]).to.include(pm.response.code));",
+                                                                    "",
+                                                                    "pm.test(\"Verify limit fallback to 10\", function () {",
+                                                                    "    var jsonData = pm.response.json();",
+                                                                    "    pm.expect(jsonData.data.pagination.limit).to.eql(10);",
+                                                                    "});"
+                                                                ],
+                                                                "type": "text/javascript"
+                                                            }
+                                                        }
+                                                    ],
+                                                    "request": {
+                                                        "auth": {
+                                                            "type": "bearer",
+                                                            "bearer": [
+                                                                {
+                                                                    "key": "token",
+                                                                    "value": "{{coordinator_token}}",
+                                                                    "type": "string"
+                                                                }
+                                                            ]
+                                                        },
+                                                        "method": "GET",
+                                                        "header": [],
+                                                        "url": {
+                                                            "raw": "{{baseUrl}}/orders?page=1",
+                                                            "host": [
+                                                                "{{baseUrl}}"
+                                                            ],
+                                                            "path": [
+                                                                "payments"
+                                                            ],
+                                                            "query": [
+                                                                {
+                                                                    "key": "page",
+                                                                    "value": "1"
                                                                 }
                                                             ]
                                                         }
@@ -6199,7 +6410,12 @@
                                                             "listen": "test",
                                                             "script": {
                                                                 "exec": [
-                                                                    "pm.test(\"HTTP 200\", ()=>pm.expect([200]).to.include(pm.response.code));"
+                                                                    "pm.test(\"HTTP 200\", ()=>pm.expect([200]).to.include(pm.response.code));",
+                                                                    "",
+                                                                    "pm.test(\"Verify limit fallback to 10\", function () {",
+                                                                    "    var jsonData = pm.response.json();",
+                                                                    "    pm.expect(jsonData.data.pagination.limit).to.eql(10);",
+                                                                    "});"
                                                                 ],
                                                                 "type": "text/javascript"
                                                             }
@@ -6243,7 +6459,12 @@
                                                             "listen": "test",
                                                             "script": {
                                                                 "exec": [
-                                                                    "pm.test(\"HTTP 200\", ()=>pm.expect([200]).to.include(pm.response.code));"
+                                                                    "pm.test(\"HTTP 200\", ()=>pm.expect([200]).to.include(pm.response.code));",
+                                                                    "",
+                                                                    "pm.test(\"Verify limit fallback to 100\", function () {",
+                                                                    "    var jsonData = pm.response.json();",
+                                                                    "    pm.expect(jsonData.data.pagination.limit).to.eql(100);",
+                                                                    "});"
                                                                 ],
                                                                 "type": "text/javascript"
                                                             }
