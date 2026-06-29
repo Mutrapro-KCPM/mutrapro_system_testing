@@ -11,7 +11,7 @@ WORKDIR /app
 COPY services/auth-service/package*.json ./
 
 RUN apk add --no-cache wget
-RUN --mount=type=cache,id=mutrapro-npm,target=/root/.npm npm ci --omit=dev
+RUN --mount=type=cache,id=mutrapro-npm,target=/root/.npm npm ci --omit=dev --ignore-scripts
 
 COPY shared ./shared
 COPY services/auth-service/ .

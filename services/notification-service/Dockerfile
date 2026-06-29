@@ -10,7 +10,7 @@ WORKDIR /app
 
 COPY services/notification-service/package*.json ./
 
-RUN --mount=type=cache,id=mutrapro-npm,target=/root/.npm npm ci --omit=dev
+RUN --mount=type=cache,id=mutrapro-npm,target=/root/.npm npm ci --omit=dev --ignore-scripts
 
 COPY shared ./shared
 COPY services/notification-service/ .

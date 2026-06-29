@@ -6,34 +6,6 @@ const app = express();
 
 app.use(cors({ origin: process.env.CORS_ORIGIN || '*', credentials: true }));
 
-const forwardRequest = async (req, res, targetUrl) => {
-    try {
-        const headers = { ...req.headers };
-        delete headers.host;
-
-        const response = await fetch(targetUrl, {
-            method: req.method,
-            headers,
-            body: ['GET', 'HEAD'].includes(req.method) ? undefined : req
-        });
-
-        response.headers.forEach((value, key) => {
-            if (!['content-encoding', 'content-length'].includes(key.toLowerCase())) {
-                res.setHeader(key, value);
-            }
-        });
-
-        res.status(response.status);
-        response.body.pipe(res);
-    } catch (error) {
-        res.status(502).json({
-            success: false,
-            message: 'API Gateway proxy failed',
-            error: error.message
-        });
-    }
-};
-
 // Health check route
 app.get('/api/health', (req, res) => {
     res.status(200).json({
@@ -74,18 +46,10 @@ app.get('/api/health/all', async (req, res) => {
 });
 
 //  d���  Proxy routes
-app.use('/api/auth', (req, res) => {
-    forwardRequest(req, res, `http://auth-service:3001${req.url}`);
-});
-app.use('/api/orders', (req, res) => {
-    forwardRequest(req, res, `http://order-service:3002${req.url}`);
-});
-app.use('/api/payments', async (req, res) => {
-    forwardRequest(req, res, `http://order-service:3002/payments${req.url}`);
-});
-app.use('/api/tasks', (req, res) => {
-    forwardRequest(req, res, `http://task-service:3003${req.url}`);
-});
+app.use('/api/auth', proxy('http://auth-service:3001'));
+app.use('/api/orders', proxy('http://order-service:3002'));
+app.use('/api/payments', proxy('http://order-service:3002/payments'));
+app.use('/api/tasks', proxy('http://task-service:3003'));
 
 // === START: PHẦN CẬP NHẬT CHA�NH NẰM �? ĐA�Y ===
 // ThA�m { limit: '50mb' } để cho phA�p upload file nặng
@@ -94,17 +58,11 @@ app.use('/api/files', proxy('http://file-service:3004', {
 }));
 // === END: PHẦN CẬP NHẬT ===
 
-app.use('/api/send', (req, res) => {
-    forwardRequest(req, res, `http://notification-service:3006/send`);
-});
+app.use('/api/send', proxy('http://notification-service:3006/send'));
 app.use('/api/studio', proxy('http://studio-service:3005'));
-app.use('/api/notifications', (req, res) => {
-    forwardRequest(req, res, `http://notification-service:3006${req.url}`);
-});
+app.use('/api/notifications', proxy('http://notification-service:3006'));
 app.use('/api/analytics', proxy('http://analytics-service:3008'));
-app.use('/api/reports', (req, res) => {
-    forwardRequest(req, res, `http://analytics-service:3008/reports${req.url}`);
-});
+app.use('/api/reports', proxy('http://analytics-service:3008/reports'));
 
 //  d���  Start server
 const PORT = 3007;
