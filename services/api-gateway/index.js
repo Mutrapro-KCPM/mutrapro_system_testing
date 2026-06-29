@@ -65,7 +65,9 @@ app.use('/api/send', proxy(serviceUrl('notification-service', 3006, '/send')));
 app.use('/api/studio', proxy(serviceUrl('studio-service', 3005)));
 app.use('/api/notifications', proxy(serviceUrl('notification-service', 3006)));
 app.use('/api/analytics', proxy(serviceUrl('analytics-service', 3008)));
-app.use('/api/reports', proxy(serviceUrl('analytics-service', 3008, '/reports')));
+app.use('/api/reports/overview', proxy(serviceUrl('analytics-service', 3008), {
+    proxyReqPathResolver: () => '/reports/overview'
+}));
 
 //  d���  Start server
 const PORT = 3007;
