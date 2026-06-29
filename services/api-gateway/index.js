@@ -51,7 +51,9 @@ app.get('/api/health/all', async (req, res) => {
 //  d���  Proxy routes
 app.use('/api/auth', proxy(serviceUrl('auth-service', 3001)));
 app.use('/api/orders', proxy(serviceUrl('order-service', 3002)));
-app.use('/api/payments', proxy(serviceUrl('order-service', 3002, '/payments')));
+app.use('/api/payments', proxy(serviceUrl('order-service', 3002), {
+    proxyReqPathResolver: (req) => '/payments' + (req.url === '/' ? '' : req.url)
+}));
 app.use('/api/tasks', proxy(serviceUrl('task-service', 3003)));
 
 // === START: PHẦN CẬP NHẬT CHA�NH NẰM �? ĐA�Y ===
@@ -61,7 +63,9 @@ app.use('/api/files', proxy(serviceUrl('file-service', 3004), {
 }));
 // === END: PHẦN CẬP NHẬT ===
 
-app.use('/api/send', proxy(serviceUrl('notification-service', 3006, '/send')));
+app.use('/api/send', proxy(serviceUrl('notification-service', 3006), {
+    proxyReqPathResolver: (req) => '/send' + (req.url === '/' ? '' : req.url)
+}));
 app.use('/api/studio', proxy(serviceUrl('studio-service', 3005)));
 app.use('/api/notifications', proxy(serviceUrl('notification-service', 3006)));
 app.use('/api/analytics', proxy(serviceUrl('analytics-service', 3008)));
