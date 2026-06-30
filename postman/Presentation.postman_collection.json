@@ -10968,160 +10968,599 @@
           "name": "analytics-service",
           "item": [
             {
-              "name": "Login Admin",
-              "event": [
+              "name": "Set up",
+              "item": [
                 {
-                  "listen": "test",
-                  "script": {
-                    "exec": [
-                      "pm.test(\"HTTP 200\", () => pm.response.to.have.status(200));\r",
-                      "\r",
-                      "const json = pm.response.json();\r",
-                      "\r",
-                      "pm.test(\"Admin login success\", () => {\r",
-                      "  pm.expect(json.token).to.exist;\r",
-                      "  pm.expect(json.user.role).to.eql(\"admin\");\r",
-                      "});\r",
-                      "\r",
-                      "pm.environment.set(\"admin_token\", json.token);\r",
-                      "pm.environment.set(\"admin_id\", String(json.user.id));"
-                    ],
-                    "type": "text/javascript",
-                    "packages": {},
-                    "requests": {}
-                  }
-                }
-              ],
-              "request": {
-                "auth": {
-                  "type": "noauth"
-                },
-                "method": "POST",
-                "header": [],
-                "body": {
-                  "mode": "raw",
-                  "raw": "{\r\n  \"email\": \"{{admin_email}}\",\r\n  \"password\": \"{{default_password}}\"\r\n}",
-                  "options": {
-                    "raw": {
-                      "language": "json"
+                  "name": "AN-SETUP-01 - Login Admin",
+                  "event": [
+                    {
+                      "listen": "test",
+                      "script": {
+                        "type": "text/javascript",
+                        "exec": [
+                          "pm.test(\"HTTP 200\", () => { pm.response.to.have.status(200); });",
+                          "const json = pm.response.json();",
+                          "pm.environment.set(\"admin_token\", json.data?.token || json.token);",
+                          "pm.environment.set(\"admin_id\", json.data?.user?.id || json.user?.id);"
+                        ]
+                      }
                     }
-                  }
-                },
-                "url": {
-                  "raw": "{{baseUrl}}/auth/login",
-                  "host": [
-                    "{{baseUrl}}"
                   ],
-                  "path": [
-                    "auth",
-                    "login"
-                  ]
+                  "request": {
+                    "method": "POST",
+                    "header": [],
+                    "body": {
+                      "mode": "raw",
+                      "raw": "{\n  \"email\": \"{{admin_email}}\",\n  \"password\": \"{{default_password}}\"\n}",
+                      "options": {
+                        "raw": {
+                          "language": "json"
+                        }
+                      }
+                    },
+                    "url": {
+                      "raw": "{{baseUrl}}/auth/login",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "auth",
+                        "login"
+                      ]
+                    }
+                  },
+                  "response": []
+                },
+                {
+                  "name": "AN-SETUP-02 - Login Coordinator",
+                  "event": [
+                    {
+                      "listen": "test",
+                      "script": {
+                        "type": "text/javascript",
+                        "exec": [
+                          "pm.test(\"HTTP 200\", () => { pm.response.to.have.status(200); });",
+                          "const json = pm.response.json();",
+                          "pm.environment.set(\"coordinator_token\", json.data?.token || json.token);",
+                          "pm.environment.set(\"coordinator_id\", json.data?.user?.id || json.user?.id);"
+                        ]
+                      }
+                    }
+                  ],
+                  "request": {
+                    "method": "POST",
+                    "header": [],
+                    "body": {
+                      "mode": "raw",
+                      "raw": "{\n  \"email\": \"{{coordinator_email}}\",\n  \"password\": \"{{default_password}}\"\n}",
+                      "options": {
+                        "raw": {
+                          "language": "json"
+                        }
+                      }
+                    },
+                    "url": {
+                      "raw": "{{baseUrl}}/auth/login",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "auth",
+                        "login"
+                      ]
+                    }
+                  },
+                  "response": []
                 }
-              },
-              "response": []
+              ]
             },
             {
-              "name": "Dashboard Stats",
-              "event": [
+              "name": "Thống kê Dashboard",
+              "item": [
                 {
-                  "listen": "test",
-                  "script": {
-                    "exec": [
-                      "pm.test(\"HTTP 200\", () => pm.response.to.have.status(200));\r",
-                      "\r",
-                      "const json = pm.response.json();\r",
-                      "const payload = json.data?.data || json.data || json;\r",
-                      "\r",
-                      "pm.test(\"Dashboard stats shape is valid\", () => {\r",
-                      "  pm.expect(payload).to.have.property(\"totalRevenue\");\r",
-                      "  pm.expect(payload).to.have.property(\"totalOrders\");\r",
-                      "  pm.expect(payload).to.have.property(\"orderStats\");\r",
-                      "  pm.expect(payload.orderStats).to.be.an(\"array\");\r",
-                      "});"
-                    ],
-                    "type": "text/javascript",
-                    "packages": {},
-                    "requests": {}
-                  }
-                }
-              ],
-              "request": {
-                "auth": {
-                  "type": "bearer",
-                  "bearer": [
+                  "name": "EP",
+                  "item": [
                     {
-                      "key": "token",
-                      "value": "{{admin_token}}",
-                      "type": "string"
+                      "name": "AN-STATS-EP-01 - Dashboard Stats Admin",
+                      "event": [
+                        {
+                          "listen": "test",
+                          "script": {
+                            "type": "text/javascript",
+                            "exec": [
+                              "pm.test(\"HTTP 200\", () => {",
+                              "  pm.response.to.have.status(200);",
+                              "});",
+                              "",
+                              "const json = pm.response.json();",
+                              "const payload = json.data?.data || json.data || json;",
+                              "pm.test(\"Reports payload shape is valid\", () => {",
+                              "  pm.expect(payload).to.have.property(\"totalRevenue\");",
+                              "  pm.expect(payload).to.have.property(\"totalOrders\");",
+                              "  pm.expect(payload).to.have.property(\"orderStats\");",
+                              "  pm.expect(payload.orderStats).to.be.an(\"array\");",
+                              "});"
+                            ]
+                          }
+                        }
+                      ],
+                      "request": {
+                        "auth": {
+                          "type": "bearer",
+                          "bearer": [
+                            {
+                              "key": "token",
+                              "value": "{{admin_token}}",
+                              "type": "string"
+                            }
+                          ]
+                        },
+                        "method": "GET",
+                        "header": [],
+                        "url": {
+                          "raw": "{{baseUrl}}/analytics/stats",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "analytics",
+                            "stats"
+                          ]
+                        }
+                      },
+                      "response": []
+                    },
+                    {
+                      "name": "AN-STATS-EP-02 - Dashboard Stats Coordinator",
+                      "event": [
+                        {
+                          "listen": "test",
+                          "script": {
+                            "type": "text/javascript",
+                            "exec": [
+                              "pm.test(\"HTTP 200\", () => {",
+                              "  pm.response.to.have.status(200);",
+                              "});",
+                              "",
+                              "const json = pm.response.json();",
+                              "const payload = json.data?.data || json.data || json;",
+                              "pm.test(\"Reports payload shape is valid\", () => {",
+                              "  pm.expect(payload).to.have.property(\"totalRevenue\");",
+                              "  pm.expect(payload).to.have.property(\"totalOrders\");",
+                              "  pm.expect(payload).to.have.property(\"orderStats\");",
+                              "  pm.expect(payload.orderStats).to.be.an(\"array\");",
+                              "});"
+                            ]
+                          }
+                        }
+                      ],
+                      "request": {
+                        "auth": {
+                          "type": "bearer",
+                          "bearer": [
+                            {
+                              "key": "token",
+                              "value": "{{coordinator_token}}",
+                              "type": "string"
+                            }
+                          ]
+                        },
+                        "method": "GET",
+                        "header": [],
+                        "url": {
+                          "raw": "{{baseUrl}}/analytics/stats",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "analytics",
+                            "stats"
+                          ]
+                        }
+                      },
+                      "response": []
                     }
                   ]
                 },
-                "method": "GET",
-                "header": [],
-                "url": {
-                  "raw": "{{baseUrl}}/analytics/stats",
-                  "host": [
-                    "{{baseUrl}}"
-                  ],
-                  "path": [
-                    "analytics",
-                    "stats"
+                {
+                  "name": "RBAC",
+                  "item": [
+                    {
+                      "name": "AN-STATS-RBAC-01 - Dashboard Stats No Token",
+                      "event": [
+                        {
+                          "listen": "test",
+                          "script": {
+                            "type": "text/javascript",
+                            "exec": [
+                              "pm.test(\"HTTP 401\", () => {",
+                              "  pm.response.to.have.status(401);",
+                              "});"
+                            ]
+                          }
+                        }
+                      ],
+                      "request": {
+                        "method": "GET",
+                        "header": [],
+                        "url": {
+                          "raw": "{{baseUrl}}/analytics/stats",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "analytics",
+                            "stats"
+                          ]
+                        }
+                      },
+                      "response": []
+                    },
+                    {
+                      "name": "AN-STATS-RBAC-02 - Dashboard Stats Invalid Token",
+                      "event": [
+                        {
+                          "listen": "test",
+                          "script": {
+                            "type": "text/javascript",
+                            "exec": [
+                              "pm.test(\"HTTP 401\", () => {",
+                              "  pm.response.to.have.status(401);",
+                              "});"
+                            ]
+                          }
+                        }
+                      ],
+                      "request": {
+                        "auth": {
+                          "type": "bearer",
+                          "bearer": [
+                            {
+                              "key": "token",
+                              "value": "{{invalid_token}}",
+                              "type": "string"
+                            }
+                          ]
+                        },
+                        "method": "GET",
+                        "header": [],
+                        "url": {
+                          "raw": "{{baseUrl}}/analytics/stats",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "analytics",
+                            "stats"
+                          ]
+                        }
+                      },
+                      "response": []
+                    },
+                    {
+                      "name": "AN-STATS-RBAC-03 - Dashboard Stats Artist Forbidden",
+                      "event": [
+                        {
+                          "listen": "test",
+                          "script": {
+                            "type": "text/javascript",
+                            "exec": [
+                              "pm.test(\"HTTP 403\", () => {",
+                              "  pm.response.to.have.status(403);",
+                              "});"
+                            ]
+                          }
+                        }
+                      ],
+                      "request": {
+                        "auth": {
+                          "type": "bearer",
+                          "bearer": [
+                            {
+                              "key": "token",
+                              "value": "{{artist_token}}",
+                              "type": "string"
+                            }
+                          ]
+                        },
+                        "method": "GET",
+                        "header": [],
+                        "url": {
+                          "raw": "{{baseUrl}}/analytics/stats",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "analytics",
+                            "stats"
+                          ]
+                        }
+                      },
+                      "response": []
+                    }
                   ]
                 }
-              },
-              "response": []
+              ]
             },
             {
-              "name": "Reports Overview",
-              "event": [
+              "name": "Báo cáo tổng quan",
+              "item": [
                 {
-                  "listen": "test",
-                  "script": {
-                    "exec": [
-                      "pm.test(\"HTTP 200\", () => pm.response.to.have.status(200));\r",
-                      "\r",
-                      "const json = pm.response.json();\r",
-                      "const payload = json.data?.data || json.data || json;\r",
-                      "\r",
-                      "pm.test(\"Reports overview shape is valid\", () => {\r",
-                      "  pm.expect(payload).to.have.property(\"totalRevenue\");\r",
-                      "  pm.expect(payload).to.have.property(\"totalOrders\");\r",
-                      "  pm.expect(payload).to.have.property(\"orderStats\");\r",
-                      "  pm.expect(payload.orderStats).to.be.an(\"array\");\r",
-                      "});"
-                    ],
-                    "type": "text/javascript",
-                    "packages": {},
-                    "requests": {}
-                  }
-                }
-              ],
-              "request": {
-                "auth": {
-                  "type": "bearer",
-                  "bearer": [
+                  "name": "EP",
+                  "item": [
                     {
-                      "key": "token",
-                      "value": "{{admin_token}}",
-                      "type": "string"
+                      "name": "AN-RPT-EP-01 - Reports Overview Admin",
+                      "event": [
+                        {
+                          "listen": "test",
+                          "script": {
+                            "type": "text/javascript",
+                            "exec": [
+                              "pm.test(\"HTTP 200\", () => {",
+                              "  pm.response.to.have.status(200);",
+                              "});",
+                              "",
+                              "const json = pm.response.json();",
+                              "const payload = json.data?.data || json.data || json;",
+                              "pm.test(\"Reports payload shape is valid\", () => {",
+                              "  pm.expect(payload).to.have.property(\"totalRevenue\");",
+                              "  pm.expect(payload).to.have.property(\"totalOrders\");",
+                              "  pm.expect(payload).to.have.property(\"orderStats\");",
+                              "  pm.expect(payload.orderStats).to.be.an(\"array\");",
+                              "});"
+                            ]
+                          }
+                        }
+                      ],
+                      "request": {
+                        "auth": {
+                          "type": "bearer",
+                          "bearer": [
+                            {
+                              "key": "token",
+                              "value": "{{admin_token}}",
+                              "type": "string"
+                            }
+                          ]
+                        },
+                        "method": "GET",
+                        "header": [],
+                        "url": {
+                          "raw": "{{baseUrl}}/analytics/reports/overview",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "analytics",
+                            "reports",
+                            "overview"
+                          ]
+                        }
+                      },
+                      "response": []
+                    },
+                    {
+                      "name": "AN-RPT-EP-02 - Reports Overview Coordinator",
+                      "event": [
+                        {
+                          "listen": "test",
+                          "script": {
+                            "type": "text/javascript",
+                            "exec": [
+                              "pm.test(\"HTTP 200\", () => {",
+                              "  pm.response.to.have.status(200);",
+                              "});",
+                              "",
+                              "const json = pm.response.json();",
+                              "const payload = json.data?.data || json.data || json;",
+                              "pm.test(\"Reports payload shape is valid\", () => {",
+                              "  pm.expect(payload).to.have.property(\"totalRevenue\");",
+                              "  pm.expect(payload).to.have.property(\"totalOrders\");",
+                              "  pm.expect(payload).to.have.property(\"orderStats\");",
+                              "  pm.expect(payload.orderStats).to.be.an(\"array\");",
+                              "});"
+                            ]
+                          }
+                        }
+                      ],
+                      "request": {
+                        "auth": {
+                          "type": "bearer",
+                          "bearer": [
+                            {
+                              "key": "token",
+                              "value": "{{coordinator_token}}",
+                              "type": "string"
+                            }
+                          ]
+                        },
+                        "method": "GET",
+                        "header": [],
+                        "url": {
+                          "raw": "{{baseUrl}}/analytics/reports/overview",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "analytics",
+                            "reports",
+                            "overview"
+                          ]
+                        }
+                      },
+                      "response": []
                     }
                   ]
                 },
-                "method": "GET",
-                "header": [],
-                "url": {
-                  "raw": "{{baseUrl}}/analytics/reports/overview",
-                  "host": [
-                    "{{baseUrl}}"
-                  ],
-                  "path": [
-                    "analytics",
-                    "reports",
-                    "overview"
+                {
+                  "name": "RBAC",
+                  "item": [
+                    {
+                      "name": "AN-RPT-RBAC-01 - Reports Overview No Token",
+                      "event": [
+                        {
+                          "listen": "test",
+                          "script": {
+                            "type": "text/javascript",
+                            "exec": [
+                              "pm.test(\"HTTP 401\", () => {",
+                              "  pm.response.to.have.status(401);",
+                              "});"
+                            ]
+                          }
+                        }
+                      ],
+                      "request": {
+                        "method": "GET",
+                        "header": [],
+                        "url": {
+                          "raw": "{{baseUrl}}/analytics/reports/overview",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "analytics",
+                            "reports",
+                            "overview"
+                          ]
+                        }
+                      },
+                      "response": []
+                    },
+                    {
+                      "name": "AN-RPT-RBAC-02 - Reports Overview Invalid Token",
+                      "event": [
+                        {
+                          "listen": "test",
+                          "script": {
+                            "type": "text/javascript",
+                            "exec": [
+                              "pm.test(\"HTTP 401\", () => {",
+                              "  pm.response.to.have.status(401);",
+                              "});"
+                            ]
+                          }
+                        }
+                      ],
+                      "request": {
+                        "auth": {
+                          "type": "bearer",
+                          "bearer": [
+                            {
+                              "key": "token",
+                              "value": "{{invalid_token}}",
+                              "type": "string"
+                            }
+                          ]
+                        },
+                        "method": "GET",
+                        "header": [],
+                        "url": {
+                          "raw": "{{baseUrl}}/analytics/reports/overview",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "analytics",
+                            "reports",
+                            "overview"
+                          ]
+                        }
+                      },
+                      "response": []
+                    },
+                    {
+                      "name": "AN-RPT-RBAC-03 - Reports Overview Artist Forbidden",
+                      "event": [
+                        {
+                          "listen": "test",
+                          "script": {
+                            "type": "text/javascript",
+                            "exec": [
+                              "pm.test(\"HTTP 403\", () => {",
+                              "  pm.response.to.have.status(403);",
+                              "});"
+                            ]
+                          }
+                        }
+                      ],
+                      "request": {
+                        "auth": {
+                          "type": "bearer",
+                          "bearer": [
+                            {
+                              "key": "token",
+                              "value": "{{artist_token}}",
+                              "type": "string"
+                            }
+                          ]
+                        },
+                        "method": "GET",
+                        "header": [],
+                        "url": {
+                          "raw": "{{baseUrl}}/analytics/reports/overview",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "analytics",
+                            "reports",
+                            "overview"
+                          ]
+                        }
+                      },
+                      "response": []
+                    }
                   ]
                 }
-              },
-              "response": []
+              ]
+            },
+            {
+              "name": "FlowTests - Analytics",
+              "item": [
+                {
+                  "name": "AN-FLOW-01 - Admin xem Dashboard và Reports",
+                  "event": [
+                    {
+                      "listen": "test",
+                      "script": {
+                        "type": "text/javascript",
+                        "exec": [
+                          "pm.test(\"HTTP 200\", () => {",
+                          "  pm.response.to.have.status(200);",
+                          "});"
+                        ]
+                      }
+                    }
+                  ],
+                  "request": {
+                    "auth": {
+                      "type": "bearer",
+                      "bearer": [
+                        {
+                          "key": "token",
+                          "value": "{{admin_token}}",
+                          "type": "string"
+                        }
+                      ]
+                    },
+                    "method": "GET",
+                    "header": [],
+                    "url": {
+                      "raw": "{{baseUrl}}/analytics/reports/overview",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "analytics",
+                        "reports",
+                        "overview"
+                      ]
+                    }
+                  },
+                  "response": []
+                }
+              ]
             }
           ],
           "auth": {
@@ -11163,147 +11602,425 @@
           "name": "api-gateway",
           "item": [
             {
-              "name": "All Services Health",
-              "request": {
-                "auth": {
-                  "type": "noauth"
-                },
-                "method": "GET",
-                "header": [],
-                "url": {
-                  "raw": "{{baseUrl}}/health/all",
-                  "host": [
-                    "{{baseUrl}}"
-                  ],
-                  "path": [
-                    "health",
-                    "all"
-                  ]
-                }
-              },
-              "response": []
-            },
-            {
-              "name": "Reports Alias - Fixed KAN-76",
-              "event": [
+              "name": "Kiểm tra sức khỏe",
+              "item": [
                 {
-                  "listen": "test",
-                  "script": {
-                    "exec": [
-                      "pm.test(\"HTTP 200\", () => pm.response.to.have.status(200));\r",
-                      "\r",
-                      "const json = pm.response.json();\r",
-                      "const payload = json.data?.data || json.data || json;\r",
-                      "\r",
-                      "pm.test(\"Reports alias shape is valid\", () => {\r",
-                      "  pm.expect(payload).to.have.property(\"totalRevenue\");\r",
-                      "  pm.expect(payload).to.have.property(\"totalOrders\");\r",
-                      "  pm.expect(payload).to.have.property(\"orderStats\");\r",
-                      "});"
-                    ],
-                    "type": "text/javascript",
-                    "packages": {},
-                    "requests": {}
-                  }
-                }
-              ],
-              "request": {
-                "auth": {
-                  "type": "bearer",
-                  "bearer": [
+                  "name": "EP",
+                  "item": [
                     {
-                      "key": "token",
-                      "value": "{{admin_token}}",
-                      "type": "string"
+                      "name": "GATE-HC-EP-01 - Gateway Health",
+                      "request": {
+                        "method": "GET",
+                        "header": [],
+                        "url": {
+                          "raw": "{{baseUrl}}/health",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "health"
+                          ]
+                        }
+                      },
+                      "response": [],
+                      "event": [
+                        {
+                          "listen": "test",
+                          "script": {
+                            "type": "text/javascript",
+                            "exec": [
+                              "pm.test(\"HTTP 200\", () => {",
+                              "  pm.response.to.have.status(200);",
+                              "});"
+                            ]
+                          }
+                        }
+                      ]
+                    },
+                    {
+                      "name": "GATE-HC-EP-02 - All Services Health",
+                      "request": {
+                        "method": "GET",
+                        "header": [],
+                        "url": {
+                          "raw": "{{baseUrl}}/health/all",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "health",
+                            "all"
+                          ]
+                        }
+                      },
+                      "response": [],
+                      "event": [
+                        {
+                          "listen": "test",
+                          "script": {
+                            "type": "text/javascript",
+                            "exec": [
+                              "pm.test(\"HTTP 200\", () => {",
+                              "  pm.response.to.have.status(200);",
+                              "});"
+                            ]
+                          }
+                        }
+                      ]
                     }
                   ]
                 },
-                "method": "GET",
-                "header": [],
-                "url": {
-                  "raw": "{{baseUrl}}/reports/overview",
-                  "host": [
-                    "{{baseUrl}}"
-                  ],
-                  "path": [
-                    "reports",
-                    "overview"
+                {
+                  "name": "BVA",
+                  "item": [
+                    {
+                      "name": "GATE-HC-BVA-01 - Health Invalid Path",
+                      "request": {
+                        "method": "GET",
+                        "header": [],
+                        "url": {
+                          "raw": "{{baseUrl}}/health/invalid",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "health",
+                            "invalid"
+                          ]
+                        }
+                      },
+                      "response": [],
+                      "event": [
+                        {
+                          "listen": "test",
+                          "script": {
+                            "type": "text/javascript",
+                            "exec": [
+                              "pm.test(\"HTTP 404\", () => {",
+                              "  pm.response.to.have.status(404);",
+                              "});"
+                            ]
+                          }
+                        }
+                      ]
+                    },
+                    {
+                      "name": "GATE-HC-BVA-02 - Health Wrong Method",
+                      "request": {
+                        "method": "POST",
+                        "header": [],
+                        "url": {
+                          "raw": "{{baseUrl}}/health",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "health"
+                          ]
+                        }
+                      },
+                      "response": [],
+                      "event": [
+                        {
+                          "listen": "test",
+                          "script": {
+                            "type": "text/javascript",
+                            "exec": [
+                              "pm.test(\"HTTP 404\", () => {",
+                              "  pm.response.to.have.status(404);",
+                              "});"
+                            ]
+                          }
+                        }
+                      ]
+                    }
                   ]
                 }
-              },
-              "response": []
+              ]
             },
             {
-              "name": "Proxy Analytics Reports Overview",
-              "event": [
+              "name": "Proxy báo cáo",
+              "item": [
                 {
-                  "listen": "test",
-                  "script": {
-                    "exec": [
-                      "pm.test(\"HTTP 200\", () => pm.response.to.have.status(200));\r",
-                      "\r",
-                      "const json = pm.response.json();\r",
-                      "const payload = json.data?.data || json.data || json;\r",
-                      "\r",
-                      "pm.test(\"Reports overview shape is valid\", () => {\r",
-                      "  pm.expect(payload).to.have.property(\"totalRevenue\");\r",
-                      "  pm.expect(payload).to.have.property(\"totalOrders\");\r",
-                      "  pm.expect(payload).to.have.property(\"orderStats\");\r",
-                      "  pm.expect(payload.orderStats).to.be.an(\"array\");\r",
-                      "});"
-                    ],
-                    "type": "text/javascript",
-                    "packages": {},
-                    "requests": {}
-                  }
-                }
-              ],
-              "request": {
-                "auth": {
-                  "type": "bearer",
-                  "bearer": [
+                  "name": "EP",
+                  "item": [
                     {
-                      "key": "token",
-                      "value": "{{admin_token}}",
-                      "type": "string"
+                      "name": "GATE-RPT-EP-01 - Proxy Analytics Reports Overview",
+                      "event": [
+                        {
+                          "listen": "test",
+                          "script": {
+                            "type": "text/javascript",
+                            "exec": [
+                              "pm.test(\"HTTP 200\", () => {",
+                              "  pm.response.to.have.status(200);",
+                              "});",
+                              "",
+                              "const json = pm.response.json();",
+                              "const payload = json.data?.data || json.data || json;",
+                              "pm.test(\"Reports payload shape is valid\", () => {",
+                              "  pm.expect(payload).to.have.property(\"totalRevenue\");",
+                              "  pm.expect(payload).to.have.property(\"totalOrders\");",
+                              "  pm.expect(payload).to.have.property(\"orderStats\");",
+                              "  pm.expect(payload.orderStats).to.be.an(\"array\");",
+                              "});"
+                            ]
+                          }
+                        }
+                      ],
+                      "request": {
+                        "auth": {
+                          "type": "bearer",
+                          "bearer": [
+                            {
+                              "key": "token",
+                              "value": "{{admin_token}}",
+                              "type": "string"
+                            }
+                          ]
+                        },
+                        "method": "GET",
+                        "header": [],
+                        "url": {
+                          "raw": "{{baseUrl}}/analytics/reports/overview",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "analytics",
+                            "reports",
+                            "overview"
+                          ]
+                        }
+                      },
+                      "response": []
+                    },
+                    {
+                      "name": "GATE-RPT-EP-02 - Reports Alias Fixed KAN-76",
+                      "event": [
+                        {
+                          "listen": "test",
+                          "script": {
+                            "type": "text/javascript",
+                            "exec": [
+                              "pm.test(\"HTTP 200\", () => {",
+                              "  pm.response.to.have.status(200);",
+                              "});",
+                              "",
+                              "const json = pm.response.json();",
+                              "const payload = json.data?.data || json.data || json;",
+                              "pm.test(\"Reports payload shape is valid\", () => {",
+                              "  pm.expect(payload).to.have.property(\"totalRevenue\");",
+                              "  pm.expect(payload).to.have.property(\"totalOrders\");",
+                              "  pm.expect(payload).to.have.property(\"orderStats\");",
+                              "  pm.expect(payload.orderStats).to.be.an(\"array\");",
+                              "});"
+                            ]
+                          }
+                        }
+                      ],
+                      "request": {
+                        "auth": {
+                          "type": "bearer",
+                          "bearer": [
+                            {
+                              "key": "token",
+                              "value": "{{admin_token}}",
+                              "type": "string"
+                            }
+                          ]
+                        },
+                        "method": "GET",
+                        "header": [],
+                        "url": {
+                          "raw": "{{baseUrl}}/reports/overview",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "reports",
+                            "overview"
+                          ]
+                        }
+                      },
+                      "response": []
                     }
                   ]
                 },
-                "method": "GET",
-                "header": [],
-                "url": {
-                  "raw": "{{baseUrl}}/analytics/reports/overview",
-                  "host": [
-                    "{{baseUrl}}"
-                  ],
-                  "path": [
-                    "analytics",
-                    "reports",
-                    "overview"
+                {
+                  "name": "Negative",
+                  "item": [
+                    {
+                      "name": "GATE-RPT-NEG-01 - Reports Alias Invalid Path",
+                      "event": [
+                        {
+                          "listen": "test",
+                          "script": {
+                            "type": "text/javascript",
+                            "exec": [
+                              "pm.test(\"HTTP 404\", () => {",
+                              "  pm.response.to.have.status(404);",
+                              "});"
+                            ]
+                          }
+                        }
+                      ],
+                      "request": {
+                        "auth": {
+                          "type": "bearer",
+                          "bearer": [
+                            {
+                              "key": "token",
+                              "value": "{{admin_token}}",
+                              "type": "string"
+                            }
+                          ]
+                        },
+                        "method": "GET",
+                        "header": [],
+                        "url": {
+                          "raw": "{{baseUrl}}/reports/invalid",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "reports",
+                            "invalid"
+                          ]
+                        }
+                      },
+                      "response": []
+                    },
+                    {
+                      "name": "GATE-RPT-NEG-02 - Reports Alias No Token",
+                      "event": [
+                        {
+                          "listen": "test",
+                          "script": {
+                            "type": "text/javascript",
+                            "exec": [
+                              "pm.test(\"HTTP 401\", () => {",
+                              "  pm.response.to.have.status(401);",
+                              "});"
+                            ]
+                          }
+                        }
+                      ],
+                      "request": {
+                        "method": "GET",
+                        "header": [],
+                        "url": {
+                          "raw": "{{baseUrl}}/reports/overview",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "reports",
+                            "overview"
+                          ]
+                        }
+                      },
+                      "response": []
+                    },
+                    {
+                      "name": "GATE-RPT-NEG-03 - Reports Alias Invalid Token",
+                      "event": [
+                        {
+                          "listen": "test",
+                          "script": {
+                            "type": "text/javascript",
+                            "exec": [
+                              "pm.test(\"HTTP 401\", () => {",
+                              "  pm.response.to.have.status(401);",
+                              "});"
+                            ]
+                          }
+                        }
+                      ],
+                      "request": {
+                        "auth": {
+                          "type": "bearer",
+                          "bearer": [
+                            {
+                              "key": "token",
+                              "value": "{{invalid_token}}",
+                              "type": "string"
+                            }
+                          ]
+                        },
+                        "method": "GET",
+                        "header": [],
+                        "url": {
+                          "raw": "{{baseUrl}}/reports/overview",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "reports",
+                            "overview"
+                          ]
+                        }
+                      },
+                      "response": []
+                    }
                   ]
                 }
-              },
-              "response": []
+              ]
             },
             {
-              "name": "Gateway Health",
-              "request": {
-                "auth": {
-                  "type": "noauth"
-                },
-                "method": "GET",
-                "header": [],
-                "url": {
-                  "raw": "{{baseUrl}}/health",
-                  "host": [
-                    "{{baseUrl}}"
+              "name": "FlowTests - Gateway",
+              "item": [
+                {
+                  "name": "GATE-FLOW-01 - Gateway Reports Happy Path",
+                  "event": [
+                    {
+                      "listen": "test",
+                      "script": {
+                        "type": "text/javascript",
+                        "exec": [
+                          "pm.test(\"HTTP 200\", () => {",
+                          "  pm.response.to.have.status(200);",
+                          "});",
+                          "",
+                          "const json = pm.response.json();",
+                          "const payload = json.data?.data || json.data || json;",
+                          "pm.test(\"Reports payload shape is valid\", () => {",
+                          "  pm.expect(payload).to.have.property(\"totalRevenue\");",
+                          "  pm.expect(payload).to.have.property(\"totalOrders\");",
+                          "  pm.expect(payload).to.have.property(\"orderStats\");",
+                          "  pm.expect(payload.orderStats).to.be.an(\"array\");",
+                          "});"
+                        ]
+                      }
+                    }
                   ],
-                  "path": [
-                    "health"
-                  ]
+                  "request": {
+                    "auth": {
+                      "type": "bearer",
+                      "bearer": [
+                        {
+                          "key": "token",
+                          "value": "{{admin_token}}",
+                          "type": "string"
+                        }
+                      ]
+                    },
+                    "method": "GET",
+                    "header": [],
+                    "url": {
+                      "raw": "{{baseUrl}}/reports/overview",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "reports",
+                        "overview"
+                      ]
+                    }
+                  },
+                  "response": []
                 }
-              },
-              "response": []
+              ]
             }
           ]
         },
@@ -12669,707 +13386,1388 @@
           "name": "studio-service",
           "item": [
             {
-              "name": "Login Studio Admin",
-              "event": [
+              "name": "Set up",
+              "item": [
                 {
-                  "listen": "test",
-                  "script": {
-                    "exec": [
-                      "pm.test(\"HTTP 200\", () => pm.response.to.have.status(200));\r",
-                      "\r",
-                      "const json = pm.response.json();\r",
-                      "\r",
-                      "pm.test(\"Studio admin login success\", () => {\r",
-                      "  pm.expect(json.token).to.exist;\r",
-                      "  pm.expect(json.user.role).to.eql(\"studio_admin\");\r",
-                      "});\r",
-                      "\r",
-                      "pm.environment.set(\"studio_admin_token\", json.token);\r",
-                      "pm.environment.set(\"studio_admin_id\", String(json.user.id));"
-                    ],
-                    "type": "text/javascript",
-                    "packages": {},
-                    "requests": {}
-                  }
-                }
-              ],
-              "request": {
-                "auth": {
-                  "type": "noauth"
-                },
-                "method": "POST",
-                "header": [],
-                "body": {
-                  "mode": "raw",
-                  "raw": "{\r\n  \"email\": \"{{studio_admin_email}}\",\r\n  \"password\": \"{{default_password}}\"\r\n}",
-                  "options": {
-                    "raw": {
-                      "language": "json"
-                    }
-                  }
-                },
-                "url": {
-                  "raw": "{{baseUrl}}/auth/login",
-                  "host": [
-                    "{{baseUrl}}"
-                  ],
-                  "path": [
-                    "auth",
-                    "login"
-                  ]
-                }
-              },
-              "response": []
-            },
-            {
-              "name": "Login Artist",
-              "event": [
-                {
-                  "listen": "test",
-                  "script": {
-                    "exec": [
-                      "pm.test(\"HTTP 200\", () => pm.response.to.have.status(200));\r",
-                      "\r",
-                      "const json = pm.response.json();\r",
-                      "\r",
-                      "pm.test(\"Artist login success\", () => {\r",
-                      "  pm.expect(json.token).to.exist;\r",
-                      "  pm.expect(json.user.role).to.eql(\"artist\");\r",
-                      "});\r",
-                      "\r",
-                      "pm.environment.set(\"artist_token\", json.token);\r",
-                      "pm.environment.set(\"artist_id\", String(json.user.id));"
-                    ],
-                    "type": "text/javascript",
-                    "packages": {},
-                    "requests": {}
-                  }
-                }
-              ],
-              "request": {
-                "auth": {
-                  "type": "noauth"
-                },
-                "method": "POST",
-                "header": [],
-                "body": {
-                  "mode": "raw",
-                  "raw": "{\r\n  \"email\": \"{{artist_email}}\",\r\n  \"password\": \"{{default_password}}\"\r\n}",
-                  "options": {
-                    "raw": {
-                      "language": "json"
-                    }
-                  }
-                },
-                "url": {
-                  "raw": "{{baseUrl}}/auth/login",
-                  "host": [
-                    "{{baseUrl}}"
-                  ],
-                  "path": [
-                    "auth",
-                    "login"
-                  ]
-                }
-              },
-              "response": []
-            },
-            {
-              "name": "Get Studios",
-              "event": [
-                {
-                  "listen": "test",
-                  "script": {
-                    "exec": [
-                      "pm.test(\"HTTP 200\", () => pm.response.to.have.status(200));\r",
-                      "\r",
-                      "const json = pm.response.json();\r",
-                      "\r",
-                      "pm.test(\"Studio list is valid\", () => {\r",
-                      "  pm.expect(json).to.be.an(\"array\");\r",
-                      "  pm.expect(json.length).to.be.above(0);\r",
-                      "});"
-                    ],
-                    "type": "text/javascript",
-                    "packages": {},
-                    "requests": {}
-                  }
-                }
-              ],
-              "request": {
-                "auth": {
-                  "type": "noauth"
-                },
-                "method": "GET",
-                "header": [],
-                "url": {
-                  "raw": "{{baseUrl}}/studio/studios",
-                  "host": [
-                    "{{baseUrl}}"
-                  ],
-                  "path": [
-                    "studio",
-                    "studios"
-                  ]
-                }
-              },
-              "response": []
-            },
-            {
-              "name": "Update Studio Status - Available",
-              "event": [
-                {
-                  "listen": "test",
-                  "script": {
-                    "exec": [
-                      "pm.test(\"HTTP 200\", () => pm.response.to.have.status(200));\r",
-                      "\r",
-                      "const json = pm.response.json();\r",
-                      "\r",
-                      "pm.test(\"Studio status updated\", () => {\r",
-                      "  pm.expect(json.message).to.be.a(\"string\").and.not.empty;\r",
-                      "});"
-                    ],
-                    "type": "text/javascript",
-                    "packages": {},
-                    "requests": {}
-                  }
-                }
-              ],
-              "request": {
-                "auth": {
-                  "type": "bearer",
-                  "bearer": [
+                  "name": "STU-SETUP-01 - Login Studio Admin",
+                  "event": [
                     {
-                      "key": "token",
-                      "value": "{{studio_admin_token}}",
-                      "type": "string"
+                      "listen": "test",
+                      "script": {
+                        "type": "text/javascript",
+                        "exec": [
+                          "pm.test(\"HTTP 200\", () => { pm.response.to.have.status(200); });",
+                          "const json = pm.response.json();",
+                          "pm.environment.set(\"studio_admin_token\", json.data?.token || json.token);",
+                          "pm.environment.set(\"studio_admin_id\", json.data?.user?.id || json.user?.id);"
+                        ]
+                      }
                     }
-                  ]
-                },
-                "method": "PUT",
-                "header": [],
-                "body": {
-                  "mode": "raw",
-                  "raw": "{ \"status\": \"available\" }",
-                  "options": {
-                    "raw": {
-                      "language": "json"
-                    }
-                  }
-                },
-                "url": {
-                  "raw": "{{baseUrl}}/studio/studios/{{studioId}}/status",
-                  "host": [
-                    "{{baseUrl}}"
                   ],
-                  "path": [
-                    "studio",
-                    "studios",
-                    "{{studioId}}",
-                    "status"
-                  ]
-                }
-              },
-              "response": []
-            },
-            {
-              "name": "Update Studio Status - Maintenance",
-              "event": [
+                  "request": {
+                    "method": "POST",
+                    "header": [],
+                    "body": {
+                      "mode": "raw",
+                      "raw": "{\n  \"email\": \"{{studio_admin_email}}\",\n  \"password\": \"{{default_password}}\"\n}",
+                      "options": {
+                        "raw": {
+                          "language": "json"
+                        }
+                      }
+                    },
+                    "url": {
+                      "raw": "{{baseUrl}}/auth/login",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "auth",
+                        "login"
+                      ]
+                    }
+                  },
+                  "response": []
+                },
                 {
-                  "listen": "test",
-                  "script": {
-                    "exec": [
-                      "pm.test(\"HTTP 200\", () => pm.response.to.have.status(200));\r",
-                      "\r",
-                      "const json = pm.response.json();\r",
-                      "\r",
-                      "pm.test(\"Studio status updated\", () => {\r",
-                      "  pm.expect(json.message).to.be.a(\"string\").and.not.empty;\r",
-                      "});"
-                    ],
-                    "type": "text/javascript",
-                    "packages": {},
-                    "requests": {}
-                  }
-                }
-              ],
-              "request": {
-                "auth": {
-                  "type": "bearer",
-                  "bearer": [
+                  "name": "STU-SETUP-02 - Login Artist",
+                  "event": [
                     {
-                      "key": "token",
-                      "value": "{{studio_admin_token}}",
-                      "type": "string"
+                      "listen": "test",
+                      "script": {
+                        "type": "text/javascript",
+                        "exec": [
+                          "pm.test(\"HTTP 200\", () => { pm.response.to.have.status(200); });",
+                          "const json = pm.response.json();",
+                          "pm.environment.set(\"artist_token\", json.data?.token || json.token);",
+                          "pm.environment.set(\"artist_id\", json.data?.user?.id || json.user?.id);"
+                        ]
+                      }
                     }
-                  ]
-                },
-                "method": "PUT",
-                "header": [],
-                "body": {
-                  "mode": "raw",
-                  "raw": "{ \"status\": \"maintenance\" }",
-                  "options": {
-                    "raw": {
-                      "language": "json"
-                    }
-                  }
-                },
-                "url": {
-                  "raw": "{{baseUrl}}/studio/studios/{{studioId}}/status",
-                  "host": [
-                    "{{baseUrl}}"
                   ],
-                  "path": [
-                    "studio",
-                    "studios",
-                    "{{studioId}}",
-                    "status"
-                  ]
-                }
-              },
-              "response": []
-            },
-            {
-              "name": "Update Studio Status - Reset Available",
-              "event": [
+                  "request": {
+                    "method": "POST",
+                    "header": [],
+                    "body": {
+                      "mode": "raw",
+                      "raw": "{\n  \"email\": \"{{artist_email}}\",\n  \"password\": \"{{default_password}}\"\n}",
+                      "options": {
+                        "raw": {
+                          "language": "json"
+                        }
+                      }
+                    },
+                    "url": {
+                      "raw": "{{baseUrl}}/auth/login",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "auth",
+                        "login"
+                      ]
+                    }
+                  },
+                  "response": []
+                },
                 {
-                  "listen": "test",
-                  "script": {
-                    "exec": [
-                      "pm.test(\"HTTP 200\", () => pm.response.to.have.status(200));\r",
-                      "\r",
-                      "const json = pm.response.json();\r",
-                      "\r",
-                      "pm.test(\"Studio status updated\", () => {\r",
-                      "  pm.expect(json.message).to.be.a(\"string\").and.not.empty;\r",
-                      "});"
-                    ],
-                    "type": "text/javascript",
-                    "packages": {},
-                    "requests": {}
-                  }
-                }
-              ],
-              "request": {
-                "auth": {
-                  "type": "bearer",
-                  "bearer": [
+                  "name": "STU-SETUP-03 - Prepare Booking Time",
+                  "event": [
                     {
-                      "key": "token",
-                      "value": "{{studio_admin_token}}",
-                      "type": "string"
+                      "listen": "test",
+                      "script": {
+                        "type": "text/javascript",
+                        "exec": [
+                          "pm.test(\"HTTP 200\", () => { pm.response.to.have.status(200); });",
+                          "const d1 = new Date(); d1.setDate(d1.getDate() + 1); const d2 = new Date(d1); d2.setHours(d2.getHours() + 2);",
+                          "pm.environment.set(\"studio_booking_start_time\", d1.toISOString());",
+                          "pm.environment.set(\"studio_booking_end_time\", d2.toISOString());"
+                        ]
+                      }
                     }
-                  ]
-                },
-                "method": "PUT",
-                "header": [],
-                "body": {
-                  "mode": "raw",
-                  "raw": "{\r\n  \"status\": \"available\"\r\n}",
-                  "options": {
-                    "raw": {
-                      "language": "json"
-                    }
-                  }
-                },
-                "url": {
-                  "raw": "{{baseUrl}}/studio/studios/{{studioId}}/status",
-                  "host": [
-                    "{{baseUrl}}"
                   ],
-                  "path": [
-                    "studio",
-                    "studios",
-                    "{{studioId}}",
-                    "status"
-                  ]
+                  "request": {
+                    "method": "GET",
+                    "header": [],
+                    "url": {
+                      "raw": "{{baseUrl}}/health",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "health"
+                      ]
+                    }
+                  },
+                  "response": []
                 }
-              },
-              "response": []
+              ]
             },
             {
-              "name": "Prepare Booking Time",
-              "event": [
+              "name": "Danh sách Studio",
+              "item": [
                 {
-                  "listen": "test",
-                  "script": {
-                    "exec": [
-                      "pm.test(\"HTTP 200\", () => pm.response.to.have.status(200));\r",
-                      "\r",
-                      "pm.test(\"Booking time variables saved\", () => {\r",
-                      "  pm.expect(pm.environment.get(\"studio_booking_start_time\")).to.not.be.empty;\r",
-                      "  pm.expect(pm.environment.get(\"studio_booking_end_time\")).to.not.be.empty;\r",
-                      "});"
-                    ],
-                    "type": "text/javascript",
-                    "packages": {},
-                    "requests": {}
-                  }
-                },
-                {
-                  "listen": "prerequest",
-                  "script": {
-                    "exec": [
-                      "const start = new Date();\r",
-                      "const daysAhead = 7 + Math.floor(Math.random() * 30);\r",
-                      "const hour = 9 + Math.floor(Math.random() * 6);\r",
-                      "\r",
-                      "start.setDate(start.getDate() + daysAhead);\r",
-                      "start.setHours(hour, 0, 0, 0);\r",
-                      "\r",
-                      "const end = new Date(start);\r",
-                      "end.setHours(hour + 1, 0, 0, 0);\r",
-                      "\r",
-                      "const format = d => d.toISOString().slice(0, 19).replace(\"T\", \" \");\r",
-                      "\r",
-                      "pm.environment.set(\"studio_booking_start_time\", format(start));\r",
-                      "pm.environment.set(\"studio_booking_end_time\", format(end));"
-                    ],
-                    "type": "text/javascript",
-                    "packages": {},
-                    "requests": {}
-                  }
-                }
-              ],
-              "request": {
-                "auth": {
-                  "type": "noauth"
-                },
-                "method": "GET",
-                "header": [],
-                "url": {
-                  "raw": "{{baseUrl}}/health",
-                  "host": [
-                    "{{baseUrl}}"
-                  ],
-                  "path": [
-                    "health"
-                  ]
-                }
-              },
-              "response": []
-            },
-            {
-              "name": "Create Booking",
-              "event": [
-                {
-                  "listen": "prerequest",
-                  "script": {
-                    "exec": [
-                      ""
-                    ],
-                    "type": "text/javascript",
-                    "packages": {},
-                    "requests": {}
-                  }
-                },
-                {
-                  "listen": "test",
-                  "script": {
-                    "exec": [
-                      "pm.test(\"HTTP 201\", () => pm.response.to.have.status(201));",
-                      "",
-                      "const json = pm.response.json();",
-                      "",
-                      "pm.test(\"Booking created and id saved\", () => {",
-                      "  pm.expect(json.id).to.exist;",
-                      "  pm.environment.set(\"bookingId\", String(json.id));",
-                      "});"
-                    ],
-                    "type": "text/javascript",
-                    "packages": {},
-                    "requests": {}
-                  }
-                }
-              ],
-              "request": {
-                "auth": {
-                  "type": "bearer",
-                  "bearer": [
+                  "name": "EP",
+                  "item": [
                     {
-                      "key": "token",
-                      "value": "{{artist_token}}",
-                      "type": "string"
+                      "name": "STU-LIST-EP-01 - Get Studios",
+                      "event": [
+                        {
+                          "listen": "test",
+                          "script": {
+                            "type": "text/javascript",
+                            "exec": [
+                              "pm.test(\"HTTP 200\", () => {",
+                              "  pm.response.to.have.status(200);",
+                              "});",
+                              "",
+                              "const json = pm.response.json();",
+                              "const payload = json.data || json;",
+                              "pm.test(\"Response is array\", () => {",
+                              "  pm.expect(payload).to.be.an(\"array\");",
+                              "});"
+                            ]
+                          }
+                        }
+                      ],
+                      "request": {
+                        "method": "GET",
+                        "header": [],
+                        "url": {
+                          "raw": "{{baseUrl}}/studio/studios",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "studio",
+                            "studios"
+                          ]
+                        }
+                      },
+                      "response": []
+                    },
+                    {
+                      "name": "STU-LIST-EP-02 - Get All Bookings",
+                      "event": [
+                        {
+                          "listen": "test",
+                          "script": {
+                            "type": "text/javascript",
+                            "exec": [
+                              "pm.test(\"HTTP 200\", () => {",
+                              "  pm.response.to.have.status(200);",
+                              "});",
+                              "",
+                              "const json = pm.response.json();",
+                              "const payload = json.data || json;",
+                              "pm.test(\"Response is array\", () => {",
+                              "  pm.expect(payload).to.be.an(\"array\");",
+                              "});"
+                            ]
+                          }
+                        }
+                      ],
+                      "request": {
+                        "auth": {
+                          "type": "bearer",
+                          "bearer": [
+                            {
+                              "key": "token",
+                              "value": "{{studio_admin_token}}",
+                              "type": "string"
+                            }
+                          ]
+                        },
+                        "method": "GET",
+                        "header": [],
+                        "url": {
+                          "raw": "{{baseUrl}}/studio/bookings/all",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "studio",
+                            "bookings",
+                            "all"
+                          ]
+                        }
+                      },
+                      "response": []
                     }
                   ]
                 },
-                "method": "POST",
-                "header": [],
-                "body": {
-                  "mode": "raw",
-                  "raw": "{\r\n  \"studio_id\": {{studioId}},\r\n  \"order_id\": {{orderId}},\r\n  \"start_time\": \"{{studio_booking_start_time}}\",\r\n  \"end_time\": \"{{studio_booking_end_time}}\",\r\n  \"studioAdminId\": {{studio_admin_id}}\r\n}",
-                  "options": {
-                    "raw": {
-                      "language": "json"
+                {
+                  "name": "RBAC",
+                  "item": [
+                    {
+                      "name": "STU-LIST-RBAC-01 - Get All Bookings Artist Forbidden",
+                      "event": [
+                        {
+                          "listen": "test",
+                          "script": {
+                            "type": "text/javascript",
+                            "exec": [
+                              "pm.test(\"HTTP 403\", () => {",
+                              "  pm.response.to.have.status(403);",
+                              "});"
+                            ]
+                          }
+                        }
+                      ],
+                      "request": {
+                        "auth": {
+                          "type": "bearer",
+                          "bearer": [
+                            {
+                              "key": "token",
+                              "value": "{{artist_token}}",
+                              "type": "string"
+                            }
+                          ]
+                        },
+                        "method": "GET",
+                        "header": [],
+                        "url": {
+                          "raw": "{{baseUrl}}/studio/bookings/all",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "studio",
+                            "bookings",
+                            "all"
+                          ]
+                        }
+                      },
+                      "response": []
+                    },
+                    {
+                      "name": "STU-LIST-RBAC-02 - Get All Bookings No Token",
+                      "event": [
+                        {
+                          "listen": "test",
+                          "script": {
+                            "type": "text/javascript",
+                            "exec": [
+                              "pm.test(\"HTTP 401\", () => {",
+                              "  pm.response.to.have.status(401);",
+                              "});"
+                            ]
+                          }
+                        }
+                      ],
+                      "request": {
+                        "method": "GET",
+                        "header": [],
+                        "url": {
+                          "raw": "{{baseUrl}}/studio/bookings/all",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "studio",
+                            "bookings",
+                            "all"
+                          ]
+                        }
+                      },
+                      "response": []
+                    },
+                    {
+                      "name": "STU-LIST-RBAC-03 - Get All Bookings Invalid Token",
+                      "event": [
+                        {
+                          "listen": "test",
+                          "script": {
+                            "type": "text/javascript",
+                            "exec": [
+                              "pm.test(\"HTTP 401\", () => {",
+                              "  pm.response.to.have.status(401);",
+                              "});"
+                            ]
+                          }
+                        }
+                      ],
+                      "request": {
+                        "auth": {
+                          "type": "bearer",
+                          "bearer": [
+                            {
+                              "key": "token",
+                              "value": "{{invalid_token}}",
+                              "type": "string"
+                            }
+                          ]
+                        },
+                        "method": "GET",
+                        "header": [],
+                        "url": {
+                          "raw": "{{baseUrl}}/studio/bookings/all",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "studio",
+                            "bookings",
+                            "all"
+                          ]
+                        }
+                      },
+                      "response": []
                     }
-                  }
-                },
-                "url": {
-                  "raw": "{{baseUrl}}/studio/bookings",
-                  "host": [
-                    "{{baseUrl}}"
-                  ],
-                  "path": [
-                    "studio",
-                    "bookings"
                   ]
                 }
-              },
-              "response": []
+              ]
             },
             {
-              "name": "Get All Bookings",
-              "event": [
+              "name": "Cập nhật trạng thái Studio",
+              "item": [
                 {
-                  "listen": "test",
-                  "script": {
-                    "exec": [
-                      "pm.test(\"HTTP 200\", () => pm.response.to.have.status(200));\r",
-                      "\r",
-                      "const json = pm.response.json();\r",
-                      "\r",
-                      "pm.test(\"Bookings payload is an array\", () => {\r",
-                      "  pm.expect(json.data || json).to.be.an(\"array\");\r",
-                      "});"
-                    ],
-                    "type": "text/javascript",
-                    "packages": {},
-                    "requests": {}
-                  }
-                }
-              ],
-              "request": {
-                "auth": {
-                  "type": "bearer",
-                  "bearer": [
+                  "name": "EP",
+                  "item": [
                     {
-                      "key": "token",
-                      "value": "{{studio_admin_token}}",
-                      "type": "string"
+                      "name": "STU-STATUS-EP-01 - Update Status Available",
+                      "event": [
+                        {
+                          "listen": "test",
+                          "script": {
+                            "type": "text/javascript",
+                            "exec": [
+                              "pm.test(\"HTTP 200\", () => {",
+                              "  pm.response.to.have.status(200);",
+                              "});"
+                            ]
+                          }
+                        }
+                      ],
+                      "request": {
+                        "auth": {
+                          "type": "bearer",
+                          "bearer": [
+                            {
+                              "key": "token",
+                              "value": "{{studio_admin_token}}",
+                              "type": "string"
+                            }
+                          ]
+                        },
+                        "method": "PUT",
+                        "header": [],
+                        "body": {
+                          "mode": "raw",
+                          "raw": "{\n  \"status\": \"available\"\n}",
+                          "options": {
+                            "raw": {
+                              "language": "json"
+                            }
+                          }
+                        },
+                        "url": {
+                          "raw": "{{baseUrl}}/studio/studios/{{studioId}}/status",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "studio",
+                            "studios",
+                            "{{studioId}}",
+                            "status"
+                          ]
+                        }
+                      },
+                      "response": []
+                    },
+                    {
+                      "name": "STU-STATUS-EP-02 - Update Status Maintenance",
+                      "event": [
+                        {
+                          "listen": "test",
+                          "script": {
+                            "type": "text/javascript",
+                            "exec": [
+                              "pm.test(\"HTTP 200\", () => {",
+                              "  pm.response.to.have.status(200);",
+                              "});"
+                            ]
+                          }
+                        }
+                      ],
+                      "request": {
+                        "auth": {
+                          "type": "bearer",
+                          "bearer": [
+                            {
+                              "key": "token",
+                              "value": "{{studio_admin_token}}",
+                              "type": "string"
+                            }
+                          ]
+                        },
+                        "method": "PUT",
+                        "header": [],
+                        "body": {
+                          "mode": "raw",
+                          "raw": "{\n  \"status\": \"maintenance\"\n}",
+                          "options": {
+                            "raw": {
+                              "language": "json"
+                            }
+                          }
+                        },
+                        "url": {
+                          "raw": "{{baseUrl}}/studio/studios/{{studioId}}/status",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "studio",
+                            "studios",
+                            "{{studioId}}",
+                            "status"
+                          ]
+                        }
+                      },
+                      "response": []
+                    },
+                    {
+                      "name": "STU-STATUS-EP-03 - Reset Status Available",
+                      "event": [
+                        {
+                          "listen": "test",
+                          "script": {
+                            "type": "text/javascript",
+                            "exec": [
+                              "pm.test(\"HTTP 200\", () => {",
+                              "  pm.response.to.have.status(200);",
+                              "});"
+                            ]
+                          }
+                        }
+                      ],
+                      "request": {
+                        "auth": {
+                          "type": "bearer",
+                          "bearer": [
+                            {
+                              "key": "token",
+                              "value": "{{studio_admin_token}}",
+                              "type": "string"
+                            }
+                          ]
+                        },
+                        "method": "PUT",
+                        "header": [],
+                        "body": {
+                          "mode": "raw",
+                          "raw": "{\n  \"status\": \"available\"\n}",
+                          "options": {
+                            "raw": {
+                              "language": "json"
+                            }
+                          }
+                        },
+                        "url": {
+                          "raw": "{{baseUrl}}/studio/studios/{{studioId}}/status",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "studio",
+                            "studios",
+                            "{{studioId}}",
+                            "status"
+                          ]
+                        }
+                      },
+                      "response": []
                     }
                   ]
                 },
-                "method": "GET",
-                "header": [],
-                "url": {
-                  "raw": "{{baseUrl}}/studio/bookings/all",
-                  "host": [
-                    "{{baseUrl}}"
-                  ],
-                  "path": [
-                    "studio",
-                    "bookings",
-                    "all"
+                {
+                  "name": "BVA",
+                  "item": [
+                    {
+                      "name": "STU-STATUS-BVA-01 - Invalid Status",
+                      "event": [
+                        {
+                          "listen": "test",
+                          "script": {
+                            "type": "text/javascript",
+                            "exec": [
+                              "pm.test(\"HTTP 400\", () => {",
+                              "  pm.response.to.have.status(400);",
+                              "});"
+                            ]
+                          }
+                        }
+                      ],
+                      "request": {
+                        "auth": {
+                          "type": "bearer",
+                          "bearer": [
+                            {
+                              "key": "token",
+                              "value": "{{studio_admin_token}}",
+                              "type": "string"
+                            }
+                          ]
+                        },
+                        "method": "PUT",
+                        "header": [],
+                        "body": {
+                          "mode": "raw",
+                          "raw": "{\n  \"status\": \"invalid_status\"\n}",
+                          "options": {
+                            "raw": {
+                              "language": "json"
+                            }
+                          }
+                        },
+                        "url": {
+                          "raw": "{{baseUrl}}/studio/studios/{{studioId}}/status",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "studio",
+                            "studios",
+                            "{{studioId}}",
+                            "status"
+                          ]
+                        }
+                      },
+                      "response": []
+                    },
+                    {
+                      "name": "STU-STATUS-BVA-02 - Studio Not Found",
+                      "event": [
+                        {
+                          "listen": "test",
+                          "script": {
+                            "type": "text/javascript",
+                            "exec": [
+                              "pm.test(\"HTTP 404\", () => {",
+                              "  pm.response.to.have.status(404);",
+                              "});"
+                            ]
+                          }
+                        }
+                      ],
+                      "request": {
+                        "auth": {
+                          "type": "bearer",
+                          "bearer": [
+                            {
+                              "key": "token",
+                              "value": "{{studio_admin_token}}",
+                              "type": "string"
+                            }
+                          ]
+                        },
+                        "method": "PUT",
+                        "header": [],
+                        "body": {
+                          "mode": "raw",
+                          "raw": "{\n  \"status\": \"available\"\n}",
+                          "options": {
+                            "raw": {
+                              "language": "json"
+                            }
+                          }
+                        },
+                        "url": {
+                          "raw": "{{baseUrl}}/studio/studios/999999/status",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "studio",
+                            "studios",
+                            "999999",
+                            "status"
+                          ]
+                        }
+                      },
+                      "response": []
+                    },
+                    {
+                      "name": "STU-STATUS-BVA-03 - Missing Status",
+                      "event": [
+                        {
+                          "listen": "test",
+                          "script": {
+                            "type": "text/javascript",
+                            "exec": [
+                              "pm.test(\"HTTP 400\", () => {",
+                              "  pm.response.to.have.status(400);",
+                              "});"
+                            ]
+                          }
+                        }
+                      ],
+                      "request": {
+                        "auth": {
+                          "type": "bearer",
+                          "bearer": [
+                            {
+                              "key": "token",
+                              "value": "{{studio_admin_token}}",
+                              "type": "string"
+                            }
+                          ]
+                        },
+                        "method": "PUT",
+                        "header": [],
+                        "body": {
+                          "mode": "raw",
+                          "raw": "{}",
+                          "options": {
+                            "raw": {
+                              "language": "json"
+                            }
+                          }
+                        },
+                        "url": {
+                          "raw": "{{baseUrl}}/studio/studios/{{studioId}}/status",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "studio",
+                            "studios",
+                            "{{studioId}}",
+                            "status"
+                          ]
+                        }
+                      },
+                      "response": []
+                    }
                   ]
                 }
-              },
-              "response": []
+              ]
             },
             {
-              "name": "Confirm Booking",
-              "event": [
+              "name": "Đặt lịch Studio",
+              "item": [
                 {
-                  "listen": "prerequest",
-                  "script": {
-                    "exec": [
-                      "const bookingId =",
-                      "  pm.environment.get(\"bookingId\") ||",
-                      "  pm.collectionVariables.get(\"bookingId\");",
-                      "",
-                      "if (!bookingId) {",
-                      "  throw new Error(\"Missing bookingId: run Create Booking first.\");",
-                      "}",
-                      "",
-                      "pm.environment.set(\"bookingId\", String(bookingId));"
-                    ],
-                    "type": "text/javascript",
-                    "packages": {},
-                    "requests": {}
-                  }
-                },
-                {
-                  "listen": "test",
-                  "script": {
-                    "exec": [
-                      "pm.test(\"HTTP 200\", () => pm.response.to.have.status(200));\r",
-                      "\r",
-                      "const json = pm.response.json();\r",
-                      "\r",
-                      "pm.test(\"Booking confirmed\", () => {\r",
-                      "  pm.expect(json.success).to.eql(true);\r",
-                      "});"
-                    ],
-                    "type": "text/javascript",
-                    "packages": {},
-                    "requests": {}
-                  }
-                }
-              ],
-              "request": {
-                "auth": {
-                  "type": "bearer",
-                  "bearer": [
+                  "name": "EP",
+                  "item": [
                     {
-                      "key": "token",
-                      "value": "{{studio_admin_token}}",
-                      "type": "string"
+                      "name": "STU-BOOK-EP-01 - Create Booking",
+                      "event": [
+                        {
+                          "listen": "test",
+                          "script": {
+                            "type": "text/javascript",
+                            "exec": [
+                              "pm.test(\"HTTP 201\", () => { pm.response.to.have.status(201); });",
+                              "const json = pm.response.json();",
+                              "pm.environment.set(\"bookingId\", json.data?.id || json.id);"
+                            ]
+                          }
+                        }
+                      ],
+                      "request": {
+                        "auth": {
+                          "type": "bearer",
+                          "bearer": [
+                            {
+                              "key": "token",
+                              "value": "{{artist_token}}",
+                              "type": "string"
+                            }
+                          ]
+                        },
+                        "method": "POST",
+                        "header": [],
+                        "body": {
+                          "mode": "raw",
+                          "raw": "{\n  \"studio_id\": \"{{studioId}}\",\n  \"order_id\": \"{{orderId}}\",\n  \"start_time\": \"{{studio_booking_start_time}}\",\n  \"end_time\": \"{{studio_booking_end_time}}\",\n  \"studioAdminId\": \"{{studio_admin_id}}\"\n}",
+                          "options": {
+                            "raw": {
+                              "language": "json"
+                            }
+                          }
+                        },
+                        "url": {
+                          "raw": "{{baseUrl}}/studio/bookings",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "studio",
+                            "bookings"
+                          ]
+                        }
+                      },
+                      "response": []
+                    },
+                    {
+                      "name": "STU-BOOK-EP-02 - Confirm Booking",
+                      "event": [
+                        {
+                          "listen": "test",
+                          "script": {
+                            "type": "text/javascript",
+                            "exec": [
+                              "pm.test(\"HTTP 200\", () => {",
+                              "  pm.response.to.have.status(200);",
+                              "});"
+                            ]
+                          }
+                        }
+                      ],
+                      "request": {
+                        "auth": {
+                          "type": "bearer",
+                          "bearer": [
+                            {
+                              "key": "token",
+                              "value": "{{studio_admin_token}}",
+                              "type": "string"
+                            }
+                          ]
+                        },
+                        "method": "POST",
+                        "header": [],
+                        "url": {
+                          "raw": "{{baseUrl}}/studio/bookings/{{bookingId}}/confirm",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "studio",
+                            "bookings",
+                            "{{bookingId}}",
+                            "confirm"
+                          ]
+                        }
+                      },
+                      "response": []
+                    },
+                    {
+                      "name": "STU-BOOK-EP-03 - Reject Booking",
+                      "event": [
+                        {
+                          "listen": "test",
+                          "script": {
+                            "type": "text/javascript",
+                            "exec": [
+                              "pm.test(\"HTTP 200\", () => {",
+                              "  pm.response.to.have.status(200);",
+                              "});"
+                            ]
+                          }
+                        }
+                      ],
+                      "request": {
+                        "auth": {
+                          "type": "bearer",
+                          "bearer": [
+                            {
+                              "key": "token",
+                              "value": "{{studio_admin_token}}",
+                              "type": "string"
+                            }
+                          ]
+                        },
+                        "method": "POST",
+                        "header": [],
+                        "url": {
+                          "raw": "{{baseUrl}}/studio/bookings/{{bookingId}}/reject",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "studio",
+                            "bookings",
+                            "{{bookingId}}",
+                            "reject"
+                          ]
+                        }
+                      },
+                      "response": []
+                    },
+                    {
+                      "name": "STU-BOOK-EP-04 - Cancel Booking",
+                      "event": [
+                        {
+                          "listen": "test",
+                          "script": {
+                            "type": "text/javascript",
+                            "exec": [
+                              "pm.test(\"HTTP 200\", () => {",
+                              "  pm.response.to.have.status(200);",
+                              "});"
+                            ]
+                          }
+                        }
+                      ],
+                      "request": {
+                        "auth": {
+                          "type": "bearer",
+                          "bearer": [
+                            {
+                              "key": "token",
+                              "value": "{{studio_admin_token}}",
+                              "type": "string"
+                            }
+                          ]
+                        },
+                        "method": "POST",
+                        "header": [],
+                        "url": {
+                          "raw": "{{baseUrl}}/studio/bookings/{{bookingId}}/cancel",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "studio",
+                            "bookings",
+                            "{{bookingId}}",
+                            "cancel"
+                          ]
+                        }
+                      },
+                      "response": []
                     }
                   ]
                 },
-                "method": "POST",
-                "header": [],
-                "url": {
-                  "raw": "{{baseUrl}}/studio/bookings/{{bookingId}}/confirm",
-                  "host": [
-                    "{{baseUrl}}"
-                  ],
-                  "path": [
-                    "studio",
-                    "bookings",
-                    "{{bookingId}}",
-                    "confirm"
+                {
+                  "name": "BVA",
+                  "item": [
+                    {
+                      "name": "STU-BOOK-BVA-01 - Missing Fields",
+                      "event": [
+                        {
+                          "listen": "test",
+                          "script": {
+                            "type": "text/javascript",
+                            "exec": [
+                              "pm.test(\"HTTP 400\", () => {",
+                              "  pm.response.to.have.status(400);",
+                              "});"
+                            ]
+                          }
+                        }
+                      ],
+                      "request": {
+                        "auth": {
+                          "type": "bearer",
+                          "bearer": [
+                            {
+                              "key": "token",
+                              "value": "{{artist_token}}",
+                              "type": "string"
+                            }
+                          ]
+                        },
+                        "method": "POST",
+                        "header": [],
+                        "body": {
+                          "mode": "raw",
+                          "raw": "{}",
+                          "options": {
+                            "raw": {
+                              "language": "json"
+                            }
+                          }
+                        },
+                        "url": {
+                          "raw": "{{baseUrl}}/studio/bookings",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "studio",
+                            "bookings"
+                          ]
+                        }
+                      },
+                      "response": []
+                    },
+                    {
+                      "name": "STU-BOOK-BVA-02 - Past Time",
+                      "event": [
+                        {
+                          "listen": "test",
+                          "script": {
+                            "type": "text/javascript",
+                            "exec": [
+                              "pm.test(\"HTTP 400\", () => {",
+                              "  pm.response.to.have.status(400);",
+                              "});"
+                            ]
+                          }
+                        }
+                      ],
+                      "request": {
+                        "auth": {
+                          "type": "bearer",
+                          "bearer": [
+                            {
+                              "key": "token",
+                              "value": "{{artist_token}}",
+                              "type": "string"
+                            }
+                          ]
+                        },
+                        "method": "POST",
+                        "header": [],
+                        "body": {
+                          "mode": "raw",
+                          "raw": "{\n  \"studio_id\": \"{{studioId}}\",\n  \"order_id\": \"{{orderId}}\",\n  \"start_time\": \"2020-01-01T00:00:00Z\",\n  \"end_time\": \"2020-01-01T02:00:00Z\"\n}",
+                          "options": {
+                            "raw": {
+                              "language": "json"
+                            }
+                          }
+                        },
+                        "url": {
+                          "raw": "{{baseUrl}}/studio/bookings",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "studio",
+                            "bookings"
+                          ]
+                        }
+                      },
+                      "response": []
+                    },
+                    {
+                      "name": "STU-BOOK-BVA-03 - Studio Not Found",
+                      "event": [
+                        {
+                          "listen": "test",
+                          "script": {
+                            "type": "text/javascript",
+                            "exec": [
+                              "pm.test(\"HTTP 404\", () => {",
+                              "  pm.response.to.have.status(404);",
+                              "});"
+                            ]
+                          }
+                        }
+                      ],
+                      "request": {
+                        "auth": {
+                          "type": "bearer",
+                          "bearer": [
+                            {
+                              "key": "token",
+                              "value": "{{artist_token}}",
+                              "type": "string"
+                            }
+                          ]
+                        },
+                        "method": "POST",
+                        "header": [],
+                        "body": {
+                          "mode": "raw",
+                          "raw": "{\n  \"studio_id\": 999999,\n  \"order_id\": \"{{orderId}}\",\n  \"start_time\": \"{{studio_booking_start_time}}\",\n  \"end_time\": \"{{studio_booking_end_time}}\"\n}",
+                          "options": {
+                            "raw": {
+                              "language": "json"
+                            }
+                          }
+                        },
+                        "url": {
+                          "raw": "{{baseUrl}}/studio/bookings",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "studio",
+                            "bookings"
+                          ]
+                        }
+                      },
+                      "response": []
+                    }
+                  ]
+                },
+                {
+                  "name": "Negative",
+                  "item": [
+                    {
+                      "name": "STU-BOOK-NEG-01 - Confirm Booking Not Found",
+                      "event": [
+                        {
+                          "listen": "test",
+                          "script": {
+                            "type": "text/javascript",
+                            "exec": [
+                              "pm.test(\"HTTP 404\", () => {",
+                              "  pm.response.to.have.status(404);",
+                              "});"
+                            ]
+                          }
+                        }
+                      ],
+                      "request": {
+                        "auth": {
+                          "type": "bearer",
+                          "bearer": [
+                            {
+                              "key": "token",
+                              "value": "{{studio_admin_token}}",
+                              "type": "string"
+                            }
+                          ]
+                        },
+                        "method": "POST",
+                        "header": [],
+                        "url": {
+                          "raw": "{{baseUrl}}/studio/bookings/999999/confirm",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "studio",
+                            "bookings",
+                            "999999",
+                            "confirm"
+                          ]
+                        }
+                      },
+                      "response": []
+                    },
+                    {
+                      "name": "STU-BOOK-NEG-02 - Reject Booking Not Found",
+                      "event": [
+                        {
+                          "listen": "test",
+                          "script": {
+                            "type": "text/javascript",
+                            "exec": [
+                              "pm.test(\"HTTP 404\", () => {",
+                              "  pm.response.to.have.status(404);",
+                              "});"
+                            ]
+                          }
+                        }
+                      ],
+                      "request": {
+                        "auth": {
+                          "type": "bearer",
+                          "bearer": [
+                            {
+                              "key": "token",
+                              "value": "{{studio_admin_token}}",
+                              "type": "string"
+                            }
+                          ]
+                        },
+                        "method": "POST",
+                        "header": [],
+                        "url": {
+                          "raw": "{{baseUrl}}/studio/bookings/999999/reject",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "studio",
+                            "bookings",
+                            "999999",
+                            "reject"
+                          ]
+                        }
+                      },
+                      "response": []
+                    },
+                    {
+                      "name": "STU-BOOK-NEG-03 - Cancel Booking Not Found",
+                      "event": [
+                        {
+                          "listen": "test",
+                          "script": {
+                            "type": "text/javascript",
+                            "exec": [
+                              "pm.test(\"HTTP 404\", () => {",
+                              "  pm.response.to.have.status(404);",
+                              "});"
+                            ]
+                          }
+                        }
+                      ],
+                      "request": {
+                        "auth": {
+                          "type": "bearer",
+                          "bearer": [
+                            {
+                              "key": "token",
+                              "value": "{{studio_admin_token}}",
+                              "type": "string"
+                            }
+                          ]
+                        },
+                        "method": "POST",
+                        "header": [],
+                        "url": {
+                          "raw": "{{baseUrl}}/studio/bookings/999999/cancel",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "studio",
+                            "bookings",
+                            "999999",
+                            "cancel"
+                          ]
+                        }
+                      },
+                      "response": []
+                    },
+                    {
+                      "name": "STU-BOOK-NEG-04 - Create Booking No Token",
+                      "event": [
+                        {
+                          "listen": "test",
+                          "script": {
+                            "type": "text/javascript",
+                            "exec": [
+                              "pm.test(\"HTTP 401\", () => {",
+                              "  pm.response.to.have.status(401);",
+                              "});"
+                            ]
+                          }
+                        }
+                      ],
+                      "request": {
+                        "method": "POST",
+                        "header": [],
+                        "body": {
+                          "mode": "raw",
+                          "raw": "{\n  \"studio_id\": \"{{studioId}}\",\n  \"order_id\": \"{{orderId}}\",\n  \"start_time\": \"{{studio_booking_start_time}}\",\n  \"end_time\": \"{{studio_booking_end_time}}\"\n}",
+                          "options": {
+                            "raw": {
+                              "language": "json"
+                            }
+                          }
+                        },
+                        "url": {
+                          "raw": "{{baseUrl}}/studio/bookings",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "studio",
+                            "bookings"
+                          ]
+                        }
+                      },
+                      "response": []
+                    },
+                    {
+                      "name": "STU-BOOK-NEG-05 - Create Booking Invalid Token",
+                      "event": [
+                        {
+                          "listen": "test",
+                          "script": {
+                            "type": "text/javascript",
+                            "exec": [
+                              "pm.test(\"HTTP 401\", () => {",
+                              "  pm.response.to.have.status(401);",
+                              "});"
+                            ]
+                          }
+                        }
+                      ],
+                      "request": {
+                        "auth": {
+                          "type": "bearer",
+                          "bearer": [
+                            {
+                              "key": "token",
+                              "value": "{{invalid_token}}",
+                              "type": "string"
+                            }
+                          ]
+                        },
+                        "method": "POST",
+                        "header": [],
+                        "body": {
+                          "mode": "raw",
+                          "raw": "{\n  \"studio_id\": \"{{studioId}}\",\n  \"order_id\": \"{{orderId}}\",\n  \"start_time\": \"{{studio_booking_start_time}}\",\n  \"end_time\": \"{{studio_booking_end_time}}\"\n}",
+                          "options": {
+                            "raw": {
+                              "language": "json"
+                            }
+                          }
+                        },
+                        "url": {
+                          "raw": "{{baseUrl}}/studio/bookings",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "studio",
+                            "bookings"
+                          ]
+                        }
+                      },
+                      "response": []
+                    }
                   ]
                 }
-              },
-              "response": []
+              ]
             },
             {
-              "name": "Reject Booking",
-              "event": [
+              "name": "FlowTests - Studio",
+              "item": [
                 {
-                  "listen": "test",
-                  "script": {
-                    "exec": [
-                      "pm.test(\"HTTP 200\", () => pm.response.to.have.status(200));\r",
-                      "\r",
-                      "const json = pm.response.json();\r",
-                      "\r",
-                      "pm.test(\"Booking rejected\", () => {\r",
-                      "  pm.expect(json.success).to.eql(true);\r",
-                      "});"
-                    ],
-                    "type": "text/javascript",
-                    "packages": {},
-                    "requests": {}
-                  }
-                },
-                {
-                  "listen": "prerequest",
-                  "script": {
-                    "exec": [
-                      "const bookingId =\r",
-                      "  pm.environment.get(\"bookingId\") ||\r",
-                      "  pm.collectionVariables.get(\"bookingId\");\r",
-                      "\r",
-                      "if (!bookingId) {\r",
-                      "  throw new Error(\"Missing bookingId: run Create Booking first.\");\r",
-                      "}\r",
-                      "\r",
-                      "pm.environment.set(\"bookingId\", String(bookingId));"
-                    ],
-                    "type": "text/javascript",
-                    "packages": {},
-                    "requests": {}
-                  }
-                }
-              ],
-              "request": {
-                "auth": {
-                  "type": "bearer",
-                  "bearer": [
+                  "name": "STU-FLOW-01 - Flow Create Confirm Booking",
+                  "event": [
                     {
-                      "key": "token",
-                      "value": "{{studio_admin_token}}",
-                      "type": "string"
+                      "listen": "test",
+                      "script": {
+                        "type": "text/javascript",
+                        "exec": [
+                          "pm.test(\"HTTP 201\", () => {",
+                          "  pm.response.to.have.status(201);",
+                          "});"
+                        ]
+                      }
                     }
-                  ]
-                },
-                "method": "POST",
-                "header": [],
-                "url": {
-                  "raw": "{{baseUrl}}/studio/bookings/{{bookingId}}/reject",
-                  "host": [
-                    "{{baseUrl}}"
                   ],
-                  "path": [
-                    "studio",
-                    "bookings",
-                    "{{bookingId}}",
-                    "reject"
-                  ]
-                }
-              },
-              "response": []
-            },
-            {
-              "name": "Cancel Booking",
-              "event": [
-                {
-                  "listen": "test",
-                  "script": {
-                    "exec": [
-                      "pm.test(\"HTTP 200\", () => pm.response.to.have.status(200));\r",
-                      "\r",
-                      "const json = pm.response.json();\r",
-                      "\r",
-                      "pm.test(\"Booking cancelled\", () => {\r",
-                      "  pm.expect(json.success).to.eql(true);\r",
-                      "});"
-                    ],
-                    "type": "text/javascript",
-                    "packages": {},
-                    "requests": {}
-                  }
+                  "request": {
+                    "auth": {
+                      "type": "bearer",
+                      "bearer": [
+                        {
+                          "key": "token",
+                          "value": "{{artist_token}}",
+                          "type": "string"
+                        }
+                      ]
+                    },
+                    "method": "POST",
+                    "header": [],
+                    "body": {
+                      "mode": "raw",
+                      "raw": "{\r\n  \"studio_id\": {{studioId}},\r\n  \"order_id\": {{orderId}},\r\n  \"start_time\": \"{{studio_booking_start_time}}\",\r\n  \"end_time\": \"{{studio_booking_end_time}}\",\r\n  \"studioAdminId\": {{studio_admin_id}}\r\n}",
+                      "options": {
+                        "raw": {
+                          "language": "json"
+                        }
+                      }
+                    },
+                    "url": {
+                      "raw": "{{baseUrl}}/studio/bookings",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "studio",
+                        "bookings"
+                      ]
+                    }
+                  },
+                  "response": []
                 },
                 {
-                  "listen": "prerequest",
-                  "script": {
-                    "exec": [
-                      "const bookingId =\r",
-                      "  pm.environment.get(\"bookingId\") ||\r",
-                      "  pm.collectionVariables.get(\"bookingId\");\r",
-                      "\r",
-                      "if (!bookingId) {\r",
-                      "  throw new Error(\"Missing bookingId: run Create Booking first.\");\r",
-                      "}\r",
-                      "\r",
-                      "pm.environment.set(\"bookingId\", String(bookingId));"
-                    ],
-                    "type": "text/javascript",
-                    "packages": {},
-                    "requests": {}
-                  }
-                }
-              ],
-              "request": {
-                "auth": {
-                  "type": "bearer",
-                  "bearer": [
+                  "name": "STU-FLOW-02 - Flow Create Reject Booking",
+                  "event": [
                     {
-                      "key": "token",
-                      "value": "{{artist_token}}",
-                      "type": "string"
+                      "listen": "test",
+                      "script": {
+                        "type": "text/javascript",
+                        "exec": [
+                          "pm.test(\"HTTP 201\", () => {",
+                          "  pm.response.to.have.status(201);",
+                          "});"
+                        ]
+                      }
                     }
-                  ]
-                },
-                "method": "POST",
-                "header": [],
-                "url": {
-                  "raw": "{{baseUrl}}/studio/bookings/{{bookingId}}/cancel",
-                  "host": [
-                    "{{baseUrl}}"
                   ],
-                  "path": [
-                    "studio",
-                    "bookings",
-                    "{{bookingId}}",
-                    "cancel"
-                  ]
+                  "request": {
+                    "auth": {
+                      "type": "bearer",
+                      "bearer": [
+                        {
+                          "key": "token",
+                          "value": "{{artist_token}}",
+                          "type": "string"
+                        }
+                      ]
+                    },
+                    "method": "POST",
+                    "header": [],
+                    "body": {
+                      "mode": "raw",
+                      "raw": "{\r\n  \"studio_id\": {{studioId}},\r\n  \"order_id\": {{orderId}},\r\n  \"start_time\": \"{{studio_booking_start_time}}\",\r\n  \"end_time\": \"{{studio_booking_end_time}}\",\r\n  \"studioAdminId\": {{studio_admin_id}}\r\n}",
+                      "options": {
+                        "raw": {
+                          "language": "json"
+                        }
+                      }
+                    },
+                    "url": {
+                      "raw": "{{baseUrl}}/studio/bookings",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "studio",
+                        "bookings"
+                      ]
+                    }
+                  },
+                  "response": []
+                },
+                {
+                  "name": "STU-FLOW-03 - Flow Create Cancel Booking",
+                  "event": [
+                    {
+                      "listen": "test",
+                      "script": {
+                        "type": "text/javascript",
+                        "exec": [
+                          "pm.test(\"HTTP 201\", () => {",
+                          "  pm.response.to.have.status(201);",
+                          "});"
+                        ]
+                      }
+                    }
+                  ],
+                  "request": {
+                    "auth": {
+                      "type": "bearer",
+                      "bearer": [
+                        {
+                          "key": "token",
+                          "value": "{{artist_token}}",
+                          "type": "string"
+                        }
+                      ]
+                    },
+                    "method": "POST",
+                    "header": [],
+                    "body": {
+                      "mode": "raw",
+                      "raw": "{\r\n  \"studio_id\": {{studioId}},\r\n  \"order_id\": {{orderId}},\r\n  \"start_time\": \"{{studio_booking_start_time}}\",\r\n  \"end_time\": \"{{studio_booking_end_time}}\",\r\n  \"studioAdminId\": {{studio_admin_id}}\r\n}",
+                      "options": {
+                        "raw": {
+                          "language": "json"
+                        }
+                      }
+                    },
+                    "url": {
+                      "raw": "{{baseUrl}}/studio/bookings",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "studio",
+                        "bookings"
+                      ]
+                    }
+                  },
+                  "response": []
                 }
-              },
-              "response": []
+              ]
             }
           ],
           "auth": {
