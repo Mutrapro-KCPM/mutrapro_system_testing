@@ -14619,153 +14619,399 @@
               "item": [
                 {
                   "name": "STU-FLOW-01 - Flow Create Confirm Booking",
-                  "event": [
+                  "item": [
                     {
-                      "listen": "test",
-                      "script": {
-                        "type": "text/javascript",
-                        "exec": [
-                          "pm.test(\"HTTP 201\", () => {",
-                          "  pm.response.to.have.status(201);",
-                          "});"
-                        ]
-                      }
-                    }
-                  ],
-                  "request": {
-                    "auth": {
-                      "type": "bearer",
-                      "bearer": [
+                      "name": "Prepare Booking Time",
+                      "event": [
                         {
-                          "key": "token",
-                          "value": "{{artist_token}}",
-                          "type": "string"
+                          "listen": "test",
+                          "script": {
+                            "type": "text/javascript",
+                            "exec": [
+                              "pm.test(\"HTTP 200\", () => { pm.response.to.have.status(200); });",
+                              "let offset = parseInt(pm.environment.get(\"time_offset\")) || 1;",
+                              "const d1 = new Date(); ",
+                              "d1.setDate(d1.getDate() + offset); ",
+                              "const d2 = new Date(d1); ",
+                              "d2.setHours(d2.getHours() + 2);",
+                              "pm.environment.set(\"studio_booking_start_time\", d1.toISOString());",
+                              "pm.environment.set(\"studio_booking_end_time\", d2.toISOString());",
+                              "pm.environment.set(\"time_offset\", offset + 1);"
+                            ]
+                          }
                         }
-                      ]
-                    },
-                    "method": "POST",
-                    "header": [],
-                    "body": {
-                      "mode": "raw",
-                      "raw": "{\r\n  \"studio_id\": {{studioId}},\r\n  \"order_id\": {{orderId}},\r\n  \"start_time\": \"{{studio_booking_start_time}}\",\r\n  \"end_time\": \"{{studio_booking_end_time}}\",\r\n  \"studioAdminId\": {{studio_admin_id}}\r\n}",
-                      "options": {
-                        "raw": {
-                          "language": "json"
-                        }
-                      }
-                    },
-                    "url": {
-                      "raw": "{{baseUrl}}/studio/bookings",
-                      "host": [
-                        "{{baseUrl}}"
                       ],
-                      "path": [
-                        "studio",
-                        "bookings"
-                      ]
+                      "request": {
+                        "method": "GET",
+                        "header": [],
+                        "url": {
+                          "raw": "{{baseUrl}}/health",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "health"
+                          ]
+                        }
+                      },
+                      "response": []
+                    },
+                    {
+                      "name": "Create Booking",
+                      "event": [
+                        {
+                          "listen": "test",
+                          "script": {
+                            "type": "text/javascript",
+                            "exec": [
+                              "pm.test(\"HTTP 201\", () => { pm.response.to.have.status(201); });",
+                              "const json = pm.response.json();",
+                              "pm.environment.set(\"bookingId\", json.data?.id || json.id);"
+                            ]
+                          }
+                        }
+                      ],
+                      "request": {
+                        "auth": {
+                          "type": "bearer",
+                          "bearer": [
+                            {
+                              "key": "token",
+                              "value": "{{artist_token}}",
+                              "type": "string"
+                            }
+                          ]
+                        },
+                        "method": "POST",
+                        "header": [],
+                        "body": {
+                          "mode": "raw",
+                          "raw": "{\n  \"studio_id\": \"{{studioId}}\",\n  \"order_id\": \"{{orderId}}\",\n  \"start_time\": \"{{studio_booking_start_time}}\",\n  \"end_time\": \"{{studio_booking_end_time}}\",\n  \"studioAdminId\": \"{{studio_admin_id}}\"\n}",
+                          "options": {
+                            "raw": {
+                              "language": "json"
+                            }
+                          }
+                        },
+                        "url": {
+                          "raw": "{{baseUrl}}/studio/bookings",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "studio",
+                            "bookings"
+                          ]
+                        }
+                      },
+                      "response": []
+                    },
+                    {
+                      "name": "Confirm Booking",
+                      "event": [
+                        {
+                          "listen": "test",
+                          "script": {
+                            "type": "text/javascript",
+                            "exec": [
+                              "pm.test(\"HTTP 200\", () => { pm.response.to.have.status(200); });"
+                            ]
+                          }
+                        }
+                      ],
+                      "request": {
+                        "auth": {
+                          "type": "bearer",
+                          "bearer": [
+                            {
+                              "key": "token",
+                              "value": "{{studio_admin_token}}",
+                              "type": "string"
+                            }
+                          ]
+                        },
+                        "method": "POST",
+                        "header": [],
+                        "url": {
+                          "raw": "{{baseUrl}}/studio/bookings/{{bookingId}}/confirm",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "studio",
+                            "bookings",
+                            "{{bookingId}}",
+                            "confirm"
+                          ]
+                        }
+                      },
+                      "response": []
                     }
-                  },
-                  "response": []
+                  ]
                 },
                 {
                   "name": "STU-FLOW-02 - Flow Create Reject Booking",
-                  "event": [
+                  "item": [
                     {
-                      "listen": "test",
-                      "script": {
-                        "type": "text/javascript",
-                        "exec": [
-                          "pm.test(\"HTTP 201\", () => {",
-                          "  pm.response.to.have.status(201);",
-                          "});"
-                        ]
-                      }
-                    }
-                  ],
-                  "request": {
-                    "auth": {
-                      "type": "bearer",
-                      "bearer": [
+                      "name": "Prepare Booking Time",
+                      "event": [
                         {
-                          "key": "token",
-                          "value": "{{artist_token}}",
-                          "type": "string"
+                          "listen": "test",
+                          "script": {
+                            "type": "text/javascript",
+                            "exec": [
+                              "pm.test(\"HTTP 200\", () => { pm.response.to.have.status(200); });",
+                              "let offset = parseInt(pm.environment.get(\"time_offset\")) || 1;",
+                              "const d1 = new Date(); ",
+                              "d1.setDate(d1.getDate() + offset); ",
+                              "const d2 = new Date(d1); ",
+                              "d2.setHours(d2.getHours() + 2);",
+                              "pm.environment.set(\"studio_booking_start_time\", d1.toISOString());",
+                              "pm.environment.set(\"studio_booking_end_time\", d2.toISOString());",
+                              "pm.environment.set(\"time_offset\", offset + 1);"
+                            ]
+                          }
                         }
-                      ]
-                    },
-                    "method": "POST",
-                    "header": [],
-                    "body": {
-                      "mode": "raw",
-                      "raw": "{\r\n  \"studio_id\": {{studioId}},\r\n  \"order_id\": {{orderId}},\r\n  \"start_time\": \"{{studio_booking_start_time}}\",\r\n  \"end_time\": \"{{studio_booking_end_time}}\",\r\n  \"studioAdminId\": {{studio_admin_id}}\r\n}",
-                      "options": {
-                        "raw": {
-                          "language": "json"
-                        }
-                      }
-                    },
-                    "url": {
-                      "raw": "{{baseUrl}}/studio/bookings",
-                      "host": [
-                        "{{baseUrl}}"
                       ],
-                      "path": [
-                        "studio",
-                        "bookings"
-                      ]
+                      "request": {
+                        "method": "GET",
+                        "header": [],
+                        "url": {
+                          "raw": "{{baseUrl}}/health",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "health"
+                          ]
+                        }
+                      },
+                      "response": []
+                    },
+                    {
+                      "name": "Create Booking",
+                      "event": [
+                        {
+                          "listen": "test",
+                          "script": {
+                            "type": "text/javascript",
+                            "exec": [
+                              "pm.test(\"HTTP 201\", () => { pm.response.to.have.status(201); });",
+                              "const json = pm.response.json();",
+                              "pm.environment.set(\"bookingId\", json.data?.id || json.id);"
+                            ]
+                          }
+                        }
+                      ],
+                      "request": {
+                        "auth": {
+                          "type": "bearer",
+                          "bearer": [
+                            {
+                              "key": "token",
+                              "value": "{{artist_token}}",
+                              "type": "string"
+                            }
+                          ]
+                        },
+                        "method": "POST",
+                        "header": [],
+                        "body": {
+                          "mode": "raw",
+                          "raw": "{\n  \"studio_id\": \"{{studioId}}\",\n  \"order_id\": \"{{orderId}}\",\n  \"start_time\": \"{{studio_booking_start_time}}\",\n  \"end_time\": \"{{studio_booking_end_time}}\",\n  \"studioAdminId\": \"{{studio_admin_id}}\"\n}",
+                          "options": {
+                            "raw": {
+                              "language": "json"
+                            }
+                          }
+                        },
+                        "url": {
+                          "raw": "{{baseUrl}}/studio/bookings",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "studio",
+                            "bookings"
+                          ]
+                        }
+                      },
+                      "response": []
+                    },
+                    {
+                      "name": "Reject Booking",
+                      "event": [
+                        {
+                          "listen": "test",
+                          "script": {
+                            "type": "text/javascript",
+                            "exec": [
+                              "pm.test(\"HTTP 200\", () => { pm.response.to.have.status(200); });"
+                            ]
+                          }
+                        }
+                      ],
+                      "request": {
+                        "auth": {
+                          "type": "bearer",
+                          "bearer": [
+                            {
+                              "key": "token",
+                              "value": "{{studio_admin_token}}",
+                              "type": "string"
+                            }
+                          ]
+                        },
+                        "method": "POST",
+                        "header": [],
+                        "url": {
+                          "raw": "{{baseUrl}}/studio/bookings/{{bookingId}}/reject",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "studio",
+                            "bookings",
+                            "{{bookingId}}",
+                            "reject"
+                          ]
+                        }
+                      },
+                      "response": []
                     }
-                  },
-                  "response": []
+                  ]
                 },
                 {
                   "name": "STU-FLOW-03 - Flow Create Cancel Booking",
-                  "event": [
+                  "item": [
                     {
-                      "listen": "test",
-                      "script": {
-                        "type": "text/javascript",
-                        "exec": [
-                          "pm.test(\"HTTP 201\", () => {",
-                          "  pm.response.to.have.status(201);",
-                          "});"
-                        ]
-                      }
-                    }
-                  ],
-                  "request": {
-                    "auth": {
-                      "type": "bearer",
-                      "bearer": [
+                      "name": "Prepare Booking Time",
+                      "event": [
                         {
-                          "key": "token",
-                          "value": "{{artist_token}}",
-                          "type": "string"
+                          "listen": "test",
+                          "script": {
+                            "type": "text/javascript",
+                            "exec": [
+                              "pm.test(\"HTTP 200\", () => { pm.response.to.have.status(200); });",
+                              "let offset = parseInt(pm.environment.get(\"time_offset\")) || 1;",
+                              "const d1 = new Date(); ",
+                              "d1.setDate(d1.getDate() + offset); ",
+                              "const d2 = new Date(d1); ",
+                              "d2.setHours(d2.getHours() + 2);",
+                              "pm.environment.set(\"studio_booking_start_time\", d1.toISOString());",
+                              "pm.environment.set(\"studio_booking_end_time\", d2.toISOString());",
+                              "pm.environment.set(\"time_offset\", offset + 1);"
+                            ]
+                          }
                         }
-                      ]
-                    },
-                    "method": "POST",
-                    "header": [],
-                    "body": {
-                      "mode": "raw",
-                      "raw": "{\r\n  \"studio_id\": {{studioId}},\r\n  \"order_id\": {{orderId}},\r\n  \"start_time\": \"{{studio_booking_start_time}}\",\r\n  \"end_time\": \"{{studio_booking_end_time}}\",\r\n  \"studioAdminId\": {{studio_admin_id}}\r\n}",
-                      "options": {
-                        "raw": {
-                          "language": "json"
-                        }
-                      }
-                    },
-                    "url": {
-                      "raw": "{{baseUrl}}/studio/bookings",
-                      "host": [
-                        "{{baseUrl}}"
                       ],
-                      "path": [
-                        "studio",
-                        "bookings"
-                      ]
+                      "request": {
+                        "method": "GET",
+                        "header": [],
+                        "url": {
+                          "raw": "{{baseUrl}}/health",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "health"
+                          ]
+                        }
+                      },
+                      "response": []
+                    },
+                    {
+                      "name": "Create Booking",
+                      "event": [
+                        {
+                          "listen": "test",
+                          "script": {
+                            "type": "text/javascript",
+                            "exec": [
+                              "pm.test(\"HTTP 201\", () => { pm.response.to.have.status(201); });",
+                              "const json = pm.response.json();",
+                              "pm.environment.set(\"bookingId\", json.data?.id || json.id);"
+                            ]
+                          }
+                        }
+                      ],
+                      "request": {
+                        "auth": {
+                          "type": "bearer",
+                          "bearer": [
+                            {
+                              "key": "token",
+                              "value": "{{artist_token}}",
+                              "type": "string"
+                            }
+                          ]
+                        },
+                        "method": "POST",
+                        "header": [],
+                        "body": {
+                          "mode": "raw",
+                          "raw": "{\n  \"studio_id\": \"{{studioId}}\",\n  \"order_id\": \"{{orderId}}\",\n  \"start_time\": \"{{studio_booking_start_time}}\",\n  \"end_time\": \"{{studio_booking_end_time}}\",\n  \"studioAdminId\": \"{{studio_admin_id}}\"\n}",
+                          "options": {
+                            "raw": {
+                              "language": "json"
+                            }
+                          }
+                        },
+                        "url": {
+                          "raw": "{{baseUrl}}/studio/bookings",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "studio",
+                            "bookings"
+                          ]
+                        }
+                      },
+                      "response": []
+                    },
+                    {
+                      "name": "Cancel Booking",
+                      "event": [
+                        {
+                          "listen": "test",
+                          "script": {
+                            "type": "text/javascript",
+                            "exec": [
+                              "pm.test(\"HTTP 200\", () => { pm.response.to.have.status(200); });"
+                            ]
+                          }
+                        }
+                      ],
+                      "request": {
+                        "auth": {
+                          "type": "bearer",
+                          "bearer": [
+                            {
+                              "key": "token",
+                              "value": "{{studio_admin_token}}",
+                              "type": "string"
+                            }
+                          ]
+                        },
+                        "method": "POST",
+                        "header": [],
+                        "url": {
+                          "raw": "{{baseUrl}}/studio/bookings/{{bookingId}}/cancel",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "studio",
+                            "bookings",
+                            "{{bookingId}}",
+                            "cancel"
+                          ]
+                        }
+                      },
+                      "response": []
                     }
-                  },
-                  "response": []
+                  ]
                 }
               ]
             }
