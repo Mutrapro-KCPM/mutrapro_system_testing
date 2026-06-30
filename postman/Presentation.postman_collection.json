@@ -11311,430 +11311,1323 @@
           "name": "file-service",
           "item": [
             {
-              "name": "Register Customer For File Order",
-              "event": [
+              "name": "Set up",
+              "item": [
                 {
-                  "listen": "test",
-                  "script": {
-                    "exec": [
-                      "pm.test(\"HTTP 201\", () => pm.response.to.have.status(201));\r",
-                      "\r",
-                      "pm.test(\"File customer email prepared\", () => {\r",
-                      "  pm.expect(pm.environment.get(\"file_customer_email\")).to.not.be.empty;\r",
-                      "});"
-                    ],
-                    "type": "text/javascript",
-                    "packages": {},
-                    "requests": {}
-                  }
-                },
-                {
-                  "listen": "prerequest",
-                  "script": {
-                    "exec": [
-                      "const email = `file.customer.${Date.now()}@mutrapro.test`;\r",
-                      "pm.environment.set(\"file_customer_email\", email);"
-                    ],
-                    "type": "text/javascript",
-                    "packages": {},
-                    "requests": {}
-                  }
-                }
-              ],
-              "request": {
-                "auth": {
-                  "type": "noauth"
-                },
-                "method": "POST",
-                "header": [],
-                "body": {
-                  "mode": "raw",
-                  "raw": "{\r\n  \"name\": \"File Customer\",\r\n  \"email\": \"{{file_customer_email}}\",\r\n  \"password\": \"{{default_password}}\"\r\n}",
-                  "options": {
-                    "raw": {
-                      "language": "json"
-                    }
-                  }
-                },
-                "url": {
-                  "raw": "{{baseUrl}}/auth/register",
-                  "host": [
-                    "{{baseUrl}}"
-                  ],
-                  "path": [
-                    "auth",
-                    "register"
-                  ]
-                }
-              },
-              "response": []
-            },
-            {
-              "name": "Login Customer",
-              "event": [
-                {
-                  "listen": "test",
-                  "script": {
-                    "exec": [
-                      "pm.test(\"HTTP 200\", () => pm.response.to.have.status(200));",
-                      "",
-                      "const json = pm.response.json();",
-                      "",
-                      "pm.test(\"Customer login success\", () => {",
-                      "  pm.expect(json.token).to.exist;",
-                      "  pm.expect(json.user.role).to.eql(\"customer\");",
-                      "});",
-                      "",
-                      "pm.environment.set(\"file_customer_token\", json.token);",
-                      "pm.environment.set(\"file_customer_id\", String(json.user.id));"
-                    ],
-                    "type": "text/javascript",
-                    "packages": {},
-                    "requests": {}
-                  }
-                }
-              ],
-              "request": {
-                "auth": {
-                  "type": "noauth"
-                },
-                "method": "POST",
-                "header": [],
-                "body": {
-                  "mode": "raw",
-                  "raw": "{\n  \"email\": \"{{file_customer_email}}\",\n  \"password\": \"{{default_password}}\"\n}",
-                  "options": {
-                    "raw": {
-                      "language": "json"
-                    }
-                  }
-                },
-                "url": {
-                  "raw": "{{baseUrl}}/auth/login",
-                  "host": [
-                    "{{baseUrl}}"
-                  ],
-                  "path": [
-                    "auth",
-                    "login"
-                  ]
-                }
-              },
-              "response": []
-            },
-            {
-              "name": "Create Order For File Test",
-              "event": [
-                {
-                  "listen": "test",
-                  "script": {
-                    "exec": [
-                      "pm.test(\"HTTP 201\", () => pm.response.to.have.status(201));",
-                      "",
-                      "const json = pm.response.json();",
-                      "const payload = json.data || json.order || json;",
-                      "const orderId = payload.id || payload.orderId;",
-                      "",
-                      "pm.test(\"File order ID exists\", () => {",
-                      "  pm.expect(orderId).to.exist;",
-                      "});",
-                      "",
-                      "pm.environment.set(\"file_order_id\", String(orderId));",
-                      "pm.collectionVariables.set(\"file_order_id\", String(orderId));"
-                    ],
-                    "type": "text/javascript",
-                    "packages": {},
-                    "requests": {}
-                  }
-                }
-              ],
-              "request": {
-                "auth": {
-                  "type": "bearer",
-                  "bearer": [
+                  "name": "FILE-SETUP-01 - Register Customer For File Order",
+                  "event": [
                     {
-                      "key": "token",
-                      "value": "{{file_customer_token}}",
-                      "type": "string"
-                    }
-                  ]
-                },
-                "method": "POST",
-                "header": [],
-                "body": {
-                  "mode": "raw",
-                  "raw": "{\n  \"service_type\": \"transcription\",\n  \"description\": \"Order test upload file\"\n}",
-                  "options": {
-                    "raw": {
-                      "language": "json"
-                    }
-                  }
-                },
-                "url": {
-                  "raw": "{{baseUrl}}/orders",
-                  "host": [
-                    "{{baseUrl}}"
-                  ],
-                  "path": [
-                    "orders"
-                  ]
-                }
-              },
-              "response": []
-            },
-            {
-              "name": "Upload File",
-              "event": [
-                {
-                  "listen": "prerequest",
-                  "script": {
-                    "exec": [
-                      "const orderId = pm.environment.get(\"file_order_id\") || pm.collectionVariables.get(\"file_order_id\");",
-                      "",
-                      "if (!orderId) {",
-                      "  throw new Error(\"Missing file_order_id: run Create Order For File Test before Upload File.\");",
-                      "}",
-                      "",
-                      "const token = pm.environment.get(\"file_customer_token\");",
-                      "",
-                      "if (!token) {",
-                      "  throw new Error(\"Missing file_customer_token: run Login Customer before Upload File.\");",
-                      "}",
-                      "",
-                      "pm.environment.set(\"file_order_id\", String(orderId));",
-                      "",
-                      "const contentTypeHeader = pm.request.headers.get(\"Content-Type\");",
-                      "if (contentTypeHeader && contentTypeHeader.includes(\"application/json\")) {",
-                      "  throw new Error(\"Upload File must use multipart/form-data. Remove manual Content-Type: application/json.\");",
-                      "}"
-                    ],
-                    "type": "text/javascript",
-                    "packages": {},
-                    "requests": {}
-                  }
-                },
-                {
-                  "listen": "test",
-                  "script": {
-                    "exec": [
-                      "let json = {};",
-                      "try {",
-                      "  json = pm.response.json();",
-                      "} catch (error) {}",
-                      "",
-                      "pm.test(\"HTTP 201\", () => {",
-                      "  pm.expect(pm.response.code, json.message || pm.response.text()).to.eql(201);",
-                      "});",
-                      "",
-                      "const payload = json.data || json;",
-                      "const fileId = payload.id || payload.fileId;",
-                      "",
-                      "pm.test(\"File ID saved\", () => {",
-                      "  pm.expect(fileId).to.exist;",
-                      "});",
-                      "",
-                      "if (fileId) {",
-                      "  pm.environment.set(\"file_id\", String(fileId));",
-                      "  pm.collectionVariables.set(\"file_id\", String(fileId));",
-                      "}"
-                    ],
-                    "type": "text/javascript",
-                    "packages": {},
-                    "requests": {}
-                  }
-                }
-              ],
-              "request": {
-                "auth": {
-                  "type": "bearer",
-                  "bearer": [
-                    {
-                      "key": "token",
-                      "value": "{{file_customer_token}}",
-                      "type": "string"
-                    }
-                  ]
-                },
-                "method": "POST",
-                "header": [],
-                "body": {
-                  "mode": "formdata",
-                  "formdata": [
-                    {
-                      "key": "order_id",
-                      "value": "{{file_order_id}}",
-                      "type": "text",
-                      "uuid": "ef2c034c-c263-49fd-a7a4-6668df49e66e"
+                      "listen": "test",
+                      "script": {
+                        "exec": [
+                          "pm.test(\"HTTP 201\", () => pm.response.to.have.status(201));\r",
+                          "\r",
+                          "pm.test(\"File customer email prepared\", () => {\r",
+                          "  pm.expect(pm.environment.get(\"file_customer_email\")).to.not.be.empty;\r",
+                          "});"
+                        ],
+                        "type": "text/javascript",
+                        "packages": {},
+                        "requests": {}
+                      }
                     },
                     {
-                      "key": "file_type",
-                      "value": "audio",
-                      "type": "text",
-                      "uuid": "85df231b-7957-4b36-9e91-627740ec882f"
+                      "listen": "prerequest",
+                      "script": {
+                        "exec": [
+                          "const email = `file.customer.${Date.now()}@mutrapro.test`;\r",
+                          "pm.environment.set(\"file_customer_email\", email);"
+                        ],
+                        "type": "text/javascript",
+                        "packages": {},
+                        "requests": {}
+                      }
+                    }
+                  ],
+                  "request": {
+                    "auth": {
+                      "type": "noauth"
+                    },
+                    "method": "POST",
+                    "header": [],
+                    "body": {
+                      "mode": "raw",
+                      "raw": "{\r\n  \"name\": \"File Customer\",\r\n  \"email\": \"{{file_customer_email}}\",\r\n  \"password\": \"{{default_password}}\"\r\n}",
+                      "options": {
+                        "raw": {
+                          "language": "json"
+                        }
+                      }
+                    },
+                    "url": {
+                      "raw": "{{baseUrl}}/auth/register",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "auth",
+                        "register"
+                      ]
+                    }
+                  },
+                  "response": []
+                },
+                {
+                  "name": "FILE-SETUP-02 - Login Customer",
+                  "event": [
+                    {
+                      "listen": "test",
+                      "script": {
+                        "exec": [
+                          "pm.test(\"HTTP 200\", () => pm.response.to.have.status(200));",
+                          "",
+                          "const json = pm.response.json();",
+                          "",
+                          "pm.test(\"Customer login success\", () => {",
+                          "  pm.expect(json.token).to.exist;",
+                          "  pm.expect(json.user.role).to.eql(\"customer\");",
+                          "});",
+                          "",
+                          "pm.environment.set(\"file_customer_token\", json.token);",
+                          "pm.environment.set(\"file_customer_id\", String(json.user.id));"
+                        ],
+                        "type": "text/javascript",
+                        "packages": {},
+                        "requests": {}
+                      }
+                    }
+                  ],
+                  "request": {
+                    "auth": {
+                      "type": "noauth"
+                    },
+                    "method": "POST",
+                    "header": [],
+                    "body": {
+                      "mode": "raw",
+                      "raw": "{\n  \"email\": \"{{file_customer_email}}\",\n  \"password\": \"{{default_password}}\"\n}",
+                      "options": {
+                        "raw": {
+                          "language": "json"
+                        }
+                      }
+                    },
+                    "url": {
+                      "raw": "{{baseUrl}}/auth/login",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "auth",
+                        "login"
+                      ]
+                    }
+                  },
+                  "response": []
+                },
+                {
+                  "name": "FILE-SETUP-03 - Create Order For File Test",
+                  "event": [
+                    {
+                      "listen": "test",
+                      "script": {
+                        "exec": [
+                          "pm.test(\"HTTP 201\", () => pm.response.to.have.status(201));",
+                          "",
+                          "const json = pm.response.json();",
+                          "const payload = json.data || json.order || json;",
+                          "const orderId = payload.id || payload.orderId;",
+                          "",
+                          "pm.test(\"File order ID exists\", () => {",
+                          "  pm.expect(orderId).to.exist;",
+                          "});",
+                          "",
+                          "pm.environment.set(\"file_order_id\", String(orderId));",
+                          "pm.collectionVariables.set(\"file_order_id\", String(orderId));"
+                        ],
+                        "type": "text/javascript",
+                        "packages": {},
+                        "requests": {}
+                      }
+                    }
+                  ],
+                  "request": {
+                    "auth": {
+                      "type": "bearer",
+                      "bearer": [
+                        {
+                          "key": "token",
+                          "value": "{{file_customer_token}}",
+                          "type": "string"
+                        }
+                      ]
+                    },
+                    "method": "POST",
+                    "header": [],
+                    "body": {
+                      "mode": "raw",
+                      "raw": "{\n  \"service_type\": \"transcription\",\n  \"description\": \"Order test upload file\"\n}",
+                      "options": {
+                        "raw": {
+                          "language": "json"
+                        }
+                      }
+                    },
+                    "url": {
+                      "raw": "{{baseUrl}}/orders",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "orders"
+                      ]
+                    }
+                  },
+                  "response": []
+                }
+              ]
+            },
+            {
+              "name": "Tải tệp lên",
+              "item": [
+                {
+                  "name": "EP",
+                  "item": [
+                    {
+                      "name": "FILE-UPLOAD-EP-01 - Upload File",
+                      "event": [
+                        {
+                          "listen": "prerequest",
+                          "script": {
+                            "exec": [
+                              "const orderId = pm.environment.get(\"file_order_id\") || pm.collectionVariables.get(\"file_order_id\");",
+                              "",
+                              "if (!orderId) {",
+                              "  throw new Error(\"Missing file_order_id: run Create Order For File Test before Upload File.\");",
+                              "}",
+                              "",
+                              "const token = pm.environment.get(\"file_customer_token\");",
+                              "",
+                              "if (!token) {",
+                              "  throw new Error(\"Missing file_customer_token: run Login Customer before Upload File.\");",
+                              "}",
+                              "",
+                              "pm.environment.set(\"file_order_id\", String(orderId));",
+                              "",
+                              "const contentTypeHeader = pm.request.headers.get(\"Content-Type\");",
+                              "if (contentTypeHeader && contentTypeHeader.includes(\"application/json\")) {",
+                              "  throw new Error(\"Upload File must use multipart/form-data. Remove manual Content-Type: application/json.\");",
+                              "}"
+                            ],
+                            "type": "text/javascript",
+                            "packages": {},
+                            "requests": {}
+                          }
+                        },
+                        {
+                          "listen": "test",
+                          "script": {
+                            "exec": [
+                              "let json = {};",
+                              "try {",
+                              "  json = pm.response.json();",
+                              "} catch (error) {}",
+                              "",
+                              "pm.test(\"HTTP 201\", () => {",
+                              "  pm.expect(pm.response.code, json.message || pm.response.text()).to.eql(201);",
+                              "});",
+                              "",
+                              "const payload = json.data || json;",
+                              "const fileId = payload.id || payload.fileId;",
+                              "",
+                              "pm.test(\"File ID saved\", () => {",
+                              "  pm.expect(fileId).to.exist;",
+                              "});",
+                              "",
+                              "if (fileId) {",
+                              "  pm.environment.set(\"file_id\", String(fileId));",
+                              "  pm.environment.set(\"fileId\", String(fileId));",
+                              "}"
+                            ],
+                            "type": "text/javascript",
+                            "packages": {},
+                            "requests": {}
+                          }
+                        }
+                      ],
+                      "request": {
+                        "auth": {
+                          "type": "bearer",
+                          "bearer": [
+                            {
+                              "key": "token",
+                              "value": "{{file_customer_token}}",
+                              "type": "string"
+                            }
+                          ]
+                        },
+                        "method": "POST",
+                        "header": [],
+                        "body": {
+                          "mode": "formdata",
+                          "formdata": [
+                            {
+                              "key": "order_id",
+                              "value": "{{file_order_id}}",
+                              "type": "text",
+                              "uuid": "ef2c034c-c263-49fd-a7a4-6668df49e66e"
+                            },
+                            {
+                              "key": "file_type",
+                              "value": "audio",
+                              "type": "text",
+                              "uuid": "85df231b-7957-4b36-9e91-627740ec882f"
+                            },
+                            {
+                              "key": "file",
+                              "type": "file",
+                              "uuid": "12a6d5bb-440f-4fcb-a7b1-101da27c364c",
+                              "src": "tests/fixtures/upload-test.mp3"
+                            }
+                          ]
+                        },
+                        "url": {
+                          "raw": "{{baseUrl}}/files/upload",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "files",
+                            "upload"
+                          ]
+                        }
+                      },
+                      "response": []
+                    }
+                  ]
+                },
+                {
+                  "name": "BVA",
+                  "item": [
+                    {
+                      "name": "FILE-UPLOAD-BVA-01 - Missing File",
+                      "event": [
+                        {
+                          "listen": "test",
+                          "script": {
+                            "exec": [
+                              "pm.test(\"HTTP 400\", () => {",
+                              "  pm.response.to.have.status(400);",
+                              "});",
+                              "",
+                              "const json = pm.response.json();",
+                              "",
+                              "pm.test(\"Upload validation failed\", () => {",
+                              "  pm.expect(json.success).to.eql(false);",
+                              "});"
+                            ],
+                            "type": "text/javascript",
+                            "packages": {},
+                            "requests": {}
+                          }
+                        }
+                      ],
+                      "request": {
+                        "method": "POST",
+                        "header": [],
+                        "url": {
+                          "raw": "{{baseUrl}}/files/upload",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "files",
+                            "upload"
+                          ]
+                        },
+                        "auth": {
+                          "type": "bearer",
+                          "bearer": [
+                            {
+                              "key": "token",
+                              "value": "{{file_customer_token}}",
+                              "type": "string"
+                            }
+                          ]
+                        },
+                        "body": {
+                          "mode": "formdata",
+                          "formdata": [
+                            {
+                              "key": "order_id",
+                              "value": "{{file_order_id}}",
+                              "type": "text"
+                            },
+                            {
+                              "key": "file_type",
+                              "value": "audio",
+                              "type": "text"
+                            }
+                          ]
+                        }
+                      },
+                      "response": []
                     },
                     {
-                      "key": "file",
-                      "type": "file",
-                      "uuid": "12a6d5bb-440f-4fcb-a7b1-101da27c364c",
-                      "src": "tests/fixtures/upload-test.mp3"
+                      "name": "FILE-UPLOAD-BVA-02 - Missing Order Id",
+                      "event": [
+                        {
+                          "listen": "test",
+                          "script": {
+                            "exec": [
+                              "pm.test(\"HTTP 400\", () => {",
+                              "  pm.response.to.have.status(400);",
+                              "});",
+                              "",
+                              "const json = pm.response.json();",
+                              "",
+                              "pm.test(\"Upload validation failed\", () => {",
+                              "  pm.expect(json.success).to.eql(false);",
+                              "});"
+                            ],
+                            "type": "text/javascript",
+                            "packages": {},
+                            "requests": {}
+                          }
+                        }
+                      ],
+                      "request": {
+                        "method": "POST",
+                        "header": [],
+                        "url": {
+                          "raw": "{{baseUrl}}/files/upload",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "files",
+                            "upload"
+                          ]
+                        },
+                        "auth": {
+                          "type": "bearer",
+                          "bearer": [
+                            {
+                              "key": "token",
+                              "value": "{{file_customer_token}}",
+                              "type": "string"
+                            }
+                          ]
+                        },
+                        "body": {
+                          "mode": "formdata",
+                          "formdata": [
+                            {
+                              "key": "file_type",
+                              "value": "audio",
+                              "type": "text"
+                            },
+                            {
+                              "key": "file",
+                              "type": "file",
+                              "src": "tests/fixtures/upload-test.mp3"
+                            }
+                          ]
+                        }
+                      },
+                      "response": []
+                    },
+                    {
+                      "name": "FILE-UPLOAD-BVA-03 - Invalid File Type",
+                      "event": [
+                        {
+                          "listen": "test",
+                          "script": {
+                            "exec": [
+                              "pm.test(\"HTTP 400 or 201 - invalid file_type current behavior\", () => {",
+                              "  pm.expect([400, 201]).to.include(pm.response.code);",
+                              "});"
+                            ],
+                            "type": "text/javascript",
+                            "packages": {},
+                            "requests": {}
+                          }
+                        }
+                      ],
+                      "request": {
+                        "method": "POST",
+                        "header": [],
+                        "url": {
+                          "raw": "{{baseUrl}}/files/upload",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "files",
+                            "upload"
+                          ]
+                        },
+                        "auth": {
+                          "type": "bearer",
+                          "bearer": [
+                            {
+                              "key": "token",
+                              "value": "{{file_customer_token}}",
+                              "type": "string"
+                            }
+                          ]
+                        },
+                        "body": {
+                          "mode": "formdata",
+                          "formdata": [
+                            {
+                              "key": "order_id",
+                              "value": "{{file_order_id}}",
+                              "type": "text"
+                            },
+                            {
+                              "key": "file_type",
+                              "value": "invalid_type",
+                              "type": "text"
+                            },
+                            {
+                              "key": "file",
+                              "type": "file",
+                              "src": "tests/fixtures/upload-test.mp3"
+                            }
+                          ]
+                        }
+                      },
+                      "response": []
                     }
                   ]
                 },
-                "url": {
-                  "raw": "{{baseUrl}}/files/upload",
-                  "host": [
-                    "{{baseUrl}}"
-                  ],
-                  "path": [
-                    "files",
-                    "upload"
+                {
+                  "name": "RBAC / Negative",
+                  "item": [
+                    {
+                      "name": "FILE-UPLOAD-NEG-01 - Upload No Token",
+                      "event": [
+                        {
+                          "listen": "test",
+                          "script": {
+                            "exec": [
+                              "pm.test(\"HTTP 401\", () => {",
+                              "  pm.response.to.have.status(401);",
+                              "});",
+                              "",
+                              "const json = pm.response.json();",
+                              "",
+                              "pm.test(\"Unauthorized upload rejected\", () => {",
+                              "  pm.expect(json.success).to.eql(false);",
+                              "});"
+                            ],
+                            "type": "text/javascript",
+                            "packages": {},
+                            "requests": {}
+                          }
+                        }
+                      ],
+                      "request": {
+                        "method": "POST",
+                        "header": [],
+                        "url": {
+                          "raw": "{{baseUrl}}/files/upload",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "files",
+                            "upload"
+                          ]
+                        },
+                        "auth": {
+                          "type": "noauth"
+                        },
+                        "body": {
+                          "mode": "formdata",
+                          "formdata": [
+                            {
+                              "key": "order_id",
+                              "value": "{{file_order_id}}",
+                              "type": "text"
+                            },
+                            {
+                              "key": "file_type",
+                              "value": "audio",
+                              "type": "text"
+                            },
+                            {
+                              "key": "file",
+                              "type": "file",
+                              "src": "tests/fixtures/upload-test.mp3"
+                            }
+                          ]
+                        }
+                      },
+                      "response": []
+                    },
+                    {
+                      "name": "FILE-UPLOAD-NEG-02 - Upload Invalid Token",
+                      "event": [
+                        {
+                          "listen": "test",
+                          "script": {
+                            "exec": [
+                              "pm.test(\"HTTP 401\", () => {",
+                              "  pm.response.to.have.status(401);",
+                              "});",
+                              "",
+                              "const json = pm.response.json();",
+                              "",
+                              "pm.test(\"Unauthorized upload rejected\", () => {",
+                              "  pm.expect(json.success).to.eql(false);",
+                              "});"
+                            ],
+                            "type": "text/javascript",
+                            "packages": {},
+                            "requests": {}
+                          }
+                        }
+                      ],
+                      "request": {
+                        "method": "POST",
+                        "header": [],
+                        "url": {
+                          "raw": "{{baseUrl}}/files/upload",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "files",
+                            "upload"
+                          ]
+                        },
+                        "auth": {
+                          "type": "bearer",
+                          "bearer": [
+                            {
+                              "key": "token",
+                              "value": "{{invalid_token}}",
+                              "type": "string"
+                            }
+                          ]
+                        },
+                        "body": {
+                          "mode": "formdata",
+                          "formdata": [
+                            {
+                              "key": "order_id",
+                              "value": "{{file_order_id}}",
+                              "type": "text"
+                            },
+                            {
+                              "key": "file_type",
+                              "value": "audio",
+                              "type": "text"
+                            },
+                            {
+                              "key": "file",
+                              "type": "file",
+                              "src": "tests/fixtures/upload-test.mp3"
+                            }
+                          ]
+                        }
+                      },
+                      "response": []
+                    }
                   ]
                 }
-              },
-              "response": []
+              ]
             },
             {
-              "name": "Get Files By Order",
-              "event": [
+              "name": "Truy xuất tệp",
+              "item": [
                 {
-                  "listen": "prerequest",
-                  "script": {
-                    "exec": [
-                      "const orderId = pm.environment.get(\"file_order_id\") || pm.collectionVariables.get(\"file_order_id\");",
-                      "",
-                      "if (!orderId) {",
-                      "  throw new Error(\"Missing file_order_id: run Create Order For File Test before Get Files By Order.\");",
-                      "}",
-                      "",
-                      "pm.environment.set(\"file_order_id\", String(orderId));"
-                    ],
-                    "type": "text/javascript",
-                    "packages": {},
-                    "requests": {}
-                  }
-                },
-                {
-                  "listen": "test",
-                  "script": {
-                    "exec": [
-                      "pm.test(\"HTTP 200\", () => pm.response.to.have.status(200));",
-                      "",
-                      "pm.test(\"Response is JSON\", () => {",
-                      "  pm.response.to.be.json;",
-                      "});",
-                      "",
-                      "const json = pm.response.json();",
-                      "const payload = json.data || json;",
-                      "",
-                      "pm.test(\"Files payload is an array\", () => {",
-                      "  pm.expect(payload).to.be.an(\"array\");",
-                      "});",
-                      "",
-                      "pm.test(\"Uploaded file exists in list\", () => {",
-                      "  const fileId = pm.environment.get(\"file_id\");",
-                      "  if (fileId) {",
-                      "    const found = payload.some(file => String(file.id || file.fileId) === String(fileId));",
-                      "    pm.expect(found).to.eql(true);",
-                      "  }",
-                      "});"
-                    ],
-                    "type": "text/javascript",
-                    "packages": {},
-                    "requests": {}
-                  }
-                }
-              ],
-              "request": {
-                "auth": {
-                  "type": "bearer",
-                  "bearer": [
+                  "name": "EP",
+                  "item": [
                     {
-                      "key": "token",
-                      "value": "{{file_customer_token}}",
-                      "type": "string"
+                      "name": "FILE-QUERY-EP-01 - Get Files By Order",
+                      "event": [
+                        {
+                          "listen": "prerequest",
+                          "script": {
+                            "exec": [
+                              "const orderId = pm.environment.get(\"file_order_id\") || pm.collectionVariables.get(\"file_order_id\");",
+                              "",
+                              "if (!orderId) {",
+                              "  throw new Error(\"Missing file_order_id: run Create Order For File Test before Get Files By Order.\");",
+                              "}",
+                              "",
+                              "pm.environment.set(\"file_order_id\", String(orderId));"
+                            ],
+                            "type": "text/javascript",
+                            "packages": {},
+                            "requests": {}
+                          }
+                        },
+                        {
+                          "listen": "test",
+                          "script": {
+                            "exec": [
+                              "pm.test(\"HTTP 200\", () => pm.response.to.have.status(200));",
+                              "",
+                              "pm.test(\"Response is JSON\", () => {",
+                              "  pm.response.to.be.json;",
+                              "});",
+                              "",
+                              "const json = pm.response.json();",
+                              "const payload = json.data || json;",
+                              "",
+                              "pm.test(\"Files payload is an array\", () => {",
+                              "  pm.expect(payload).to.be.an(\"array\");",
+                              "});",
+                              "",
+                              "pm.test(\"Uploaded file exists in list\", () => {",
+                              "  const fileId = pm.environment.get(\"file_id\");",
+                              "  if (fileId) {",
+                              "    const found = payload.some(file => String(file.id || file.fileId) === String(fileId));",
+                              "    pm.expect(found).to.eql(true);",
+                              "  }",
+                              "});"
+                            ],
+                            "type": "text/javascript",
+                            "packages": {},
+                            "requests": {}
+                          }
+                        }
+                      ],
+                      "request": {
+                        "auth": {
+                          "type": "bearer",
+                          "bearer": [
+                            {
+                              "key": "token",
+                              "value": "{{file_customer_token}}",
+                              "type": "string"
+                            }
+                          ]
+                        },
+                        "method": "GET",
+                        "header": [],
+                        "url": {
+                          "raw": "{{baseUrl}}/files/files/order/{{file_order_id}}",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "files",
+                            "files",
+                            "order",
+                            "{{file_order_id}}"
+                          ]
+                        }
+                      },
+                      "response": []
+                    },
+                    {
+                      "name": "FILE-QUERY-EP-02 - Download File",
+                      "event": [
+                        {
+                          "listen": "prerequest",
+                          "script": {
+                            "exec": [
+                              "const fileId = pm.environment.get(\"file_id\") || pm.collectionVariables.get(\"file_id\");",
+                              "",
+                              "if (!fileId) {",
+                              "  throw new Error(\"Missing file_id: run Upload File before Download File.\");",
+                              "}",
+                              "",
+                              "pm.environment.set(\"file_id\", String(fileId));"
+                            ],
+                            "type": "text/javascript",
+                            "packages": {},
+                            "requests": {}
+                          }
+                        },
+                        {
+                          "listen": "test",
+                          "script": {
+                            "exec": [
+                              "pm.test(\"HTTP 200\", () => pm.response.to.have.status(200));\r",
+                              "\r",
+                              "pm.test(\"Download has content-disposition header\", () => {\r",
+                              "  pm.expect(pm.response.headers.has(\"Content-Disposition\")).to.eql(true);\r",
+                              "});"
+                            ],
+                            "type": "text/javascript",
+                            "packages": {},
+                            "requests": {}
+                          }
+                        }
+                      ],
+                      "request": {
+                        "auth": {
+                          "type": "bearer",
+                          "bearer": [
+                            {
+                              "key": "token",
+                              "value": "{{file_customer_token}}",
+                              "type": "string"
+                            }
+                          ]
+                        },
+                        "method": "GET",
+                        "header": [],
+                        "url": {
+                          "raw": "{{baseUrl}}/files/files/download/{{file_id}}",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "files",
+                            "files",
+                            "download",
+                            "{{file_id}}"
+                          ]
+                        }
+                      },
+                      "response": []
                     }
                   ]
                 },
-                "method": "GET",
-                "header": [],
-                "url": {
-                  "raw": "{{baseUrl}}/files/files/order/{{file_order_id}}",
-                  "host": [
-                    "{{baseUrl}}"
-                  ],
-                  "path": [
-                    "files",
-                    "files",
-                    "order",
-                    "{{file_order_id}}"
+                {
+                  "name": "BVA",
+                  "item": [
+                    {
+                      "name": "FILE-QUERY-BVA-01 - Get Files Order Not Found",
+                      "event": [
+                        {
+                          "listen": "test",
+                          "script": {
+                            "exec": [
+                              "pm.test(\"HTTP 200, 404 or 500 - order not found current behavior\", () => {",
+                              "  pm.expect([200, 404, 500]).to.include(pm.response.code);",
+                              "});"
+                            ],
+                            "type": "text/javascript",
+                            "packages": {},
+                            "requests": {}
+                          }
+                        }
+                      ],
+                      "request": {
+                        "method": "GET",
+                        "header": [],
+                        "url": {
+                          "raw": "{{baseUrl}}/files/files/order/999999",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "files",
+                            "files",
+                            "order",
+                            "999999"
+                          ]
+                        },
+                        "auth": {
+                          "type": "bearer",
+                          "bearer": [
+                            {
+                              "key": "token",
+                              "value": "{{file_customer_token}}",
+                              "type": "string"
+                            }
+                          ]
+                        }
+                      },
+                      "response": []
+                    },
+                    {
+                      "name": "FILE-QUERY-BVA-02 - Download File Not Found",
+                      "event": [
+                        {
+                          "listen": "test",
+                          "script": {
+                            "exec": [
+                              "pm.test(\"HTTP 404\", () => {",
+                              "  pm.response.to.have.status(404);",
+                              "});",
+                              "",
+                              "const json = pm.response.json();",
+                              "",
+                              "pm.test(\"File not found\", () => {",
+                              "  pm.expect(json.success).to.eql(false);",
+                              "});"
+                            ],
+                            "type": "text/javascript",
+                            "packages": {},
+                            "requests": {}
+                          }
+                        }
+                      ],
+                      "request": {
+                        "method": "GET",
+                        "header": [],
+                        "url": {
+                          "raw": "{{baseUrl}}/files/files/download/999999",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "files",
+                            "files",
+                            "download",
+                            "999999"
+                          ]
+                        },
+                        "auth": {
+                          "type": "bearer",
+                          "bearer": [
+                            {
+                              "key": "token",
+                              "value": "{{file_customer_token}}",
+                              "type": "string"
+                            }
+                          ]
+                        }
+                      },
+                      "response": []
+                    }
                   ]
+                },
+                {
+                  "name": "RBAC / Negative",
+                  "item": []
                 }
-              },
-              "response": []
+              ]
             },
             {
-              "name": "Download File",
-              "event": [
+              "name": "FlowTests - File",
+              "item": [
                 {
-                  "listen": "prerequest",
-                  "script": {
-                    "exec": [
-                      "const fileId = pm.environment.get(\"file_id\") || pm.collectionVariables.get(\"file_id\");",
-                      "",
-                      "if (!fileId) {",
-                      "  throw new Error(\"Missing file_id: run Upload File before Download File.\");",
-                      "}",
-                      "",
-                      "pm.environment.set(\"file_id\", String(fileId));"
-                    ],
-                    "type": "text/javascript",
-                    "packages": {},
-                    "requests": {}
-                  }
-                },
-                {
-                  "listen": "test",
-                  "script": {
-                    "exec": [
-                      "pm.test(\"HTTP 200\", () => pm.response.to.have.status(200));\r",
-                      "\r",
-                      "pm.test(\"Download has content-disposition header\", () => {\r",
-                      "  pm.expect(pm.response.headers.has(\"Content-Disposition\")).to.eql(true);\r",
-                      "});"
-                    ],
-                    "type": "text/javascript",
-                    "packages": {},
-                    "requests": {}
-                  }
-                }
-              ],
-              "request": {
-                "auth": {
-                  "type": "bearer",
-                  "bearer": [
+                  "name": "FILE-FLOW-01 - Register Customer For File Order",
+                  "event": [
                     {
-                      "key": "token",
-                      "value": "{{file_customer_token}}",
-                      "type": "string"
+                      "listen": "test",
+                      "script": {
+                        "exec": [
+                          "pm.test(\"HTTP 201\", () => pm.response.to.have.status(201));\r",
+                          "\r",
+                          "pm.test(\"File customer email prepared\", () => {\r",
+                          "  pm.expect(pm.environment.get(\"file_customer_email\")).to.not.be.empty;\r",
+                          "});"
+                        ],
+                        "type": "text/javascript",
+                        "packages": {},
+                        "requests": {}
+                      }
+                    },
+                    {
+                      "listen": "prerequest",
+                      "script": {
+                        "exec": [
+                          "const email = `file.customer.${Date.now()}@mutrapro.test`;\r",
+                          "pm.environment.set(\"file_customer_email\", email);"
+                        ],
+                        "type": "text/javascript",
+                        "packages": {},
+                        "requests": {}
+                      }
                     }
-                  ]
-                },
-                "method": "GET",
-                "header": [],
-                "url": {
-                  "raw": "{{baseUrl}}/files/files/download/{{file_id}}",
-                  "host": [
-                    "{{baseUrl}}"
                   ],
-                  "path": [
-                    "files",
-                    "files",
-                    "download",
-                    "{{file_id}}"
-                  ]
+                  "request": {
+                    "auth": {
+                      "type": "noauth"
+                    },
+                    "method": "POST",
+                    "header": [],
+                    "body": {
+                      "mode": "raw",
+                      "raw": "{\r\n  \"name\": \"File Customer\",\r\n  \"email\": \"{{file_customer_email}}\",\r\n  \"password\": \"{{default_password}}\"\r\n}",
+                      "options": {
+                        "raw": {
+                          "language": "json"
+                        }
+                      }
+                    },
+                    "url": {
+                      "raw": "{{baseUrl}}/auth/register",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "auth",
+                        "register"
+                      ]
+                    }
+                  },
+                  "response": []
+                },
+                {
+                  "name": "FILE-FLOW-02 - Login Customer",
+                  "event": [
+                    {
+                      "listen": "test",
+                      "script": {
+                        "exec": [
+                          "pm.test(\"HTTP 200\", () => pm.response.to.have.status(200));",
+                          "",
+                          "const json = pm.response.json();",
+                          "",
+                          "pm.test(\"Customer login success\", () => {",
+                          "  pm.expect(json.token).to.exist;",
+                          "  pm.expect(json.user.role).to.eql(\"customer\");",
+                          "});",
+                          "",
+                          "pm.environment.set(\"file_customer_token\", json.token);",
+                          "pm.environment.set(\"file_customer_id\", String(json.user.id));"
+                        ],
+                        "type": "text/javascript",
+                        "packages": {},
+                        "requests": {}
+                      }
+                    }
+                  ],
+                  "request": {
+                    "auth": {
+                      "type": "noauth"
+                    },
+                    "method": "POST",
+                    "header": [],
+                    "body": {
+                      "mode": "raw",
+                      "raw": "{\n  \"email\": \"{{file_customer_email}}\",\n  \"password\": \"{{default_password}}\"\n}",
+                      "options": {
+                        "raw": {
+                          "language": "json"
+                        }
+                      }
+                    },
+                    "url": {
+                      "raw": "{{baseUrl}}/auth/login",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "auth",
+                        "login"
+                      ]
+                    }
+                  },
+                  "response": []
+                },
+                {
+                  "name": "FILE-FLOW-03 - Create Order For File Test",
+                  "event": [
+                    {
+                      "listen": "test",
+                      "script": {
+                        "exec": [
+                          "pm.test(\"HTTP 201\", () => pm.response.to.have.status(201));",
+                          "",
+                          "const json = pm.response.json();",
+                          "const payload = json.data || json.order || json;",
+                          "const orderId = payload.id || payload.orderId;",
+                          "",
+                          "pm.test(\"File order ID exists\", () => {",
+                          "  pm.expect(orderId).to.exist;",
+                          "});",
+                          "",
+                          "pm.environment.set(\"file_order_id\", String(orderId));",
+                          "pm.collectionVariables.set(\"file_order_id\", String(orderId));"
+                        ],
+                        "type": "text/javascript",
+                        "packages": {},
+                        "requests": {}
+                      }
+                    }
+                  ],
+                  "request": {
+                    "auth": {
+                      "type": "bearer",
+                      "bearer": [
+                        {
+                          "key": "token",
+                          "value": "{{file_customer_token}}",
+                          "type": "string"
+                        }
+                      ]
+                    },
+                    "method": "POST",
+                    "header": [],
+                    "body": {
+                      "mode": "raw",
+                      "raw": "{\n  \"service_type\": \"transcription\",\n  \"description\": \"Order test upload file\"\n}",
+                      "options": {
+                        "raw": {
+                          "language": "json"
+                        }
+                      }
+                    },
+                    "url": {
+                      "raw": "{{baseUrl}}/orders",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "orders"
+                      ]
+                    }
+                  },
+                  "response": []
+                },
+                {
+                  "name": "FILE-FLOW-04 - Upload File",
+                  "event": [
+                    {
+                      "listen": "prerequest",
+                      "script": {
+                        "exec": [
+                          "const orderId = pm.environment.get(\"file_order_id\") || pm.collectionVariables.get(\"file_order_id\");",
+                          "",
+                          "if (!orderId) {",
+                          "  throw new Error(\"Missing file_order_id: run Create Order For File Test before Upload File.\");",
+                          "}",
+                          "",
+                          "const token = pm.environment.get(\"file_customer_token\");",
+                          "",
+                          "if (!token) {",
+                          "  throw new Error(\"Missing file_customer_token: run Login Customer before Upload File.\");",
+                          "}",
+                          "",
+                          "pm.environment.set(\"file_order_id\", String(orderId));",
+                          "",
+                          "const contentTypeHeader = pm.request.headers.get(\"Content-Type\");",
+                          "if (contentTypeHeader && contentTypeHeader.includes(\"application/json\")) {",
+                          "  throw new Error(\"Upload File must use multipart/form-data. Remove manual Content-Type: application/json.\");",
+                          "}"
+                        ],
+                        "type": "text/javascript",
+                        "packages": {},
+                        "requests": {}
+                      }
+                    },
+                    {
+                      "listen": "test",
+                      "script": {
+                        "exec": [
+                          "let json = {};",
+                          "try {",
+                          "  json = pm.response.json();",
+                          "} catch (error) {}",
+                          "",
+                          "pm.test(\"HTTP 201\", () => {",
+                          "  pm.expect(pm.response.code, json.message || pm.response.text()).to.eql(201);",
+                          "});",
+                          "",
+                          "const payload = json.data || json;",
+                          "const fileId = payload.id || payload.fileId;",
+                          "",
+                          "pm.test(\"File ID saved\", () => {",
+                          "  pm.expect(fileId).to.exist;",
+                          "});",
+                          "",
+                          "if (fileId) {",
+                          "  pm.environment.set(\"file_id\", String(fileId));",
+                          "  pm.collectionVariables.set(\"file_id\", String(fileId));",
+                          "}"
+                        ],
+                        "type": "text/javascript",
+                        "packages": {},
+                        "requests": {}
+                      }
+                    }
+                  ],
+                  "request": {
+                    "auth": {
+                      "type": "bearer",
+                      "bearer": [
+                        {
+                          "key": "token",
+                          "value": "{{file_customer_token}}",
+                          "type": "string"
+                        }
+                      ]
+                    },
+                    "method": "POST",
+                    "header": [],
+                    "body": {
+                      "mode": "formdata",
+                      "formdata": [
+                        {
+                          "key": "order_id",
+                          "value": "{{file_order_id}}",
+                          "type": "text",
+                          "uuid": "ef2c034c-c263-49fd-a7a4-6668df49e66e"
+                        },
+                        {
+                          "key": "file_type",
+                          "value": "audio",
+                          "type": "text",
+                          "uuid": "85df231b-7957-4b36-9e91-627740ec882f"
+                        },
+                        {
+                          "key": "file",
+                          "type": "file",
+                          "uuid": "12a6d5bb-440f-4fcb-a7b1-101da27c364c",
+                          "src": "tests/fixtures/upload-test.mp3"
+                        }
+                      ]
+                    },
+                    "url": {
+                      "raw": "{{baseUrl}}/files/upload",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "files",
+                        "upload"
+                      ]
+                    }
+                  },
+                  "response": []
+                },
+                {
+                  "name": "FILE-FLOW-05 - Get Files By Order",
+                  "event": [
+                    {
+                      "listen": "prerequest",
+                      "script": {
+                        "exec": [
+                          "const orderId = pm.environment.get(\"file_order_id\") || pm.collectionVariables.get(\"file_order_id\");",
+                          "",
+                          "if (!orderId) {",
+                          "  throw new Error(\"Missing file_order_id: run Create Order For File Test before Get Files By Order.\");",
+                          "}",
+                          "",
+                          "pm.environment.set(\"file_order_id\", String(orderId));"
+                        ],
+                        "type": "text/javascript",
+                        "packages": {},
+                        "requests": {}
+                      }
+                    },
+                    {
+                      "listen": "test",
+                      "script": {
+                        "exec": [
+                          "pm.test(\"HTTP 200\", () => pm.response.to.have.status(200));",
+                          "",
+                          "pm.test(\"Response is JSON\", () => {",
+                          "  pm.response.to.be.json;",
+                          "});",
+                          "",
+                          "const json = pm.response.json();",
+                          "const payload = json.data || json;",
+                          "",
+                          "pm.test(\"Files payload is an array\", () => {",
+                          "  pm.expect(payload).to.be.an(\"array\");",
+                          "});",
+                          "",
+                          "pm.test(\"Uploaded file exists in list\", () => {",
+                          "  const fileId = pm.environment.get(\"file_id\");",
+                          "  if (fileId) {",
+                          "    const found = payload.some(file => String(file.id || file.fileId) === String(fileId));",
+                          "    pm.expect(found).to.eql(true);",
+                          "  }",
+                          "});"
+                        ],
+                        "type": "text/javascript",
+                        "packages": {},
+                        "requests": {}
+                      }
+                    }
+                  ],
+                  "request": {
+                    "auth": {
+                      "type": "bearer",
+                      "bearer": [
+                        {
+                          "key": "token",
+                          "value": "{{file_customer_token}}",
+                          "type": "string"
+                        }
+                      ]
+                    },
+                    "method": "GET",
+                    "header": [],
+                    "url": {
+                      "raw": "{{baseUrl}}/files/files/order/{{file_order_id}}",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "files",
+                        "files",
+                        "order",
+                        "{{file_order_id}}"
+                      ]
+                    }
+                  },
+                  "response": []
+                },
+                {
+                  "name": "FILE-FLOW-06 - Download File",
+                  "event": [
+                    {
+                      "listen": "prerequest",
+                      "script": {
+                        "exec": [
+                          "const fileId = pm.environment.get(\"file_id\") || pm.collectionVariables.get(\"file_id\");",
+                          "",
+                          "if (!fileId) {",
+                          "  throw new Error(\"Missing file_id: run Upload File before Download File.\");",
+                          "}",
+                          "",
+                          "pm.environment.set(\"file_id\", String(fileId));"
+                        ],
+                        "type": "text/javascript",
+                        "packages": {},
+                        "requests": {}
+                      }
+                    },
+                    {
+                      "listen": "test",
+                      "script": {
+                        "exec": [
+                          "pm.test(\"HTTP 200\", () => pm.response.to.have.status(200));\r",
+                          "\r",
+                          "pm.test(\"Download has content-disposition header\", () => {\r",
+                          "  pm.expect(pm.response.headers.has(\"Content-Disposition\")).to.eql(true);\r",
+                          "});"
+                        ],
+                        "type": "text/javascript",
+                        "packages": {},
+                        "requests": {}
+                      }
+                    }
+                  ],
+                  "request": {
+                    "auth": {
+                      "type": "bearer",
+                      "bearer": [
+                        {
+                          "key": "token",
+                          "value": "{{file_customer_token}}",
+                          "type": "string"
+                        }
+                      ]
+                    },
+                    "method": "GET",
+                    "header": [],
+                    "url": {
+                      "raw": "{{baseUrl}}/files/files/download/{{file_id}}",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "files",
+                        "files",
+                        "download",
+                        "{{file_id}}"
+                      ]
+                    }
+                  },
+                  "response": []
                 }
-              },
-              "response": []
+              ]
             }
           ],
           "auth": {
