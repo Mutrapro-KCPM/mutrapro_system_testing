@@ -1,6 +1,6 @@
 {
   "info": {
-    "_postman_id": "6620ce18-dde3-4877-a2ba-dcb1424493e4",
+    "_postman_id": "dbd9afc5-1abd-4c36-8d54-38250f0fee7a",
     "name": "Presentation",
     "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
     "_exporter_id": "55039415"
@@ -14060,12 +14060,39 @@
                         {
                           "listen": "test",
                           "script": {
-                            "type": "text/javascript",
                             "exec": [
                               "pm.test(\"HTTP 201\", () => { pm.response.to.have.status(201); });",
                               "const json = pm.response.json();",
                               "pm.environment.set(\"bookingId\", json.data?.id || json.id);"
-                            ]
+                            ],
+                            "type": "text/javascript",
+                            "packages": {},
+                            "requests": {}
+                          }
+                        },
+                        {
+                          "listen": "prerequest",
+                          "script": {
+                            "exec": [
+                              "// Tự động random số giờ từ 1 đến 1000 giờ trong tương lai\r",
+                              "let randomHours = Math.floor(Math.random() * 1000) + 1;\r",
+                              "\r",
+                              "// Tính toán thời gian bắt đầu\r",
+                              "const start = new Date();\r",
+                              "start.setHours(start.getHours() + randomHours);\r",
+                              "\r",
+                              "// Thời gian kết thúc = thời gian bắt đầu + 2 tiếng\r",
+                              "const end = new Date(start);\r",
+                              "end.setHours(end.getHours() + 2);\r",
+                              "\r",
+                              "// Ghi đè vào biến môi trường trước khi gửi Request\r",
+                              "pm.environment.set(\"studio_booking_start_time\", start.toISOString());\r",
+                              "pm.environment.set(\"studio_booking_end_time\", end.toISOString());\r",
+                              ""
+                            ],
+                            "type": "text/javascript",
+                            "packages": {},
+                            "requests": {}
                           }
                         }
                       ],
@@ -14633,9 +14660,7 @@
                               "pm.test(\"HTTP 200\", () => { pm.response.to.have.status(200); });",
                               "let offset = parseInt(pm.environment.get(\"time_offset\")) || 1;",
                               "const d1 = new Date(); ",
-                              "d1.setDate(d1.getDate() + offset); ",
-                              "const d2 = new Date(d1); ",
-                              "d2.setHours(d2.getHours() + 2);",
+                              "let randomHours = Math.floor(Math.random() * 1000) + 1; ", "d1.setHours(d1.getHours() + randomHours); ", "const d2 = new Date(d1); ", "d2.setHours(d2.getHours() + 2);",
                               "pm.environment.set(\"studio_booking_start_time\", d1.toISOString());",
                               "pm.environment.set(\"studio_booking_end_time\", d2.toISOString());",
                               "pm.environment.set(\"time_offset\", offset + 1);"
@@ -14765,9 +14790,7 @@
                               "pm.test(\"HTTP 200\", () => { pm.response.to.have.status(200); });",
                               "let offset = parseInt(pm.environment.get(\"time_offset\")) || 1;",
                               "const d1 = new Date(); ",
-                              "d1.setDate(d1.getDate() + offset); ",
-                              "const d2 = new Date(d1); ",
-                              "d2.setHours(d2.getHours() + 2);",
+                              "let randomHours = Math.floor(Math.random() * 1000) + 1; ", "d1.setHours(d1.getHours() + randomHours); ", "const d2 = new Date(d1); ", "d2.setHours(d2.getHours() + 2);",
                               "pm.environment.set(\"studio_booking_start_time\", d1.toISOString());",
                               "pm.environment.set(\"studio_booking_end_time\", d2.toISOString());",
                               "pm.environment.set(\"time_offset\", offset + 1);"
@@ -14897,9 +14920,7 @@
                               "pm.test(\"HTTP 200\", () => { pm.response.to.have.status(200); });",
                               "let offset = parseInt(pm.environment.get(\"time_offset\")) || 1;",
                               "const d1 = new Date(); ",
-                              "d1.setDate(d1.getDate() + offset); ",
-                              "const d2 = new Date(d1); ",
-                              "d2.setHours(d2.getHours() + 2);",
+                              "let randomHours = Math.floor(Math.random() * 1000) + 1; ", "d1.setHours(d1.getHours() + randomHours); ", "const d2 = new Date(d1); ", "d2.setHours(d2.getHours() + 2);",
                               "pm.environment.set(\"studio_booking_start_time\", d1.toISOString());",
                               "pm.environment.set(\"studio_booking_end_time\", d2.toISOString());",
                               "pm.environment.set(\"time_offset\", offset + 1);"
