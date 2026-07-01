@@ -2,14 +2,25 @@
   "type": "module",
   "scripts": {
     "test:e2e": "codeceptjs run --steps",
-    "test:e2e:debug": "codeceptjs run --steps --debug"
+    "test:e2e:debug": "codeceptjs run --steps --debug",
+    "test": "jest",
+    "coverage": "jest --coverage"
   },
   "dependencies": {
     "bcrypt": "^6.0.0",
-    "node-fetch": "^2.7.0"
+    "cors": "^2.8.6",
+    "dotenv": "^17.4.2",
+    "express": "^5.2.1",
+    "express-validator": "^7.3.2",
+    "jsonwebtoken": "^9.0.3",
+    "mysql2": "^3.22.5",
+    "node-fetch": "^2.7.0",
+    "winston": "^3.19.0"
   },
   "devDependencies": {
     "codeceptjs": "^4.0.8",
-    "playwright": "^1.60.0"
+    "jest": "^30.4.2",
+    "playwright": "^1.60.0",
+    "supertest": "^7.2.2"
   }
 }
