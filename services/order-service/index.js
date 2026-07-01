@@ -673,6 +673,9 @@ app.use(notFound);
 app.use(errorHandler);
 
 const PORT = process.env.PORT || 3002;
-app.listen(PORT, () => {
-    logger.info(`Order Service is running on port ${PORT}`);
-});
+if (require.main === module) {
+    app.listen(PORT, () => {
+        logger.info(`Order Service is running on port ${PORT}`);
+    });
+}
+module.exports = app;
