@@ -4,7 +4,7 @@ services:
     build:
       context: .
       dockerfile: ./services/mysql_db/Dockerfile
-    restart: always
+    restart: unless-stopped
     mem_limit: 1G
     environment:
       MYSQL_ROOT_PASSWORD: ${DB_PASSWORD}
@@ -30,7 +30,7 @@ services:
   # === KHỐI REDIS CACHE ĐÃ ĐƯỢC THÊM VÀO ĐÚNG VỊ TRÍ ===
   redis_cache:
     image: redis:6-alpine
-    restart: always
+    restart: unless-stopped
     networks:
       - mutrapro-network
   # === KẾT THÚC KHỐI THÊM MỚI ===
@@ -38,7 +38,7 @@ services:
   # === THÊM SERVICE RABBITMQ MỚI DƯỚI ĐÂY ===
   rabbitmq:
     image: rabbitmq:3-management-alpine
-    restart: always
+    restart: unless-stopped
     environment:
       RABBITMQ_DEFAULT_USER: ${RABBITMQ_DEFAULT_USER}
       RABBITMQ_DEFAULT_PASS: ${RABBITMQ_DEFAULT_PASS}
@@ -51,7 +51,7 @@ services:
     build:
       context: .
       dockerfile: ./services/nifi/Dockerfile
-    restart: always
+    restart: unless-stopped
     mem_limit: 1G
     ports:
       # Ní sẽ truy cập giao diện NiFi qua cổng động
@@ -75,7 +75,7 @@ services:
     build:
       context: .
       dockerfile: ./services/auth-service/Dockerfile
-    restart: always
+    restart: unless-stopped
     environment:
       - DB_HOST=mysql_db
       - DB_USER=mutrapro_app
@@ -105,7 +105,7 @@ services:
     build:
       context: .
       dockerfile: ./services/order-service/Dockerfile
-    restart: always
+    restart: unless-stopped
     environment:
       - DB_HOST=mysql_db
       - DB_USER=mutrapro_app
@@ -132,7 +132,7 @@ services:
     build:
       context: .
       dockerfile: ./services/task-service/Dockerfile
-    restart: always
+    restart: unless-stopped
     environment:
       - DB_HOST=mysql_db
       - DB_USER=mutrapro_app
@@ -159,7 +159,7 @@ services:
     build:
       context: .
       dockerfile: ./services/file-service/Dockerfile
-    restart: always
+    restart: unless-stopped
     environment:
       - DB_HOST=mysql_db
       - DB_USER=mutrapro_app
@@ -187,7 +187,7 @@ services:
     build:
       context: .
       dockerfile: ./services/studio-service/Dockerfile
-    restart: always
+    restart: unless-stopped
     environment:
       - DB_HOST=mysql_db
       - DB_USER=mutrapro_app
@@ -216,7 +216,7 @@ services:
       dockerfile: ./services/notification-service/Dockerfile
     ports:
       - "${NOTIFY_PORT:-3006}:3006"
-    restart: always
+    restart: unless-stopped
     environment:
       - DB_HOST=mysql_db
       - DB_USER=mutrapro_app
@@ -244,7 +244,7 @@ services:
     build:
       context: .
       dockerfile: ./services/analytics-service/Dockerfile
-    restart: always
+    restart: unless-stopped
     environment:
       - DB_HOST=mysql_db
       - DB_USER=mutrapro_app
@@ -273,7 +273,7 @@ services:
     build:
       context: ./services/api-gateway
       dockerfile: Dockerfile
-    restart: always
+    restart: unless-stopped
     ports:
       - "${API_PORT:-3007}:3007"
     environment:
@@ -304,7 +304,7 @@ services:
   # ================== START: THÊM MỚI SONARQUBE ==================
   sonarqube:
     image: sonarqube:lts-community
-    restart: always
+    restart: unless-stopped
     ports:
       - "${SONAR_PORT:-9000}:9000"
     networks:
@@ -318,7 +318,7 @@ services:
   # Ứng dụng web cho người dùng (giữ nguyên)
   web-app:
     build: ./web-app
-    restart: always
+    restart: unless-stopped
     ports:
       - "${WEB_PORT:-3000}:80" # Đã sửa port cho đúng với Nginx
     environment:

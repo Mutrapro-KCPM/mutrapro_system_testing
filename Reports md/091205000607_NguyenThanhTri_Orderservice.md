@@ -41,9 +41,9 @@ Dựa trên cấu trúc phân rã công việc (Work Breakdown Structure - WBS),
 
 - **QA Lead / Automation Tester:** 091205000607 - NguyenThanhTri - Chịu trách nhiệm toàn thời gian.
 - **WBS & Test Estimation (Nỗ lực kiểm thử - Effort):**
-  - **Task 1: Lập Test Plan, Vẽ CFG & BVA/EP Design** (Ngày 25/06) - Ước lượng: **8 man-hours**.
-  - **Task 2: Lập trình Automation Script Postman & 64 Jest Unit Tests** (Ngày 26/06) - Ước lượng: **20 man-hours**.
-  - **Task 3: Đo lường Coverage & Phân tích 3 Defect Report** (Ngày 27/06) - Ước lượng: **8 man-hours**.
+  - **Task 1: Lập Test Plan, Vẽ CFG & BVA/EP Design** - Ước lượng: **8 man-hours**.
+  - **Task 2: Lập trình Automation Script Postman & 64 Jest Unit Tests** - Ước lượng: **20 man-hours**.
+  - **Task 3: Đo lường Coverage & Phân tích 3 Defect Report** - Ước lượng: **8 man-hours**.
 - **Tổng nỗ lực dự kiến (Total Effort):** **36 man-hours**. Tiến độ được theo dõi chặt chẽ theo từng Task để đảm bảo Go-live đúng hạn.
 
 ### 1.4. Đánh giá rủi ro (Risks and Contingencies)
@@ -508,6 +508,7 @@ Toàn bộ 137 Test Cases được thực thi hoàn toàn tự động chỉ tro
 | **BUG-ORD-01** | Nguy cơ DoS do API POST /orders không chặn độ dài siêu lớn. | Local MySQL, Postman v10 | 1. Lấy Token User.<br>2. Gọi POST `/orders`.<br>3. Truyền `description` dài 500,000 ký tự.<br>4. Gửi request. | **Exp:** HTTP 400 Bad Request. Báo lỗi độ dài vượt ngưỡng tối đa (2000 ký tự).<br>**Act:** HTTP 201 Created. Request thành công, Database mất tài nguyên lưu trữ vô ích. | Always (100%) | Medium (Ảnh hưởng performance) | P2 (High) | 091205000607 - NguyenThanhTri<br>27/06/2026 | **Verified Fixed** |
 | **BUG-ORD-02** | Bỏ sót chặn Max Boundary ở API POST /orders/:id/request-revision | Local MySQL, Postman v10 | 1. Dùng tài khoản chủ đơn (status=completed).<br>2. Gọi POST `/orders/:id/request-revision`.<br>3. Truyền `comment` > 1000 ký tự. | **Exp:** HTTP 400. Chặn lưu trữ comment quá độ dài thiết kế.<br>**Act:** HTTP 200 OK. Hệ thống cho qua dễ dàng lưu nguyên mảng văn bản lớn. | Always (100%) | Medium (Lãng phí DB) | P2 (High) | 091205000607 - NguyenThanhTri<br>27/06/2026 | **Verified Fixed** |
 | **BUG-ORD-03** | Lỗ hổng State Jump: Cho phép update trực tiếp pending sang completed | Local MySQL, Postman v10 | 1. Dùng token Admin.<br>2. Gọi PUT `/orders/:id/status` vào đơn hàng có trạng thái `pending`.<br>3. Set body `{"status": "completed"}`. | **Exp:** HTTP 400. Báo lỗi không đúng quy trình State Machine (phải qua assigned/in_progress).<br>**Act:** HTTP 200 OK. Đơn bị đốt cháy giai đoạn. | Always (100%) | High (Hỏng luồng logic hệ thống) | P1 (Urgent) | 091205000607 - NguyenThanhTri<br>27/06/2026 | **Verified Fixed** |
+| **BUG-ORD-04** | Lỗi xử lý tham số phân trang, tự động biến đổi giá trị limit=0 thành 10 | Local MySQL, Postman v10 | 1. Đăng nhập với token Admin.<br>2. Gọi GET `/payments?limit=0`. | **Exp:** Hệ thống chặn biên dưới (ép 0 thành 1).<br>**Act:** Trả về 10 bản ghi do toán tử `\|\| 10` xử lý sai giá trị Falsy trong JS. | Always (100%) | Medium (Sai kết quả dữ liệu) | P2 (High) | 091205000607 - NguyenThanhTri<br>01/07/2026 | **Verified Fixed** |
 
 ### 4.1. Bằng chứng Re-test (Re-test Evidence)
 Sau khi đội ngũ Backend thông báo đã vá (Fixed) cả 3 lỗi nghiêm trọng trên, QA đã tiến hành kiểm tra lại (Re-test) bằng Postman. Dưới đây là bằng chứng (Evidence) cho thấy hệ thống đã chặn đứng các hành vi sai trái và trả về mã lỗi HTTP 400 cùng message chuẩn xác:
@@ -537,6 +538,20 @@ Sau khi đội ngũ Backend thông báo đã vá (Fixed) cả 3 lỗi nghiêm tr
   "status": "error",
   "message": "Không thể chuyển trạng thái từ pending sang completed."
 }
+}
+```
+
+**4. Bằng chứng Re-test BUG-ORD-04 (TC-5.4)**
+- **Kết quả:** Đã sửa lỗi ép kiểu Falsy bằng hàm `isNaN()`. Giờ đây, khi truyền `limit=0`, hệ thống giữ nguyên số 0 rồi đi qua hàm chặn biên dưới thành công (ép lên 1).
+```javascript
+// Đoạn code đã Fix trong order-service/index.js
+let page = parseInt(req.query.page, 10);
+if (isNaN(page)) page = 1;
+page = Math.max(page, 1);
+
+let limit = parseInt(req.query.limit, 10);
+if (isNaN(limit)) limit = 10;
+limit = Math.min(Math.max(limit, 1), 100);
 ```
 
 ---
