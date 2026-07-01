@@ -1,4 +1,4 @@
-set -eu
+
 
 if [ -z "${MYSQL_APP_PASSWORD:-}" ]; then
   echo "MYSQL_APP_PASSWORD is required to create mutrapro_app"
