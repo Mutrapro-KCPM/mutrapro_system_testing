@@ -1,0 +1,2 @@
+*.sh text eol=lf
+init-scripts/* text eol=lf
