@@ -239,6 +239,10 @@ app.post('/notify', async (req, res) => {
 
 // ========== START SERVER ==========
 const PORT = process.env.PORT || 3006;
-server.listen(PORT, () => {
-  logger.info(`Notification Service (HTTP + WS) is running on port ${PORT}`);
-});
+if (process.env.NODE_ENV !== 'test') {
+  server.listen(PORT, () => {
+    logger.info(`Notification Service (HTTP + WS) is running on port ${PORT}`);
+  });
+}
+
+module.exports = { app, server, io, sendPushNotification, addUser, removeUser, onlineUsers };
