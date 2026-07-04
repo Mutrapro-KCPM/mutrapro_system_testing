@@ -1,4 +1,4 @@
-﻿const express = require('express');
+const express = require('express');
 const mysql = require('mysql2/promise');
 const cors = require('cors');
 require('dotenv').config({ path: '../.env', quiet: true });
@@ -59,8 +59,11 @@ app.get('/reports/overview', authMiddleware, checkRole('admin', 'coordinator'), 
 app.use(notFound);
 app.use(errorHandler);
 
-const PORT = 3008; // (Port má»›i)
-app.listen(PORT, () => {
-  logger.info(`Analytics Service is running on port ${PORT}`);
-});
+const PORT = process.env.PORT || 3008; // (Port má»›i)
+if (require.main === module) {
+  app.listen(PORT, () => {
+    logger.info(`Analytics Service is running on port ${PORT}`);
+  });
+}
+module.exports = app;
 

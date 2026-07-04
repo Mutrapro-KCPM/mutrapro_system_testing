@@ -73,9 +73,11 @@ app.use('/api/reports/overview', proxy(serviceUrl('analytics-service', 3008), {
     proxyReqPathResolver: () => '/reports/overview'
 }));
 
-//  d���  Start server
-const PORT = 3007;
-app.listen(PORT, () => {
-    console.log(`API Gateway is running on port ${PORT}`);
-});
-
+//  d  Start server
+const PORT = process.env.PORT || 3007;
+if (require.main === module) {
+    app.listen(PORT, () => {
+        console.log(`API Gateway is running on port ${PORT}`);
+    });
+}
+module.exports = app;
