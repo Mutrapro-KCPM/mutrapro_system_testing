@@ -1,4 +1,4 @@
-﻿// services/task-service/index.js
+// services/task-service/index.js
 const express = require('express');
 const mysql = require('mysql2/promise');
 const cors = require('cors');
@@ -299,7 +299,11 @@ app.use(notFound);
 app.use(errorHandler);
 
 const PORT = process.env.PORT || 3003;
-app.listen(PORT, () => {
-  logger.info(`Task Service is running on port ${PORT}`);
-  startMessageListener(); // <-- (MQ) BƯỚC 4: KHỞI ĐỘNG LISTENER
-});
+if (require.main === module) {
+  app.listen(PORT, () => {
+    logger.info(`Task Service is running on port ${PORT}`);
+    startMessageListener(); // <-- (MQ) BƯỚC 4: KHỞI ĐỘNG LISTENER
+  });
+}
+
+module.exports = app; // Để export phục vụ test
