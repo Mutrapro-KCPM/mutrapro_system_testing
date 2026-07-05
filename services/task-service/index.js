@@ -237,7 +237,10 @@ app.get('/specialist/:specialistId', authMiddleware, asyncHandler(async (req, re
 }));
 
 // === (MQ) BƯỚC 4: THÊM HÀM LẮNG NGHE RABBITMQ ===
-const amqpUrl = 'amqp://user:password@rabbitmq';
+const rabbitMqUser = encodeURIComponent(process.env.RABBITMQ_DEFAULT_USER || 'user');
+const rabbitMqPass = encodeURIComponent(process.env.RABBITMQ_DEFAULT_PASS || '');
+const rabbitMqHost = process.env.RABBITMQ_HOST || 'rabbitmq';
+const amqpUrl = process.env.RABBITMQ_URL || `amqp://${rabbitMqUser}:${rabbitMqPass}@${rabbitMqHost}`;
 const exchangeName = 'mutrapro_events';
 const queueName = 'task_service_queue'; // Tên hàng đợi riêng của service này
 

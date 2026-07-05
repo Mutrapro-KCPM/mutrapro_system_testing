@@ -1,9 +1,7 @@
 process.env.NODE_ENV = 'test';
-process.env.DB_HOST = 'test_host';
-process.env.DB_USER = 'test_user';
-process.env.DB_PASSWORD = 'test_password';
-process.env.DB_TASK_NAME = 'test_db';
-process.env.JWT_SECRET = 'test_secret';
+process.env.DB_HOST = 'localhost';
+process.env.DB_USER = 'unit';
+process.env.DB_TASK_NAME = 'unit';
 
 const request = require('supertest');
 
