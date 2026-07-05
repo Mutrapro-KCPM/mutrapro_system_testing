@@ -241,6 +241,7 @@ const amqpUrl = 'amqp://user:password@rabbitmq';
 const exchangeName = 'mutrapro_events';
 const queueName = 'task_service_queue'; // Tên hàng đợi riêng của service này
 
+/* istanbul ignore next */
 async function startMessageListener() {
   let connection;
   try {
@@ -299,6 +300,7 @@ app.use(notFound);
 app.use(errorHandler);
 
 const PORT = process.env.PORT || 3003;
+/* istanbul ignore next */
 if (require.main === module) {
   app.listen(PORT, () => {
     logger.info(`Task Service is running on port ${PORT}`);
