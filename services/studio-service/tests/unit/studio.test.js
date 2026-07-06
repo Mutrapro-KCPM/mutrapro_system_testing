@@ -9,8 +9,8 @@ process.env.DB_STUDIO_NAME = 'mutrapro_studio';
 
 // Mock thư viện mysql2 (Giả lập Database)
 jest.mock('mysql2/promise', () => {
-    const mPool = { execute: jest.fn() };
-    return { createPool: jest.fn(() => mPool), __mockPool: mPool };
+    const mockPool = { execute: jest.fn(), query: jest.fn() };
+    return { createPool: jest.fn(() => mockPool), __mockPool: mockPool };
 });
 
 // Mock axios (bỏ qua việc gọi sang notification-service)
@@ -245,6 +245,14 @@ describe('Studio Service Tests', () => {
     });
 
     describe('POST /bookings/:id/cancel', () => {
+        it('should return 404 if booking not found', async () => {
+            pool.execute.mockResolvedValueOnce([[]]);
+            const res = await request(app)
+                .post('/bookings/1/cancel')
+                .set('Authorization', `Bearer ${validArtistToken}`);
+            expect(res.status).toBe(404);
+        });
+
         it('should return 403 if not owner or admin', async () => {
             pool.execute.mockResolvedValueOnce([[{ id: 1, artist_id: 100 }]]);
             const res = await request(app)

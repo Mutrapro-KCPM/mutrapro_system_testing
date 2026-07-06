@@ -1,6 +1,14 @@
 const request = require('supertest');
 const fetch = require('node-fetch');
 
+const mockProxyCalls = [];
+jest.mock('express-http-proxy', () => jest.fn((target, options = {}) => {
+    mockProxyCalls.push({ target, options });
+    return (req, res, next) => next();
+}));
+
+const proxy = require('express-http-proxy');
+
 // Set environment variables for test
 process.env.NODE_ENV = 'test';
 process.env.CORS_ORIGIN = '*';
@@ -55,5 +63,22 @@ describe('API Gateway Tests', () => {
         expect(res.body.success).toBe(true);
         expect(res.body.data.auth.status).toBe('error');
         expect(res.body.data.order.status).toBe('ok');
+    });
+
+    it('should resolve /api/payments proxy path to /payments...', () => {
+        const paymentsCall = proxy.mock.calls.find(([target]) => target.includes('order-service:3002') && target.includes('http://'));
+        const paymentsOptions = proxy.mock.calls.find(([, options]) => options && options.proxyReqPathResolver)?.[1];
+
+        expect(paymentsCall).toBeDefined();
+        expect(paymentsOptions.proxyReqPathResolver({ url: '/' })).toBe('/payments');
+        expect(paymentsOptions.proxyReqPathResolver({ url: '/abc?x=1' })).toBe('/payments/abc?x=1');
+    });
+
+    it('should resolve /api/reports/overview proxy path to /reports/overview', () => {
+        const reportsCall = proxy.mock.calls.find(([, options]) => {
+            return options && options.proxyReqPathResolver && options.proxyReqPathResolver({ url: '/ignored' }) === '/reports/overview';
+        });
+
+        expect(reportsCall).toBeDefined();
     });
 });
