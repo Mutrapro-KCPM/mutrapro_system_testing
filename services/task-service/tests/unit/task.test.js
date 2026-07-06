@@ -1,135 +1,123 @@
 process.env.NODE_ENV = 'test';
+process.env.JWT_SECRET = 'unit-test-secret';
+process.env.INTERNAL_SERVICE_TOKEN = 'internal-test-token';
 process.env.DB_HOST = 'localhost';
 process.env.DB_USER = 'unit';
 process.env.DB_TASK_NAME = 'unit';
 
 const request = require('supertest');
+const jwt = require('jsonwebtoken');
 
-// ---- Mock mysql2/promise ----
 jest.mock('mysql2/promise', () => {
-  const mockPool = {
-    execute: jest.fn()
-  };
-  return {
-    createPool: jest.fn(() => mockPool),
-    __mockPool: mockPool
-  };
-}, { virtual: true });
+  const mockPool = { execute: jest.fn(), query: jest.fn() };
+  return { createPool: jest.fn(() => mockPool), __mockPool: mockPool };
+});
 
-// ---- Mock amqplib ----
-jest.mock('amqplib', () => {
-  return {
-    connect: jest.fn().mockResolvedValue({
-      createChannel: jest.fn().mockResolvedValue({
-        assertExchange: jest.fn(),
-        assertQueue: jest.fn(),
-        bindQueue: jest.fn(),
-        consume: jest.fn(),
-        ack: jest.fn(),
-        nack: jest.fn()
-      })
+jest.mock('axios');
+
+jest.mock('amqplib', () => ({
+  connect: jest.fn().mockResolvedValue({
+    createChannel: jest.fn().mockResolvedValue({
+      assertExchange: jest.fn(),
+      assertQueue: jest.fn(),
+      bindQueue: jest.fn(),
+      consume: jest.fn(),
+      ack: jest.fn(),
+      nack: jest.fn()
     })
-  };
-}, { virtual: true });
+  })
+}));
 
-// ---- Mock axios ----
-jest.mock('axios', () => {
-  return {
-    post: jest.fn(),
-    put: jest.fn(),
-    get: jest.fn()
-  };
-}, { virtual: true });
-
-// ---- Mock shared dependencies (since they might not exist locally) ----
 jest.mock('../../shared/logger', () => ({
   logger: {
     info: jest.fn(),
     warn: jest.fn(),
-    error: jest.fn(),
-  },
-}), { virtual: true });
-
-jest.mock('../../shared/middleware/errorHandler', () => ({
-  asyncHandler: (fn) => (req, res, next) => {
-    Promise.resolve(fn(req, res, next)).catch(next);
-  },
-  notFound: (req, res, next) => res.status(404).json({ message: 'Not Found' }),
-  errorHandler: (err, req, res, next) => {
-    res.status(err.statusCode || 500).json({ message: err.message });
-  },
-  AppError: class extends Error {
-    constructor(message, statusCode) {
-      super(message);
-      this.statusCode = statusCode;
-    }
+    error: jest.fn()
   }
-}), { virtual: true });
-
-jest.mock('../../shared/middleware/responseHandler', () => ({
-  responseHandler: (req, res, next) => { next(); }
-}), { virtual: true });
-
-jest.mock('../../shared/middleware/validation', () => ({
-  createTaskValidation: (req, res, next) => { next(); },
-  idParamValidation: (req, res, next) => { next(); }
-}), { virtual: true });
-
-jest.mock('../../shared/middleware/auth', () => ({
-  authMiddleware: (req, res, next) => { next(); },
-  checkRole: (roles) => (req, res, next) => { next(); },
-  assertOwnerOrRole: (req, ownerId, roles) => { return true; }
-}), { virtual: true });
-
+}));
 
 const mysql = require('mysql2/promise');
-const pool = mysql.__mockPool;
 const axios = require('axios');
+const app = require('../../index');
 
-let app;
-
-beforeAll(() => {
-  app = require('../../index');
-});
+const pool = mysql.__mockPool;
+const token = (payload) => jwt.sign(payload, process.env.JWT_SECRET);
+const auth = (payload) => `Bearer ${token(payload)}`;
+const futureDeadline = () => new Date(Date.now() + 24 * 60 * 60 * 1000).toISOString();
 
 beforeEach(() => {
   jest.clearAllMocks();
 });
 
-describe('Task Service Unit Tests', () => {
-
+describe('task-service whitebox tests', () => {
   describe('GET /health', () => {
-    test('nên trả về status ok', async () => {
+    test('returns health status', async () => {
       const res = await request(app).get('/health');
+
       expect(res.status).toBe(200);
+      expect(res.body.service).toBe('task-service');
       expect(res.body.status).toBe('ok');
     });
   });
 
   describe('POST /', () => {
-    test('nên trả về 409 nếu đơn hàng đã có task', async () => {
-      pool.execute.mockResolvedValueOnce([[{ id: 1 }]]); // Mock existing task
-      const res = await request(app).post('/').send({
-        order_id: 123, assigned_to: 10, specialist_role: 'designer', deadline: '2023-10-10'
-      });
-      expect(res.status).toBe(409);
-      expect(res.body.message).toMatch(/đã có task đang xử lý/i);
+    const validBody = () => ({
+      order_id: 123,
+      assigned_to: 10,
+      specialist_role: 'transcriber',
+      deadline: futureDeadline()
     });
 
-    test('nên tạo task thành công và gọi notify', async () => {
-      pool.execute.mockResolvedValueOnce([[]]); // No existing task
-      pool.execute.mockResolvedValueOnce([{ insertId: 99 }]); // Insert result
+    test('returns 401 without token', async () => {
+      const res = await request(app).post('/').send(validBody());
 
-      axios.post.mockResolvedValueOnce({}); // Mock notify success
+      expect(res.status).toBe(401);
+      expect(pool.execute).not.toHaveBeenCalled();
+    });
 
-      const res = await request(app).post('/').send({
-        order_id: 123, assigned_to: 10, specialist_role: 'designer', deadline: '2023-10-10'
-      });
+    test('returns 403 when role is not coordinator', async () => {
+      const res = await request(app)
+        .post('/')
+        .set('Authorization', auth({ id: 1, role: 'artist' }))
+        .send(validBody());
+
+      expect(res.status).toBe(403);
+      expect(pool.execute).not.toHaveBeenCalled();
+    });
+
+    test('returns 400 when required fields are missing', async () => {
+      const res = await request(app)
+        .post('/')
+        .set('Authorization', auth({ id: 1, role: 'coordinator' }))
+        .send({ order_id: 123 });
+
+      expect(res.status).toBe(400);
+      expect(pool.execute).not.toHaveBeenCalled();
+    });
+
+    test('returns 409 when order already has an active task', async () => {
+      pool.execute.mockResolvedValueOnce([[{ id: 1 }]]);
+
+      const res = await request(app)
+        .post('/')
+        .set('Authorization', auth({ id: 1, role: 'coordinator' }))
+        .send(validBody());
+
+      expect(res.status).toBe(409);
+    });
+
+    test('creates task and sends notification', async () => {
+      pool.execute.mockResolvedValueOnce([[]]);
+      pool.execute.mockResolvedValueOnce([{ insertId: 99 }]);
+      axios.post.mockResolvedValueOnce({});
+
+      const res = await request(app)
+        .post('/')
+        .set('Authorization', auth({ id: 1, role: 'coordinator' }))
+        .send(validBody());
 
       expect(res.status).toBe(201);
-      expect(res.body.id).toBe(99);
-      expect(res.body.message).toBe('Task created');
-
+      expect(res.body).toEqual({ id: 99, message: 'Task created' });
       expect(axios.post).toHaveBeenCalledWith(
         'http://notification-service:3006/notify',
         expect.objectContaining({ userId: 10, eventName: 'new_task' })
@@ -138,47 +126,79 @@ describe('Task Service Unit Tests', () => {
   });
 
   describe('PUT /:id/status', () => {
-    test('nên trả về 400 nếu status không hợp lệ', async () => {
-      const res = await request(app).put('/1/status').send({ status: 'invalid_status' });
+    test('returns 401 without token', async () => {
+      const res = await request(app).put('/1/status').send({ status: 'done' });
+
+      expect(res.status).toBe(401);
+      expect(pool.execute).not.toHaveBeenCalled();
+    });
+
+    test('returns 400 for invalid status', async () => {
+      const res = await request(app)
+        .put('/1/status')
+        .set('Authorization', auth({ id: 10, role: 'artist' }))
+        .send({ status: 'invalid_status' });
+
       expect(res.status).toBe(400);
-      expect(res.body.message).toMatch(/không hợp lệ/i);
+      expect(pool.execute).not.toHaveBeenCalled();
     });
 
-    test('nên trả về 404 nếu không tìm thấy task', async () => {
-      pool.execute.mockResolvedValueOnce([[]]); // currentTaskRows
-      const res = await request(app).put('/1/status').send({ status: 'in_progress' });
+    test('returns 404 when task does not exist', async () => {
+      pool.execute.mockResolvedValueOnce([[]]);
+
+      const res = await request(app)
+        .put('/1/status')
+        .set('Authorization', auth({ id: 10, role: 'artist' }))
+        .send({ status: 'in_progress' });
+
       expect(res.status).toBe(404);
-      expect(res.body.message).toMatch(/Không tìm thấy task/i);
     });
 
-    test('nên update in_progress và gọi order-service', async () => {
-      pool.execute.mockResolvedValueOnce([[{ assigned_to: 10 }]]); // currentTaskRows
-      pool.execute.mockResolvedValueOnce([]); // update
-      pool.execute.mockResolvedValueOnce([[{ order_id: 123 }]]); // get order_id
+    test('returns 403 when user is not owner or privileged role', async () => {
+      pool.execute.mockResolvedValueOnce([[{ assigned_to: 11 }]]);
 
-      axios.put.mockResolvedValueOnce({}); // mock axios update order
+      const res = await request(app)
+        .put('/1/status')
+        .set('Authorization', auth({ id: 10, role: 'artist' }))
+        .send({ status: 'in_progress' });
 
-      const res = await request(app).put('/1/status').send({ status: 'in_progress' });
+      expect(res.status).toBe(403);
+    });
+
+    test('updates to in_progress and notifies order-service', async () => {
+      pool.execute.mockResolvedValueOnce([[{ assigned_to: 10 }]]);
+      pool.execute.mockResolvedValueOnce([{ affectedRows: 1 }]);
+      pool.execute.mockResolvedValueOnce([[{ order_id: 123 }]]);
+      axios.put.mockResolvedValueOnce({});
+
+      const res = await request(app)
+        .put('/1/status')
+        .set('Authorization', auth({ id: 10, role: 'artist' }))
+        .send({ status: 'in_progress' });
+
       expect(res.status).toBe(200);
       expect(res.body.message).toBe('Task status updated');
-
       expect(axios.put).toHaveBeenCalledWith(
         'http://order-service:3002/123/status',
         { status: 'in_progress' },
-        expect.any(Object)
+        expect.objectContaining({
+          headers: { 'X-Internal-Service-Token': process.env.INTERNAL_SERVICE_TOKEN }
+        })
       );
     });
 
-    test('nên update done và thông báo coordinator', async () => {
+    test('updates to done and notifies coordinator', async () => {
       pool.execute.mockResolvedValueOnce([[{ assigned_to: 10 }]]);
-      pool.execute.mockResolvedValueOnce([]);
+      pool.execute.mockResolvedValueOnce([{ affectedRows: 1 }]);
       pool.execute.mockResolvedValueOnce([[{ order_id: 123 }]]);
+      axios.post.mockResolvedValueOnce({});
 
-      axios.post.mockResolvedValueOnce({}); // mock notification
+      const res = await request(app)
+        .put('/1/status')
+        .set('Authorization', auth({ id: 2, role: 'coordinator' }))
+        .send({ status: 'done', coordinatorId: 5 });
 
-      const res = await request(app).put('/1/status').send({ status: 'done', coordinatorId: 5 });
       expect(res.status).toBe(200);
-
       expect(axios.post).toHaveBeenCalledWith(
         'http://notification-service:3006/notify',
         expect.objectContaining({ userId: 5, eventName: 'task_completed' })
@@ -187,61 +207,118 @@ describe('Task Service Unit Tests', () => {
   });
 
   describe('GET /order/:orderId', () => {
-    test('nên trả về 404 nếu order không có task', async () => {
+    test('returns 404 when order has no task', async () => {
       pool.execute.mockResolvedValueOnce([[]]);
+
       const res = await request(app).get('/order/123');
+
       expect(res.status).toBe(404);
     });
 
-    test('nên trả về thông tin task', async () => {
-      pool.execute.mockResolvedValueOnce([[{ id: 99, order_id: 123 }]]);
+    test('returns latest task for order', async () => {
+      pool.execute.mockResolvedValueOnce([[{ id: 99, order_id: 123, status: 'assigned' }]]);
+
       const res = await request(app).get('/order/123');
+
       expect(res.status).toBe(200);
-      expect(res.body.id).toBe(99);
+      expect(res.body).toMatchObject({ id: 99, order_id: 123, status: 'assigned' });
     });
   });
 
   describe('POST /order/:orderId/re-open', () => {
-    test('không làm gì nếu không tìm thấy task', async () => {
-      pool.execute.mockResolvedValueOnce([[]]); // no task
+    test('succeeds without notification when no task exists', async () => {
+      pool.execute.mockResolvedValueOnce([[]]);
+
       const res = await request(app).post('/order/123/re-open').send({ comment: 'fix this' });
-      expect(res.status).toBe(200); // Route handled gracefully internally? wait, handleReOpenTask returns boolean. The route just res.json
+
+      expect(res.status).toBe(200);
       expect(res.body.message).toBe('Task re-opened successfully');
       expect(axios.post).not.toHaveBeenCalled();
     });
 
-    test('đổi thành revision_requested và gửi notify', async () => {
-      pool.execute.mockResolvedValueOnce([[{ id: 99, status: 'done', assigned_to: 10 }]]); // find task
-      pool.execute.mockResolvedValueOnce([{ affectedRows: 1 }]); // update task
+    test('does not update when task is already revision_requested', async () => {
+      pool.execute.mockResolvedValueOnce([[{
+        id: 99,
+        status: 'revision_requested',
+        assigned_to: 10
+      }]]);
 
-      axios.post.mockResolvedValueOnce({}); // mock notification
+      const res = await request(app).post('/order/123/re-open').send({ comment: 'fix this' });
+
+      expect(res.status).toBe(200);
+      expect(pool.execute).toHaveBeenCalledTimes(1);
+      expect(axios.post).not.toHaveBeenCalled();
+    });
+
+    test('reopens task and sends notification', async () => {
+      pool.execute.mockResolvedValueOnce([[{ id: 99, status: 'done', assigned_to: 10 }]]);
+      pool.execute.mockResolvedValueOnce([{ affectedRows: 1 }]);
+      axios.post.mockResolvedValueOnce({});
 
       const res = await request(app).post('/order/123/re-open').send({ comment: 'need fix' });
-      expect(res.status).toBe(200);
 
+      expect(res.status).toBe(200);
       expect(axios.post).toHaveBeenCalledWith(
         'http://notification-service:3006/notify',
-        expect.objectContaining({ eventName: 'task_revision_needed' })
+        expect.objectContaining({ userId: 10, eventName: 'task_revision_needed' })
       );
     });
   });
 
   describe('GET /specialist/:specialistId', () => {
-    test('trả về rỗng nếu không có task', async () => {
-      pool.execute.mockResolvedValueOnce([[]]);
+    test('returns 401 without token', async () => {
       const res = await request(app).get('/specialist/10');
-      expect(res.status).toBe(200);
-      expect(res.body.length).toBe(0);
+
+      expect(res.status).toBe(401);
+      expect(pool.execute).not.toHaveBeenCalled();
     });
 
-    test('lấy danh sách và gọi order-service để enrich', async () => {
-      pool.execute.mockResolvedValueOnce([[{ id: 1, order_id: 123 }]]);
+    test('returns 403 when user cannot view specialist tasks', async () => {
+      const res = await request(app)
+        .get('/specialist/10')
+        .set('Authorization', auth({ id: 11, role: 'artist' }));
+
+      expect(res.status).toBe(403);
+      expect(pool.execute).not.toHaveBeenCalled();
+    });
+
+    test('returns empty list when specialist has no tasks', async () => {
+      pool.execute.mockResolvedValueOnce([[]]);
+
+      const res = await request(app)
+        .get('/specialist/10')
+        .set('Authorization', auth({ id: 10, role: 'artist' }));
+
+      expect(res.status).toBe(200);
+      expect(res.body).toEqual([]);
+    });
+
+    test('enriches tasks with order description', async () => {
+      pool.execute.mockResolvedValueOnce([[{ id: 1, order_id: 123, assigned_to: 10 }]]);
       axios.get.mockResolvedValueOnce({ data: { data: { description: 'Draw logo' } } });
 
-      const res = await request(app).get('/specialist/10');
+      const res = await request(app)
+        .get('/specialist/10')
+        .set('Authorization', auth({ id: 1, role: 'coordinator' }));
+
       expect(res.status).toBe(200);
-      expect(res.body[0].description).toBe('Draw logo');
-      expect(axios.get).toHaveBeenCalledWith('http://order-service:3002/123', expect.any(Object));
+      expect(res.body[0]).toMatchObject({ id: 1, description: 'Draw logo' });
+      expect(axios.get).toHaveBeenCalledWith(
+        'http://order-service:3002/123',
+        expect.objectContaining({ headers: expect.objectContaining({ Authorization: expect.any(String) }) })
+      );
+    });
+
+    test('uses fallback description when order-service fails', async () => {
+      pool.execute.mockResolvedValueOnce([[{ id: 1, order_id: 123, assigned_to: 10 }]]);
+      axios.get.mockRejectedValueOnce(new Error('network down'));
+
+      const res = await request(app)
+        .get('/specialist/10')
+        .set('Authorization', auth({ id: 10, role: 'artist' }));
+
+      expect(res.status).toBe(200);
+      expect(res.body[0].description).toBe('Order description unavailable.');
     });
   });
 });
