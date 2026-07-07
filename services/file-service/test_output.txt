@@ -1,0 +1,33 @@
+
+> file-service@1.0.0 test
+> jest --coverage
+
+PASS tests/unit/file-access-service.test.js
+PASS tests/unit/file-api.test.js
+--------------------------------|---------|----------|---------|---------|----------------------
+File                            | % Stmts | % Branch | % Funcs | % Lines | Uncovered Line #s    
+--------------------------------|---------|----------|---------|---------|----------------------
+All files                       |   91.62 |    77.01 |   93.93 |   92.34 |                      
+ file-service                   |    91.3 |    83.33 |      50 |    91.3 |                      
+  index.js                      |    91.3 |    83.33 |      50 |    91.3 | 42-43                
+ file-service/controllers       |   95.45 |       50 |     100 |     100 |                      
+  fileController.js             |   95.45 |       50 |     100 |     100 | 54                   
+ file-service/middleware        |     100 |      100 |     100 |     100 |                      
+  authMiddleware.js             |     100 |      100 |     100 |     100 |                      
+ file-service/repositories      |     100 |      100 |     100 |     100 |                      
+  fileRepository.js             |     100 |      100 |     100 |     100 |                      
+ file-service/services          |   92.85 |    84.78 |     100 |   93.61 |                      
+  fileAccessService.js          |   90.19 |    78.57 |     100 |   89.58 | 30-33,51,68          
+  fileService.js                |   95.74 |    94.44 |     100 |   97.82 | 16                   
+ file-service/shared            |     100 |    83.33 |     100 |     100 |                      
+  logger.js                     |     100 |    83.33 |     100 |     100 | 30                   
+ file-service/shared/middleware |   78.78 |    52.38 |   85.71 |   78.12 |                      
+  errorHandler.js               |      75 |    58.82 |      80 |   74.07 | 20-21,25-26,37,57-58 
+  responseHandler.js            |     100 |       25 |     100 |     100 | 2                    
+--------------------------------|---------|----------|---------|---------|----------------------
+
+Test Suites: 2 passed, 2 total
+Tests:       33 passed, 33 total
+Snapshots:   0 total
+Time:        1.988 s, estimated 2 s
+Ran all test suites.

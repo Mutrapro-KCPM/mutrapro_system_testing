@@ -50,7 +50,9 @@ const createFileController = ({ pool, logger }) => {
             });
 
             res.setHeader('Content-Disposition', `attachment; filename*=UTF-8''${encodeURIComponent(downloadInfo.fileName)}`);
-            res.sendFile(downloadInfo.absolutePath, next);
+            res.sendFile(downloadInfo.absolutePath, (err) => {
+                if (err) next(err);
+            });
         })
     );
 

@@ -1,4 +1,4 @@
-﻿const express = require('express');
+const express = require('express');
 const mysql = require('mysql2/promise');
 const cors = require('cors');
 require('dotenv').config({ path: '../.env', quiet: true });
@@ -38,7 +38,11 @@ app.use(notFound);
 app.use(errorHandler);
 
 const PORT = process.env.PORT || 3004;
-app.listen(PORT, () => {
-    logger.info(`File Service is running on port ${PORT}`);
-});
+if (require.main === module) {
+    app.listen(PORT, () => {
+        logger.info(`File Service is running on port ${PORT}`);
+    });
+}
+
+module.exports = app;
 
