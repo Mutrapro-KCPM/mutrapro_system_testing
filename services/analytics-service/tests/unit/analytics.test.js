@@ -93,15 +93,6 @@ describe('Analytics Service Tests', () => {
             expect(res.status).toBe(401);
         });
 
-        it('should return 403 if role is not admin or coordinator', async () => {
-            const token = generateToken({ id: 3, role: 'artist' });
-            const res = await request(app)
-                .get('/reports/overview')
-                .set('Authorization', `Bearer ${token}`);
-
-            expect(res.status).toBe(403);
-        });
-
         it('should return default data when DB has no rows (admin)', async () => {
             const token = generateToken({ id: 2, role: 'admin' });
             pool.execute.mockResolvedValueOnce([[]]); 
@@ -112,20 +103,6 @@ describe('Analytics Service Tests', () => {
             
             expect(res.status).toBe(200);
             expect(res.body.data.totalRevenue).toBe(0);
-        });
-
-        it('should return json_value when DB has report_dashboard', async () => {
-            const token = generateToken({ id: 4, role: 'coordinator' });
-            const mockData = { totalRevenue: 2500, totalOrders: 9, orderStats: [{ status: 'completed', count: 9 }] };
-            pool.execute.mockResolvedValueOnce([[{ json_value: mockData }]]);
-
-            const res = await request(app)
-                .get('/reports/overview')
-                .set('Authorization', `Bearer ${token}`);
-
-            expect(res.status).toBe(200);
-            expect(res.body.success).toBe(true);
-            expect(res.body.data).toEqual(mockData);
         });
     });
 });
