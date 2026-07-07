@@ -237,14 +237,10 @@ app.get('/specialist/:specialistId', authMiddleware, asyncHandler(async (req, re
 }));
 
 // === (MQ) BƯỚC 4: THÊM HÀM LẮNG NGHE RABBITMQ ===
-const rabbitMqUser = encodeURIComponent(process.env.RABBITMQ_DEFAULT_USER || 'user');
-const rabbitMqPass = encodeURIComponent(process.env.RABBITMQ_DEFAULT_PASS || '');
-const rabbitMqHost = process.env.RABBITMQ_HOST || 'rabbitmq';
-const amqpUrl = process.env.RABBITMQ_URL || `amqp://${rabbitMqUser}:${rabbitMqPass}@${rabbitMqHost}`;
+const amqpUrl = 'amqp://user:password@rabbitmq';
 const exchangeName = 'mutrapro_events';
 const queueName = 'task_service_queue'; // Tên hàng đợi riêng của service này
 
-/* istanbul ignore next */
 async function startMessageListener() {
   let connection;
   try {
@@ -303,7 +299,6 @@ app.use(notFound);
 app.use(errorHandler);
 
 const PORT = process.env.PORT || 3003;
-/* istanbul ignore next */
 if (require.main === module) {
   app.listen(PORT, () => {
     logger.info(`Task Service is running on port ${PORT}`);
@@ -311,4 +306,4 @@ if (require.main === module) {
   });
 }
 
-module.exports = app; // Để export phục vụ test
+module.exports = app;
