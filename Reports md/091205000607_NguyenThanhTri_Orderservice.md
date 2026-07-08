@@ -352,10 +352,10 @@ Hàm này đóng vai trò "người gác cổng" đầu tiên, đảm bảo mọ
 **Đồ thị Luồng điều khiển (CFG):**
 ```mermaid
 graph TD
-    N1{Node 1: isinstance str?}
-    N2{Node 2: in allowed_types?}
-    N3{Node 3: isinstance desc str?}
-    N4{Node 4: len < 1 or len > 2000?}
+    N1{Node 1: Tên dịch vụ là chữ?}
+    N2{Node 2: Dịch vụ hợp lệ?}
+    N3{Node 3: Mô tả là chữ?}
+    N4{Node 4: Vi phạm độ dài 1-2000?}
     N5([Node 5: Return False])
     N6([Node 6: Return True])
     N7((Node 7: End))
@@ -384,15 +384,15 @@ API Cập nhật trạng thái (`PUT /orders/:id/status`) là bộ não điều 
 graph TD
     N1([Bắt đầu kiểm duyệt]) --> N2{Node 2: status hợp lệ?}
     N2 -- False (Dữ liệu rác) --> N_Err1([Throw 400 Bad Request])
-    N2 -- True --> N3{Node 3: orderRows == 0?}
+    N2 -- True --> N3{Node 3: Không tìm thấy đơn?}
     N3 -- True (Không tìm thấy) --> N_Err2([Throw 404 Not Found])
-    N3 -- False --> N4{Node 4: status == 'paid'?}
+    N3 -- False --> N4{Node 4: Cố tình cập nhật Paid?}
     N4 -- True (Thao túng Payment) --> N_Err3([Throw 400 Bad Request])
-    N4 -- False --> N5{Node 5: current == 'cancelled'?}
+    N4 -- False --> N5{Node 5: Đơn đã bị hủy?}
     N5 -- True (Hồi sinh đơn hủy) --> N_Err4([Throw 400 Bad Request])
-    N5 -- False --> N6{Node 6: status != current?}
+    N5 -- False --> N6{Node 6: Có đổi trạng thái mới?}
     N6 -- False (Giữ nguyên) --> N8([UPDATE DB - HTTP 200])
-    N6 -- True (Có thay đổi) --> N7{Node 7: allowedTransitions?}
+    N6 -- True (Có thay đổi) --> N7{Node 7: Chuyển đổi hợp lệ?}
     N7 -- False (Nhảy cóc trạng thái) --> N_Err5([Throw 400 State Machine Error])
     N7 -- True (Hợp lệ) --> N8
 
@@ -415,13 +415,13 @@ Khác với các thao tác thông thường, API Thanh toán (`POST /orders/:id/
 **Đồ thị Luồng điều khiển (CFG):**
 ```mermaid
 graph TD
-    N1([Bắt đầu kiểm duyệt]) --> N2{Node 2: orderRows == 0?}
+    N1([Bắt đầu kiểm duyệt]) --> N2{Node 2: Đơn hàng tồn tại?}
     N2 -- True (Không tìm thấy) --> N_Err1([Throw 404 Not Found])
-    N2 -- False (Tồn tại) --> N3{Node 3: Không đúng Owner?}
+    N2 -- False (Tồn tại) --> N3{Node 3: Đúng chủ đơn (Owner)?}
     N3 -- True (Lỗi IDOR) --> N_Err2([Throw 403 Forbidden])
-    N3 -- False (Đúng chủ) --> N4{Node 4: amount != price?}
+    N3 -- False (Đúng chủ) --> N4{Node 4: Nạp sai số tiền?}
     N4 -- True (Sai số tiền) --> N_Err3([Throw 400 Bad Request])
-    N4 -- False (Khớp số tiền) --> N5{Node 5: status != completed/fixed?}
+    N4 -- False (Khớp số tiền) --> N5{Node 5: Đơn đã hoàn thành?}
     N5 -- True (Sai quy trình) --> N_Err4([Rollback & Throw 400])
     N5 -- False (Hợp lệ) --> N6([COMMIT Transaction - HTTP 200])
 
@@ -443,13 +443,13 @@ Cuối cùng, API gửi Đánh giá (`POST /orders/:id/feedback`) cũng được
 **Đồ thị Luồng điều khiển (CFG):**
 ```mermaid
 graph TD
-    N1([Bắt đầu kiểm duyệt]) --> N2{Node 2: orderRows == 0?}
+    N1([Bắt đầu kiểm duyệt]) --> N2{Node 2: Đơn hàng tồn tại?}
     N2 -- True (Không tìm thấy) --> N_Err1([Throw 404 Not Found])
-    N2 -- False (Tồn tại) --> N3{Node 3: Không đúng Owner?}
+    N2 -- False (Tồn tại) --> N3{Node 3: Đúng chủ đơn (Owner)?}
     N3 -- True (Lỗi IDOR) --> N_Err2([Throw 403 Forbidden])
-    N3 -- False (Đúng chủ) --> N4{Node 4: status != 'paid'?}
+    N3 -- False (Đúng chủ) --> N4{Node 4: Đơn đã thanh toán?}
     N4 -- True (Chưa thanh toán) --> N_Err3([Throw 400 Bad Request])
-    N4 -- False (Đã thanh toán) --> N5{Node 5: feedback_exist > 0?}
+    N4 -- False (Đã thanh toán) --> N5{Node 5: Đã từng đánh giá?}
     N5 -- True (Đã review trước đó) --> N_Err4([Throw 409 Conflict])
     N5 -- False (Chưa review) --> N6([INSERT Feedback - HTTP 201])
 
