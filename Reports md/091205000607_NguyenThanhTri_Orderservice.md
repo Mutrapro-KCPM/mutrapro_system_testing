@@ -43,7 +43,7 @@ Dựa trên cấu trúc phân rã công việc (Work Breakdown Structure - WBS),
 - **WBS & Test Estimation (Nỗ lực kiểm thử - Effort):**
   - **Task 1: Lập Test Plan, Vẽ CFG & BVA/EP Design** - Ước lượng: **8 man-hours**.
   - **Task 2: Lập trình Automation Script Postman & 64 Jest Unit Tests** - Ước lượng: **20 man-hours**.
-  - **Task 3: Đo lường Coverage & Phân tích 3 Defect Report** - Ước lượng: **8 man-hours**.
+  - **Task 3: Đo lường Coverage & Phân tích 4 Defect Report** - Ước lượng: **8 man-hours**.
 - **Tổng nỗ lực dự kiến (Total Effort):** **36 man-hours**. Tiến độ được theo dõi chặt chẽ theo từng Task để đảm bảo Go-live đúng hạn.
 
 ### 1.4. Đánh giá rủi ro (Risks and Contingencies)
@@ -78,6 +78,7 @@ Dựa trên cấu trúc phân rã công việc (Work Breakdown Structure - WBS),
 | `GET` | `/orders/:id/feedback` | Kiểm tra đơn đã có feedback chưa| Token, Role: `admin`, `coordinator` |
 | `POST` | `/payments` | Khởi tạo giao dịch payment | Token, Role: `customer` (Owner) |
 | `GET` | `/payments` (⭐) | Lấy ds giao dịch (Phân trang) | Token, Role: `admin`, `coordinator` |
+| `GET` | `/admin/payments` | Admin lấy tất cả giao dịch | Token, Role: `admin` |
 | `GET` | `/payments/:id` | Xem chi tiết giao dịch | Token, Owner hoặc Admin/Coordinator |
 | `POST` | `/payments/:id/mock-success` | Giả lập thanh toán thành công (Test/Dev) | Token, Owner hoặc Admin |
 | `POST` | `/payments/:id/mock-fail` | Giả lập thanh toán thất bại (Test/Dev) | Token, Owner hoặc Admin |
@@ -86,6 +87,10 @@ Dựa trên cấu trúc phân rã công việc (Work Breakdown Structure - WBS),
 
 <a name="phan-2"></a>
 ## PHẦN 2. THIẾT KẾ TEST CASE (TEST DESIGN)
+
+> **Lưu ý Về "Khoảng trống thiết kế" (Design Gap) trong Giá trị biên (BVA):**
+> Về mặt lý thuyết (Academic Theory), kỹ thuật BVA yêu cầu liệt kê 5 điểm cho mỗi biến (`min`, `min+`, `nominal`, `max-`, `max`) để đảm bảo tính toàn vẹn. Vì vậy, các bảng phân tích bên dưới vẫn liệt kê đủ 5 điểm lý thuyết.
+> Tuy nhiên, trong thực tiễn triển khai (Industry Practice), Test Case cho `min+` và `max-` thường bị lược bỏ nhằm **tối ưu hóa nỗ lực kiểm thử (Test Optimization)**. Lý do là `min+`, `max-` và `nominal` đều nằm trong cùng một Lớp tương đương hợp lệ. Lược bỏ 2 điểm này (chuyển sang BVA 3 điểm) giúp loại bỏ các Test Case dư thừa, giảm tải bộ test mà không làm suy giảm hiệu quả bắt bug. Đây là lý do báo cáo vẫn giữ bảng thiết kế 5 điểm nhưng bộ Test Case thực thi chỉ ánh xạ 3 điểm.
 
 ### 2.1. A.1 Khởi tạo Đơn hàng (POST `/orders`)
 **Tiền điều kiện:** Người dùng đã đăng nhập với vai trò `customer` và có Token hợp lệ (`{{customer_token}}`).
@@ -109,14 +114,14 @@ Với `description` (length):
 
 | TC ID | Tóm tắt (Summary) | Tiền điều kiện | Các bước thực hiện (Test Steps) | Dữ liệu đầu vào (Input) | Kết quả mong đợi (Expected) | Kỹ thuật (Tag) | Pass/Fail |
 |---|---|---|---|---|---|---|---|
-| TC-1.1 | **[EP] ORD-CRE-01 - Khởi tạo hợp lệ với transcription**<br>_(Bắt lỗi ranh giới)_ | Role `customer` | 1. Gọi POST `/orders`<br>2. Gửi body JSON chuẩn | `service_type`="transcription"<br>`description` (100 ký tự) | HTTP 201 Created. Đơn hàng được tạo thành công. | EP | **PASS** |
-| TC-1.2 | **[BVA] ORD-CRE-02 - Khởi tạo hợp lệ tại biên min (1 ký tự)**<br>_(Bắt lỗi ranh giới)_ | Role `customer` | 1. Gọi POST `/orders`<br>2. Nhập mô tả min | `service_type`="arrangement"<br>`description` (1 ký tự) | HTTP 201 Created. | BVA | **PASS** |
-| TC-1.3 | **[BVA] ORD-CRE-03 - Khởi tạo hợp lệ tại biên max (2000 ký tự)**<br>_(Bắt lỗi ranh giới)_ | Role `customer` | 1. Gọi POST `/orders`<br>2. Nhập mô tả max | `service_type`="recording"<br>`description` (2000 ký tự) | HTTP 201 Created. | BVA | **PASS** |
-| TC-1.4 | **[EP] ORD-CRE-04 - Lỗi rỗng service_type**<br>_(Bắt lỗi ranh giới)_ | Role `customer` | 1. Gọi POST `/orders`<br>2. Bỏ trống loại dịch vụ | `service_type`=""<br>`description` (100 ký tự) | HTTP 400 Bad Request. Báo lỗi dịch vụ không hợp lệ. | EP | **PASS** |
-| TC-1.5 | **[EP] ORD-CRE-05 - Lỗi sai định dạng service (Mảng)**<br>_(Bắt lỗi ranh giới)_ | Role `customer` | 1. Gọi POST `/orders`<br>2. Gửi type dạng mảng | `service_type`=["transcription"]<br>`description` (100) | HTTP 400 Bad Request. Báo lỗi định dạng. | EP | **PASS** |
-| TC-1.6 | **[BVA] ORD-CRE-06 - Lỗi thiếu mô tả**<br>_(Bắt lỗi ranh giới)_ | Role `customer` | 1. Gọi POST `/orders`<br>2. Nhập mô tả rỗng | `service_type`="recording"<br>`description` (0 ký tự) | HTTP 400 Bad Request. Lỗi thiếu mô tả. | BVA | **PASS** |
-| TC-1.7 | **[EP] ORD-CRE-07 - Lỗi mô tả toàn khoảng trắng**<br>_(Bắt lỗi ranh giới)_ | Role `customer` | 1. Gọi POST `/orders`<br>2. Chỉ nhập khoảng trắng | `service_type`="recording"<br>`description`="   " | HTTP 400 Bad Request. Lỗi mô tả trống. | EP | **PASS** |
-| TC-1.8 | **[BVA] ORD-CRE-08 - Lỗi mô tả vượt biên max (2001 ký tự)**<br>_(Bắt lỗi ranh giới)_ | Role `customer` | 1. Gọi POST `/orders`<br>2. Nhập mô tả quá dài | `service_type`="transcription"<br>`description` (2001 ký tự) | HTTP 400 Bad Request. Lỗi vượt độ dài tối đa. | BVA | **PASS** |
+| TC-1.1 | **[HP] ORD-CRE-01 - Khởi tạo hợp lệ với transcription**<br>_(Khởi tạo hợp lệ)_ | Role `customer` | 1. Gọi POST `/orders`<br>2. Gửi body JSON chuẩn | `service_type`="transcription"<br>`description` (100 ký tự) | HTTP 201 Created. Đơn hàng được tạo thành công. | V1.1, B1.3 | **PASS** |
+| TC-1.2 | **[BVA] ORD-CRE-02 - Khởi tạo hợp lệ tại biên min (1 ký tự)**<br>_(Bắt lỗi ranh giới)_ | Role `customer` | 1. Gọi POST `/orders`<br>2. Nhập mô tả min | `service_type`="arrangement"<br>`description` (1 ký tự) | HTTP 201 Created. | V1.1, B1.1 | **PASS** |
+| TC-1.3 | **[BVA] ORD-CRE-03 - Khởi tạo hợp lệ tại biên max (2000 ký tự)**<br>_(Bắt lỗi ranh giới)_ | Role `customer` | 1. Gọi POST `/orders`<br>2. Nhập mô tả max | `service_type`="recording"<br>`description` (2000 ký tự) | HTTP 201 Created. | V1.1, B1.5 | **PASS** |
+| TC-1.4 | **[EP] ORD-CRE-04 - Lỗi rỗng service_type**<br>_(Lỗi thiếu tham số)_ | Role `customer` | 1. Gọi POST `/orders`<br>2. Bỏ trống loại dịch vụ | `service_type`=""<br>`description` (100 ký tự) | HTTP 400 Bad Request. Báo lỗi dịch vụ không hợp lệ. | X1.1 | **PASS** |
+| TC-1.5 | **[EP] ORD-CRE-05 - Lỗi sai định dạng service (Mảng)**<br>_(Lỗi kiểu dữ liệu)_ | Role `customer` | 1. Gọi POST `/orders`<br>2. Gửi type dạng mảng | `service_type`=["transcription"]<br>`description` (100) | HTTP 400 Bad Request. Báo lỗi định dạng. | X1.1 | **PASS** |
+| TC-1.6 | **[BVA] ORD-CRE-06 - Lỗi thiếu mô tả**<br>_(Bắt lỗi ranh giới)_ | Role `customer` | 1. Gọi POST `/orders`<br>2. Nhập mô tả rỗng | `service_type`="recording"<br>`description` (0 ký tự) | HTTP 400 Bad Request. Lỗi thiếu mô tả. | X1.2 | **PASS** |
+| TC-1.7 | **[EP] ORD-CRE-07 - Lỗi mô tả toàn khoảng trắng**<br>_(Lỗi dữ liệu trắng)_ | Role `customer` | 1. Gọi POST `/orders`<br>2. Chỉ nhập khoảng trắng | `service_type`="recording"<br>`description`="   " | HTTP 400 Bad Request. Lỗi mô tả trống. | X1.2 | **PASS** |
+| TC-1.8 | **[BVA] ORD-CRE-08 - Lỗi mô tả vượt biên max (2001 ký tự)**<br>_(Bắt lỗi ranh giới)_ | Role `customer` | 1. Gọi POST `/orders`<br>2. Nhập mô tả quá dài | `service_type`="transcription"<br>`description` (2001 ký tự) | HTTP 400 Bad Request. Lỗi vượt độ dài tối đa. | X1.3 | **PASS** |
 | TC-1.9 | **[SEC] ORD-CRE-09 - Lỗi bảo mật: Không có token (401)**<br>_(Kiểm tra bảo mật)_ | Không có token | 1. Gọi POST `/orders` không gửi kèm Header Authorization | `service_type`="transcription"<br>`description` (100 ký tự) | HTTP 401 Unauthorized. Từ chối truy cập. | Security | **PASS** |
 | TC-1.10 | **[SEC] ORD-CRE-10 - Lỗi bảo mật: Request với Token giả mạo**<br>_(Kiểm tra bảo mật)_ | Token giả mạo | 1. Gọi POST `/orders` với token sai chữ ký | `service_type`="transcription"<br>`description` (100 ký tự) | HTTP 401 hoặc 403 (Unauthorized / Forbidden). | Security | **PASS** |
 
@@ -166,14 +171,14 @@ stateDiagram-v2
 
 | TC ID | Tóm tắt (Summary) | Tiền điều kiện | Các bước thực hiện | Dữ liệu đầu vào (Input) | Kết quả mong đợi (Expected) | Kỹ thuật (Tag) | Pass/Fail |
 |---|---|---|---|---|---|---|---|
-| TC-2.1 | **[HP] ORD-UPD-01 - Cập nhật hợp lệ (pending -> assigned)**<br>_(Cập nhật hợp lệ)_ | Đơn `pending` | 1. Gọi PUT `/orders/:id/status` | `status`="assigned" | HTTP 200 OK. Đổi trạng thái thành công. | Happy Path | **PASS** |
-| TC-2.2 | **[HP] ORD-UPD-02 - Cập nhật hợp lệ (assigned -> in_progress)**<br>_(Cập nhật hợp lệ)_ | Đơn `assigned` | 1. Gọi PUT `/orders/:id/status` | `status`="in_progress" | HTTP 200 OK. | Happy Path | **PASS** |
-| TC-2.3 | **[EP] ORD-UPD-03 - Lỗi cập nhật trạng thái không tồn tại**<br>_(Lỗi trạng thái sai)_ | Đơn `pending` | 1. Gọi PUT `/orders/:id/status` | `status`="invalid_status" | HTTP 400 Bad Request. Lỗi trạng thái không hợp lệ. | EP | **PASS** |
-| TC-2.4 | **[EP] ORD-UPD-04 - Lỗi cập nhật status bị rỗng**<br>_(Lỗi status rỗng)_ | Đơn `pending` | 1. Gọi PUT `/orders/:id/status` | `status`="" | HTTP 400 Bad Request. Lỗi thiếu status. | EP | **PASS** |
-| TC-2.5 | **[EP] ORD-UPD-05 - Lỗi cập nhật cấm vào paid**<br>_(Lỗi cập nhật cấm paid)_ | Đơn `pending` | 1. Gọi PUT `/orders/:id/status` | `status`="paid" | HTTP 400 Bad Request. Không được cập nhật paid qua API này. | EP | **PASS** |
-| TC-2.6 | **[EP] ORD-UPD-06 - Lỗi nhảy cóc trạng thái (pending -> completed)**<br>_(Lỗi nhảy cóc trạng thái)_ | Đơn `pending` | 1. Gọi PUT `/orders/:id/status` | `status`="completed" | HTTP 400 Bad Request. Lỗi nhảy cóc trạng thái. | EP | **PASS** |
-| TC-2.7 | **[HP] ORD-UPD-07 - Cập nhật hợp lệ (completed -> fixed)**<br>_(Cập nhật hợp lệ)_ | Đơn `completed` | 1. Gọi PUT `/orders/:id/status` | `status`="fixed" | HTTP 200 OK. | Happy Path | **PASS** |
-| TC-2.8 | **[EP] ORD-UPD-08 - Lỗi cập nhật đơn hàng đã hủy**<br>_(Lỗi đơn đã hủy)_ | Đơn `cancelled` | 1. Gọi PUT `/orders/:id/status` | `status`="completed" | HTTP 400 Bad Request. Không thể cập nhật đơn đã hủy. | EP | **PASS** |
+| TC-2.1 | **[HP] ORD-UPD-01 - Cập nhật hợp lệ (pending -> assigned)**<br>_(Cập nhật hợp lệ)_ | Đơn `pending` | 1. Gọi PUT `/orders/:id/status` | `status`="assigned" | HTTP 200 OK. Đổi trạng thái thành công. | V2.1, V2.2 | **PASS** |
+| TC-2.2 | **[HP] ORD-UPD-02 - Cập nhật hợp lệ (assigned -> in_progress)**<br>_(Cập nhật hợp lệ)_ | Đơn `assigned` | 1. Gọi PUT `/orders/:id/status` | `status`="in_progress" | HTTP 200 OK. | V2.1, V2.2 | **PASS** |
+| TC-2.3 | **[EP] ORD-UPD-03 - Lỗi cập nhật trạng thái không tồn tại**<br>_(Lỗi trạng thái sai)_ | Đơn `pending` | 1. Gọi PUT `/orders/:id/status` | `status`="invalid_status" | HTTP 400 Bad Request. Lỗi trạng thái không hợp lệ. | X2.1 | **PASS** |
+| TC-2.4 | **[EP] ORD-UPD-04 - Lỗi cập nhật status bị rỗng**<br>_(Lỗi status rỗng)_ | Đơn `pending` | 1. Gọi PUT `/orders/:id/status` | `status`="" | HTTP 400 Bad Request. Lỗi thiếu status. | X2.1 | **PASS** |
+| TC-2.5 | **[EP] ORD-UPD-05 - Lỗi cập nhật cấm vào paid**<br>_(Lỗi cập nhật cấm paid)_ | Đơn `pending` | 1. Gọi PUT `/orders/:id/status` | `status`="paid" | HTTP 400 Bad Request. Không được cập nhật paid qua API này. | X2.2 | **PASS** |
+| TC-2.6 | **[EP] ORD-UPD-06 - Lỗi nhảy cóc trạng thái (pending -> completed)**<br>_(Lỗi nhảy cóc trạng thái)_ | Đơn `pending` | 1. Gọi PUT `/orders/:id/status` | `status`="completed" | HTTP 400 Bad Request. Lỗi nhảy cóc trạng thái. | X2.3 | **PASS** |
+| TC-2.7 | **[HP] ORD-UPD-07 - Cập nhật hợp lệ (completed -> fixed)**<br>_(Cập nhật hợp lệ)_ | Đơn `completed` | 1. Gọi PUT `/orders/:id/status` | `status`="fixed" | HTTP 200 OK. | V2.1, V2.2 | **PASS** |
+| TC-2.8 | **[EP] ORD-UPD-08 - Lỗi cập nhật đơn hàng đã hủy**<br>_(Lỗi đơn đã hủy)_ | Đơn `cancelled` | 1. Gọi PUT `/orders/:id/status` | `status`="completed" | HTTP 400 Bad Request. Không thể cập nhật đơn đã hủy. | X2.3 | **PASS** |
 | TC-2.9 | **[SEC] ORD-UPD-09 - Lỗi bảo mật: Token customer cập nhật trạng thái (403)**<br>_(Lỗi phân quyền đổi status)_ | Token `customer` | 1. Dùng token Customer gọi status API | `status`="assigned" | HTTP 403 Forbidden. Lỗi phân quyền. | Security | **PASS** |
 
 ### 2.3. A.3 Yêu cầu Chỉnh sửa (POST `/orders/:id/request-revision`)
@@ -191,19 +196,19 @@ Với `comment` (length):
 
 | Biến đầu vào | min | min+ | nominal | max- | max | Tag biên |
 |---|---:|---:|---:|---:|---:|---|
-| `comment` | 1 | 2 | 200 | 999 | 1000 | B3.1 -> B3.5 |
+| `comment` | 1 | 2 | 250 | 999 | 1000 | B3.1 -> B3.5 |
 
 **Bảng Thiết kế Test Case (Formal):**
 
 | TC ID | Tóm tắt (Summary) | Tiền điều kiện | Các bước thực hiện | Dữ liệu đầu vào (Input) | Kết quả mong đợi (Expected) | Kỹ thuật (Tag) | Pass/Fail |
 |---|---|---|---|---|---|---|---|
-| TC-3.1 | **[HP] ORD-REV-01 - Yêu cầu hợp lệ cho đơn completed**<br>_(Bắt lỗi ranh giới)_ | Đơn `completed` | 1. POST `/orders/:id/request-revision` | `comment` (250 char) | HTTP 200 OK. Yêu cầu thành công. | Happy Path | **PASS** |
-| TC-3.2 | **[BVA] ORD-REV-02 - Yêu cầu hợp lệ cho đơn fixed (tại min)**<br>_(Bắt lỗi ranh giới)_ | Đơn `fixed` | 1. POST `/orders/:id/request-revision` | `comment` (1 char) | HTTP 200 OK. Yêu cầu thành công. | BVA | **PASS** |
-| TC-3.3 | **[BVA] ORD-REV-03 - Yêu cầu hợp lệ tại max**<br>_(Bắt lỗi ranh giới)_ | Đơn `fixed` | 1. POST `/orders/:id/request-revision` | `comment` (1000 char) | HTTP 200 OK. | BVA | **PASS** |
-| TC-3.4 | **[BVA] ORD-REV-04 - Lỗi comment rỗng**<br>_(Bắt lỗi ranh giới)_ | Đơn `completed` | 1. POST `/orders/:id/request-revision` | `comment` (0 char) | HTTP 400 Bad Request. Lỗi rỗng. | BVA | **PASS** |
-| TC-3.5 | **[BVA] ORD-REV-05 - Lỗi comment vượt mức max**<br>_(Bắt lỗi ranh giới)_ | Đơn `completed` | 1. POST `/orders/:id/request-revision` | `comment` (1001 char) | HTTP 400 Bad Request. Quá độ dài. | BVA | **PASS** |
-| TC-3.6 | **[EP] ORD-REV-06 - Lỗi sai trạng thái đơn hàng (pending)**<br>_(Bắt lỗi ranh giới)_ | Đơn `pending` | 1. POST `/orders/:id/request-revision` | `comment` (250 char) | HTTP 400 Bad Request. Lỗi sai trạng thái. | EP | **PASS** |
-| TC-3.7 | **[EP] ORD-REV-07 - Lỗi sai trạng thái đơn hàng (paid)**<br>_(Bắt lỗi ranh giới)_ | Đơn `paid` | 1. POST `/orders/:id/request-revision` | `comment` (250 char) | HTTP 400 Bad Request. Lỗi sai trạng thái. | EP | **PASS** |
+| TC-3.1 | **[HP] ORD-REV-01 - Yêu cầu hợp lệ cho đơn completed**<br>_(Bắt lỗi ranh giới)_ | Đơn `completed` | 1. POST `/orders/:id/request-revision` | `comment` (250 char) | HTTP 200 OK. Yêu cầu thành công. | V3.1, V3.2, B3.3 | **PASS** |
+| TC-3.2 | **[BVA] ORD-REV-02 - Yêu cầu hợp lệ cho đơn fixed (tại min)**<br>_(Bắt lỗi ranh giới)_ | Đơn `fixed` | 1. POST `/orders/:id/request-revision` | `comment` (1 char) | HTTP 200 OK. Yêu cầu thành công. | V3.2, B3.1 | **PASS** |
+| TC-3.3 | **[BVA] ORD-REV-03 - Yêu cầu hợp lệ tại max**<br>_(Bắt lỗi ranh giới)_ | Đơn `fixed` | 1. POST `/orders/:id/request-revision` | `comment` (1000 char) | HTTP 200 OK. | V3.2, B3.5 | **PASS** |
+| TC-3.4 | **[BVA] ORD-REV-04 - Lỗi comment rỗng**<br>_(Bắt lỗi ranh giới)_ | Đơn `completed` | 1. POST `/orders/:id/request-revision` | `comment` (0 char) | HTTP 400 Bad Request. Lỗi rỗng. | X3.1 | **PASS** |
+| TC-3.5 | **[BVA] ORD-REV-05 - Lỗi comment vượt mức max**<br>_(Bắt lỗi ranh giới)_ | Đơn `completed` | 1. POST `/orders/:id/request-revision` | `comment` (1001 char) | HTTP 400 Bad Request. Quá độ dài. | X3.2 | **PASS** |
+| TC-3.6 | **[EP] ORD-REV-06 - Lỗi sai trạng thái đơn hàng (pending)**<br>_(Bắt lỗi ranh giới)_ | Đơn `pending` | 1. POST `/orders/:id/request-revision` | `comment` (250 char) | HTTP 400 Bad Request. Lỗi sai trạng thái. | V3.1, X3.3 | **PASS** |
+| TC-3.7 | **[EP] ORD-REV-07 - Lỗi sai trạng thái đơn hàng (paid)**<br>_(Bắt lỗi ranh giới)_ | Đơn `paid` | 1. POST `/orders/:id/request-revision` | `comment` (250 char) | HTTP 400 Bad Request. Lỗi sai trạng thái. | V3.1, X3.3 | **PASS** |
 
 ### 2.4. A.4 Thanh toán Đơn hàng (POST `/orders/:id/pay`)
 **Tiền điều kiện:** Đơn hàng có ID động lưu trong `{{test_order_id}}` tồn tại. User là `customer` chủ đơn (`{{customer_token}}`).
@@ -226,16 +231,16 @@ Dựa trên sự chênh lệch (Delta) giữa `amount` và `order_price`: `Delta
 
 | TC ID | Tóm tắt (Summary) | Tiền điều kiện | Các bước thực hiện | Dữ liệu đầu vào (Input) | Kết quả mong đợi (Expected) | Kỹ thuật (Tag) | Pass/Fail |
 |---|---|---|---|---|---|---|---|
-| TC-4.1 | **[BVA] ORD-PAY-01 - Thanh toán hợp lệ đúng số tiền**<br>_(Thanh toán hợp lệ)_ | Đơn `completed` | 1. POST `/orders/:id/pay` | `amount`=300000 | HTTP 200 OK. Thanh toán thành công. | BVA | **PASS** |
-| TC-4.2 | **[BVA] ORD-PAY-02 - Thanh toán hợp lệ cho đơn fixed**<br>_(Thanh toán hợp lệ)_ | Đơn `fixed` | 1. POST `/orders/:id/pay` | `amount`=300000 | HTTP 200 OK. | BVA | **PASS** |
-| TC-4.3 | **[BVA] ORD-PAY-03 - Lỗi thanh toán hụt tiền**<br>_(Lỗi thanh toán hụt tiền)_ | Đơn `completed` | 1. POST `/orders/:id/pay` | `amount`=299999 | HTTP 400 Bad Request. Số tiền thanh toán không khớp. | BVA | **PASS** |
-| TC-4.4 | **[BVA] ORD-PAY-04 - Lỗi thanh toán thừa tiền**<br>_(Lỗi thanh toán thừa tiền)_ | Đơn `completed` | 1. POST `/orders/:id/pay` | `amount`=300001 | HTTP 400 Bad Request. Số tiền thanh toán không khớp. | BVA | **PASS** |
-| TC-4.5 | **[BVA] ORD-PAY-05 - Lỗi thanh toán sai số thập phân**<br>_(Lỗi số thập phân)_ | Đơn `completed` | 1. POST `/orders/:id/pay` | `amount`=300000.001 | HTTP 400 Bad Request. Lỗi số thập phân. | BVA | **PASS** |
-| TC-4.6 | **[EP] ORD-PAY-06 - Lỗi số âm**<br>_(Lỗi số tiền âm)_ | Đơn `completed` | 1. POST `/orders/:id/pay` | `amount`=-300000 | HTTP 400 Bad Request. Lỗi số tiền không hợp lệ. | EP | **PASS** |
-| TC-4.7 | **[EP] ORD-PAY-07 - Lỗi thanh toán đơn chưa xong**<br>_(Lỗi thanh toán đơn chưa xong)_ | Đơn `pending` | 1. POST `/orders/:id/pay` | `amount`=300000 | HTTP 400 Bad Request. Đơn hàng không hợp lệ để thanh toán. | EP | **PASS** |
-| TC-4.8 | **[EP] ORD-PAY-08 - Lỗi thanh toán đơn đã trả rồi**<br>_(Lỗi đơn đã thanh toán)_ | Đơn `paid` | 1. POST `/orders/:id/pay` | `amount`=300000 | HTTP 400 Bad Request. Đơn hàng không hợp lệ để thanh toán. | EP | **PASS** |
+| TC-4.1 | **[BVA] ORD-PAY-01 - Thanh toán hợp lệ đúng số tiền**<br>_(Thanh toán hợp lệ)_ | Đơn `completed` | 1. POST `/orders/:id/pay` | `amount`=300000 | HTTP 200 OK. Thanh toán thành công. | V4.1, V4.2, B4.3 | **PASS** |
+| TC-4.2 | **[BVA] ORD-PAY-02 - Thanh toán hợp lệ cho đơn fixed**<br>_(Thanh toán hợp lệ)_ | Đơn `fixed` | 1. POST `/orders/:id/pay` | `amount`=300000 | HTTP 200 OK. | V4.1, V4.2, B4.3 | **PASS** |
+| TC-4.3 | **[BVA] ORD-PAY-03 - Lỗi thanh toán hụt tiền**<br>_(Lỗi thanh toán hụt tiền)_ | Đơn `completed` | 1. POST `/orders/:id/pay` | `amount`=299999 | HTTP 400 Bad Request. Số tiền thanh toán không khớp. | X4.1, B4.1 | **PASS** |
+| TC-4.4 | **[BVA] ORD-PAY-04 - Lỗi thanh toán thừa tiền**<br>_(Lỗi thanh toán thừa tiền)_ | Đơn `completed` | 1. POST `/orders/:id/pay` | `amount`=300001 | HTTP 400 Bad Request. Số tiền thanh toán không khớp. | X4.1, B4.5 | **PASS** |
+| TC-4.5 | **[BVA] ORD-PAY-05 - Lỗi thanh toán sai số thập phân**<br>_(Lỗi số thập phân)_ | Đơn `completed` | 1. POST `/orders/:id/pay` | `amount`=300000.001 | HTTP 400 Bad Request. Lỗi số thập phân. | X4.1, B4.4 | **PASS** |
+| TC-4.6 | **[EP] ORD-PAY-06 - Lỗi số âm**<br>_(Lỗi số tiền âm)_ | Đơn `completed` | 1. POST `/orders/:id/pay` | `amount`=-300000 | HTTP 400 Bad Request. Lỗi số tiền không hợp lệ. | X4.2 | **PASS** |
+| TC-4.7 | **[EP] ORD-PAY-07 - Lỗi thanh toán đơn chưa xong**<br>_(Lỗi thanh toán đơn chưa xong)_ | Đơn `pending` | 1. POST `/orders/:id/pay` | `amount`=300000 | HTTP 400 Bad Request. Đơn hàng không hợp lệ để thanh toán. | V4.1, X4.3 | **PASS** |
+| TC-4.8 | **[EP] ORD-PAY-08 - Lỗi thanh toán đơn đã trả rồi**<br>_(Lỗi đơn đã thanh toán)_ | Đơn `paid` | 1. POST `/orders/:id/pay` | `amount`=300000 | HTTP 400 Bad Request. Đơn hàng không hợp lệ để thanh toán. | V4.1, X4.3 | **PASS** |
 | TC-4.9 | **[SEC] ORD-PAY-09 - Lỗi bảo mật: Token khách hàng khác thanh toán (403)**<br>_(Lỗi phân quyền thanh toán)_ | Token khách hàng khác | 1. Gọi thanh toán bằng token phụ | `amount`=300000 | HTTP 403 Forbidden. Lỗi quyền sở hữu đơn. | Security | **PASS** |
-| TC-4.10 | **[EP] ORD-PAY-10 - Lỗi amount dạng chuỗi (String)**<br>_(Lỗi `amount` dạng chuỗi (String))_ | - Đăng nhập hợp lệ (role `customer`)<br>- `POST /orders/{{test_order_id}}/pay` | `amount` = "abc" | **HTTP 400** |  EP | **PASS** |
+| TC-4.10 | **[EP] ORD-PAY-10 - Lỗi amount dạng chuỗi (String)**<br>_(Lỗi `amount` dạng chuỗi (String))_ | - Đăng nhập hợp lệ (role `customer`)<br>- `POST /orders/{{test_order_id}}/pay` | `amount` = "abc" | **HTTP 400** | X4.2 | **PASS** |
 
 ### 2.5. A.5 Phân trang Danh sách Thanh toán (GET `/payments?limit=`)
 **Tiền điều kiện:** Database có ít nhất 20 giao dịch. User là `admin` hoặc `coordinator` (`{{admin_token}}`).
@@ -250,21 +255,21 @@ Dựa trên sự chênh lệch (Delta) giữa `amount` và `order_price`: `Delta
 ### Câu 2. Phân tích giá trị biên
 | Biến đầu vào | min | min+ | nominal | max- | max | Tag biên |
 |---|---:|---:|---:|---:|---:|---|
-| `limit` | 1 | 2 | 10 | 99 | 100 | B5.1, B5.2, EP, B5.4, B5.5 |
+| `limit` | 1 | 2 | 10 | 99 | 100 | B5.1, B5.2, B5.3, B5.4, B5.5 |
 
 **Bảng Thiết kế Test Case (Formal):**
 
 | TC ID | Tóm tắt (Summary) | Tiền điều kiện | Các bước thực hiện | Dữ liệu đầu vào (Input) | Kết quả mong đợi (Expected) | Kỹ thuật (Tag) | Pass/Fail |
 |---|---|---|---|---|---|---|---|
-| TC-5.1 | **[BVA] ORD-PAG-01 - Lấy danh sách hợp lệ tại biên min**<br>_(Bắt lỗi ranh giới)_ | Token Admin | 1. GET `/payments?limit=1` | `limit` = 1 | HTTP 200 OK. Trả về 1 bản ghi. | BVA | **PASS** |
-| TC-5.2 | **[BVA] ORD-PAG-02 - Lấy danh sách hợp lệ tại biên max**<br>_(Bắt lỗi ranh giới)_ | Token Admin | 1. GET `/payments?limit=100` | `limit` = 100 | HTTP 200 OK. Trả về 100 bản ghi. | BVA | **PASS** |
-| TC-5.3 | **[HP] ORD-PAG-03 - Lấy danh sách với nominal**<br>_(Bắt lỗi ranh giới)_ | Token Admin | 1. GET `/payments?limit=10` | `limit` = 10 | HTTP 200 OK. Trả về 10 bản ghi. | Happy Path | **PASS** |
-| TC-5.4 | **[BVA] ORD-PAG-04 - Giá trị sát biên dưới min (0)**<br>_(Bắt lỗi ranh giới)_ | Token Admin | 1. GET `/payments?limit=0` | `limit` = 0 | HTTP 200 OK. Bị ép kiểu về 1 bản ghi. | BVA | **PASS** |
-| TC-5.5 | **[EP] ORD-PAG-05 - Giá trị âm (bị ép về 1)**<br>_(Bắt lỗi ranh giới)_ | Token Admin | 1. GET `/payments?limit=-5` | `limit` = -5 | HTTP 200 OK. Bị ép kiểu về 1 bản ghi. | EP | **PASS** |
-| TC-5.6 | **[BVA] ORD-PAG-06 - Giá trị sát biên vượt max (101)**<br>_(Bắt lỗi ranh giới)_ | Token Admin | 1. GET `/payments?limit=101` | `limit` = 101 | HTTP 200 OK. Bị ép kiểu về 100 bản ghi. | BVA | **PASS** |
-| TC-5.7 | **[EP] ORD-PAG-07 - Giá trị siêu lớn (bị ép về 100)**<br>_(Bắt lỗi ranh giới)_ | Token Admin | 1. GET `/payments?limit=999999` | `limit` = 999999 | HTTP 200 OK. Bị ép kiểu về 100 bản ghi. | EP | **PASS** |
-| TC-5.8 | **[EP] ORD-PAG-08 - Định dạng sai (bị ép về 10)**<br>_(Bắt lỗi ranh giới)_ | Token Admin | 1. GET `/payments?limit=abc` | `limit` = "abc" | HTTP 200 OK. Bị ép kiểu về mặc định (10 bản ghi). | EP | **PASS** |
-| TC-5.9 | **[EP] ORD-PAG-09 - Lấy danh sách bỏ trống tham số limit**<br>_(Bỏ trống tham số limit (dùng mặc định))_ | - Đăng nhập hợp lệ (role `coordinator` hoặc admin)<br>- `GET /payments?page=1` | Không truyền tham số `limit` | **HTTP 200** |  EP | **PASS** |
+| TC-5.1 | **[BVA] ORD-PAG-01 - Lấy danh sách hợp lệ tại biên min**<br>_(Bắt lỗi ranh giới)_ | Token Admin | 1. GET `/payments?limit=1` | `limit` = 1 | HTTP 200 OK. Trả về 1 bản ghi. | V5.1, B5.1 | **PASS** |
+| TC-5.2 | **[BVA] ORD-PAG-02 - Lấy danh sách hợp lệ tại biên max**<br>_(Bắt lỗi ranh giới)_ | Token Admin | 1. GET `/payments?limit=100` | `limit` = 100 | HTTP 200 OK. Trả về 100 bản ghi. | V5.1, B5.5 | **PASS** |
+| TC-5.3 | **[HP] ORD-PAG-03 - Lấy danh sách với nominal**<br>_(Bắt lỗi ranh giới)_ | Token Admin | 1. GET `/payments?limit=10` | `limit` = 10 | HTTP 200 OK. Trả về 10 bản ghi. | V5.1, B5.3 | **PASS** |
+| TC-5.4 | **[BVA] ORD-PAG-04 - Giá trị sát biên dưới min (0)**<br>_(Bắt lỗi ranh giới)_ | Token Admin | 1. GET `/payments?limit=0` | `limit` = 0 | HTTP 200 OK. Bị ép kiểu về 1 bản ghi. | X5.1 | **PASS** |
+| TC-5.5 | **[EP] ORD-PAG-05 - Giá trị âm (bị ép về 1)**<br>_(Bắt lỗi ranh giới)_ | Token Admin | 1. GET `/payments?limit=-5` | `limit` = -5 | HTTP 200 OK. Bị ép kiểu về 1 bản ghi. | X5.1 | **PASS** |
+| TC-5.6 | **[BVA] ORD-PAG-06 - Giá trị sát biên vượt max (101)**<br>_(Bắt lỗi ranh giới)_ | Token Admin | 1. GET `/payments?limit=101` | `limit` = 101 | HTTP 200 OK. Bị ép kiểu về 100 bản ghi. | X5.2 | **PASS** |
+| TC-5.7 | **[EP] ORD-PAG-07 - Giá trị siêu lớn (bị ép về 100)**<br>_(Bắt lỗi ranh giới)_ | Token Admin | 1. GET `/payments?limit=999999` | `limit` = 999999 | HTTP 200 OK. Bị ép kiểu về 100 bản ghi. | X5.2 | **PASS** |
+| TC-5.8 | **[EP] ORD-PAG-08 - Định dạng sai (bị ép về 10)**<br>_(Lỗi định dạng)_ | Token Admin | 1. GET `/payments?limit=abc` | `limit` = "abc" | HTTP 200 OK. Bị ép kiểu về mặc định (10 bản ghi). | X5.3 | **PASS** |
+| TC-5.9 | **[EP] ORD-PAG-09 - Lấy danh sách bỏ trống tham số limit**<br>_(Bỏ trống tham số limit (dùng mặc định))_ | - Đăng nhập hợp lệ (role `coordinator` hoặc admin)<br>- `GET /payments?page=1` | Không truyền tham số `limit` | **HTTP 200** | V5.1 | **PASS** |
 
 ### 2.6. A.6 Đánh giá Dịch vụ (POST `/orders/:id/feedback`)
 **Tiền điều kiện:** Đơn hàng có ID động lưu trong `{{test_order_id}}` đã được thanh toán. User là `customer` chủ đơn (`{{customer_token}}`).
@@ -286,16 +291,16 @@ Dựa trên sự chênh lệch (Delta) giữa `amount` và `order_price`: `Delta
 
 | TC ID | Tóm tắt (Summary) | Tiền điều kiện | Các bước thực hiện | Dữ liệu đầu vào (Input) | Kết quả mong đợi (Expected) | Kỹ thuật (Tag) | Pass/Fail |
 |---|---|---|---|---|---|---|---|
-| TC-6.1 | **[BVA] ORD-FB-01 - Feedback hợp lệ tại biên min**<br>_(Bắt lỗi ranh giới)_ | Đơn `paid`, chưa rating | 1. POST `/orders/:id/feedback` | `rating`=1<br>`comment` (0 char) | HTTP 201 Created. Ghi nhận thành công. | BVA | **PASS** |
-| TC-6.2 | **[BVA] ORD-FB-02 - Feedback hợp lệ tại biên max**<br>_(Bắt lỗi ranh giới)_ | Đơn `paid`, chưa rating | 1. POST `/orders/:id/feedback` | `rating`=5<br>`comment` (500 char) | HTTP 201 Created. | BVA | **PASS** |
-| TC-6.3 | **[BVA] ORD-FB-03 - Lỗi rating dưới min**<br>_(Bắt lỗi ranh giới)_ | Đơn `paid`, chưa rating | 1. POST `/orders/:id/feedback` | `rating`=0<br>`comment` (250 char) | HTTP 400 Bad Request. Sai khoảng rating. | BVA | **PASS** |
-| TC-6.4 | **[BVA] ORD-FB-04 - Lỗi rating vượt max**<br>_(Bắt lỗi ranh giới)_ | Đơn `paid`, chưa rating | 1. POST `/orders/:id/feedback` | `rating`=6<br>`comment` (250 char) | HTTP 400 Bad Request. Sai khoảng rating. | BVA | **PASS** |
-| TC-6.5 | **[EP] ORD-FB-05 - Lỗi rating chữ cái**<br>_(Bắt lỗi ranh giới)_ | Đơn `paid`, chưa rating | 1. POST `/orders/:id/feedback` | `rating`="abc" | HTTP 400 Bad Request. Sai định dạng kiểu dữ liệu. | EP | **PASS** |
-| TC-6.6 | **[EP] ORD-FB-06 - Lỗi rating số thập phân**<br>_(Bắt lỗi ranh giới)_ | Đơn `paid`, chưa rating | 1. POST `/orders/:id/feedback` | `rating`=4.5 | HTTP 400 Bad Request. Rating phải là số nguyên. | EP | **PASS** |
-| TC-6.7 | **[BVA] ORD-FB-07 - Lỗi comment vượt mức max**<br>_(Bắt lỗi ranh giới)_ | Đơn `paid`, chưa rating | 1. POST `/orders/:id/feedback` | `rating`=5<br>`comment` (501 char) | HTTP 400 Bad Request. Quá độ dài comment cho phép. | BVA | **PASS** |
-| TC-6.8 | **[EP] ORD-FB-08 - Lỗi comment quá dài**<br>_(Bắt lỗi ranh giới)_ | Đơn `paid`, chưa rating | 1. POST `/orders/:id/feedback` | `rating`=3<br>`comment` (1000 char)| HTTP 400 Bad Request. Quá độ dài comment. | EP | **PASS** |
-| TC-6.9 | **[EP] ORD-FB-09 - Lỗi feedback đơn chưa thanh toán**<br>_(Bắt lỗi ranh giới)_ | Đơn `pending` | 1. POST `/orders/:id/feedback` | `rating`=4 | HTTP 400 Bad Request. Phải thanh toán mới được rating. | EP | **PASS** |
-| TC-6.10 | **[EP] ORD-FB-10 - Lỗi gửi feedback lần 2 (trùng lặp)**<br>_(Bắt lỗi ranh giới)_ | Đơn `paid`, đã rating | 1. POST `/orders/:id/feedback` | `rating`=5 | HTTP 409 Conflict. Lỗi đánh giá trùng lặp. | EP | **PASS** |
+| TC-6.1 | **[BVA] ORD-FB-01 - Feedback hợp lệ tại biên min**<br>_(Bắt lỗi ranh giới)_ | Đơn `paid`, chưa rating | 1. POST `/orders/:id/feedback` | `rating`=1<br>`comment` (0 char) | HTTP 201 Created. Ghi nhận thành công. | V6.3, B6.1, B6.6 | **PASS** |
+| TC-6.2 | **[BVA] ORD-FB-02 - Feedback hợp lệ tại biên max**<br>_(Bắt lỗi ranh giới)_ | Đơn `paid`, chưa rating | 1. POST `/orders/:id/feedback` | `rating`=5<br>`comment` (500 char) | HTTP 201 Created. | V6.3, B6.5, B6.10 | **PASS** |
+| TC-6.3 | **[BVA] ORD-FB-03 - Lỗi rating dưới min**<br>_(Bắt lỗi ranh giới)_ | Đơn `paid`, chưa rating | 1. POST `/orders/:id/feedback` | `rating`=0<br>`comment` (250 char) | HTTP 400 Bad Request. Sai khoảng rating. | X6.1 | **PASS** |
+| TC-6.4 | **[BVA] ORD-FB-04 - Lỗi rating vượt max**<br>_(Bắt lỗi ranh giới)_ | Đơn `paid`, chưa rating | 1. POST `/orders/:id/feedback` | `rating`=6<br>`comment` (250 char) | HTTP 400 Bad Request. Sai khoảng rating. | X6.1 | **PASS** |
+| TC-6.5 | **[EP] ORD-FB-05 - Lỗi rating chữ cái**<br>_(Bắt lỗi ranh giới)_ | Đơn `paid`, chưa rating | 1. POST `/orders/:id/feedback` | `rating`="abc" | HTTP 400 Bad Request. Sai định dạng kiểu dữ liệu. | X6.1 | **PASS** |
+| TC-6.6 | **[EP] ORD-FB-06 - Lỗi rating số thập phân**<br>_(Bắt lỗi ranh giới)_ | Đơn `paid`, chưa rating | 1. POST `/orders/:id/feedback` | `rating`=4.5 | HTTP 400 Bad Request. Rating phải là số nguyên. | X6.1 | **PASS** |
+| TC-6.7 | **[BVA] ORD-FB-07 - Lỗi comment vượt mức max**<br>_(Bắt lỗi ranh giới)_ | Đơn `paid`, chưa rating | 1. POST `/orders/:id/feedback` | `rating`=5<br>`comment` (501 char) | HTTP 400 Bad Request. Quá độ dài comment cho phép. | V6.1, X6.2 | **PASS** |
+| TC-6.8 | **[EP] ORD-FB-08 - Lỗi comment quá dài**<br>_(Bắt lỗi ranh giới)_ | Đơn `paid`, chưa rating | 1. POST `/orders/:id/feedback` | `rating`=3<br>`comment` (1000 char)| HTTP 400 Bad Request. Quá độ dài comment. | V6.1, X6.2 | **PASS** |
+| TC-6.9 | **[EP] ORD-FB-09 - Lỗi feedback đơn chưa thanh toán**<br>_(Bắt lỗi ranh giới)_ | Đơn `pending` | 1. POST `/orders/:id/feedback` | `rating`=4 | HTTP 400 Bad Request. Phải thanh toán mới được rating. | V6.1, V6.2, X6.3 | **PASS** |
+| TC-6.10 | **[EP] ORD-FB-10 - Lỗi gửi feedback lần 2 (trùng lặp)**<br>_(Bắt lỗi ranh giới)_ | Đơn `paid`, đã rating | 1. POST `/orders/:id/feedback` | `rating`=5 | HTTP 409 Conflict. Lỗi đánh giá trùng lặp. | X6.3 | **PASS** |
 
 ### 2.7. A.7 Xem Đơn hàng (GET `/orders/:id` và GET `/orders`)
 **Tiền điều kiện:** Đơn hàng có ID động lưu trong `{{test_order_id}}` tồn tại. Token người dùng tương ứng vai trò.
@@ -317,15 +322,15 @@ Dựa trên sự chênh lệch (Delta) giữa `amount` và `order_price`: `Delta
 
 | TC ID | Tóm tắt (Summary) | Tiền điều kiện | Các bước thực hiện | Dữ liệu đầu vào (Input) | Kết quả mong đợi (Expected) | Kỹ thuật (Tag) | Pass/Fail |
 |---|---|---|---|---|---|---|---|
-| TC-7.1 | **[HP] ORD-S07 - Admin xem tất cả đơn hàng**<br>_(Xem danh sách - Admin)_ | Token `admin` | 1. GET `/orders` | Không tham số | HTTP 200 OK. Lấy toàn bộ đơn. | Happy Path | **PASS** |
-| TC-7.2 | **[HP] ORD-S06 - Coordinator xem tất cả đơn hàng**<br>_(Xem danh sách - Coord)_ | Token `coordinator` | 1. GET `/orders` | Không tham số | HTTP 200 OK. Lấy toàn bộ đơn. | Happy Path | **PASS** |
-| TC-7.3 | **[HP] ORD-S04 - Customer xem danh sách đơn hàng của chính mình**<br>_(Xem chi tiết - Owner)_ | Token `customer` A | 1. GET `/orders/:id` | ID của chính mình | HTTP 200 OK. Xem chi tiết đơn thành công. | Happy Path | **PASS** |
-| TC-7.4 | **[HP] ORD-S05 - Customer xem chi tiết đơn hàng của chính mình**<br>_(Xem ds cá nhân)_ | Token `customer` A | 1. GET `/orders/customer/:id` | ID customer của mình | HTTP 200 OK. Lấy danh sách cá nhân. | Happy Path | **PASS** |
-| TC-7.5 | **[EP] ORD-S08 - ID hợp lệ nominal**<br>_(Bắt lỗi ranh giới)_ | Token hợp lệ | 1. GET `/orders/:id` | `id` = 5 | HTTP 200 OK. Hợp lệ nominal. | EP | **PASS** |
-| TC-7.6 | **[EP] ORD-S09 - ID là chữ**<br>_(Bắt lỗi ranh giới)_ | Token hợp lệ | 1. GET `/orders/:id` | `id` = "abc" | HTTP 400 Bad Request. ID là chữ cái. | EP | **PASS** |
-| TC-7.7 | **[BVA] ORD-S10 - ID sát dưới mức min (0)**<br>_(Bắt lỗi ranh giới)_ | Token hợp lệ | 1. GET `/orders/:id` | `id` = 0 | HTTP 400 Bad Request. Lỗi ID không hợp lệ. | BVA | **PASS** |
-| TC-7.8 | **[EP] ORD-S11 - Request với JWT Token giả mạo/sai chữ ký**<br>_(Bắt lỗi ranh giới)_ | Token Fake | 1. GET `/orders` | Sai chữ ký Token | HTTP 401 Unauthorized. Từ chối truy cập. | EP | **PASS** |
-| TC-7.9 | **[EP] ORD-S12 - Xem chi tiết đơn không có token**<br>_(Bắt lỗi ranh giới)_ | Không Token | 1. GET `/orders` | Không có Header Auth | HTTP 401 Unauthorized. Từ chối truy cập. | EP | **PASS** |
+| TC-7.1 | **[HP] ORD-S07 - Admin xem tất cả đơn hàng**<br>_(Xem danh sách - Admin)_ | Token `admin` | 1. GET `/orders` | Không tham số | HTTP 200 OK. Lấy toàn bộ đơn. | V7.1, V7.4 | **PASS** |
+| TC-7.2 | **[HP] ORD-S06 - Coordinator xem tất cả đơn hàng**<br>_(Xem danh sách - Coord)_ | Token `coordinator` | 1. GET `/orders` | Không tham số | HTTP 200 OK. Lấy toàn bộ đơn. | V7.1, V7.4 | **PASS** |
+| TC-7.3 | **[HP] ORD-S04 - Customer xem danh sách đơn hàng của chính mình**<br>_(Xem chi tiết - Owner)_ | Token `customer` A | 1. GET `/orders/:id` | ID của chính mình | HTTP 200 OK. Xem chi tiết đơn thành công. | V7.2, V7.4, B7.4 | **PASS** |
+| TC-7.4 | **[HP] ORD-S05 - Customer xem chi tiết đơn hàng của chính mình**<br>_(Xem ds cá nhân)_ | Token `customer` A | 1. GET `/orders/customer/:id` | ID customer của mình | HTTP 200 OK. Lấy danh sách cá nhân. | V7.2, V7.4 | **PASS** |
+| TC-7.5 | **[HP] ORD-S08 - ID hợp lệ nominal**<br>_(Đầu vào hợp lệ)_ | Token hợp lệ | 1. GET `/orders/:id` | `id` = 5 | HTTP 200 OK. Hợp lệ nominal. | V7.1, V7.4, B7.4 | **PASS** |
+| TC-7.6 | **[EP] ORD-S09 - ID là chữ**<br>_(Lỗi định dạng ID)_ | Token hợp lệ | 1. GET `/orders/:id` | `id` = "abc" | HTTP 400 Bad Request. ID là chữ cái. | X7.3 | **PASS** |
+| TC-7.7 | **[BVA] ORD-S10 - ID sát dưới mức min (0)**<br>_(Bắt lỗi ranh giới)_ | Token hợp lệ | 1. GET `/orders/:id` | `id` = 0 | HTTP 400 Bad Request. Lỗi ID không hợp lệ. | X7.3, B7.1 | **PASS** |
+| TC-7.8 | **[SEC] ORD-S11 - Request với JWT Token giả mạo/sai chữ ký**<br>_(Kiểm tra bảo mật)_ | Token Fake | 1. GET `/orders` | Sai chữ ký Token | HTTP 401 Unauthorized. Từ chối truy cập. | Security | **PASS** |
+| TC-7.9 | **[SEC] ORD-S12 - Xem chi tiết đơn không có token**<br>_(Kiểm tra bảo mật)_ | Không Token | 1. GET `/orders` | Không có Header Auth | HTTP 401 Unauthorized. Từ chối truy cập. | Security | **PASS** |
 
 ---
 
@@ -435,7 +440,7 @@ graph TD
 **Đo lường Độ phức tạp & Bao phủ:**
 - Luồng thanh toán được thiết lập 4 nút thắt ($P = 4$) để chặn đứng 4 rủi ro khét tiếng: *Tham chiếu đơn ma*, *Truy cập trái phép (IDOR)*, *Thao túng giá (Parameter Tampering)*, và *Thanh toán sai quy trình State Machine*.
 - **Độ phức tạp Cyclomatic:** $V(G) = 5$. Cấu trúc đồ thị phẳng (Flat CFG) và tuân thủ chặt chẽ nguyên tắc lập trình *Fail Fast (Bắt lỗi và ngắt sớm)* giúp tối ưu hiệu năng.
-- **Coverage:** Bộ Test Case Postman nhóm `A.4` và `A.5` đã mô phỏng thành công cả 5 nhánh kịch bản, chứng minh module thanh toán cốt lõi đã đạt **100% Branch Coverage**.
+- **Coverage:** Bộ Test Case Postman nhóm `A.4` đã mô phỏng thành công cả 5 nhánh kịch bản, chứng minh module thanh toán cốt lõi đã đạt **100% Branch Coverage**.
 
 #### 3.2.4. Phân tích luồng Đánh giá (validate_feedback_logic)
 Cuối cùng, API gửi Đánh giá (`POST /orders/:id/feedback`) cũng được trang bị một ma trận kiểm duyệt đa tầng tương đương với luồng Thanh toán, nhằm bảo vệ tính minh bạch của các phản hồi (Reviews).
@@ -484,7 +489,7 @@ Bên cạnh việc kiểm thử Hộp đen bằng Postman, dự án đã triển
 | `orders.test.js` | - Tạo đơn hàng (`POST /`) <br>- Lấy tất cả đơn hàng (`GET /`) <br>- Thống kê (`GET /stats`) <br>- Đơn theo khách (`GET /customer/:customerId`) <br>- Chi tiết đơn (`GET /:id`) <br>- Cập nhật trạng thái (`PUT /:id/status`) | **54** | Mock MySQL Pool & Redis Pipeline. Bắt lỗi Validation (BVA/EP), State Machine (chặn nhảy cóc trạng thái), kiểm tra Redis Cache HIT/MISS, bổ sung studioInfo cho đơn recording, xử lý lỗi khi microservice bên ngoài sập (Resilience). |
 | `payments.test.js` | - Tạo thanh toán (`POST /payments`) <br>- Danh sách thanh toán (`GET /payments`) <br>- Chi tiết giao dịch (`GET /payments/:id`) <br>- Mock thanh toán thành công (`POST /payments/:id/mock-success`) <br>- Mock thanh toán thất bại (`POST /payments/:id/mock-fail`) <br>- Thanh toán trực tiếp (`POST /:id/pay`) <br>- Admin xem tất cả giao dịch (`GET /admin/payments`) | **38** | Mock Transaction (COMMIT/ROLLBACK). Kiểm tra logic tài chính, chống tấn công IDOR, xác thực số tiền khớp hệ thống. Test phân trang (Pagination) với BVA cho `page`/`limit`. Kiểm tra Cache HIT/MISS khi enriching customer name. |
 | `feedbacks-revisions.test.js` | - Gửi đánh giá (`POST /:id/feedback`) <br>- Kiểm tra feedback (`GET /:id/feedback`) <br>- Yêu cầu chỉnh sửa (`POST /:id/request-revision`) | **45** | Kiểm tra quyền sở hữu (RBAC), chặn đánh giá trùng lặp (409 Conflict), xác thực rating 1-5 (BVA), giới hạn comment 500/1000 ký tự. Xác minh message RabbitMQ với đúng routing key `order.revision_requested`. |
-| **TỔNG CỘNG** | **Bao phủ toàn bộ 16 API Endpoints** | **137** | **Đạt tỷ lệ Pass 100% (137/137). Coverage: 93.3% Statements, 83.93% Branches, 93.57% Lines.** |
+| **TỔNG CỘNG** | **Bao phủ toàn bộ 17 API Endpoints** | **137** | **Đạt tỷ lệ Pass 100% (137/137). Coverage: 93.3% Statements, 83.93% Branches, 93.57% Lines.** |
 
 **Kết quả đo lường Code Coverage (Jest Istanbul):**
 
@@ -511,7 +516,7 @@ Toàn bộ 137 Test Cases được thực thi hoàn toàn tự động chỉ tro
 | **BUG-ORD-04** | Lỗi xử lý tham số phân trang, tự động biến đổi giá trị limit=0 thành 10 | Local MySQL, Postman v10 | 1. Đăng nhập với token Admin.<br>2. Gọi GET `/payments?limit=0`. | **Exp:** Hệ thống chặn biên dưới (ép 0 thành 1).<br>**Act:** Trả về 10 bản ghi do toán tử `\|\| 10` xử lý sai giá trị Falsy trong JS. | Always (100%) | Medium (Sai kết quả dữ liệu) | P2 (High) | 091205000607 - NguyenThanhTri<br>01/07/2026 | **Verified Fixed** |
 
 ### 4.1. Bằng chứng Re-test (Re-test Evidence)
-Sau khi đội ngũ Backend thông báo đã vá (Fixed) cả 3 lỗi nghiêm trọng trên, QA đã tiến hành kiểm tra lại (Re-test) bằng Postman. Dưới đây là bằng chứng (Evidence) cho thấy hệ thống đã chặn đứng các hành vi sai trái và trả về mã lỗi HTTP 400 cùng message chuẩn xác:
+Sau khi đội ngũ Backend thông báo đã vá (Fixed) cả 4 lỗi nghiêm trọng trên, QA đã tiến hành kiểm tra lại (Re-test) bằng Postman. Dưới đây là bằng chứng (Evidence) cho thấy hệ thống đã chặn đứng các hành vi sai trái và trả về mã lỗi HTTP 400 cùng message chuẩn xác:
 
 **1. Bằng chứng Re-test BUG-ORD-01 (TC-1.8)**
 - **Kết quả:** Đã bị chặn ngay ở tầng Route Validation. Không còn tình trạng tốn dung lượng DB vô ích.
@@ -538,7 +543,6 @@ Sau khi đội ngũ Backend thông báo đã vá (Fixed) cả 3 lỗi nghiêm tr
   "status": "error",
   "message": "Không thể chuyển trạng thái từ pending sang completed."
 }
-}
 ```
 
 **4. Bằng chứng Re-test BUG-ORD-04 (TC-5.4)**
@@ -561,13 +565,13 @@ limit = Math.min(Math.max(limit, 1), 100);
 
 Dựa trên **Tiêu chuẩn kết thúc (Exit Criteria)** đã định nghĩa tại Kế hoạch (Phần 1), kết quả nghiệm thu như sau:
 
-1. **Phạm vi & Yêu cầu:** Đạt mức bao phủ yêu cầu **100%** — toàn bộ **16 API Endpoints** của order-service đều được kiểm thử tự động. Bao gồm **64 kịch bản Validation từ Postman** (Black-box) và **137 Test Cases từ Jest/Supertest** (White-box).
+1. **Phạm vi & Yêu cầu:** Đạt mức bao phủ yêu cầu **100%** — toàn bộ **17 API Endpoints** của order-service đều được kiểm thử tự động. Bao gồm **64 kịch bản Validation từ Postman** (Black-box) và **137 Test Cases từ Jest/Supertest** (White-box).
 2. **Độ bao phủ Mã nguồn (Code Coverage):** 
    - **Tầng Validation (White-box CFG):** Đạt **100% Statement Coverage** và **100% Branch Coverage** cho các thuật toán Validation phức tạp (phân tích qua Control Flow Graph).
    - **Toàn cục (Global Coverage - Jest Istanbul):** Đạt **93.3% Statement Coverage**, **83.93% Branch Coverage**, và **93.57% Line Coverage** cho toàn bộ ứng dụng `index.js`. Con số này **vượt xa** tiêu chuẩn Exit Criteria đề ra (90% Statement, 80% Branch).
 3. **Chất lượng Phần mềm & Lỗi (Defect Metrics):** 
-   - Đã phát hiện 3 khiếm khuyết (Defects) liên quan đến tràn bộ nhớ Payload và lỗ hổng chuyển đổi trạng thái State Machine.
-   - Tình trạng hiện tại: Toàn bộ 3 Bug được đánh giá ở mức High/Medium đã được vá hoàn tất (**Verified Fixed**).
+   - Đã phát hiện 4 khiếm khuyết (Defects) liên quan đến tràn bộ nhớ Payload, lỗ hổng chuyển đổi trạng thái State Machine, và lỗi xử lý tham số phân trang.
+   - Tình trạng hiện tại: Toàn bộ 4 Bug được đánh giá ở mức High/Medium đã được vá hoàn tất (**Verified Fixed**).
    - Tỷ lệ Pass rate của bộ Unit Test (Jest): **100% (137/137 Passed)**. Toàn bộ test cases đều xanh, chứng tỏ hệ thống đã được sửa chữa hoàn toàn và hoạt động đúng đắn trên mọi luồng nghiệp vụ, bao gồm cả các kịch bản phức tạp như Redis Cache HIT/MISS, Database Transaction (COMMIT/ROLLBACK), và RabbitMQ Message Publishing.
 
 **KẾT LUẬN CUỐI CÙNG:**
